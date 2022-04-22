@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+<link rel="next" title="「競技プログラミング入門」 by 井上誠大 (73)" href="physics.html"><link rel="prev" title="まえがき" href="predef.html">  <meta name="generator" content="Re:VIEW" />
+  <title>「TwitterのBotを作ってみる」 by object_1037 (73) | NPCA部誌2017</title>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2017</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">まえがき</a></li>
+<li><a href="object_1037.html">1 「TwitterのBotを作ってみる」 by object_1037 (73)</a></li>
+<li><a href="physics.html">2 「競技プログラミング入門」 by 井上誠大 (73)</a></li>
+<li><a href="taizo0122.html">3 「計算量」 by taizo0122 (72)</a></li>
+<li><a href="2lu3.html">4 「ダイクストラ法とアテナの本」 by 2lu3 (73)</a></li>
+<li><a href="niini.html">5 「BOARD;GAME 負荷領域のデジャヴ」 by ni-ni (72)</a></li>
+<li><a href="enptukezuri.html">6 「Blenderのシミュレーション機能を使う」 by enptukezuri (71)</a></li>
+<li><a href="hinata.html">7 「適当に構文解析する話(575)」by Hinata (72)</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h1"></a><span class="secno">第1章　</span>「TwitterのBotを作ってみる」 by object_1037 (73)</h1>
+
+<h2><a id="h1-1"></a><span class="secno">1.1　</span>自己紹介と説明</h2>
+<p>皆さんこんにちは、73回生(中3)のobject_1037です。部誌を書くのは初めてなのですが、温かい目で見守って頂けると幸いです。</p>
+<p>ぼくは今年の文化祭の部誌でTwitterのBotの作り方について書きました。Botは結構簡単に作れると聞いたので当時暇だった僕はBotを作ろうと決めたのですが、これが結構難しく、部誌に書こうと決めたわけです。(能力が低い)</p>
+
+<h2><a id="h1-2"></a><span class="secno">1.2　</span>Botについて</h2>
+<p>突然ですが皆さんTwitter使ってますか？Twitterを使ったことがある人ならわかると思いますが、TwitterにはBotと呼ばれるアカウントが数多く存在します。</p>
+
+<h3><a id="h1-2-1"></a>Botとは</h3>
+<p>Botってなんやねんと思うかもしれませんが、</p>
+<blockquote><p>Bot（ボット）は、robot（ロボット）の短縮形・略称で、転じてコンピュータやインターネット関連の自動化プログラムの一種のこと。(<a href="https://ja.wikipedia.org/wiki/Bot" class="link">Wikipedia</a>より)</p></blockquote>
+<p>とのことです。要は普通のアカウントと違ってプログラムで動いているアカウントのことをBotとよぶわけです。</p>
+
+<h3><a id="h1-2-2"></a>Botの種類</h3>
+<p>Botと一概に言ってもたくさん種類があるのですが、ざっと分けると</p>
+<ul>
+<li>決められた言葉の中からつぶやくもの。名言Botとかは大体これ。</li>
+<li>フォロワーからのリプなどに反応してつぶやくもの。占う系のBotとか。</li>
+<li>天気予報Botなど、どこかのサイトから情報を持ってきてつぶやくもの。</li>
+</ul>
+<p>このぐらいに分けられます。</p>
+<p>僕は今回決められた時間につぶやく時報Botと単語をつぶやくBot,天気予報Botを作りました。</p>
+<div id="chrono" class="image">
+<img src="images/object_1037/chrono.png" alt="時報Bot" class="width-060per" />
+<p class="caption">
+図1.1: 時報Bot
+</p>
+</div>
+<div id="kemono" class="image">
+<img src="images/object_1037/kemono.png" alt="単語をつぶやくBot" class="width-060per" />
+<p class="caption">
+図1.2: 単語をつぶやくBot
+</p>
+</div>
+<div id="weather" class="image">
+<img src="images/object_1037/weather.png" alt="天気予報Bot" class="width-060per" />
+<p class="caption">
+図1.3: 天気予報Bot
+</p>
+</div>
+
+<h2><a id="h1-3"></a><span class="secno">1.3　</span>Botの作成</h2>
+<p>それでは実際にBotを作っていきます。前提環境は</p>
+<ul>
+<li>OS: Windows 10 Home</li>
+<li>Ruby: 2.2.6</li>
+<li>gem: twitter 6.1.0, json 2.0.3, 1.8.1</li>
+</ul>
+<p>です。異なるバージョンを使用している場合には一部操作が違う場合があるので注意してください。</p>
+
+<h3><a id="h1-3-1"></a>作成手順</h3>
+<p>作成手順は大きく分けて</p>
+<ol>
+<li>環境構築</li>
+<li>Twitterの設定</li>
+<li>プログラミング</li>
+<li>運用</li>
+</ol>
+<p>です。それでは作っていきましょう。</p>
+
+<h3><a id="h1-3-2"></a>環境構築</h3>
+<p>まず、今回はRubyを使ってBotを作ったのでRubyのインストールが必要です。Rubyは<a href="https://rubyinstaller.org/downloads/" class="link">https://rubyinstaller.org/downloads/</a>からダウンロードできるのでダウンロード、インストールしておきましょう。<a id="fnb-site1" href="object_1037.html#fn-site1" class="noteref" epub:type="noteref">*1</a></p>
+<div class="footnote" epub:type="footnote" id="fn-site1"><p class="footnote">[*1] Rubyのバージョンは特にこだわりがない限り最新、または一つ前のバージョンがおすすめです。少なくとも2.0.0以降のものをインストールするようにしましょう。</p></div>
+<p>次にDevKitをインストールします。DevKitはWindows環境でネイティブなC/C++拡張をビルドするためのツールキットです。gemのインストール時に必要になるので、<a href="https://rubyinstaller.org/downloads/" class="link">https://rubyinstaller.org/downloads/</a>からさきほどインストールしたRubyのバージョンに対応したDevKitをダウンロードするようにしましょう。そこでインストール時にこんな画面が出てくるはずです。</p>
+<div id="devkit" class="image">
+<img src="images/object_1037/devkit.png" alt="DevKitのインストール" class="width-050per" />
+<p class="caption">
+図1.4: DevKitのインストール
+</p>
+</div>
+<p>このまま展開するとDownloadsフォルダに中身がバラけてしまうので、あらかじめDevKitのフォルダを作っておいてそこに展開するようにしましょう。</p>
+<p>つぎにDevKitの初期設定を行います。コマンドライン（コマンドプロンプト等)を開いてさっきDevKitをインストールしたフォルダに移動してから、</p>
+<div class="cmd-code">
+<pre class="cmd"><span style="color: #000080; font-weight: bold">$</span> ruby dk.rb init
+</pre>
+</div>
+<p>と打ち込んでください。つぎにエディターでさっき展開した中にあるconfig.ymlというファイルを開きます。するとこんな感じになっているはずです。</p>
+<div class="caption-code">
+<p class="caption">リスト1.1: config.yml</p>
+<pre class="list language-yml"># This configuration file contains the absolute path locations of all
+# installed Rubies to be enhanced to work with the DevKit. This config
+# file is generated by the 'ruby dk.rb init' step and may be modified
+# before running the 'ruby dk.rb install' step. To include any installed
+# Rubies that were not automagically discovered, simply add a line below
+# the triple hyphens with the absolute path to the Ruby root directory.
+#
+# Example:
+#
+# ---
+# - C:/ruby19trunk
+# - C:/ruby192dev
+#
+---
+- C:\Ruby22-x64
+</pre>
+</div>
+<p>ここで一番下の行にあるパスをRubyをインストールしたフォルダのものに書き換えてください。(C:\Ruby等)</p>
+<p>次にもう一度コマンドプロンプトを開いて</p>
+<div class="cmd-code">
+<pre class="cmd"><span style="color: #000080; font-weight: bold">$</span> ruby dk.rb install
+</pre>
+</div>
+<p>と打ちます。エラーが出なければDevKitの設定は完了です。</p>
+<p>次はgemをインストールします。コマンドプロンプトを開いて</p>
+<div class="cmd-code">
+<pre class="cmd"><span style="color: #000080; font-weight: bold">$</span> gem i twitter json
+</pre>
+</div>
+<p>と打ちます。エラーが出なければ環境構築は完了です。</p>
+
+<h3><a id="h1-3-3"></a>Twitterの設定</h3>
+<p>次にTwitter側の設定をしていきます。まず当然ですがBotを作るにはBotにするためのアカウントが必要なのでアカウントを作ります。</p>
+<p>次にそのアカウントでログインしたまま<a href="https://apps.twitter.com/" class="link">https://apps.twitter.com/</a>にアクセスして、【Create New App】で新規アプリケーションを作ります。色々聞かれるので適当に埋めましょう。</p>
+<p>ちなみに【Name】に入れた名前はTweetDeck等の他社製クライアントで開くときに【Name】から投稿された、と出ます。なので恥ずかしい名前にしないようにしましょう。(ブーメラン)</p>
+<div id="name" class="image">
+<img src="images/object_1037/name.png" alt="こんなかんじ" class="width-050per" />
+<p class="caption">
+図1.5: こんなかんじ
+</p>
+</div>
+<p>また、すでに登録してある名前をつけることはできません。今回私は「JAPARIPARK」という名前をつけようとしたのですが、あいにくすでに登録してあったようで、後ろに半角スペースをつけ、「JAPARIPARK 」とすることで解決しました。</p>
+<p>また、この名前(ここではJAPARIPARK )をクリックすると【Website】にいれたサイトに飛びます。</p>
+<p>アプリを作ったら、【Keys and Access Tokens】タブから【Create My Access Token】というところを押して、表示されるConsumer Key、Consumer Secret、Access Token、Access Token Secretをそれぞれメモ帳にでもコピペしておきましょう。これでTwitterの設定は完了です。</p>
+
+<h3><a id="h1-3-4"></a>プログラミング</h3>
+<p>今回のメインはここです。プログラミングと聞くと難しそうですが、結構かんたんです。</p>
+
+<h4><a id="h1-3-4-1"></a>Hello,World!</h4>
+<p>早速定番の「Hello,World!」とつぶやくプログラムを作ってみましょう。</p>
+<div class="caption-code">
+<p class="caption">リスト1.2: hello.rb</p>
+<pre class="list language-ruby">  <span style="color: #008000">require</span> <span style="color: #BA2121">&#39;twitter&#39;</span>
+
+  client <span style="color: #666666">=</span> <span style="color: #880000">Twitter</span><span style="color: #666666">::</span><span style="color: #880000">REST</span><span style="color: #666666">::</span><span style="color: #880000">Client</span><span style="color: #666666">.</span>new(
+    <span style="color: #19177C">consumer_key</span>:        <span style="color: #BA2121">&quot;YOUR_CONSUMER_KEY&quot;</span>,
+    <span style="color: #19177C">consumer_secret</span>:     <span style="color: #BA2121">&quot;YOUR_CONSUMER_SECRET&quot;</span>,
+    <span style="color: #19177C">access_token</span>:        <span style="color: #BA2121">&quot;YOUR_ACCESS_TOKEN&quot;</span>,
+    <span style="color: #19177C">access_token_secret</span>: <span style="color: #BA2121">&quot;YOUR_ACCESS_TOKEN_SECRET&quot;</span>,
+  )
+  <span style="color: #880000">OpenSSL</span><span style="color: #666666">::</span><span style="color: #880000">SSL</span><span style="color: #666666">::</span><span style="color: #880000">VERIFY_PEER</span> <span style="color: #666666">=</span> <span style="color: #880000">OpenSSL</span><span style="color: #666666">::</span><span style="color: #880000">SSL</span><span style="color: #666666">::</span><span style="color: #880000">VERIFY_NONE</span>
+
+  client<span style="color: #666666">.</span>update <span style="color: #BA2121">&quot;Hello,World!&quot;</span>
+</pre>
+</div>
+<p>(プログラム内にあるYOUR_CONSUMER_KEY、YOUR_CONSUMER_SECRET、YOUR_ACCESS_TOKEN、YOUR_ACCESS_TOKEN_SECRETにはそれぞれTwitterの設定のときにのときにコピペしておいたConsumer Key、Consumer Secret、Access Token、Access Token Secretを入れてください。)</p>
+<p>これを実行すると「Hello,World!」とつぶやかれるはずです。</p>
+<div id="helloworld" class="image">
+<img src="images/object_1037/helloworld.png" alt="Hello,World!" class="width-060per" />
+<p class="caption">
+図1.6: Hello,World!
+</p>
+</div>
+<p>プログラムの説明をすると、まず一行目の</p>
+<div class="emlist-code">
+<pre class="emlist language-ruby">  <span style="color: #008000">require</span> <span style="color: #BA2121">&#39;twitter&#39;</span>
+</pre>
+</div>
+<p>はモジュール(ここではgem twitter)を呼び出すコードです。</p>
+<p>また、3~8行目の長いのはTwiterのアカウントにOAuth接続するコードです。ただの変数代入ですから、ここは</p>
+<div class="emlist-code">
+<pre class="emlist language-ruby">  hoge <span style="color: #666666">=</span> <span style="color: #880000">Twitter</span><span style="color: #666666">::</span><span style="color: #880000">REST</span><span style="color: #666666">::</span><span style="color: #880000">Client</span><span style="color: #666666">.</span>new(
+    <span style="color: #19177C">consumer_key</span>:        <span style="color: #BA2121">&quot;YOUR_CONSUMER_KEY&quot;</span>,
+    <span style="color: #19177C">consumer_secret</span>:     <span style="color: #BA2121">&quot;YOUR_CONSUMER_SECRET&quot;</span>,
+    <span style="color: #19177C">access_token</span>:        <span style="color: #BA2121">&quot;YOUR_ACCESS_TOKEN&quot;</span>,
+    <span style="color: #19177C">access_token_secret</span>: <span style="color: #BA2121">&quot;YOUR_ACCESS_TOKEN_SECRET&quot;</span>,
+  )
+</pre>
+</div>
+<p>としておいて、最後のところを</p>
+<div class="emlist-code">
+<pre class="emlist language-ruby">  hoge<span style="color: #666666">.</span>update <span style="color: #BA2121">&quot;Hello,World!&quot;</span>
+</pre>
+</div>
+<p>としても動作します。</p>
+<p>また、9行目にある</p>
+<div class="emlist-code">
+<pre class="emlist language-ruby">  <span style="color: #880000">OpenSSL</span><span style="color: #666666">::</span><span style="color: #880000">SSL</span><span style="color: #666666">::</span><span style="color: #880000">VERIFY_PEER</span> <span style="color: #666666">=</span> <span style="color: #880000">OpenSSL</span><span style="color: #666666">::</span><span style="color: #880000">SSL</span><span style="color: #666666">::</span><span style="color: #880000">VERIFY_NONE</span>
+</pre>
+</div>
+<p>これはSSL証明書を確認しないという意味です。セキュリティ的に危ないですが、<b>Windowsではなぜか証明書が更新されていないため、接続するにはこのオプションを付けるか証明書を書き換えるかする必要があります。</b>(Mac OS Sierraではなくても接続できました。)</p>
+<p>そして最後の</p>
+<div class="emlist-code">
+<pre class="emlist language-ruby">  client<span style="color: #666666">.</span>update <span style="color: #BA2121">&quot;Hello,World!&quot;</span>
+</pre>
+</div>
+<p>ですが、これはTwitterに投稿するコードです。ほかにもフォローなどいろいろなことができます。<a id="fnb-site2" href="object_1037.html#fn-site2" class="noteref" epub:type="noteref">*2</a></p>
+<div id="twitter-api" class="table">
+<p class="caption">表1.1: できること</p>
+<table>
+<tr><th>メソッド名</th><th>利用例と意味</th></tr>
+<tr><td>.update</td><td>client.update &quot;Hello&quot; Helloとつぶやく</td></tr>
+<tr><td>.follow</td><td>client.follow &quot;Apple&quot; @Appleをフォロー</td></tr>
+<tr><td>.unfollow</td><td>client.unfollow &quot;Apple&quot; @Appleをフォロー解除</td></tr>
+<tr><td>.block</td><td>client.block &quot;Apple&quot; @Appleをブロック</td></tr>
+<tr><td>.unblock</td><td>client.unblock &quot;Apple&quot; @Appleをブロック解除</td></tr>
+<tr><td>.user</td><td>user = client.user &quot;Apple&quot; @Appleの情報を取得</td></tr>
+<tr><td>.id</td><td>user.id 上で取得した情報のうちユーザーID</td></tr>
+<tr><td>.screen_name</td><td>user.screen_name 上で取得した情報のうちユーザー名</td></tr>
+<tr><td>.protected?</td><td>user.protected? 上で取得した情報のうち非公開かどうか(true,false)</td></tr>
+<tr><td>.tweets_count</td><td>user.tweets_count 上で取得した情報のうちツイート数</td></tr>
+<tr><td>.followers_count</td><td>user.followers_count 上で取得した情報のうちフォロワー数</td></tr>
+<tr><td>.friends_coun</td><td>user.friends_count 上で取得した情報のうちフォロー数</td></tr>
+<tr><td>.home_timelin</td><td>client.home_timeline 自分のタイムラインを取得</td></tr>
+<tr><td>.user_timelin</td><td>client.user_timeline &quot;Apple&quot; @Appleのタイムラインを取得</td></tr>
+<tr><td>.mentions_timeline</td><td>client.mentions_timeline メンションを取得</td></tr>
+</table>
+</div>
+<div class="footnote" epub:type="footnote" id="fn-site2"><p class="footnote">[*2] もっと知りたい人は<a href="https://github.com/sferik/twitter" class="link">https://github.com/sferik/twitter</a>、<a href="https://sites.google.com/site/gyakuhikiruby/home/twitter-gem" class="link">https://sites.google.com/site/gyakuhikiruby/home/twitter-gem</a>に載っています。</p></div>
+
+<h4><a id="h1-3-4-2"></a>コマンドラインからつぶやく</h4>
+<p>さっきのプログラムを応用することでコマンドライン(コマンドプロンプト等)からつぶやくことができるようになります。いちいちブラウザを開かなくていいので便利です。</p>
+<div class="caption-code">
+<p class="caption">リスト1.3: cmd.rb</p>
+<pre class="list language-ruby">  <span style="color: #008000">require</span> <span style="color: #BA2121">&#39;twitter&#39;</span>
+  <span style="color: #008000">require</span> <span style="color: #BA2121">&#39;kconv&#39;</span>
+
+  client <span style="color: #666666">=</span> <span style="color: #880000">Twitter</span><span style="color: #666666">::</span><span style="color: #880000">REST</span><span style="color: #666666">::</span><span style="color: #880000">Client</span><span style="color: #666666">.</span>new(
+    <span style="color: #19177C">consumer_key</span>:        <span style="color: #BA2121">&quot;YOUR_CONSUMER_KEY&quot;</span>,
+    <span style="color: #19177C">consumer_secret</span>:     <span style="color: #BA2121">&quot;YOUR_CONSUMER_SECRET&quot;</span>,
+    <span style="color: #19177C">access_token</span>:        <span style="color: #BA2121">&quot;YOUR_ACCESS_TOKEN&quot;</span>,
+    <span style="color: #19177C">access_token_secret</span>: <span style="color: #BA2121">&quot;YOUR_ACCESS_TOKEN_SECRET&quot;</span>,
+  )
+  <span style="color: #880000">OpenSSL</span><span style="color: #666666">::</span><span style="color: #880000">SSL</span><span style="color: #666666">::</span><span style="color: #880000">VERIFY_PEER</span> <span style="color: #666666">=</span> <span style="color: #880000">OpenSSL</span><span style="color: #666666">::</span><span style="color: #880000">SSL</span><span style="color: #666666">::</span><span style="color: #880000">VERIFY_NONE</span>
+
+  tweet <span style="color: #666666">=</span> <span style="color: #008000">gets</span><span style="color: #666666">.</span>chomp<span style="color: #666666">.</span>toutf8
+  client<span style="color: #666666">.</span>update tweet
+</pre>
+</div>
+<p>さっきと比べると呼び出しが追加されています。</p>
+<div class="emlist-code">
+<pre class="emlist language-ruby">  <span style="color: #008000">require</span> <span style="color: #BA2121">&#39;kconv&#39;</span>
+</pre>
+</div>
+<p>このkconvというのは文字コードを変更するためのモジュールです。なぜこんなものがいるかというと、Windowsの標準文字コードはShift-JISなのでコマンドラインから入力した文字列はShift-JISでフォーマットされるのに対しTwitterではUTF-8を使用しているためTwitter側では文字化けしてしまうからです。(Macだと標準でUTF-8を使っているのでこの部分はいりません。)</p>
+<p>あと最後らへんに追加されている</p>
+<div class="emlist-code">
+<pre class="emlist language-ruby">  tweet <span style="color: #666666">=</span> <span style="color: #008000">gets</span><span style="color: #666666">.</span>chomp<span style="color: #666666">.</span>toutf8
+</pre>
+</div>
+<p>の<code class="inline-code tt">gets.chomp</code>というのはコマンドラインで受け取った文字列から改行を削除するメソッドで、<code class="inline-code tt">.toutf8</code>と言うのはさっき言ったkconvを使って文字コードをUTF-8に変換するメソッドです。</p>
+<p>これを実行してからツイートしたい言葉を入力するとツイートされます。</p>
+<p>最後の部分を</p>
+<div class="emlist-code">
+<pre class="emlist language-ruby">  <span style="color: #008000">print</span> <span style="color: #BA2121">&quot;いまどうしてる?&gt;&quot;</span>
+  tweet <span style="color: #666666">=</span> <span style="color: #008000">gets</span><span style="color: #666666">.</span>chomp<span style="color: #666666">.</span>toutf8
+  client<span style="color: #666666">.</span>update tweet
+</pre>
+</div>
+<p>みたいな感じにすると面白いかもしれません。</p>
+
+<h4><a id="h1-3-4-3"></a>時報</h4>
+<p>いよいよBotらしいBotを作っていきます。今回の時報Botの仕様は5分おきに現在時刻を表示し、かつ昼か夜かわかりやすくするため6時から18時のあいだと18時から6時のあいだとでは表示様式を変えるというものです。</p>
+<div class="caption-code">
+<p class="caption">リスト1.4: chrono5.rb</p>
+<pre class="list language-ruby">  <span style="color: #008000">require</span> <span style="color: #BA2121">&quot;twitter&quot;</span>
+
+  client <span style="color: #666666">=</span> <span style="color: #880000">Twitter</span><span style="color: #666666">::</span><span style="color: #880000">REST</span><span style="color: #666666">::</span><span style="color: #880000">Client</span><span style="color: #666666">.</span>new(
+    <span style="color: #19177C">consumer_key</span>:        <span style="color: #BA2121">&quot;YOUR_CONSUMER_KEY&quot;</span>,
+    <span style="color: #19177C">consumer_secret</span>:     <span style="color: #BA2121">&quot;YOUR_CONSUMER_SECRET&quot;</span>,
+    <span style="color: #19177C">access_token</span>:        <span style="color: #BA2121">&quot;YOUR_ACCESS_TOKEN&quot;</span>,
+    <span style="color: #19177C">access_token_secret</span>: <span style="color: #BA2121">&quot;YOUR_ACCESS_TOKEN_SECRET&quot;</span>,
+  )
+  <span style="color: #880000">OpenSSL</span><span style="color: #666666">::</span><span style="color: #880000">SSL</span><span style="color: #666666">::</span><span style="color: #880000">VERIFY_PEER</span> <span style="color: #666666">=</span> <span style="color: #880000">OpenSSL</span><span style="color: #666666">::</span><span style="color: #880000">SSL</span><span style="color: #666666">::</span><span style="color: #880000">VERIFY_NONE</span>
+
+  <span style="color: #008000">loop</span> <span style="color: #008000; font-weight: bold">do</span>
+    t <span style="color: #666666">=</span> <span style="color: #880000">Time</span><span style="color: #666666">.</span>now
+    hour <span style="color: #666666">=</span> t<span style="color: #666666">.</span>hour
+    min <span style="color: #666666">=</span> t<span style="color: #666666">.</span>min
+    sec <span style="color: #666666">=</span> t<span style="color: #666666">.</span>sec
+    mins <span style="color: #666666">=</span> min<span style="color: #666666">.</span>to_s
+
+    <span style="color: #008000; font-weight: bold">if</span> hour <span style="color: #666666">&lt;</span> <span style="color: #666666">18</span> <span style="color: #666666">&amp;&amp;</span> hour <span style="color: #666666">&gt;=</span> <span style="color: #666666">6</span> <span style="color: #666666">&amp;&amp;</span> min <span style="color: #666666">%</span> <span style="color: #666666">5</span> <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> sec <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> mins<span style="color: #666666">.</span>length <span style="color: #666666">==</span> <span style="color: #666666">1</span>
+      client<span style="color: #666666">.</span>update <span style="color: #BA2121">&quot;----------</span><span style="color: #BB6688; font-weight: bold">#{</span>hour<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">:0</span><span style="color: #BB6688; font-weight: bold">#{</span>min<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">----------&quot;</span>
+      <span style="color: #008000">sleep</span> <span style="color: #666666">295</span>
+    <span style="color: #008000; font-weight: bold">elsif</span> hour <span style="color: #666666">&lt;</span> <span style="color: #666666">18</span> <span style="color: #666666">&amp;&amp;</span> hour <span style="color: #666666">&gt;=</span> <span style="color: #666666">6</span> <span style="color: #666666">&amp;&amp;</span> min <span style="color: #666666">%</span> <span style="color: #666666">5</span> <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> sec <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> mins<span style="color: #666666">.</span>length <span style="color: #666666">==</span> <span style="color: #666666">2</span>
+      client<span style="color: #666666">.</span>update <span style="color: #BA2121">&quot;----------</span><span style="color: #BB6688; font-weight: bold">#{</span>hour<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">:</span><span style="color: #BB6688; font-weight: bold">#{</span>min<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">----------&quot;</span>
+      <span style="color: #008000">sleep</span> <span style="color: #666666">295</span>
+    <span style="color: #008000; font-weight: bold">elsif</span> (hour <span style="color: #666666">&lt;</span> <span style="color: #666666">6</span> <span style="color: #666666">||</span> hour <span style="color: #666666">&gt;=</span> <span style="color: #666666">18</span>) <span style="color: #666666">&amp;&amp;</span> min <span style="color: #666666">%</span> <span style="color: #666666">5</span> <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> sec <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> mins<span style="color: #666666">.</span>length <span style="color: #666666">==</span> <span style="color: #666666">1</span>
+      client<span style="color: #666666">.</span>update <span style="color: #BA2121">&quot;■■■■■■■■■■</span><span style="color: #BB6688; font-weight: bold">#{</span>hour<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">:0</span><span style="color: #BB6688; font-weight: bold">#{</span>min<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">■■■■■■■■■■&quot;</span>
+      <span style="color: #008000">sleep</span> <span style="color: #666666">295</span>
+    <span style="color: #008000; font-weight: bold">elsif</span> (hour <span style="color: #666666">&lt;</span> <span style="color: #666666">6</span> <span style="color: #666666">||</span> hour <span style="color: #666666">&gt;=</span> <span style="color: #666666">18</span>) <span style="color: #666666">&amp;&amp;</span> min <span style="color: #666666">%</span> <span style="color: #666666">5</span> <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> sec <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> mins<span style="color: #666666">.</span>length <span style="color: #666666">==</span> <span style="color: #666666">2</span>
+      client<span style="color: #666666">.</span>update <span style="color: #BA2121">&quot;■■■■■■■■■■</span><span style="color: #BB6688; font-weight: bold">#{</span>hour<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">:</span><span style="color: #BB6688; font-weight: bold">#{</span>min<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">■■■■■■■■■■&quot;</span>
+      <span style="color: #008000">sleep</span> <span style="color: #666666">295</span>
+    <span style="color: #008000; font-weight: bold">end</span>
+  <span style="color: #008000; font-weight: bold">end</span>
+</pre>
+</div>
+<p>最初と比べて変わったのはloop内だけです。</p>
+<p>loopの最初では変数代入をしています。<code class="inline-code tt">Time.now</code>と言うのは現在時間、<code class="inline-code tt">.hour</code>, <code class="inline-code tt">.min</code>, <code class="inline-code tt">.sec</code>はそれぞれ時、分、秒を取得するTimeクラスのメソッドです。</p>
+<p>その次は条件分岐です。</p>
+<div class="emlist-code">
+<pre class="emlist language-ruby">  <span style="color: #008000; font-weight: bold">if</span> hour <span style="color: #666666">&lt;</span> <span style="color: #666666">18</span> <span style="color: #666666">&amp;&amp;</span> hour <span style="color: #666666">&gt;=</span> <span style="color: #666666">6</span> <span style="color: #666666">&amp;&amp;</span> min <span style="color: #666666">%</span> <span style="color: #666666">5</span> <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> sec <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> mins<span style="color: #666666">.</span>length <span style="color: #666666">==</span> <span style="color: #666666">1</span>
+    client<span style="color: #666666">.</span>update <span style="color: #BA2121">&quot;----------</span><span style="color: #BB6688; font-weight: bold">#{</span>hour<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">:0</span><span style="color: #BB6688; font-weight: bold">#{</span>min<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">----------&quot;</span>
+    <span style="color: #008000">sleep</span> <span style="color: #666666">295</span>
+  <span style="color: #008000; font-weight: bold">elsif</span> hour <span style="color: #666666">&lt;</span> <span style="color: #666666">18</span> <span style="color: #666666">&amp;&amp;</span> hour <span style="color: #666666">&gt;=</span> <span style="color: #666666">6</span> <span style="color: #666666">&amp;&amp;</span> min <span style="color: #666666">%</span> <span style="color: #666666">5</span> <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> sec <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> mins<span style="color: #666666">.</span>length <span style="color: #666666">==</span> <span style="color: #666666">2</span>
+    client<span style="color: #666666">.</span>update <span style="color: #BA2121">&quot;----------</span><span style="color: #BB6688; font-weight: bold">#{</span>hour<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">:</span><span style="color: #BB6688; font-weight: bold">#{</span>min<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">----------&quot;</span>
+    <span style="color: #008000">sleep</span> <span style="color: #666666">295</span>
+  <span style="color: #008000; font-weight: bold">elsif</span> (hour <span style="color: #666666">&lt;</span> <span style="color: #666666">6</span> <span style="color: #666666">||</span> hour <span style="color: #666666">&gt;=</span> <span style="color: #666666">18</span>) <span style="color: #666666">&amp;&amp;</span> min <span style="color: #666666">%</span> <span style="color: #666666">5</span> <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> sec <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> mins<span style="color: #666666">.</span>length <span style="color: #666666">==</span> <span style="color: #666666">1</span>
+    client<span style="color: #666666">.</span>update <span style="color: #BA2121">&quot;■■■■■■■■■■</span><span style="color: #BB6688; font-weight: bold">#{</span>hour<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">:0</span><span style="color: #BB6688; font-weight: bold">#{</span>min<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">■■■■■■■■■■&quot;</span>
+    <span style="color: #008000">sleep</span> <span style="color: #666666">295</span>
+  <span style="color: #008000; font-weight: bold">elsif</span> (hour <span style="color: #666666">&lt;</span> <span style="color: #666666">6</span> <span style="color: #666666">||</span> hour <span style="color: #666666">&gt;=</span> <span style="color: #666666">18</span>) <span style="color: #666666">&amp;&amp;</span> min <span style="color: #666666">%</span> <span style="color: #666666">5</span> <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> sec <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> mins<span style="color: #666666">.</span>length <span style="color: #666666">==</span> <span style="color: #666666">2</span>
+    client<span style="color: #666666">.</span>update <span style="color: #BA2121">&quot;■■■■■■■■■■</span><span style="color: #BB6688; font-weight: bold">#{</span>hour<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">:</span><span style="color: #BB6688; font-weight: bold">#{</span>min<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">■■■■■■■■■■&quot;</span>
+    <span style="color: #008000">sleep</span> <span style="color: #666666">295</span>
+  <span style="color: #008000; font-weight: bold">end</span>
+</pre>
+</div>
+<p>1本目の条件分岐は時間が6時から18時までの間で分が5で割り切れて、一桁(0分か5分)で秒が0のときに傍線と現在時間を表示するということです。一桁と二桁で分けたのは</p>
+<p>----------12:5----------</p>
+<p>みたいになって気持ち悪いと思ったからです。</p>
+<p>また、投稿した後にsleepに入るようにしていますが、これは無限ループによる負荷を減らすために入れています。5分おきなんだから300秒のほうが効率的だと思うかもしれませんが、Twitterの投稿に数秒かかるので295秒にしています。ただし動かしてから最初の投稿までの間はsleepがきかず、高負荷がかかるので注意しましょう。</p>
+<p>あとの条件分岐もあまり変わりませんね。</p>
+<p>これで時報Botは完成です。投稿間隔を変えればn分おきの時報も作れます。</p>
+
+<h4><a id="h1-3-4-4"></a>単語をつぶやくBot</h4>
+<p>次は2時間おきに決められた単語をつぶやくBotを作ります。大体のBotはこんな感じです。</p>
+<div class="caption-code">
+<p class="caption">リスト1.5: kemono.rb</p>
+<pre class="list language-ruby">  <span style="color: #008000">require</span> <span style="color: #BA2121">&quot;twitter&quot;</span>
+
+  client <span style="color: #666666">=</span> <span style="color: #880000">Twitter</span><span style="color: #666666">::</span><span style="color: #880000">REST</span><span style="color: #666666">::</span><span style="color: #880000">Client</span><span style="color: #666666">.</span>new(
+    <span style="color: #19177C">consumer_key</span>:        <span style="color: #BA2121">&quot;YOUR_CONSUMER_KEY&quot;</span>,
+    <span style="color: #19177C">consumer_secret</span>:     <span style="color: #BA2121">&quot;YOUR_CONSUMER_SECRET&quot;</span>,
+    <span style="color: #19177C">access_token</span>:        <span style="color: #BA2121">&quot;YOUR_ACCESS_TOKEN&quot;</span>,
+    <span style="color: #19177C">access_token_secret</span>: <span style="color: #BA2121">&quot;YOUR_ACCESS_TOKEN_SECRET&quot;</span>,
+  )
+  <span style="color: #880000">OpenSSL</span><span style="color: #666666">::</span><span style="color: #880000">SSL</span><span style="color: #666666">::</span><span style="color: #880000">VERIFY_PEER</span> <span style="color: #666666">=</span> <span style="color: #880000">OpenSSL</span><span style="color: #666666">::</span><span style="color: #880000">SSL</span><span style="color: #666666">::</span><span style="color: #880000">VERIFY_NONE</span>
+
+  <span style="color: #008000">loop</span> <span style="color: #008000; font-weight: bold">do</span>
+    t <span style="color: #666666">=</span> <span style="color: #880000">Time</span><span style="color: #666666">.</span>now
+    hour <span style="color: #666666">=</span> t<span style="color: #666666">.</span>hour
+    min <span style="color: #666666">=</span> t<span style="color: #666666">.</span>min
+    sec <span style="color: #666666">=</span> t<span style="color: #666666">.</span>sec
+    words <span style="color: #666666">=</span> <span style="color: #666666">[</span><span style="color: #BA2121">&quot;わーい!&quot;</span>, <span style="color: #BA2121">&quot;たーのしー!&quot;</span>, <span style="color: #BA2121">&quot;すっごーい!&quot;</span>, <span style="color: #BA2121">&quot;なにあれ?&quot;</span>, <span style="color: #BA2121">&quot;なにこれ?&quot;</span>,
+      <span style="color: #BA2121">&quot;おもしろーい!&quot;</span>, <span style="color: #BA2121">&quot;しゃべったああああああ！&quot;</span>, <span style="color: #BA2121">&quot;ひどいよー!&quot;</span>, <span style="color: #BA2121">&quot;どこここ?&quot;</span>, <span style="color: #BA2121">&quot;あーはー!&quot;</span>,<span style="color: #BA2121">&quot;えっへん!&quot;</span>,
+      <span style="color: #BA2121">&quot;そんなことないよ!&quot;</span>, <span style="color: #BA2121">&quot;あらーいさーん&quot;</span><span style="color: #666666">]</span>
+    words<span style="color: #666666">.</span>each <span style="color: #008000; font-weight: bold">do</span> <span style="color: #666666">|</span>tweet<span style="color: #666666">|</span>
+      <span style="color: #008000; font-weight: bold">if</span> hour <span style="color: #666666">%</span> <span style="color: #666666">2</span> <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> min <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> sec <span style="color: #666666">==</span> <span style="color: #666666">0</span>
+        client<span style="color: #666666">.</span>update tweet
+        <span style="color: #008000">sleep</span> <span style="color: #666666">7195</span>
+      <span style="color: #008000; font-weight: bold">end</span>
+    <span style="color: #008000; font-weight: bold">end</span>
+  <span style="color: #008000; font-weight: bold">end</span>
+</pre>
+</div>
+<p>配列を作って、その中からツイートする単語を順番に選んでいく感じですね。</p>
+<p>今回はwordsという配列の中に13個の単語があり、2時間ごとにそれを順番に投稿するので26時間で一周するようになっています。</p>
+<p>ここで注意です。Twitterには投稿制限というものがあり、同一内容のツイートを短時間のうちには連続して投稿できないんですね。制限が解除される時間は、はっきりとはわからない(無責任)のですが、24時間挟めば確実に引っかからないです。よって単語の候補を増やせばもっと短い間隔で投稿できますし、候補が少なくても間隔を開ければ投稿できます。</p>
+<p>今回はeachメソッドで順番に取り出していますが、こんな感じでランダムに取り出すこともできます。</p>
+<div class="emlist-code">
+<pre class="emlist language-ruby">  tweet <span style="color: #666666">=</span> words<span style="color: #666666">.</span>sample
+  <span style="color: #008000; font-weight: bold">if</span> hour <span style="color: #666666">==</span> <span style="color: #666666">10</span> <span style="color: #666666">&amp;&amp;</span> min <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> sec <span style="color: #666666">==</span> <span style="color: #666666">0</span>
+    client<span style="color: #666666">.</span>update tweet
+    <span style="color: #008000">sleep</span> <span style="color: #666666">86395</span>
+  <span style="color: #008000; font-weight: bold">end</span>
+</pre>
+</div>
+<p>ただしランダムにする場合は同じ単語が連続で当たる可能性もあるので上記の理由から投稿間隔を24時間以上にしておくのを忘れないようにしましょう。</p>
+<p>また、後で詳しく述べますが、さっき作った時報Botのように時間の正確性および現在時間の把握などが必要ない今回のようなBotではプログラム内に投稿の周期を書くより、運用の際に設定したほうが楽です。</p>
+
+<h4><a id="h1-3-4-5"></a>天気予報</h4>
+<p>最後に朝7時に大阪の天気を投稿する天気予報Botを作ります。天気と言ってもサイトによって予報が違うこともありますが、今回はLivedoor 天気予報のWeather Hacksから天気予報を取ってくることにしました。</p>
+<div class="caption-code">
+<p class="caption">リスト1.6: weather.rb</p>
+<pre class="list language-ruby">  <span style="color: #008000">require</span> <span style="color: #BA2121">&quot;twitter&quot;</span>
+  <span style="color: #008000">require</span> <span style="color: #BA2121">&quot;net/http&quot;</span>
+  <span style="color: #008000">require</span> <span style="color: #BA2121">&quot;uri&quot;</span>
+  <span style="color: #008000">require</span> <span style="color: #BA2121">&quot;json&quot;</span>
+
+  client <span style="color: #666666">=</span> <span style="color: #880000">Twitter</span><span style="color: #666666">::</span><span style="color: #880000">REST</span><span style="color: #666666">::</span><span style="color: #880000">Client</span><span style="color: #666666">.</span>new(
+    <span style="color: #19177C">consumer_key</span>:        <span style="color: #BA2121">&quot;YOUR_CONSUMER_KEY&quot;</span>,
+    <span style="color: #19177C">consumer_secret</span>:     <span style="color: #BA2121">&quot;YOUR_CONSUMER_SECRET&quot;</span>,
+    <span style="color: #19177C">access_token</span>:        <span style="color: #BA2121">&quot;YOUR_ACCESS_TOKEN&quot;</span>,
+    <span style="color: #19177C">access_token_secret</span>: <span style="color: #BA2121">&quot;YOUR_ACCESS_TOKEN_SECRET&quot;</span>,
+  )
+  <span style="color: #880000">OpenSSL</span><span style="color: #666666">::</span><span style="color: #880000">SSL</span><span style="color: #666666">::</span><span style="color: #880000">VERIFY_PEER</span> <span style="color: #666666">=</span> <span style="color: #880000">OpenSSL</span><span style="color: #666666">::</span><span style="color: #880000">SSL</span><span style="color: #666666">::</span><span style="color: #880000">VERIFY_NONE</span>
+
+  <span style="color: #008000">loop</span> <span style="color: #008000; font-weight: bold">do</span>
+    uri <span style="color: #666666">=</span> <span style="color: #880000">URI</span><span style="color: #666666">.</span>parse(<span style="color: #BA2121">&#39;http://weather.livedoor.com/forecast/webservice/json/v1?city=270000&#39;</span>)
+    json <span style="color: #666666">=</span> <span style="color: #880000">Net</span><span style="color: #666666">::</span><span style="color: #880000">HTTP</span><span style="color: #666666">.</span>get(uri)
+    result <span style="color: #666666">=</span> <span style="color: #880000">JSON</span><span style="color: #666666">.</span>parse(json)
+    today_tel <span style="color: #666666">=</span> result<span style="color: #666666">[</span><span style="color: #BA2121">&#39;forecasts&#39;</span><span style="color: #666666">][0][</span><span style="color: #BA2121">&#39;telop&#39;</span><span style="color: #666666">]</span>
+    tomor_tel <span style="color: #666666">=</span> result<span style="color: #666666">[</span><span style="color: #BA2121">&#39;forecasts&#39;</span><span style="color: #666666">][1][</span><span style="color: #BA2121">&#39;telop&#39;</span><span style="color: #666666">]</span>
+    min_tem <span style="color: #666666">=</span> result<span style="color: #666666">[</span><span style="color: #BA2121">&#39;forecasts&#39;</span><span style="color: #666666">][1][</span><span style="color: #BA2121">&#39;temperature&#39;</span><span style="color: #666666">][</span><span style="color: #BA2121">&#39;min&#39;</span><span style="color: #666666">][</span><span style="color: #BA2121">&#39;celsius&#39;</span><span style="color: #666666">]</span>
+    max_tem <span style="color: #666666">=</span> result<span style="color: #666666">[</span><span style="color: #BA2121">&#39;forecasts&#39;</span><span style="color: #666666">][1][</span><span style="color: #BA2121">&#39;temperature&#39;</span><span style="color: #666666">][</span><span style="color: #BA2121">&#39;max&#39;</span><span style="color: #666666">][</span><span style="color: #BA2121">&#39;celsius&#39;</span><span style="color: #666666">]</span>
+    t <span style="color: #666666">=</span> <span style="color: #880000">Time</span><span style="color: #666666">.</span>now
+    hour <span style="color: #666666">=</span> t<span style="color: #666666">.</span>hour
+    min <span style="color: #666666">=</span> t<span style="color: #666666">.</span>min
+    sec <span style="color: #666666">=</span> t<span style="color: #666666">.</span>sec
+    <span style="color: #008000; font-weight: bold">if</span> hour <span style="color: #666666">==</span> <span style="color: #666666">7</span> <span style="color: #666666">&amp;&amp;</span> min <span style="color: #666666">==</span> <span style="color: #666666">0</span> <span style="color: #666666">&amp;&amp;</span> sec <span style="color: #666666">==</span> <span style="color: #666666">0</span>
+      client<span style="color: #666666">.</span>update <span style="color: #BA2121">&quot;</span><span style="color: #BB6688; font-weight: bold">#{</span>result<span style="color: #666666">[</span><span style="color: #BA2121">&#39;title&#39;</span><span style="color: #666666">]</span><span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB6688; font-weight: bold">#{</span>result<span style="color: #666666">[</span><span style="color: #BA2121">&#39;link&#39;</span><span style="color: #666666">]</span><span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">予報の発表日時: </span><span style="color: #BB6688; font-weight: bold">#{</span>result<span style="color: #666666">[</span><span style="color: #BA2121">&#39;publicTime&#39;</span><span style="color: #666666">]</span><span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">今日: </span><span style="color: #BB6688; font-weight: bold">#{</span>today_tel<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">明日: </span><span style="color: #BB6688; font-weight: bold">#{</span>tomor_tel<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121"> 最低</span><span style="color: #BB6688; font-weight: bold">#{</span>min_tem<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">度 最高</span><span style="color: #BB6688; font-weight: bold">#{</span>max_tem<span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BA2121">度&quot;</span>
+      <span style="color: #008000">sleep</span> <span style="color: #666666">86395</span>
+    <span style="color: #008000; font-weight: bold">end</span>
+  <span style="color: #008000; font-weight: bold">end</span>
+</pre>
+</div>
+<p>まず呼び出しが追加されています。</p>
+<div class="emlist-code">
+<pre class="emlist language-ruby">  <span style="color: #008000">require</span> <span style="color: #BA2121">&quot;net/http&quot;</span>
+  <span style="color: #008000">require</span> <span style="color: #BA2121">&quot;uri&quot;</span>
+  <span style="color: #008000">require</span> <span style="color: #BA2121">&quot;json&quot;</span>
+</pre>
+</div>
+<p>いずれもWeather Hacksのサイトから情報を取ってくるためのモジュールです。</p>
+<p>また、loopの最初の</p>
+<div class="emlist-code">
+<pre class="emlist language-ruby">  uri <span style="color: #666666">=</span> <span style="color: #880000">URI</span><span style="color: #666666">.</span>parse(<span style="color: #BA2121">&#39;http://weather.livedoor.com/forecast/webservice/json/v1?city=270000&#39;</span>)
+</pre>
+</div>
+<p>ですが、このURIから天気情報を取ってくるという意味です。また、URIの最後の<code class="inline-code tt">city=270000</code>の数字に他の値を入れると他の都市の天気情報を持ってこられます。例えば神戸の天気なら<code class="inline-code tt">city=280010</code>、東京なら<code class="inline-code tt">city=130010</code>みたいな感じです。各地域のIDは<a href="http://weather.livedoor.com/weather_hacks/webservice" class="link">http://weather.livedoor.com/weather_hacks/webservice</a>に載っています。</p>
+<p>あとはJSONで情報を読み込んで、変数に代入して投稿しているだけです。</p>
+<p>これでプログラミングは終わり、いよいよ運用に入っていきます。</p>
+
+<h3><a id="h1-3-5"></a>運用</h3>
+<p>さっきのプログラミングで一応Botそのものは完成です。ところが単純にコマンドプロンプト等で実行していると間違えて終了させてしまったり、またログインしていないと実行されないなどたくさんの問題があります。そこでどうにかして自動で実行させようというわけです。ありがたいことに、Windowsにはタスクスケジューラというアプリが標準ではいっていて、それを使うとかんたんに自動実行を設定できます。とはいっても流石に電源が切れていたりするとプログラムを実行できないので、常に電源の入ったPCが必要となります。</p>
+<div class="column">
+
+<h4><a id="column-1"></a>常に電源の入ったPCとは</h4>
+<p>サーバーが理想的ですが、基本的に常に電源が入っていればデスクトップでもノートパソコンでもいいです。充電が切れたり、シャットダウン、再起動、スリープ等しているときにBotのツイート時刻が被るとその時刻のツイートはされないので注意しましょう。</p>
+</div>
+
+<h4><a id="h1-3-5-1"></a>タスクスケジューラで回す</h4>
+<p><b>(注意) ここからは管理者権限でログインしているものとします。</b></p>
+<p>まずタスクスケジューラを起動します。すると右の【操作】というパネルに【タスクの作成...】(【基本タスクの作成...】ではない。)というところがありますね。そこを押して、出てきた画面で【名前】と【説明】を適当に書き、下の方にあるラジオボタンを【ユーザーがログオンしているかどうかにかかわらず実行する】にしておきOKを押します。</p>
+<p>次に【トリガー】タブを開き、左下にある【新規】をクリックします。開いたウィンドウで【タスクの開始】を【スタートアップ時】にしてからOKを押します。これで起動したときにプログラムが実行されます。</p>
+<p>次に【操作】タブを開き、【新規】をクリックして、【操作】では【プログラムの開始】を選択、【プログラム/スクリプト】は<b>rubyw.exeが存在する場所</b>(C:\Ruby\bin\rubyw.exe等)を記述します。【引数の追加】はプログラミングのところでかいた<b>プログラムの場所</b>(C:\Ruby\samples\chrono5.rb等)を記述して、【開始】は<b>そのプログラムが保存されているフォルダ</b>(C:\Ruby\samples等)を記述します。</p>
+<p>これでOKを押したらTwitterのBotは完成です。お疲れ様でした。</p>
+
+<h4><a id="h1-3-5-2"></a>おまけ</h4>
+<p>プログラミングのところで時報Botのように時間の正確性および現在時間の把握などが必要ない単語をつぶやくBot、天気予報Botなどではプログラム内に投稿の周期を書くより、運用の際に設定したほうが楽だ、と言いました。たとえば単語のBotの場合、</p>
+<div class="caption-code">
+<p class="caption">リスト1.7: kemono-kai.rb</p>
+<pre class="list language-ruby">  <span style="color: #008000">require</span> <span style="color: #BA2121">&quot;twitter&quot;</span>
+
+  client <span style="color: #666666">=</span> <span style="color: #880000">Twitter</span><span style="color: #666666">::</span><span style="color: #880000">REST</span><span style="color: #666666">::</span><span style="color: #880000">Client</span><span style="color: #666666">.</span>new(
+    <span style="color: #19177C">consumer_key</span>:        <span style="color: #BA2121">&quot;YOUR_CONSUMER_KEY&quot;</span>,
+    <span style="color: #19177C">consumer_secret</span>:     <span style="color: #BA2121">&quot;YOUR_CONSUMER_SECRET&quot;</span>,
+    <span style="color: #19177C">access_token</span>:        <span style="color: #BA2121">&quot;YOUR_ACCESS_TOKEN&quot;</span>,
+    <span style="color: #19177C">access_token_secret</span>: <span style="color: #BA2121">&quot;YOUR_ACCESS_TOKEN_SECRET&quot;</span>,
+  )
+  <span style="color: #880000">OpenSSL</span><span style="color: #666666">::</span><span style="color: #880000">SSL</span><span style="color: #666666">::</span><span style="color: #880000">VERIFY_PEER</span> <span style="color: #666666">=</span> <span style="color: #880000">OpenSSL</span><span style="color: #666666">::</span><span style="color: #880000">SSL</span><span style="color: #666666">::</span><span style="color: #880000">VERIFY_NONE</span>
+
+  words <span style="color: #666666">=</span> <span style="color: #666666">[</span><span style="color: #BA2121">&quot;わーい!&quot;</span>, <span style="color: #BA2121">&quot;たーのしー!&quot;</span>, <span style="color: #BA2121">&quot;すっごーい!&quot;</span>, <span style="color: #BA2121">&quot;なにあれ?&quot;</span>, <span style="color: #BA2121">&quot;なにこれ?&quot;</span>,
+    <span style="color: #BA2121">&quot;おもしろーい!&quot;</span>, <span style="color: #BA2121">&quot;しゃべったああああああ！&quot;</span>, <span style="color: #BA2121">&quot;ひどいよー!&quot;</span>, <span style="color: #BA2121">&quot;どこここ?&quot;</span>, <span style="color: #BA2121">&quot;あーはー!&quot;</span>,<span style="color: #BA2121">&quot;えっへん!&quot;</span>,
+    <span style="color: #BA2121">&quot;そんなことないよ!&quot;</span>, <span style="color: #BA2121">&quot;あらーいさーん&quot;</span><span style="color: #666666">]</span>
+  client<span style="color: #666666">.</span>update words<span style="color: #666666">.</span>sample
+</pre>
+</div>
+<p>プログラムをこういうふうに書き換えて、さっきの【トリガー】を設定するところで【タスクの開始】を【スケジュールに従う】にして、左にあるラジオボタンを【毎日】にします。</p>
+<p>これで一日置きにランダムに単語をつぶやかせることができます。もちろん最初に言ったやり方でやっても何も問題ありません。</p>
+
+<h2><a id="h1-4"></a><span class="secno">1.4　</span>おわりに</h2>
+<p>これで2017年度の部誌「TwitterのBotを作ってみる」は終わりです。</p>
+<p>今回作ったのは本当に最低限の機能しかないBotです。もっと高機能なBotも作ることができるのでこの部誌を読んでBotに興味が湧いてきたという人はぜひチャレンジしてみてください。</p>
+<p>ここまで私の拙い文を読んでくださった皆さん、本当にありがとうございました。</p>
+      </div>
+      <nav class="book-navi book-prev">
+                <a href="predef.html">
+          <div class="book-cursor"><span class="cursor-prev">◀ まえがき</span></div>
+        </a>
+              </nav>
+      <nav class="book-navi book-next">
+                <a href="physics.html">
+          <div class="book-cursor"><span class="cursor-next">▶ 「競技プログラミング入門」 by 井上誠大 (73)</span></div>
+        </a>
+              </nav>
+    </div>
+  </div>
+  <footer>
+      </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+  <script>
+      (function() {
+          if (!window.katex) { return; }
+          var equations = [].slice.call(document.querySelectorAll(".equation"));
+          for (var i = 0; i < equations.length; i++) {
+              katex.render(equations[i].textContent, equations[i]);
+          }
+      }) ();
+  </script>
+</body>
+</html>

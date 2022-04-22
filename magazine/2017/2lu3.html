@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+<link rel="next" title="「BOARD;GAME 負荷領域のデジャヴ」 by ni-ni (72)" href="niini.html"><link rel="prev" title="「計算量」 by taizo0122 (72)" href="taizo0122.html">  <meta name="generator" content="Re:VIEW" />
+  <title>「ダイクストラ法とアテナの本」 by 2lu3 (73) | NPCA部誌2017</title>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2017</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">まえがき</a></li>
+<li><a href="object_1037.html">1 「TwitterのBotを作ってみる」 by object_1037 (73)</a></li>
+<li><a href="physics.html">2 「競技プログラミング入門」 by 井上誠大 (73)</a></li>
+<li><a href="taizo0122.html">3 「計算量」 by taizo0122 (72)</a></li>
+<li><a href="2lu3.html">4 「ダイクストラ法とアテナの本」 by 2lu3 (73)</a></li>
+<li><a href="niini.html">5 「BOARD;GAME 負荷領域のデジャヴ」 by ni-ni (72)</a></li>
+<li><a href="enptukezuri.html">6 「Blenderのシミュレーション機能を使う」 by enptukezuri (71)</a></li>
+<li><a href="hinata.html">7 「適当に構文解析する話(575)」by Hinata (72)</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h4"></a><span class="secno">第4章　</span>「ダイクストラ法とアテナの本」 by 2lu3 (73)</h1>
+<p>73回生の2lu3です。僕は中１までロボカップジュニアというロボコンで自律型ロボットにサッカーをさせる競技をしてきたのですが、中２からバーチャルでレスキュー競技を行うCoSpaceという種目に転向しました。サッカーとレスキューでは考え方もプログラミングも大分違っている上、C言語の基礎勉強も同時並行で進める必要があり、何より大会までに時間が全然足りなかったので、とりあえず取り組む課題の中で比較的理解出来そうなことを１つ勉強し、それをCoSpaceのプログラムに使ってみることにしました。それがダイクストラ法です。試行錯誤してプログラムが出来上がったのは大会直前で、完成度は低かったですが、僕なりに手ごたえを感じることが出来ました。</p>
+
+<h2><a id="h4-1"></a><span class="secno">4.1　</span>CoSpaceについて</h2>
+
+<h3><a id="h4-1-1"></a>ロボカップジュニアとは</h3>
+<p>１９才以下のジュニアでチームを組み、自律型ロボット(予めロボットにどう動くかプログラムしてあるロボット↔リモコンロボット)を使って、サッカー・レスキュー・ダンスをそれぞれ競う大会。小学生も大勢参加していて(中高生も多数)、勝ち上がると世界大会まであります。昨年度までずっと国際科学技術コンテスト(数学オリンピック等)の一つでしたが、今年は除外されています。日本ではマイナーで知っている人も少ない大会ですが、海外ではこのジュニアの大会に王族や首相など国のトップが応援に駆け付けたり、良い成績を取れたら大学の特待生になれたり、兵役が免除されたり(命がけ)、国を挙げてサポートしているところもあります。</p>
+<ul>
+<li>ロボカップジュニアア国大会の紹介動画: <a href="https://www.youtube.com/watch?v=YchLBl1Vmmw" class="link">https://www.youtube.com/watch?v=YchLBl1Vmmw</a></li>
+<li>ロボカップジュニアHP: <a href="http://www.robocupjunior.jp/" class="link">http://www.robocupjunior.jp/</a></li>
+</ul>
+
+<h3><a id="h4-1-2"></a>CoSpaceとは</h3>
+<p>CoSpaceというのはロボカップジュニアのレスキュー競技の中の一種目で、レスキューには中級者向けのライン、上級者向けのメイズ、バーチャルレスキューのCoSpaceがあります。(レスキュー競技ではロボットに被災者に見立てたものを回収させゴールまで運ばせて、時間と点数で競います。)</p>
+<p>CoSpaceはバーチャルの競技なので、ロボコンというよりゲームのように見えると思います。ですが、他の競技と同様に画面上のロボットにはラインセンサー、超音波センサー、方位センサー等が付いていて、スタート地点から発車して被災者を保護し、保護した被災者が6人になるとゴール地点に行って降ろします。それを繰り返し、高得点を狙うという競技です。仕掛けも色々あって、点数が2倍になるゾーンやトラップ(罠)、沼地、境界線などがあります。また、この被災地マップは大会ごとに異なり、マップ配布後から3時間、そのマップでうまく被災者救助できるようにプログラミングします。</p>
+<ul>
+<li>CoSpaceの情報発信サイト: <a href="http://cospacerobot.org/" class="link">http://cospacerobot.org/</a></li>
+</ul>
+
+<h2><a id="h4-2"></a><span class="secno">4.2　</span>ダイクストラ法について</h2>
+
+<h3><a id="h4-2-1"></a>ダイクストラ法とは</h3>
+<p>ダイクストラ法といわれても何が何だかわからない方もいると思います。 僕もそうでした。最も説明しやすいのは、ナビです。例えば、あなたの家から駅まで行くには(駅直結タワーマンションとかをのぞき)普通は必ず道と交差点をいくつか通らないといけません。そして、たくさんある交差点の中から最短でつくことのできるルートを割り出すのがダイクストラ法です。</p>
+<p>要領を得ない説明になりましたが、要するに、これは最短ルートを割り出すものってことがわかれば大丈夫です。そしてつまり、これを使えば、CoSpaceで障害物(トラップや沼地など)をよけて被災者を効率良く保護することが可能になります。ダイクストラ法の詳細は、ここのサイトを参考にしました。</p>
+<ul>
+<li><a href="http://www.deqnotes.net/acmicpc/dijkstra/" class="link">http://www.deqnotes.net/acmicpc/dijkstra/</a></li>
+</ul>
+
+<h3><a id="h4-2-2"></a>ソースコード</h3>
+<p>理論が分かっても、実際にできないと意味がありません。C言語で書いてみました。</p>
+<div class="code">
+<p class="caption">リスト4.1: main()</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px">  1 </span><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #BC7A00"></span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">  2 </span><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;math.h&gt;</span><span style="color: #BC7A00"></span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">  3 </span><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;string.h&gt;</span><span style="color: #BC7A00"></span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">  4 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">  5 </span><span style="color: #BC7A00">#define true 1</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">  6 </span><span style="color: #BC7A00">#define false 0</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">  7 </span><span style="color: #BC7A00">#define NUMBER_OF_NODES 7 </span><span style="color: #408080; font-style: italic">//実際の数 + 2</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">  8 </span><span style="color: #BC7A00">#define DONE_NODE NUMBER_OF_NODES-1</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">  9 </span><span style="color: #BC7A00">#define START_NODE 0</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 10 </span><span style="color: #BC7A00">#define GOAL_NODE 5</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 11 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 12 </span><span style="color: #B00040">int</span> route_record[NUMBER_OF_NODES];
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 13 </span><span style="color: #008000; font-weight: bold">struct</span> Node {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 14 </span> <span style="color: #B00040">int</span> edges_to[NUMBER_OF_NODES];
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 15 </span> <span style="color: #B00040">float</span> edges_cost[NUMBER_OF_NODES];
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 16 </span> <span style="color: #B00040">int</span> done;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 17 </span> <span style="color: #B00040">float</span> cost;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 18 </span> <span style="color: #B00040">int</span> x;<span style="color: #408080; font-style: italic">//x座標</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 19 </span> <span style="color: #B00040">int</span> y;<span style="color: #408080; font-style: italic">//y座標</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 20 </span> <span style="color: #B00040">int</span> edges_number;<span style="color: #408080; font-style: italic">//伸びているエッジの数</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 21 </span>};
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 22 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 23 </span><span style="color: #008000; font-weight: bold">struct</span> Node nodes[NUMBER_OF_NODES];
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 24 </span>  <span style="color: #B00040">void</span> <span style="color: #0000FF">SettingNode</span>() {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 25 </span>    <span style="color: #008000; font-weight: bold">for</span> (<span style="color: #B00040">int</span> i <span style="color: #666666">=</span> <span style="color: #666666">0</span>; i <span style="color: #666666">&lt;</span> NUMBER_OF_NODES; i<span style="color: #666666">++</span>) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 26 </span>    nodes[i].done <span style="color: #666666">=</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 27 </span>    nodes[i].cost <span style="color: #666666">=</span> <span style="color: #666666">-1</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 28 </span>    route_record[i] <span style="color: #666666">=</span> <span style="color: #666666">-1</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 29 </span>    }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 30 </span>  nodes[START_NODE].cost <span style="color: #666666">=</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 31 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 32 </span>  nodes[<span style="color: #666666">0</span>].edges_to[<span style="color: #666666">0</span>] <span style="color: #666666">=</span> <span style="color: #666666">1</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 33 </span>  nodes[<span style="color: #666666">0</span>].edges_to[<span style="color: #666666">1</span>] <span style="color: #666666">=</span> <span style="color: #666666">3</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 34 </span>  nodes[<span style="color: #666666">0</span>].x <span style="color: #666666">=</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 35 </span>  nodes[<span style="color: #666666">0</span>].y <span style="color: #666666">=</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 36 </span>  nodes[<span style="color: #666666">0</span>].edges_number <span style="color: #666666">=</span> <span style="color: #666666">2</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 37 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 38 </span>  nodes[<span style="color: #666666">1</span>].edges_to[<span style="color: #666666">0</span>] <span style="color: #666666">=</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 39 </span>  nodes[<span style="color: #666666">1</span>].edges_to[<span style="color: #666666">1</span>] <span style="color: #666666">=</span> <span style="color: #666666">2</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 40 </span>  nodes[<span style="color: #666666">1</span>].edges_to[<span style="color: #666666">2</span>] <span style="color: #666666">=</span> <span style="color: #666666">5</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 41 </span>  nodes[<span style="color: #666666">1</span>].x <span style="color: #666666">=</span> <span style="color: #666666">20</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 42 </span>  nodes[<span style="color: #666666">1</span>].y <span style="color: #666666">=</span> <span style="color: #666666">10</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 43 </span>  nodes[<span style="color: #666666">1</span>].edges_number <span style="color: #666666">=</span> <span style="color: #666666">3</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 44 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 45 </span>  nodes[<span style="color: #666666">2</span>].edges_to[<span style="color: #666666">0</span>] <span style="color: #666666">=</span> <span style="color: #666666">1</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 46 </span>  nodes[<span style="color: #666666">2</span>].edges_to[<span style="color: #666666">1</span>] <span style="color: #666666">=</span> <span style="color: #666666">3</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 47 </span>  nodes[<span style="color: #666666">2</span>].edges_to[<span style="color: #666666">2</span>] <span style="color: #666666">=</span> <span style="color: #666666">4</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 48 </span>  nodes[<span style="color: #666666">2</span>].x <span style="color: #666666">=</span> <span style="color: #666666">20</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 49 </span>  nodes[<span style="color: #666666">2</span>].y <span style="color: #666666">=</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 50 </span>  nodes[<span style="color: #666666">2</span>].edges_number <span style="color: #666666">=</span> <span style="color: #666666">3</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 51 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 52 </span>  nodes[<span style="color: #666666">3</span>].edges_to[<span style="color: #666666">0</span>] <span style="color: #666666">=</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 53 </span>  nodes[<span style="color: #666666">3</span>].edges_to[<span style="color: #666666">1</span>] <span style="color: #666666">=</span> <span style="color: #666666">2</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 54 </span>  nodes[<span style="color: #666666">3</span>].edges_to[<span style="color: #666666">2</span>] <span style="color: #666666">=</span> <span style="color: #666666">4</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 55 </span>  nodes[<span style="color: #666666">3</span>].x <span style="color: #666666">=</span> <span style="color: #666666">10</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 56 </span>  nodes[<span style="color: #666666">3</span>].y <span style="color: #666666">=</span> <span style="color: #666666">-10</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 57 </span>  nodes[<span style="color: #666666">3</span>].edges_number <span style="color: #666666">=</span> <span style="color: #666666">3</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 58 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 59 </span>  nodes[<span style="color: #666666">4</span>].edges_to[<span style="color: #666666">0</span>] <span style="color: #666666">=</span> <span style="color: #666666">2</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 60 </span>  nodes[<span style="color: #666666">4</span>].edges_to[<span style="color: #666666">1</span>] <span style="color: #666666">=</span> <span style="color: #666666">3</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 61 </span>  nodes[<span style="color: #666666">4</span>].edges_to[<span style="color: #666666">2</span>] <span style="color: #666666">=</span> <span style="color: #666666">5</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 62 </span>  nodes[<span style="color: #666666">4</span>].x <span style="color: #666666">=</span> <span style="color: #666666">30</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 63 </span>  nodes[<span style="color: #666666">4</span>].y <span style="color: #666666">=</span> <span style="color: #666666">-10</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 64 </span>  nodes[<span style="color: #666666">4</span>].edges_number <span style="color: #666666">=</span> <span style="color: #666666">3</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 65 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 66 </span>  nodes[<span style="color: #666666">5</span>].edges_to[<span style="color: #666666">0</span>] <span style="color: #666666">=</span> <span style="color: #666666">1</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 67 </span>  nodes[<span style="color: #666666">5</span>].edges_to[<span style="color: #666666">1</span>] <span style="color: #666666">=</span> <span style="color: #666666">4</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 68 </span>  nodes[<span style="color: #666666">5</span>].x <span style="color: #666666">=</span> <span style="color: #666666">40</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 69 </span>  nodes[<span style="color: #666666">5</span>].y <span style="color: #666666">=</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 70 </span>  nodes[<span style="color: #666666">5</span>].edges_number <span style="color: #666666">=</span> <span style="color: #666666">2</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 71 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 72 </span>  <span style="color: #008000; font-weight: bold">for</span> (<span style="color: #B00040">int</span> i <span style="color: #666666">=</span> <span style="color: #666666">0</span>; i <span style="color: #666666">&lt;</span> NUMBER_OF_NODES; i<span style="color: #666666">++</span>) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 73 </span>      <span style="color: #008000; font-weight: bold">for</span> (<span style="color: #B00040">int</span> j <span style="color: #666666">=</span> <span style="color: #666666">0</span>; j <span style="color: #666666">&lt;</span> nodes[i].edges_number; j <span style="color: #666666">=</span> j <span style="color: #666666">+</span> <span style="color: #666666">1</span>) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 74 </span>          <span style="color: #B00040">int</span> a;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 75 </span>          <span style="color: #B00040">int</span> b;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 76 </span>          a <span style="color: #666666">=</span> nodes[i].x <span style="color: #666666">-</span> nodes[nodes[i].edges_to[j]].x;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 77 </span>          b <span style="color: #666666">=</span> nodes[i].y <span style="color: #666666">-</span> nodes[nodes[i].edges_to[j]].y;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 78 </span>          <span style="color: #008000; font-weight: bold">if</span> (a <span style="color: #666666">&lt;</span> <span style="color: #666666">0</span>) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 79 </span>              a <span style="color: #666666">=</span> <span style="color: #666666">-</span>a;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 80 </span>          }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 81 </span>          <span style="color: #008000; font-weight: bold">if</span> (b <span style="color: #666666">&lt;</span> <span style="color: #666666">0</span>) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 82 </span>              b <span style="color: #666666">=</span> <span style="color: #666666">-</span>b;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 83 </span>          }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 84 </span>          <span style="color: #B00040">float</span> c <span style="color: #666666">=</span> a<span style="color: #666666">*</span>a <span style="color: #666666">+</span> b<span style="color: #666666">*</span>b;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 85 </span>          c <span style="color: #666666">=</span> sqrt(c);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 86 </span>          nodes[i].edges_cost[j] <span style="color: #666666">=</span> c;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 87 </span>      }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 88 </span>  }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 89 </span>}
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 90 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 91 </span><span style="color: #B00040">void</span> <span style="color: #0000FF">SearchTheShortestRoad</span>() {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 92 </span>  <span style="color: #008000; font-weight: bold">while</span> (<span style="color: #008000">true</span>) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 93 </span>    nodes[DONE_NODE].cost <span style="color: #666666">=</span> <span style="color: #666666">-1</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 94 </span>    nodes[DONE_NODE].done <span style="color: #666666">=</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 95 </span>    <span style="color: #008000; font-weight: bold">for</span> (<span style="color: #B00040">int</span> i <span style="color: #666666">=</span> <span style="color: #666666">0</span>; i <span style="color: #666666">&lt;</span> DONE_NODE; i<span style="color: #666666">++</span>) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 96 </span>      <span style="color: #008000; font-weight: bold">if</span> (nodes[i].done <span style="color: #666666">==</span> <span style="color: #666666">1</span> <span style="color: #666666">||</span> nodes[i].cost <span style="color: #666666">&lt;</span> <span style="color: #666666">0</span>) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 97 </span>        <span style="color: #008000; font-weight: bold">continue</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 98 </span>      }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 99 </span>      <span style="color: #008000; font-weight: bold">else</span> {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">100 </span>        <span style="color: #008000; font-weight: bold">if</span> (nodes[DONE_NODE].done <span style="color: #666666">==</span> <span style="color: #666666">0</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">101 </span>            <span style="color: #666666">||</span> nodes[i].cost <span style="color: #666666">&lt;</span> nodes[DONE_NODE].cost) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">102 </span>          nodes[i].done <span style="color: #666666">=</span> <span style="color: #666666">1</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">103 </span>          nodes[DONE_NODE] <span style="color: #666666">=</span> nodes[i];
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">104 </span>        }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">105 </span>      }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">106 </span>    }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">107 </span>    <span style="color: #008000; font-weight: bold">if</span> (nodes[DONE_NODE].done <span style="color: #666666">==</span> <span style="color: #666666">0</span>) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">108 </span>      printf(<span style="color: #BA2121">&quot;Sucssefuly</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">109 </span>      <span style="color: #008000; font-weight: bold">break</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">110 </span>    }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">111 </span>    nodes[DONE_NODE].done <span style="color: #666666">=</span> <span style="color: #666666">1</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">112 </span>    <span style="color: #008000; font-weight: bold">for</span> (<span style="color: #B00040">int</span> i <span style="color: #666666">=</span> <span style="color: #666666">0</span>; i <span style="color: #666666">&lt;</span> nodes[DONE_NODE].edges_number; i<span style="color: #666666">++</span>) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">113 </span>      <span style="color: #B00040">int</span> to;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">114 </span>      <span style="color: #B00040">float</span> cost;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">115 </span>      to <span style="color: #666666">=</span> nodes[DONE_NODE].edges_to[i];
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">116 </span>      cost <span style="color: #666666">=</span> nodes[DONE_NODE].cost <span style="color: #666666">+</span> nodes[DONE_NODE].edges_cost[i];
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">117 </span>      <span style="color: #008000; font-weight: bold">if</span> (nodes[to].cost <span style="color: #666666">&lt;</span> <span style="color: #666666">0</span> <span style="color: #666666">||</span> cost <span style="color: #666666">&lt;</span> nodes[to].cost) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">118 </span>          nodes[to].cost <span style="color: #666666">=</span> cost;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">119 </span>      }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">120 </span>    }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">121 </span>  }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">122 </span>}
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">123 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">124 </span><span style="color: #B00040">void</span> <span style="color: #0000FF">InvestigaterouteRecord</span>() {<span style="color: #408080; font-style: italic">//経路を調べる</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">125 </span>  <span style="color: #B00040">int</span> checked_node <span style="color: #666666">=</span> GOAL_NODE;<span style="color: #408080; font-style: italic">//経路がわかっていて出発点に最も近いノード</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">126 </span>  route_record[<span style="color: #666666">0</span>] <span style="color: #666666">=</span> <span style="color: #666666">-1</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">127 </span>  <span style="color: #B00040">int</span> checking_node;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">128 </span>  <span style="color: #B00040">int</span> i;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">129 </span>  <span style="color: #008000; font-weight: bold">while</span> (<span style="color: #008000">true</span>) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">130 </span>    <span style="color: #008000; font-weight: bold">for</span> (i <span style="color: #666666">=</span> <span style="color: #666666">0</span>; i <span style="color: #666666">&lt;</span> nodes[checked_node].edges_number; i<span style="color: #666666">++</span>) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">131 </span>      checking_node <span style="color: #666666">=</span> nodes[checked_node].edges_to[i];
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">132 </span>      <span style="color: #408080; font-style: italic">//経路に含まれるか現在調べているノード</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">133 </span>      <span style="color: #008000; font-weight: bold">if</span> (nodes[checked_node].cost <span style="color: #666666">&lt;</span> nodes[checked_node].edges_cost[i]
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">134 </span>          <span style="color: #666666">+</span> nodes[checking_node].cost <span style="color: #666666">+</span> <span style="color: #666666">5</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">135 </span>          <span style="color: #666666">&amp;&amp;</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">136 </span>          nodes[checked_node].cost <span style="color: #666666">&gt;</span> nodes[checked_node].edges_cost[i]
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">137 </span>          <span style="color: #666666">+</span> nodes[checking_node].cost <span style="color: #666666">-</span> <span style="color: #666666">5</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">138 </span>          ) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">139 </span>          <span style="color: #408080; font-style: italic">//現在ノードのコストは</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">140 </span>          <span style="color: #408080; font-style: italic">//それら2つをつなぐエッジのコスト+試しているノードのコスト</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">141 </span>            <span style="color: #008000; font-weight: bold">break</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">142 </span>      }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">143 </span>    }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">144 </span>    <span style="color: #008000; font-weight: bold">for</span> (i <span style="color: #666666">=</span> <span style="color: #666666">0</span>; i <span style="color: #666666">&lt;</span> NUMBER_OF_NODES; i<span style="color: #666666">++</span>) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">145 </span>      <span style="color: #008000; font-weight: bold">if</span> (route_record[i] <span style="color: #666666">==</span> <span style="color: #666666">-1</span>) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">146 </span>        route_record[i] <span style="color: #666666">=</span> checking_node;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">147 </span>        i <span style="color: #666666">=</span> i <span style="color: #666666">+</span> <span style="color: #666666">1</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">148 </span>        route_record[i] <span style="color: #666666">=</span> <span style="color: #666666">-1</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">149 </span>        <span style="color: #008000; font-weight: bold">break</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">150 </span>      }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">151 </span>    }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">152 </span>    checked_node <span style="color: #666666">=</span> checking_node;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">153 </span>    <span style="color: #008000; font-weight: bold">if</span> (checked_node <span style="color: #666666">==</span> START_NODE) {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">154 </span>      <span style="color: #008000; font-weight: bold">break</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">155 </span>    }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">156 </span>  }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">157 </span>}
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">158 </span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">159 </span><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>() {
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">160 </span>  SettingNode();
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">161 </span>  SearchTheShortestRoad();
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">162 </span>  InvestigaterouteRecord();
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">163 </span>  printf(<span style="color: #BA2121">&quot;cost = %d </span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>, nodes[GOAL_NODE].cost);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">164 </span>  printf(
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">165 </span>  <span style="color: #BA2121">&quot;注意 逆順です。-1は余った分なので気にしないでください</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">%d %d %d %d %d</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">166 </span>  , route_record[<span style="color: #666666">0</span>], route_record[<span style="color: #666666">1</span>], route_record[<span style="color: #666666">2</span>],
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">167 </span>  route_record[<span style="color: #666666">3</span>], route_record[<span style="color: #666666">4</span>]);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">168 </span>  <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">169 </span>}
+</pre></div>
+</div>
+<p>以上です。</p>
+
+<h2><a id="h4-3"></a><span class="secno">4.3　</span>『 アテナの本 』構想の紹介</h2>
+
+<h3><a id="h4-3-1"></a>小中学生の君へ</h3>
+<p>小中学生の皆さん、好きなことや得意なことってありますか?「ある!」と即答できる人はとてもラッキーです。このままそれをどんどん続けていって下さい。答えるのに少し考えた人や、「ない(かも)」と思った人は、そういうものをこれから見つけた方が毎日楽しくなります。でも、何をしたらいいのか、何が得意になるのか、見つけ方も分からないという子がいるかもしれません。ロボットやプログラミングを始める前は僕もそうでした。</p>
+<p>好きなこと得意になるものというのは、純粋に君自身がやってみて「楽しい!」と強く思ったものです。そして、「ものすごく楽しい!」と思ったことは、これから君を伸ばしてくれるジェット燃料になります。楽しい何かを目一杯楽しむことで、君の学力はもちろん、色々な力を伸ばしてくれるからです。そして、君が好きなことを頑張ることで、君の周りでも頑張り始める子が出てくるだろうし、そのまた周囲も頑張るだろうし、そんな感じで君が大きくなっていけば、やがて日本がほんの少し良くなっていく、かもしれません。</p>
+<p>例えば、TVで見た人も多いでしょうが、月でロボットに５００ｍのかけっこをさせるという国際レースに、日本からただ1チームだけ、HAKUTOというチームが参加しています。この大会は優勝賞金が2000万ドル(約20億円)なのですが、ロボットを作る技術や費用も、ロボットを月に飛ばす費用も大変すぎるので、とてつもない挑戦です。それでも、どうしても挑戦してみたい!と思った袴田さんというたった一人の夢への情熱が、大勢の人達の心を動かし(大勢の専門家がボランティアとして集まり)、大企業も動かし(スポンサーになってロボット開発費を出してくれて)、荒唐無稽とも思われていた夢を実際に実現に向け、王手をかけつつあります。(世界中から18チーム参加しているのですが、HAKUTOは昨年中間賞を取り、今年最終選抜の5チームに入りました。そして、今年12月末、いよいよアメリカで打ち上げです!)最初に知った時にはこんな面白いことに挑戦してる日本人がいるということにとても感激したし、とても勇気づけられました。TVで見た人も大勢感激しただろうと思います。</p>
+<ul>
+<li>HAKUTOのHP: <a href="https://team-hakuto.jp/index.html" class="link">https://team-hakuto.jp/index.html</a></li>
+</ul>
+<p>話を元に戻します。そういう不思議な力のある、君がこれから好きになることというのが、身近に知っていたり取り組んでいる人がいるようならとても理想的ですが、科学館や博物館、街中でも見つかるかもしれません。それに、今日の文化祭もかなりチャンスと思います。ここパソコン研究部はじめ、面白すぎる企画が盛りだくさんだし、どこでも中高生がいれば質問も気軽にできます。君が思い切って質問してみたら、ちゃんと答えてくれると思います。</p>
+<p>文化祭のように実際に見たり聞いたりした方が良いのですが、もっと気軽に、好きなことを見つけるきっかけの一つになればと思って、個人的な趣味で『アテナの本』というHPを作ってみました。</p>
+<ul>
+<li>アテナの本: <a href="https://book4athena.amebaownd.com/" class="link">https://book4athena.amebaownd.com/</a></li>
+</ul>
+<p>まだコンテンツはほんの少しで、これから少しずつ増やしていきたいと思っている構想段階なのですが、よかったらのぞいてみて下さい。(※ご注意: このHPはパソコン研究部や学校とは全く無関係です。)</p>
+
+<h3><a id="h4-3-2"></a>アテナの本構想とは</h3>
+<p>これから協力者(中高生ボランティア)を増やして、「得意なことのある中高生と学びたい小中学生をつなぎ、小中学生がこれから得意になることをみつける最初の一歩を手伝う、知的プラットフォーム」となることを目指しています。</p>
+<p>具体的な内容は以下の通りです。</p>
+<ol>
+<li>中高生: 中高生ボランティアが自分の取り組んでいることを小学生に分かるようにまとめ(数分程度の動画メイン)、それをHPに掲載します。</li>
+<li>小中学生: 好きなページを自由に見て回って、中高生の取り組みを学びます。</li>
+<li>小中学生: 「やってみたい!」と思ったら、最初の一歩は具体的にどうやったのか体験談も紹介してあるのでそれを参考にして、自分でもやってみよう!</li>
+<li>小中学生: 質問もできます。<a id="fnb-detail1" href="2lu3.html#fn-detail1" class="noteref" epub:type="noteref">*1</a></li>
+<li>中高生: 時間がかかるかもしれませんが、HP上でまとめて回答していきます。</li>
+<li>小中学生: コンテストや大会に出場してみよう♪</li>
+<li>大会に出場したかつての小中学生: 中高生ボランティアとなって下さい!</li>
+<li>中高生: 企画力・プレゼン力・対応力が身に付き、社会貢献でき、学校を超えた仲間も出来ます。大学入試改革(学業以外も少し考慮という方向?)で、広くたくさんのボランティアが集まるといいなあと思っています。</li>
+</ol>
+<div class="footnote" epub:type="footnote" id="fn-detail1"><p class="footnote">[*1] 最初の一歩を踏み出す応援なので、最初の段階での質問となります。ご理解下さい。</p></div>
+<p>これらは構想段階で、今はお試し運用中という状況です。考査やイベントを除く期間にマイペースとなりますが地道に運営していきますので、温かい目で見守ってもらえたら嬉しく思います。よろしくお願い致します。</p>
+      </div>
+      <nav class="book-navi book-prev">
+                <a href="taizo0122.html">
+          <div class="book-cursor"><span class="cursor-prev">◀ 「計算量」 by taizo0122 (72)</span></div>
+        </a>
+              </nav>
+      <nav class="book-navi book-next">
+                <a href="niini.html">
+          <div class="book-cursor"><span class="cursor-next">▶ 「BOARD;GAME 負荷領域のデジャヴ」 by ni-ni (72)</span></div>
+        </a>
+              </nav>
+    </div>
+  </div>
+  <footer>
+      </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+  <script>
+      (function() {
+          if (!window.katex) { return; }
+          var equations = [].slice.call(document.querySelectorAll(".equation"));
+          for (var i = 0; i < equations.length; i++) {
+              katex.render(equations[i].textContent, equations[i]);
+          }
+      }) ();
+  </script>
+</body>
+</html>

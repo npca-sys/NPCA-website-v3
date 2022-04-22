@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="Siv3Dでゲームを作る" href="neko.html"><link rel="prev" title="プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話" href="RLtdExp.html">  <meta name="generator" content="Re:VIEW" />
+  <title>Pythonの高速化について | NPCA部誌2019</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2019</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">前書き</a></li>
+<li><a href="object_1037.html">1 JINS MEMEで美少女になる話</a></li>
+<li><a href="sashiming.html">2 Google Apps ScriptでTwitter botを作ってみる</a></li>
+<li><a href="sarugami.html">3 Blenderで簡単モデリング！</a></li>
+<li><a href="ficorajo.html">4 C#でファイルを暗号化する</a></li>
+<li><a href="Hiro.html">5 UnityのAIを使って…</a></li>
+<li><a href="motty.html">6 Atomで快適なプログラミング環境を構築してみる</a></li>
+<li><a href="takepan.html">7 iPhoneを使ってお手軽VR</a></li>
+<li><a href="kuro.html">8 Windowsのショートカットキーについて</a></li>
+<li><a href="kusafukakota.html">9 Gmailの活用術</a></li>
+<li><a href="2lu3.html">10 未踏ジュニアとLifeWatcher</a></li>
+<li><a href="harady.html">11 グラフのおはなし</a></li>
+<li><a href="cobalt.html">12 C#の布教</a></li>
+<li><a href="RLtdExp.html">13 プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</a></li>
+<li><a href="mafusuke.html">14 Pythonの高速化について</a></li>
+<li><a href="neko.html">15 Siv3Dでゲームを作る</a></li>
+<li><a href="uraoz.html">16 明日(半年後)から始めるVRChat</a></li>
+<li><a href="hinata.html">17 NPCAの部誌執筆を支える技術</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h14"></a><span class="secno">第14章　</span>Pythonの高速化について</h1>
+<p><p style="text-align:right">76回生 まふまふ</p></p>
+
+<h2><a id="h14-1"></a><span class="secno">14.1　</span>はじめに</h2>
+<p>76回生のまふまふです(^^♪.まだ知らないことも多いのでよろしくお願いします.</p>
+<p>僕は主にPythonを使っているので,Pythonについて書こうと思ったのでこの内容にしました.</p>
+<p>Pythonを使ったことがない人やプログラミングを知らない人でも,面白そうだなぁと思ってくれたら嬉しいです.</p>
+<p>特にプログラミングをしたことがない人はPythonから始めることをお勧めします(^^♪</p>
+<p>いきなりC言語<a id="fnb-id_c_E8_A8_80_E8_AA_9E" href="mafusuke.html#fn-id_c_E8_A8_80_E8_AA_9E" class="noteref" epub:type="noteref">*1</a>やJava(⇦プログラミング言語のひとつ)からなどから始めようとすると,難しくてあきらめてしまうかもしれません.</p>
+<p>Pythonなら初心者でもわかりやすいような簡単な文法なので,簡単に始められます.</p>
+<p>もちろん他の言語のような高度なこともできるため,機械学習などにも生かせるため最近人気です!</p>
+<p>今回はこの言語の唯一の欠点の『速度が遅い』ことを克服するため,高速化について書こうと思います.</p>
+<p>Pythonがどういうものか知らない方も目を通していただけたら嬉しいです.</p>
+<p>そんなに長くないので...汗</p>
+
+<h2><a id="h14-2"></a><span class="secno">14.2　</span>なぜPythonは遅いの??</h2>
+<p>Pythonが遅い理由はいくつかあります.</p>
+
+<h3><a id="h14-2-1"></a>インタープリタ型言語であること</h3>
+<p>Pythonはインタープリタ型言語といって実行するときに一行ずつ機械語に翻訳されていきます.</p>
+<p>なのでC言語などのコンパイル型言語<a id="fnb-id__E3_82_B3_E3_83_B3_E3_83_91_E3_82_A4_E3_83_AB_E5_9E_8B_E8_A8_80_E8_AA_9E" href="mafusuke.html#fn-id__E3_82_B3_E3_83_B3_E3_83_91_E3_82_A4_E3_83_AB_E5_9E_8B_E8_A8_80_E8_AA_9E" class="noteref" epub:type="noteref">*2</a>とくらべてかなり速度が低下します(;´･ω･)</p>
+
+<h3><a id="h14-2-2"></a>変数宣言がない</h3>
+<p>Pythonでは変数宣言(型を明確に表記して,変数を使用すること)が不要で,いきなりソースコードの中で新しい変数を使用することができます.</p>
+<p>※変数とは値(整数,文字列など...)を保存する箱みたいなもの(?)です.数学の変数とは意味が違います.</p>
+<p>なので変数を使った操作で毎回型チェックが行われます.⇦遅くなる原因</p>
+
+<h3><a id="h14-2-3"></a>考察</h3>
+<p>これ以外にもたくさんの理由がありますが,主な理由はここに挙げた二つです.</p>
+<p>どうにかして速くできないですかねぇ...)</p>
+
+<h2><a id="h14-3"></a><span class="secno">14.3　</span>高速化したいのはどうして??</h2>
+
+<h3><a id="h14-3-1"></a>繰り返しの処理が遅い!!</h3>
+<p>理由の一つにループ処理(繰り返しの処理)が遅いことがあります.型指定を行わないせいで,ループ時にも型のチェックが必要となってすごく遅くなるんですね.</p>
+
+<h2><a id="h14-4"></a><span class="secno">14.4　</span>では,どうやって高速化するのか</h2>
+<p>どうすれば遅いものが速くなるの??と,思うでしょう(多分.</p>
+<p>しかしPythonのままで高速化する方法があるんです.</p>
+<p>※速度計測環境</p>
+<p>[pc]:CPython&amp;C++:Windows 10,Cython&amp;PyPy:Ubuntu,[Python]:Python3.7</p>
+<p>※比較に使うPythonのコード</p>
+<div class="emlist-code">
+<p class="caption">cpython.py</p>
+<pre class="emlist language-python highlight">  <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+  <span class="k">def</span> <span class="nf">mf</span><span class="p">():</span><span class="c">#関数の定義</span>
+      <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">):</span>
+        <span class="n">a</span><span class="o">+=</span><span class="mi">1</span><span class="p">;</span>
+  <span class="n">st</span><span class="o">=</span><span class="n">time</span><span class="p">();</span>
+  <span class="n">mf</span><span class="p">();</span>
+  <span class="n">en</span><span class="o">=</span><span class="n">time</span><span class="p">()</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="si">%</span><span class="s">s[sec]"</span><span class="o">%</span><span class="p">(</span><span class="n">en</span><span class="o">-</span><span class="n">st</span><span class="p">));</span>
+  <span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">"__main__"</span><span class="p">:</span><span class="c">#呼び出されたら実行する</span>
+      <span class="n">mf</span><span class="p">()</span>
+</pre>
+</div>
+<p>速度は<b>0.0047</b>[sec]でした.</p>
+<p>※CPythonとはCで作られたPythonのことで,これが通常のPythonです.</p>
+<p>これ以外にはRPythonなどがあります.</p>
+<p>(Cで作られているのに遅いのは納得いかないな</p>
+
+<h3><a id="h14-4-1"></a>NumPyを使う!!</h3>
+<p>NumPyというライブラリ(これを読み込むことでその機能を使用できる)があります.</p>
+<p>このライブラリはC言語でつくられています.(速い理由)</p>
+<p>これを使用すると高度な計算なども高速に行うことができます!!</p>
+
+<h4><a id="h14-4-1-1"></a>導入方法(NumPy)</h4>
+<p>pipコマンド(Pythonをダウンロードすると,コマンドプロンプトから使用できます)を使って<code class="inline-code tt">pip install numpy</code>で使えるようになります.(簡単ですね!!</p>
+<p>そしてimport文(必要なライブラリを読み込むコード)で<code class="inline-code tt">import numpy</code>とすると使えます.</p>
+
+<h4><a id="h14-4-1-2"></a>計測(NumPy)</h4>
+<p>計算に限られるため,ほかの方法との比較はできません.次のに期待しましょう)</p>
+
+<h3><a id="h14-4-2"></a>Numbaを使う！</h3>
+<p>次はNumbaライブラリのJITコンパイル<a id="fnb-jit" href="mafusuke.html#fn-jit" class="noteref" epub:type="noteref">*3</a>を使う方法です.</p>
+<p>この方法では主にNumPyを扱ったプログラムが大幅に高速化します.JIT技術を使ってコンパイルされます.⇦速い原因</p>
+<p>NumPyを使わないプログラムではあまり効果がないことがありますが,ループ処理のあるものは速くなることがあります.</p>
+
+<h4><a id="h14-4-2-1"></a>導入方法(Numba)</h4>
+<p>pipコマンドを使って<code class="inline-code tt">pip install numba</code>で使えるようになります.デコレータ<a id="fnb-decorater" href="mafusuke.html#fn-decorater" class="noteref" epub:type="noteref">*4</a>を使って</p>
+<div class="emlist-code">
+<p class="caption">jit_.py</p>
+<pre class="emlist language-python highlight"><span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span><span class="c">#import numbaで関数前で@numba.jitでもok</span>
+<span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">mf</span><span class="p">():</span><span class="c">#mf には定義したい関数名を</span>
+    <span class="c">#....</span>
+</pre>
+</div>
+<p>とすると自動でその関数がコンパイルされます.</p>
+
+<h4><a id="h14-4-2-2"></a>注意！(Numba)</h4>
+<p>NumbaのJITを使う上での注意は<u>一回目は速くならない</u>ことです.</p>
+<p>二回目以降の呼び出し時にはすでに一回目のときにコンパイルされているため,速く処理を行えますけどね.</p>
+
+<h4><a id="h14-4-2-3"></a>計測(Numba)</h4>
+<p>計測しまーす!</p>
+<div class="emlist-code">
+<p class="caption">numba_.py</p>
+<pre class="emlist language-python highlight"><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">jit</span>
+<span class="nd">@jit</span>
+<span class="k">def</span> <span class="nf">mf</span><span class="p">():</span>
+    <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">):</span>
+    <span class="n">a</span><span class="o">+=</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">st</span><span class="o">=</span><span class="n">time</span><span class="p">();</span>
+<span class="n">mf</span><span class="p">();</span>
+<span class="n">en</span><span class="o">=</span><span class="n">time</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="si">%</span><span class="s">s[sec]"</span><span class="o">%</span><span class="p">(</span><span class="n">en</span><span class="o">-</span><span class="n">st</span><span class="p">));</span>
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">mf</span><span class="p">()</span>
+</pre>
+</div>
+<p>速度は<i>Python</i>:<b>0.0047</b>[sec],<i>Numba</i>:0.0674[sec]</p>
+<p>ということで残念ながら速くなりませんでした.やはりNumPy用なのかなぁ...</p>
+<p>※ファイル名の最後に&quot;_&quot;をつけているのは自分自身をNumbaというライブラリとして読み込まないようにするためです.Pythonでは優先度を分ける書き方がないので^^;</p>
+
+<h3><a id="h14-4-3"></a>Cythonを使う!!</h3>
+<p>今までは計算だけ!とかNumPyをつかったものだけ!などでしたが,今回はどのようなプログラムにも適用できて速いです!!!</p>
+<p>Cythonは一種のプログラミング言語です.しかしPythonとの高い互換性があり,多くのコードはそのままでも使えます.</p>
+<p>Cythonがなぜ速くなるのかというと,コンパイルするからです.また型指定(変数宣言)もできます.</p>
+<p>望み通りの素晴らしい言語ですねぇ(笑)</p>
+<p>Pythonのライブラリも幅広く対応しており便利です.</p>
+
+<h3><a id="h14-4-4"></a>導入方法(Cython)</h3>
+<p>pipコマンドを使って<code class="inline-code tt">pip install cython</code>で使えるようになります.※管理者権限が必要です</p>
+<p>どのようにすると使えるのかというと,まず記述したコードを<code class="inline-code tt">.pyx</code>という拡張子で保存します.</p>
+<p>その後<code class="inline-code tt">cython mf.pyx</code>で<code class="inline-code tt">.c</code>ファイルに変換します.(mf.pyxには任意のファイルを指定)</p>
+<p>さらに,これによって生成された<code class="inline-code tt">.c</code>ファイルをCのコンパイラ<a id="fnb-id_c_E3_82_B3_E3_83_B3_E3_83_91_E3_82_A4_E3_83_A9" href="mafusuke.html#fn-id_c_E3_82_B3_E3_83_B3_E3_83_91_E3_82_A4_E3_83_A9" class="noteref" epub:type="noteref">*5</a>を使用して<code class="inline-code tt">.pyd</code>(Mac,Linuxでは<code class="inline-code tt">.so</code>)にコンパイルします.</p>
+<p>これにより,Pythonからimportするだけで簡単に使える<b>高速なライブラリ</b>ができます.</p>
+<p>このファイルは共有ライブラリといい,C,Pythonなどから使用できるライブラリです.</p>
+<p>(Jupyter Notebook<a id="fnb-jupyter" href="mafusuke.html#fn-jupyter" class="noteref" epub:type="noteref">*6</a>を使って対話的にCythonを使用することもできます.この場合,自分でコンパイルする必要はありません)</p>
+<p><a href="https://cython.org/" class="link">Cython公式サイト</a></p>
+<p><a href="http://omake.accense.com/static/doc-ja/cython/" class="link">和訳されたCythonドキュメント(少し古いです)</a></p>
+<p>で,終わろうと思ったのですが手元の環境では上記の方法ではエラーとなったので,もう一つの方法を紹介します!</p>
+<div class="emlist-code">
+<p class="caption">setup.py</p>
+<pre class="emlist language-python highlight"><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
+<span class="kn">from</span> <span class="nn">distutils.extension</span> <span class="kn">import</span> <span class="n">Extension</span>
+<span class="kn">from</span> <span class="nn">Cython.Distutils</span> <span class="kn">import</span> <span class="n">build_ext</span>
+
+<span class="n">ext_modules</span> <span class="o">=</span> <span class="p">[</span><span class="n">Extension</span><span class="p">(</span><span class="s">"mf"</span><span class="p">,</span> <span class="p">[</span><span class="s">"mf.py"</span><span class="p">])]</span>
+<span class="n">setup</span><span class="p">(</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="s">'mf'</span><span class="p">,</span>
+  <span class="n">cmdclass</span> <span class="o">=</span> <span class="p">{</span><span class="s">'build_ext'</span><span class="p">:</span> <span class="n">build_ext</span><span class="p">},</span>
+  <span class="n">ext_modules</span> <span class="o">=</span> <span class="n">ext_modules</span>
+<span class="p">)</span>
+</pre>
+</div>
+<p>このような内容のsetup.pyを用意します.</p>
+<p>そしてコマンドプロンプトからそのフォルダに移動し(cdコマンドを使用)て,<code class="inline-code tt">python setup.py build_ext --inplace</code>と入力します.</p>
+<p>すると,<code class="inline-code tt">.py</code>ファイルから<code class="inline-code tt">.pyd</code>または<code class="inline-code tt">.so</code>に直接変換できます!!</p>
+<p>※Visual Studioがインストールされている必要があります.</p>
+<p>(;;) なんで両方できないんだぁ-(基本はできますのでご心配なく...)</p>
+
+<h3><a id="h14-4-5"></a>計測(Cython)</h3>
+<p>Cythonでこのコードを実行してみます.</p>
+<div class="emlist-code">
+<p class="caption">cython.pyx</p>
+<pre class="emlist language-python highlight"><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="k">def</span> <span class="nf">mf</span><span class="p">():</span>
+    <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">):</span>
+        <span class="n">a</span><span class="o">+=</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">st</span><span class="o">=</span><span class="n">time</span><span class="p">();</span>
+<span class="n">mf</span><span class="p">();</span>
+<span class="n">en</span><span class="o">=</span><span class="n">time</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="si">%</span><span class="s">s[sec]"</span><span class="o">%</span><span class="p">(</span><span class="n">en</span><span class="o">-</span><span class="n">st</span><span class="p">));</span>
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">mf</span><span class="p">()</span>
+</pre>
+</div>
+<p>※残念なことに<code class="inline-code tt">cython mf.pyx</code> を実行したときに<code class="inline-code tt">language_level</code>でエラーが発生しました.基本は<code class="inline-code tt">cython language_level=3</code>できるはずなのですができませんでした.前のPCではできたのに...</p>
+
+<h3><a id="h14-4-6"></a>PyPyを使う！</h3>
+<p>PyPyはCPython(CPythonとはCで作られたPythonです.つまり一般的なPythonのことです)より速いというのがうりです.</p>
+<p>Numbaと同じようにJIT技術を使います.ただ,一つ問題があり<b>Cでつくられたライブラリが使えない</b>ことです(RPython特有なので仕方ないです).しかし,NumPyなどの主要ライブラリはPyPy版があり,ある程度フォローされています!!</p>
+<p>PyPy2,PyPy3はAtCoder<a id="fnb-atcoder" href="mafusuke.html#fn-atcoder" class="noteref" epub:type="noteref">*7</a>の言語にもあります.言語なのかは怪しいですが)※Cythonはありません</p>
+<p>単なるPythonのコードでもPyPyとして提出することで実際にPythonでは実行時間超過だったコードが正解となることもあるようです.</p>
+
+<h3><a id="h14-4-7"></a>導入方法(PyPy)</h3>
+<p>PyPyではここが重要です.aptコマンドが使える環境では<code class="inline-code tt">apt install pypy</code>でインストールできるのですが,Windows等の場合は公式サイトからファイルをダウンロードする必要があります.</p>
+<p><a href="http://pypy.org/download.html" class="link">公式サイト</a></p>
+<p>Python3の場合はPyPy3なのでPyPy3をダウンロードしてください.</p>
+<p>これをコマンドラインから使用するには自分でパスを通す必要があります.</p>
+<p>使用するには<code class="inline-code tt">pypy mf.py</code>とします.mfの部分には任意のファイル名を指定してくださいね！</p>
+<p>これで使用できます.</p>
+
+<h2><a id="h14-5"></a><span class="secno">14.5　</span>計測(PyPy)</h2>
+<div class="emlist-code">
+<p class="caption">pypy.py</p>
+<pre class="emlist language-python highlight"><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="k">def</span> <span class="nf">mf</span><span class="p">():</span>
+    <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100000</span><span class="p">):</span>
+        <span class="n">a</span><span class="o">+=</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">st</span><span class="o">=</span><span class="n">time</span><span class="p">();</span>
+<span class="n">mf</span><span class="p">();</span>
+<span class="n">en</span><span class="o">=</span><span class="n">time</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="si">%</span><span class="s">s[sec]"</span><span class="o">%</span><span class="p">(</span><span class="n">en</span><span class="o">-</span><span class="n">st</span><span class="p">));</span>
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">mf</span><span class="p">()</span>
+</pre>
+</div>
+<p>速度は<i>Python</i>:0.0047[sec],<i>PyPy</i>:<b>0.0010</b>[sec]</p>
+<p>速くなりましたね!</p>
+
+<h2><a id="h14-6"></a><span class="secno">14.6　</span>pipコマンドを使っても使えなかった場合の対処法</h2>
+<p>もし<code class="inline-code tt">'pip' は,内部コマンドまたは外部コマンド,操作可能なプログラムまたはバッチ ファイルとして認識されていません.</code>とでた場合はpipがインストールできていないので<code class="inline-code tt">apt install python-pip</code>でダウンロードできます.※Windowsでのメッセージ.Macの場合は<code class="inline-code tt">-bash: pip: command not found</code></p>
+<p>※PyPyやPython2が入っている場合になることがあります.</p>
+
+<h3><a id="h14-6-1"></a>あとがき</h3>
+<p>速度が変わらなかったものもありましたが,状況に合わせて使用すれば速くなりそうですね.実際に使ってみるのもいいですね!</p>
+<p>プログラミングを知らない人も,Pythonを知らない人も,少しでもPythonに興味をもってもらえれば幸いです.</p>
+<p>最後まで読んでくれた方、ありがとうございました!!</p>
+<div class="footnote" epub:type="footnote" id="fn-id_c_E8_A8_80_E8_AA_9E"><p class="footnote">[*1] C言語とは古くからあるプログラミング言語です.それの拡張版に当たるのがC++でこれからJava,C#などの言語が作られています.PythonはC言語で作られています.</p></div>
+<div class="footnote" epub:type="footnote" id="fn-id__E3_82_B3_E3_83_B3_E3_83_91_E3_82_A4_E3_83_AB_E5_9E_8B_E8_A8_80_E8_AA_9E"><p class="footnote">[*2] コンパイルとは書かれたコードを機械語に翻訳することです.インタプリタ型言語では一行ずつ翻訳してくれるのに対して,コンパイル型言語ではコンパイルという過程によりいっきに翻訳されます.これが速度にも関わってくるのです.</p></div>
+<div class="footnote" epub:type="footnote" id="fn-jit"><p class="footnote">[*3] JITとはコンパイル技術の一種でJava(プログラミング言語)などで採用されています.コンパイル後の速度は速くなりますが実行開始までが遅いという問題があります.</p></div>
+<div class="footnote" epub:type="footnote" id="fn-decorater"><p class="footnote">[*4] デコレータとは関数の定義の前で<code class="inline-code tt">@mf</code>(mfには任意の関数名)とすることで,その関数に直接書き換えずに機能を編集できる機能らしいです.簡単に言うとある関数を実行してからある関数を実行するみたいな感じです(余計にわからなくなった!?.たとえば関数funcと関数mfがあるとします.関数mfの定義の前で<code class="inline-code tt">@func</code>と書いたとすると,ずばり<code class="inline-code tt">func(mf())</code>と同じことになります.)説明難しい...</p></div>
+<div class="footnote" epub:type="footnote" id="fn-id_c_E3_82_B3_E3_83_B3_E3_83_91_E3_82_A4_E3_83_A9"><p class="footnote">[*5] CコンパイラとはC言語やC++で書かれた<code class="inline-code tt">.c</code>ファイルをコンパイルして実行形式の<code class="inline-code tt">.exe</code>ファイルにします.この処理は書かれたコードを一気に機械語に翻訳します.主にGCCなどのコンパイラやVisual Studioなどの総合開発環境を使うことが多いです.</p></div>
+<div class="footnote" epub:type="footnote" id="fn-jupyter"><p class="footnote">[*6] Jupyter NotebookとはPythonのコードを対話的に実行できるものでこれを使ってCythonのコードを対話的に実行することができます.使用するには<code class="inline-code tt">pip install jupyter</code>として,起動するには<code class="inline-code tt">jupyter notebook</code>または<code class="inline-code tt">ipython notebook</code>とします.※webベースで使用できます</p></div>
+<div class="footnote" epub:type="footnote" id="fn-atcoder"><p class="footnote">[*7] AtCoderとは競技プログラミングサイトの一つで,プログラミングの速度や技術を競います.</p></div>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="RLtdExp.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="neko.html">
+            <div class="book-cursor"><span class="cursor-next">▶ Siv3Dでゲームを作る</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

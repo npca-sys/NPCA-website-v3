@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="C#でファイルを暗号化する" href="ficorajo.html"><link rel="prev" title="Google Apps ScriptでTwitter botを作ってみる" href="sashiming.html">  <meta name="generator" content="Re:VIEW" />
+  <title>Blenderで簡単モデリング！ | NPCA部誌2019</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2019</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">前書き</a></li>
+<li><a href="object_1037.html">1 JINS MEMEで美少女になる話</a></li>
+<li><a href="sashiming.html">2 Google Apps ScriptでTwitter botを作ってみる</a></li>
+<li><a href="sarugami.html">3 Blenderで簡単モデリング！</a></li>
+<li><a href="ficorajo.html">4 C#でファイルを暗号化する</a></li>
+<li><a href="Hiro.html">5 UnityのAIを使って…</a></li>
+<li><a href="motty.html">6 Atomで快適なプログラミング環境を構築してみる</a></li>
+<li><a href="takepan.html">7 iPhoneを使ってお手軽VR</a></li>
+<li><a href="kuro.html">8 Windowsのショートカットキーについて</a></li>
+<li><a href="kusafukakota.html">9 Gmailの活用術</a></li>
+<li><a href="2lu3.html">10 未踏ジュニアとLifeWatcher</a></li>
+<li><a href="harady.html">11 グラフのおはなし</a></li>
+<li><a href="cobalt.html">12 C#の布教</a></li>
+<li><a href="RLtdExp.html">13 プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</a></li>
+<li><a href="mafusuke.html">14 Pythonの高速化について</a></li>
+<li><a href="neko.html">15 Siv3Dでゲームを作る</a></li>
+<li><a href="uraoz.html">16 明日(半年後)から始めるVRChat</a></li>
+<li><a href="hinata.html">17 NPCAの部誌執筆を支える技術</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h3"></a><span class="secno">第3章　</span>Blenderで簡単モデリング！</h1>
+<p><p style="text-align:right">75回生 Sarugami</p></p>
+
+<h2><a id="h3-1"></a><span class="secno">3.1　</span>始めに</h2>
+<p>初めまして！NPCA部員のSarugamiです。この記事ではモデリングについて書いていきます。</p>
+<p>モデリングと聞くと、難しそうなイメージがありますが、趣味程度ならそこまで難しくありません。</p>
+<p>もちろん、プロの方はすごいことをなさっているので比べ物にはなりませんが、素人でも色々と楽しいものを作ることができます。しかし、もちろんある程度勉強することは必要です。では、本題に入る前に簡単にモデリングについて説明したいと思います。</p>
+
+<h3><a id="h3-1-1"></a>モデリングについて</h3>
+<p>ここではモデリングとは何か、といった初歩的なことについての説明なので、ある程度モデリングについて知っている方は読み飛ばしていただいて構いません。</p>
+<p>モデリングとは、3Dオブジェクト(オブジェクトとは、物体という意味です)を作るうえでの最初の工程です。例えば、美術の時間に粘土や木を使って作品を作ることになったとすると、最初に形を作ってから、色を塗ったりしますね？この、形作る作業をパソコン上でやるのがモデリングです。このモデリングをやった後に、色を塗ったり(マテリアル、テクスチャ)、アニメーションで動画を作る際はカメラやライトの当てる位置を決めたりといった細かい作業をやり、3Dオブジェクトが出来上がります。</p>
+<p>また、モデリング方法でも使うソフトによって変わり、その方法は大きく分けて3つあります。</p>
+
+<h4><a id="h3-1-1-1"></a><b>1.ポリゴンモデリング</b></h4>
+<p>ポリゴンモデリングとは、ポリゴンという多角形の組み合わせで物体の形を作る手法です。多角形と言ってもほとんどは三角形、四角形を利用しています。一番ポピュラーなモデリングの手法で、辺や頂点で区切られているので分かりやすいです。</p>
+
+<h4><a id="h3-1-1-2"></a><b>2.曲面モデリング</b></h4>
+<p>曲面モデリングは、数学的に表せる曲線を組み合わせてモデリングする方法です。一本の線は一つの数式で表すことができるので、情報量が少なく、パソコンのスペックの低かった昔よく使われていました。多くの統合ソフト(色々とできるモデリングソフト)はこれに対応しているので、今は補助的に利用することが多いです。</p>
+<p>単体で利用するのは、人など複雑な形を作る際に大変なので時と場合によります。</p>
+
+<h4><a id="h3-1-1-3"></a><b>3.スカルプトモデリング</b></h4>
+<p>スカルプトモデリングは、粘土をこねたり彫刻をほるようにして物体を生成するモデリング方法です。他と違い、ペンタブを使うことが多々あります。勿論、物体をスカルプトモデリングで一から作ることも可能ですが、普通はポリゴンモデリングしたものに凹凸をつけるために使います。</p>
+<p>有機的なかたちを作るのに最も適しており、ゲームなどのキャラクターを作る際には必須です。</p>
+
+<h2><a id="h3-2"></a><span class="secno">3.2　</span>Blenderをパソコンに入れる</h2>
+<p>さて、ようやく本題です。</p>
+<p>モデリングをするには、モデリングソフトが必要です。モデリングソフトには、<a href="http://www.metaseq.net/jp/download/" class="link">Metasequoia</a>や<a href="https://www.autodesk.co.jp/products/maya/overview" class="link">Maya</a>など、様々なものがありどれも有能ですが、今回は<a href="https://www.blender.org/download/" class="link">Blender</a>というソフトを使います。</p>
+<p>まずは、<b>インストーラー</b>、もしくは<b>zipファイル</b>をダウンロードしてください。どちらを選んでもらっても構いません。ダウンロードは、<a href="https://www.blender.org/download/" class="link">ここ</a>からできます。無事にダウンロードが終わったら、インストーラーならインストーラーを起動してインストールをしてください。zipファイルなら解凍してください。詳しい手順については省かせていただきます。</p>
+<div id="BlenderInstaller" class="image">
+<img src="images/sarugami/BlenderInstaller.png" alt="インストーラ" class="width-060per" />
+<p class="caption">
+図3.1: インストーラ
+</p>
+</div>
+<p>はい、これでBlenderが使えるようになりました。</p>
+<div class="column">
+
+<h3><a id="column-1"></a>Blenderを何故使うの？</h3>
+<p>そもそも、なぜBlenderにしたのか、という話です。興味がない人は読み飛ばして頂いて構いません。</p>
+<p><b>1.無料で高機能</b></p>
+<p>Blenderは、<b>完全にfreeなモデリングソフト</b>です。先ほど出たMetasequoiaは有料版と無料試用版に分かれていたりしますが、Blenderは<b>完全にfreeなモデリングソフト</b>なので課金しなければ機能制限があるといったことはありません。もちろん、有料のソフトには劣りますが、<b>完全freeなモデリングソフト</b>でここまでたくさんの機能を備えたものは他にありません。</p>
+<p><b>2.日本語化できる</b></p>
+<p>Blenderは多言語に対応しており、日本語にも対応しています。英語ではなく日本語で作業できるだけでとても楽になります。</p>
+<p><b>3.楽しい</b></p>
+<p>1にも被るんですが、機能がたくさんあるので楽しいです。もちろん、それらを使いこなすには勉強が必要ですが、別に試験勉強のように丸暗記する必要もないのでそこまで辛くはありません。</p>
+<p>よく、Blenderは難しいといったことをサイトに書いてあったりもしますが、基本を理解したらそんなに難しくはありません。ただ、操作は一般的なものとは違うので、そこは注意が必要です。</p>
+</div>
+
+<h2><a id="h3-3"></a><span class="secno">3.3　</span>Blenderの初期設定</h2>
+<p>では、早速Blenderを使っていきましょう。まずは、<b>日本語化</b>をしましょう。どのサイトでも日本語化してある前提でやっているため、勉強を捗らせるためにも日本語化は大事です。</p>
+<p>Blenderを開くとこのような画面が出てくると思います。</p>
+<div id="id__E6_9C_80_E5_88_9D" class="image">
+<img src="images/sarugami/最初.png" alt="開いたところ" class="width-099per" />
+<p class="caption">
+図3.2: 開いたところ
+</p>
+</div>
+<p>左上の、<b>File</b>というところをクリックし、<b>User Preferences</b>をクリックしてください。</p>
+<div id="id_2" class="image">
+<img src="images/sarugami/2.png" alt="赤いところ" class="width-099per" />
+<p class="caption">
+図3.3: 赤いところ
+</p>
+</div>
+<p>すると、下図のような画面が出てくるので</p>
+<div id="id_3" class="image">
+<img src="images/sarugami/3.png" alt="環境設定" class="width-100per" />
+<p class="caption">
+図3.4: 環境設定
+</p>
+</div>
+<p><b>System</b>-&gt;右下の<b>International Fonts</b>にチェック-&gt;<b>Language</b>と開き、日本語を選択してください。</p>
+<div id="id_4" class="image">
+<img src="images/sarugami/4.png" alt="Language" class="width-100per" />
+<p class="caption">
+図3.5: Language
+</p>
+</div>
+<p>これだけでは日本語化されないので、Translateの<b>Interface</b>と<b>Tooltips</b>をクリックしてください。この時、New Dataは<b>押さないで</b>ください。</p>
+<div id="id_5" class="image">
+<img src="images/sarugami/5.png" alt="Translate" class="width-100per" />
+<p class="caption">
+図3.6: Translate
+</p>
+</div>
+<p>後は、<b>ユーザー設定の保存</b>をクリックして次起動したときにもちゃんと日本語化されるようにしておいてください。</p>
+<div id="id__E6_97_A5_E6_9C_AC_E8_AA_9E_E5_8C_96_E5_AE_8C_E4_BA_86" class="image">
+<img src="images/sarugami/日本語化完了.png" alt="日本語化後起動" class="width-099per" />
+<p class="caption">
+図3.7: 日本語化後起動
+</p>
+</div>
+<p>これで日本語化が完了しました。</p>
+
+<h2><a id="h3-4"></a><span class="secno">3.4　</span>Blenderの画面解説</h2>
+<p>日本語化して使いやすくなったところで、Blenderの画面について簡単に紹介したいと思います。</p>
+<div id="id__E8_AA_AC_E6_98_8E" class="image">
+<img src="images/sarugami/説明.png" alt="説明" class="width-099per" />
+<p class="caption">
+図3.8: 説明
+</p>
+</div>
+
+<h3><a id="h3-4-1"></a>3Dビュー</h3>
+<p>モデリングを実際に行う画面です。横のツールウィンドウは、そのものを動かしたり変形させたりといったモデリングのツールを選択するところですが、実際はショートカットがあるのでほとんど使う機会がないです。また、矢印で示してある+マークから左に引くもしくはNを押すことで表示できるプロパティパネル(プロパティシェルフともいう)では、角度や座標などを確認したり、数値をいじったりすることができます。太い枠で囲まれているところは、モードを変更したりするところです。</p>
+
+<h3><a id="h3-4-2"></a>アウトライナー</h3>
+<p>それぞれのオブジェクトの関係を見れます。</p>
+
+<h3><a id="h3-4-3"></a>アニメーション</h3>
+<p>アニメーションの設定をするところです。アニメーションの設定というのは、何秒から何秒までどれくらいの速度で動かす、といったことです。</p>
+
+<h3><a id="h3-4-4"></a>プロパティ</h3>
+<p>プロパティパネルとは違うので注意が必要です。ここでは、材質を決めたり滑らかにしたり色を付けたりと本当にたくさんのことができます。</p>
+<p>画面の紹介は以上です。</p>
+
+<h2><a id="h3-5"></a><span class="secno">3.5　</span>Blenderのショートカット</h2>
+<p>Blenderにはショートカットがたくさんあります。ショートカットを使うことで、格段に作業効率は上がります。ここでは、それらのショートカットについて詳しく書いていきたいと思います。恐らく全ては挙げられていないと思います。</p>
+
+<h3><a id="h3-5-1"></a>基本操作のショートカット</h3>
+<p>大体のショートカットは編集モードで使います。</p>
+
+<h4><a id="h3-5-1-1"></a>Ctrl + z</h4>
+<p>一つ前の状態に戻る。</p>
+
+<h4><a id="h3-5-1-2"></a>Ctrl + y</h4>
+<p>Ctrl + zされた後に行うことで、また元の状態に戻すことができる。</p>
+
+<h4><a id="h3-5-1-3"></a>Shift + a</h4>
+<p>オブジェクトの追加のメニューを出すショートカット。</p>
+
+<h4><a id="h3-5-1-4"></a>TAB</h4>
+<p>編集モード、オブジェクトモードの切り替え。編集モードはその名の通り物体の形状を変えたりと編集するモードです。</p>
+
+<h4><a id="h3-5-1-5"></a>G/S/R</h4>
+<p>選択物の移動/拡大縮小/回転。Ctrlを押しながらマウスを動かすことでスナップでき、Shiftを押しながらで微調整できる。また、X,Y,Zを押すことで移動する座標の固定ができ、Shiftを押しながらX,Y,Zを押すと、それぞれの軸には動かなくなる。</p>
+
+<h4><a id="h3-5-1-6"></a>x,DELETE</h4>
+<p>選択物の削除。</p>
+
+<h4><a id="h3-5-1-7"></a>A</h4>
+<p>全選択、選択の解除。</p>
+
+<h4><a id="h3-5-1-8"></a>B</h4>
+<p>囲った範囲の選択。Shiftを押しながらで囲った範囲の選択を解除。</p>
+
+<h4><a id="h3-5-1-9"></a>C</h4>
+<p>なぞった範囲の選択。なぞる円の大きさは、マウスホイールで調節できる。Shiftを押しながらでなぞった範囲の選択を解除。</p>
+
+<h4><a id="h3-5-1-10"></a>Z</h4>
+<p>描画モードソリッド/ワイヤーフレーム表示の切り替え。ワイヤーフレームにすることで、見えないところの辺や頂点を見ることができ、便利。</p>
+
+<h4><a id="h3-5-1-11"></a>E</h4>
+<p>押し出し。最もよく使う動作といっても過言ではないほど使います。押し出しというのは、編集モードにおいて選択した面をその面に対して垂直に押し出すことです。いくつかの面を選択していると、Eだけだとすべて合わせて押し出されますが、Altと同時に押すことで、各面ごとに押し出したりすることが可能です。</p>
+
+<h4><a id="h3-5-1-12"></a>F</h4>
+<p>選択した頂点や辺に対して、面や辺を作成する。Altと同時に押すことで、三角形で面を埋めることができる。</p>
+
+<h4><a id="h3-5-1-13"></a>Ctrl + 左クリック</h4>
+<p>頂点の作成。続けてクリックすることで、辺も作成できる。</p>
+
+<h4><a id="h3-5-1-14"></a>K</h4>
+<p>カットをできます。押しながらマウスを動かしてカットします。</p>
+
+<h4><a id="h3-5-1-15"></a>Ctrl + R</h4>
+<p>ループカットです。簡単に言うと、メッシュの二等分三等分四等分が簡単にできます。何等分にするかは、マウスホイールで調節できます。Sを押すことで、きれいに等分することができます。</p>
+
+<h4><a id="h3-5-1-16"></a>Ctrl+V/E/F</h4>
+<p>頂点/辺/面メニュー。いろんなことができます。</p>
+
+<h4><a id="h3-5-1-17"></a>Alt+M</h4>
+<p>頂点結合メニュー。頂点を一点に集めたりすることができます。</p>
+
+<h4><a id="h3-5-1-18"></a>Shift+D</h4>
+<p>選択物の複製。</p>
+
+<h4><a id="h3-5-1-19"></a>L</h4>
+<p>重なり合ったメッシュの選択。重なっていて2つとも選択するのが難しいときに役に立ちます。</p>
+
+<h4><a id="h3-5-1-20"></a>Ctrl+N</h4>
+<p>面を外向きに再計算。メッシュが裏返っていて一部黒くなっていたりするときに、すべて表にする。</p>
+
+<h4><a id="h3-5-1-21"></a>Ctrl+I</h4>
+<p>選択範囲を反転させます。</p>
+<p>他にもいろいろなショートカットがありますが、ポリゴンモデリングに必要なショートカットはだいたい挙げられたと思います。</p>
+
+<h2><a id="h3-6"></a><span class="secno">3.6　</span>絶対に覚えておくべき操作</h2>
+<p>モデリングをする上では、ショートカットさえあれば「操作」といったものは特に必要はありません。この章では、視点移動のショートカットや操作について書きたいと思います。</p>
+<p>といっても、覚えることはとても少ないです。</p>
+
+<h3><a id="h3-6-1"></a>Blender 視点の基本</h3>
+<p>Blenderの視点は、視点の原点があって、そこを中心に移動したり視点の原点を移動したりするようなものです。</p>
+
+<h3><a id="h3-6-2"></a>マウスホイールを回す</h3>
+<p>視点の原点に近づいたり遠ざかったりするものです。</p>
+
+<h3><a id="h3-6-3"></a>Shiftを押しながらマウスホイールを回す</h3>
+<p>平行に上下に視点を移動します。</p>
+
+<h3><a id="h3-6-4"></a>Ctrlを押しながらマウスホイールを回す</h3>
+<p>平行に右左に視点を移動します。</p>
+
+<h3><a id="h3-6-5"></a>Shiftを押しながらマウスホイールボタンを押し、マウスを動かす</h3>
+<p>平行に上下左右自由に視点を移動します。</p>
+
+<h3><a id="h3-6-6"></a>マウスホイールボタンを押しながらマウスを動かす</h3>
+<p>視点の原点を中心に視点が回転します。</p>
+
+<h3><a id="h3-6-7"></a>Ctrl+Altを同時押ししながらマウスを動かす</h3>
+<p>マウスホイールでの移動のように、横向きに視点の原点を中心に視点が移動します。</p>
+
+<h3><a id="h3-6-8"></a>Shift+Altを同時押ししながらマウスを動かす</h3>
+<p>同様に、縦向きに視点の原点を中心に視点が移動します。</p>
+
+<h3><a id="h3-6-9"></a>テンキーの1,3,7</h3>
+<p>正面、側面、上面からの視点に切り替える。Ctrlと同時に押すことで、反対側からの視点になります。</p>
+
+<h3><a id="h3-6-10"></a>テンキーの5</h3>
+<p>平行投影、透視投影の切り替え。平行投影は、視点を物体に対して平行にし、視点に垂直な壁に平行光で投影したような見え方です。透視投影は、私たちがものを見たときに見える見え方です。基本は透視投影を使いますが、使っているとわかりますが平行投影が便利な時というのがあるので、そういったときに利用します。</p>
+
+<h3><a id="h3-6-11"></a>テンキーの9</h3>
+<p>Ctrlを押したときのように、180度視点が回転します。</p>
+
+<h3><a id="h3-6-12"></a>テンキーの0</h3>
+<p>カメラからみた映像と切り替える。</p>
+
+<h3><a id="h3-6-13"></a>テンキーの.</h3>
+<p>選択物の全体が見えるように表示する。意外と使えます。</p>
+
+<h3><a id="h3-6-14"></a>HOME</h3>
+<p>選択していないものも含めて、すべてのオブジェクトの全体が見えるように表示します。</p>
+
+<h2><a id="h3-7"></a><span class="secno">3.7　</span>実践</h2>
+<p>では、モデリングしていきます。まずは、起動したら画面の真ん中にあるキューブを選択し、x→削除で削除してください。</p>
+
+<h3><a id="h3-7-1"></a>グラス</h3>
+<p>では、グラスを作りましょう。</p>
+<p>適当にネットからグラスの写真をダウンロードし、下絵に設定しておくと便利です。下絵はプロパティパネルの下絵という項目で設定できます。</p>
+<p>まずは、x→削除でデフォルトで出てくる立方体を削除してください。続いて、Shift+Cで3Dカーソルを中心に移動させます。移動させたら、Shift+Aで円を作成してください。これで下準備は完了です。現在はこのような状態になっています。</p>
+<div id="shoki" class="image">
+<img src="images/sarugami/shoki.png" alt="こんな感じ" class="width-090per" />
+<p class="caption">
+図3.9: こんな感じ
+</p>
+</div>
+<p>Tabキーでモードを切り替え、テンキーの５で平行投影視点モードに切り替えたあとテンキーの３で右方向からの視点に切り替えてください。なお、ここからは視点移動もあまりないため、特にどのモードにすればいいとは言いませんが、場合に応じて自分が使いやすいように切り替えてください。</p>
+<div id="right" class="image">
+<img src="images/sarugami/right.png" alt="見えにくいけど" class="width-090per" />
+<p class="caption">
+図3.10: 見えにくいけど
+</p>
+</div>
+<p>では、Eで下に押し出します。このとき、Ctrl+Tabで頂点選択モードに切り替えておいてください。押し出したところで、Sで押し出した面の大きさを下絵に合わせて調整します。これを何度か繰り返します。なお、この時点でワイングラスの丸みに合わせる必要はありません。グラスの下絵が収まるような形で押し出してサイズ変更していってください。傘のついた電気スタンドのような形になると思います。</p>
+<div id="glass_wip" class="image">
+<img src="images/sarugami/glass_wip.png" alt="こんな感じ" class="width-090per" />
+<p class="caption">
+図3.11: こんな感じ
+</p>
+</div>
+<p>このままでは、ただの電気スタンドっぽいだけのものになってしまうので、細分割曲面というものをやりたいと思います。まず、Tabキーでオブジェクトモードにしたあと、プロパティのモディファイヤーというところを開いてください。そこで、追加から細分割曲面というのを選択してください。これで、このオブジェクトに細分割曲面モディファイアーが設定されました。では、これのビューというところを最大まで上げてください。</p>
+<div id="id__E7_B4_B0_E5_88_86_E5_89_B2_E6_9B_B2_E9_9D_A2" class="image">
+<img src="images/sarugami/細分割曲面.png" alt="細分割曲面" class="width-090per" />
+<p class="caption">
+図3.12: 細分割曲面
+</p>
+</div>
+<p>これで形は完全にグラスになりました。ちなみに、ビューの下にあるレンダーという項目は、レンダリングをする際に細分割曲面を行うためのものです。今設定する必要はありません。</p>
+<div id="id__E5_8E_9A_E3_81_BF_E5_89_8D" class="image">
+<img src="images/sarugami/厚み前.png" alt="現在" class="width-090per" />
+<p class="caption">
+図3.13: 現在
+</p>
+</div>
+<p>では、次に厚みをつけたいと思います。厚みをつけるには、同じモディファイヤーのところから厚み付けというのを選択してください。幅という項目をいじることで、厚さを変更することが出来ます。説明するところは特に無いので次に移ります。</p>
+<p>最後に、マテリアルを設定したいと思います。マテリアルとは、色や質感などを表現するためのものです。</p>
+<p>プロパティのマテリアルというところを開いてください。新規というボタンがあると思うのでクリックし、新しいマテリアルを作成してください。</p>
+<div id="id__E3_83_9E_E3_83_86_E3_83_AA_E3_82_A2_E3_83_AB" class="image">
+<img src="images/sarugami/マテリアル.png" alt="マテリアル" class="width-090per" />
+<p class="caption">
+図3.16: マテリアル
+</p>
+</div>
+<p>ディフューズというところの白くなっているところをクリックすると、このような画面が出てきます。</p>
+<div id="id__E8_89_B2_E8_A8_AD_E5_AE_9A" class="image">
+<img src="images/sarugami/色設定.png" alt="これ" class="width-090per" />
+<p class="caption">
+図3.15: これ
+</p>
+</div>
+<p>ここで色を設定すると、モデルに反映され、レンダリングする際も色がついた状態でレンダリングされます。色は、数値で設定することも可能です。これを使って、透明にしていきたいと思います。</p>
+<p>透明にしていくと言ってもやることは非常に単純です。まず、透過というところをクリックし、アルファというところ(図ではアルフとなっている)の値を下げてください。ゼロになると完全に透過されます。</p>
+<div id="id__E3_83_9E_E3_83_86_E3_83_AA_E3_82_A2_E3_83_AB" class="image">
+<img src="images/sarugami/マテリアル.png" alt="マテリアル" class="width-090per" />
+<p class="caption">
+図3.16: マテリアル
+</p>
+</div>
+<p>気づいた方もおられるかと思いますが、実はこれでは3Dビュー上では透過されません。3Dビュー下のオブジェクトモードなどと書いてあるところの左の、3Dビューにおけるオブジェクトのシェーディングで、マテリアルにしておく必要があります。注意してください。</p>
+<p>これで完成です。すごく簡単ですよね。</p>
+<div id="glass_final" class="image">
+<img src="images/sarugami/glass_final.png" alt="透明なことを示すため、後ろに立方体のオブジェクトを置いています" class="width-090per" />
+<p class="caption">
+図3.17: 透明なことを示すため、後ろに立方体のオブジェクトを置いています
+</p>
+</div>
+<p>さて、このグラスの後ろに立方体を置いていますが、見れば分かるようにきれいに立方体の形をしています。しかし、実際のグラスの向こう側は曲がって見えています。この曲がりを表現するために、レイトレーシングというレンダリング方法を使います。レイトレーシングとは、簡単に言うと光の線を追いかけることである点から見える像をシミュレートする方法です。リアルなレンダリングが可能で、特に透明なものや反射しているもの、影のレンダリングに有効です。</p>
+<p>まず最初に、プロパティのカメラマークのところを選択し、シェーディングからレイトレーシングを有効にしてください。また、ランプというオブジェクトがあるので選択し、影というパネルを開いてください。</p>
+<div id="Lamp" class="image">
+<img src="images/sarugami/Lamp.png" alt="ここ" class="width-090per" />
+<p class="caption">
+図3.18: ここ
+</p>
+</div>
+<p>そこでレイシャドウというところを選択してください。また、グラスのマテリアルで、透過のところでレイトレースを選択してください。IQRという項目があると思うので、それを0.95にしてください。0.1ずれると屈折度がだいぶ変わります。また、1だと普通の透過と同じような結果になってしまいます。</p>
+<p>この状態で、カメラの角度や視野角を調整し、レンダリングしてみます。</p>
+<p>すると、このようにレンダリングされます。</p>
+<div id="id__E3_83_AC_E3_82_A4_E3_83_88_E3_83_AC" class="image">
+<img src="images/sarugami/レイトレ.png" alt="レイトレ" class="width-090per" />
+<p class="caption">
+図3.19: レイトレ
+</p>
+</div>
+<p>奥の立方体が曲がって見えているのがわかります。</p>
+
+<h2><a id="h3-8"></a><span class="secno">3.8　</span>最後に</h2>
+<p>最後に、Blenderを使うときに役に立つ本などを紹介したいと思います。</p>
+
+<h3><a id="h3-8-1"></a>Blender2.6マスターブック</h3>
+<p><a href="https://www.amazon.co.jp/Blender2-6マスターブック-藤堂/dp/4877833188" class="link">https://www.amazon.co.jp/Blender2-6マスターブック-藤堂/dp/4877833188</a></p>
+<p>チュートリアル形式で、チュートリアルの後ろには詳しい機能の説明もあるのでとても分かりやすいです。現在のバージョンは2.7ですが、機能はほとんど同じなので説明が間違っていたりといったことはないと思います。ただ、まだ正式リリースはされていませんが、Blender2.8が７月に出て、今までとUIを刷新するということでスクリーンショットと画面が食い違っている場合が出てくると思います。ショートカットは現在と同じものを使えるようなので、2.8になってもある程度は使えるのではないでしょうか。</p>
+<p>また、僕は持っていませんが、<a href="https://www.amazon.co.jp/Blender-2-7マスターブック-スカルプト-シミュレーション編-藤堂/dp/4877833625/ref=pd_bxgy_14_img_2/358-7167763-4388201?_encoding=UTF8&amp;pd_rd_i=4877833625&amp;pd_rd_r=e4c5e067-65b5-11e9-b535-7ddac526845d&amp;pd_rd_w=vOjed&amp;pd_rd_wg=RkFGd&amp;pf_rd_p=2d39d87c-5ff4-47a9-a2d0-79fb936a2d97&amp;pf_rd_r=D2TNJMY0HKP38CYKJ7DX&amp;psc=1&amp;refRID=D2TNJMY0HKP38CYKJ7DX" class="link">Blender 2.7マスターブック スカルプト&amp;シミュレーション編</a>という本もあります。</p>
+
+<h3><a id="h3-8-2"></a>Blender非公式サイト</h3>
+<p><a href="https://blender.jp/" class="link">https://blender.jp/</a></p>
+<p>Blenderについての情報を出しているところで、最新情報が欲しければここを見ておけば大丈夫です。</p>
+
+<h3><a id="h3-8-3"></a>ググる</h3>
+<p>Blenderをやっていて、「こういうことがしたい！」ということがあるならば、ググるのが一番です。Blenderは有名なモデリングソフトなので、たくさんのサイトがヒットすると思います。分からないことがあれば、まずはググりましょう。その上で分からないことがあれば、<a href="https://teratail.com/" class="link">テラテイル</a>などで質問するといいと思います。</p>
+<p>今回の部誌はここまでです。ここまで読んでいただきありがとうございます。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="sashiming.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ Google Apps ScriptでTwitter botを作ってみる</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="ficorajo.html">
+            <div class="book-cursor"><span class="cursor-next">▶ C#でファイルを暗号化する</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

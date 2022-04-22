@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="Pythonの高速化について" href="mafusuke.html"><link rel="prev" title="C#の布教" href="cobalt.html">  <meta name="generator" content="Re:VIEW" />
+  <title>プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話 | NPCA部誌2019</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2019</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">前書き</a></li>
+<li><a href="object_1037.html">1 JINS MEMEで美少女になる話</a></li>
+<li><a href="sashiming.html">2 Google Apps ScriptでTwitter botを作ってみる</a></li>
+<li><a href="sarugami.html">3 Blenderで簡単モデリング！</a></li>
+<li><a href="ficorajo.html">4 C#でファイルを暗号化する</a></li>
+<li><a href="Hiro.html">5 UnityのAIを使って…</a></li>
+<li><a href="motty.html">6 Atomで快適なプログラミング環境を構築してみる</a></li>
+<li><a href="takepan.html">7 iPhoneを使ってお手軽VR</a></li>
+<li><a href="kuro.html">8 Windowsのショートカットキーについて</a></li>
+<li><a href="kusafukakota.html">9 Gmailの活用術</a></li>
+<li><a href="2lu3.html">10 未踏ジュニアとLifeWatcher</a></li>
+<li><a href="harady.html">11 グラフのおはなし</a></li>
+<li><a href="cobalt.html">12 C#の布教</a></li>
+<li><a href="RLtdExp.html">13 プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</a></li>
+<li><a href="mafusuke.html">14 Pythonの高速化について</a></li>
+<li><a href="neko.html">15 Siv3Dでゲームを作る</a></li>
+<li><a href="uraoz.html">16 明日(半年後)から始めるVRChat</a></li>
+<li><a href="hinata.html">17 NPCAの部誌執筆を支える技術</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h13"></a><span class="secno">第13章　</span>プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</h1>
+<p><p style="text-align:right">75回生 RLtdExp</p></p>
+<p>Windows APIは、WindowsのOSの各機能を、アプリから使えるようにしたものです。これにより、皆さんが普段目にするアプリケーションが開発されています。</p>
+<p>現在は、.NET Frameworkという環境が整っていますが、.NET FrameworkもWindows APIを使って作られており、.NET Frameworkでサポートされていない機能を使うには、Windows APIを知らなければなりません。</p>
+<p>しかし、16ビット版からの度重なるアップデートにより、互換性を失ったプログラムが動作しなくなるなどのことがあったほか、非常に複雑になってしまい、覚えにくくなっています。私も挫折した一人です。私が使っているC++でのプログラムは以下のようになります。</p>
+<div id="hoge.cpp" class="caption-code">
+<p class="caption">リスト13.1: hoge</p>
+<pre class="list language-c++ highlight"><span class="cp">#include &lt;windows.h&gt;
+</span><span class="kt">int</span> <span class="n">WINAPI</span> <span class="n">WinMain</span><span class="p">(</span><span class="n">HINSTANCE</span> <span class="n">hInstance</span><span class="p">,</span> <span class="n">HINSTANCE</span> <span class="n">hPrevInstance</span><span class="p">,</span> <span class="n">LPSTR</span> <span class="n">lpCmdLine</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nShowCmd</span><span class="p">){</span>
+        <span class="n">MSG</span> <span class="n">msg</span><span class="p">;</span>
+        <span class="err">＜処理＞</span>
+        <span class="k">return</span> <span class="n">msg</span><span class="p">.</span><span class="n">wparam</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>まずここで、「<code class="inline-code tt">HINSTANCE</code>とか<code class="inline-code tt">LPSTR</code>ってなんだよ」となりました。プログラミングの経験がある人は、<code class="inline-code tt">int</code>や<code class="inline-code tt">char</code>、<code class="inline-code tt">long</code>といった型を知っているかと思いますが、<code class="inline-code tt">HINSTANCE</code>や<code class="inline-code tt">LPSTR</code>はWindows API独自のものです。</p>
+<p>私が初めにつまずいたのが、これにかかわるものでした。ウィンドウを作る関数（決まった処理をするコード）の<code class="inline-code tt">CreateWindow()</code>の説明に、引数（関数に渡すデータ）の説明として</p>
+<ul>
+<li>ウィンドウクラスの名前</li>
+<li>ウィンドウの名前</li>
+<li>ウィンドウのスタイル</li>
+<li>初期X座標</li>
+<li>初期Y座標</li>
+</ul>
+<p>…となっていたので、第一引数に、C++言語に基づいて<code class="inline-code tt">&quot;Hoge&quot;</code>(<code class="inline-code tt">char</code>型の配列)と書いたところ、「<code class="inline-code tt">char*</code>型のデータを<code class="inline-code tt">LPCTSTR</code>型に変換することはできません」といわれ、動作しませんでした。</p>
+<p>キャスト（型を強制的に他の型に変える）でも駄目でした。一つ目の挫折です。ネット上からサンプルプログラムを探したところ、みなさん<code class="inline-code tt">TEXT(&quot;Hoge&quot;)</code>と書いていたり、<code class="inline-code tt">_T &quot;Hoge&quot;</code>と書いていたりしました。</p>
+<p>どうやら、<code class="inline-code tt">LPCTSTR</code>型というのは、使用文字コードによって違うようで、<code class="inline-code tt">TEXT()</code>は、<code class="inline-code tt">#define TEXT(S) _T S</code>もしくは、<code class="inline-code tt">#define TEXT(S) S</code>と定義されており、使用されている文字列の方にキャストしてくれるマクロだったようです。</p>
+<p>おそらく、互換性の観点からこれを使うのがよさそうです。</p>
+<p>次に、メッセージ処理についてです。</p>
+<p>MSG構造体は、メッセージを受け取る型です。Windowsプログラムの<code class="inline-code tt">WinMain</code>関数は、基本的にMSG構造体の<code class="inline-code tt">wparam</code>メンバーを返さなければなりません。この値は、めったなことがない限り0（異常なし）です。</p>
+<p>……と、かなり難しかったため、拡張ライブラリの「DXライブラリ」を使い、開発を始めました。が[Windows SDK○○が存在しません]とエラーが出てしまいました。原因は、私の使っているVisual Studio 2017に、DXライブラリで使用しているWindows SDKが入っていなかったためでした。</p>
+<p>SDKをインストールして、さあ起動！しかし</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">[○△□がありません]
+[○△□がありません]
+[○△□がありません][エラーが多すぎます。これ以上は表示できません]
+</span>
+</pre>
+</div>
+<p>嘘やん…何で…</p>
+<p>もう一度サイトを確認すると…「Windows .exeアプリケーション」のところを変更してください」と書いていました。</p>
+<p>どうやら、アプリケーションのタイプを間違えており、ライブラリが不足していたようです。というわけで、DXライブラリでゲーム開発をやってみることにしました。</p>
+<p>ゲームを作っていくうえで学んだことを述べていこうと思います。まず、数学についてです。</p>
+<p>主に、関数とグラフのところを理解している必要があります。円運動や当たり判定をさせるときに三角関数があると便利です。</p>
+<p>C言語系統では、「math.h」という拡張ファイル(ヘッダーファイルといいます)に、いろいろな数学関数が入っています。例えば、正弦を求める「sin(double θ)」や、その逆関数の「asin(double θ)」などです。</p>
+<p>これらの数学関数を駆使して、キャラクターなどの動きを制御します。</p>
+<p>次に、最適化についてです。</p>
+<p>どんなすごいプログラムを作っても、動かなければ意味がありません。できるだけ無駄を省き、より性能の低いパソコンでも使えるようにしなければなりません。</p>
+<p>そのためには、どの部分が無駄か、どの部分が必要かを見極めなければなりません。例えば、全く使っていない変数や関数などです。これらは、メモリを無駄に食いつぶし、動作を遅くする原因となります。そのため、コードから削除することで、動作を軽くできます。</p>
+<p>また、どうしても重いときは、余計なエフェクトを抜く、または、高性能パソコンでのみエフェクトをつけるようにすることも必要です。</p>
+
+<h2><a id="h13-1"></a><span class="secno">13.1　</span>あとがき</h2>
+<p>今回、Windowsプログラムを作る上で、たくさん挫折を体験しました。また、いろいろなことを学ぶこともできました。</p>
+<p>皆さんもパソコン研究部の展示や部誌を見て、多くの方にプログラミングについて知ってもらえるとありがたいです。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="cobalt.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ C#の布教</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="mafusuke.html">
+            <div class="book-cursor"><span class="cursor-next">▶ Pythonの高速化について</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

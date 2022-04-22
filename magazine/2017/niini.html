@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+<link rel="next" title="「Blenderのシミュレーション機能を使う」 by enptukezuri (71)" href="enptukezuri.html"><link rel="prev" title="「ダイクストラ法とアテナの本」 by 2lu3 (73)" href="2lu3.html">  <meta name="generator" content="Re:VIEW" />
+  <title>「BOARD;GAME 負荷領域のデジャヴ」 by ni-ni (72) | NPCA部誌2017</title>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2017</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">まえがき</a></li>
+<li><a href="object_1037.html">1 「TwitterのBotを作ってみる」 by object_1037 (73)</a></li>
+<li><a href="physics.html">2 「競技プログラミング入門」 by 井上誠大 (73)</a></li>
+<li><a href="taizo0122.html">3 「計算量」 by taizo0122 (72)</a></li>
+<li><a href="2lu3.html">4 「ダイクストラ法とアテナの本」 by 2lu3 (73)</a></li>
+<li><a href="niini.html">5 「BOARD;GAME 負荷領域のデジャヴ」 by ni-ni (72)</a></li>
+<li><a href="enptukezuri.html">6 「Blenderのシミュレーション機能を使う」 by enptukezuri (71)</a></li>
+<li><a href="hinata.html">7 「適当に構文解析する話(575)」by Hinata (72)</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h5"></a><span class="secno">第5章　</span>「BOARD;GAME 負荷領域のデジャヴ」 by ni-ni (72)</h1>
+
+<h2><a id="h5-1"></a><span class="secno">5.1　</span>始まりと終わりのプロローグ</h2>
+
+<h3><a id="h5-1-1"></a>あらすじ</h3>
+<div class="lead">
+<p>  灘校を拠点とする総勢n人の文化部「灘校パソコン研究部」の部長で、日々のストレスから抜け出せない高校生のni-niは部活仲間と日々ヘンテコな開発を繰り返していた。</p>
+</div>
+
+<h3><a id="h5-1-2"></a>自己紹介</h3>
+<p>みなさんおはようございます、ni-niです。カタログの方でも自己紹介はしたのですが、本記事でも一応しときますね。HNはni-niです。他の部員からは「にぃに〜」みたいな感じで呼ばれています。ちなみにこのHNは友人がつけてくれたものです。割と呼びやすいしセンスを感じます(僕個人の感想)。</p>
+<p>HNの話はここまでにして、自己紹介を始めます。この部に入部したのは中2の夏頃(現在高1)で，他の部員に比べて結構遅れていますw。今まではUnity使ってゲーム作ったりしてました。ただ、なんにせよ素材がなくて作れるものは制限されるんですけどね。BGMやSE、キャラクターの3Dモデルなど諸々が用意できないので今まで作ってきたのは相当シンプルなものばかりです。最近は(ようやく)HTMLやらCSSの勉強始めました。初心者すぎてまだまだなので精進していきたいです(汗)</p>
+<p>他には、人工知能(AI)に興味があるので線形代数を勉強し始めました。正直に申して、勉強する時間が少ない……。ちょっと悩んでるんですが、中学の頃は自主的に何かをしていたわけではなかったので、色々なことに手をつけすぎで右往左往しています(うおーっさおーっ)。さらにさらに、高1になって受験のことを意識し始めたため受験に向けた勉強も少しずつ始めています。もうお分かりでしょうか？完全に破綻しています……。ま、まぁこの辺りのお話はhideo54と被っているので僕もhideoさんの記事を参考に、頑張っていきたいと思います。</p>
+
+<h3><a id="h5-1-3"></a>概略</h3>
+<p>さて、いい加減僕の自己紹介にも飽きてきたでしょう。この記事の概略を説明していきたいと思います。先ほどの自己紹介にも書いたように、僕は人工知能に興味があります。そこで、とりあえずゲームAIを作ってみようと思い立ったわけですね。ですが、未だに線形代数や統計学の知識が不足していて、機械学習や深層学習といった今流行りの人工知能は到底作れません。そこで、「学習しない」人工知能を作ってみることにしました。その題材として、ボードゲームを僕は選択しました。モンハンやストリートファイターのキャラクター、モンスターのAIでもよかったのですが、やはり素材がないとどうしようもないので。ボードゲームなら特に素材は必要ないので(デザイン等にこだわるなら別)</p>
+<p>じゃ、本編行ってみよー</p>
+<div class="column">
+
+<h4><a id="column-1"></a>「学習する」AIと「学習しない」AI</h4>
+<p>このお話は少し業界的？な用語を使うと「強いAI」と「弱いAI」の話です。簡単に言うと</p>
+<dl>
+<dt>強いAI</dt>
+<dd>人間の知能に迫るか、人間の仕事をこなせるか、幅広い知識と自意識を持つようになるかしたAI。簡単に言うと人間の脳に近いAI</dd>
+<dt>弱いAI</dt>
+<dd>あらかじめ決められたプログラムとルールに従い、判断を下すAI。特定問題解決器</dd>
+</dl>
+<p>この2つの違いはとても大きいです。人間のように考え、人間のように行動するのが強いAI。ルールを教えて、すでに決められた判断基準に従い手を打つのが弱いAI。差は歴然でしょう。どう考えても強いAIの方が圧倒的に強い(語彙力)ちなみに、昨年話題となったAlphaGo(アルファ碁)でさえ、弱いAIに分類されます。碁しかできないですしお寿司。先ほどの機械学習や深層学習も弱いAIです。いくらデータから最適解が導き出せると言っても決まったことしかできないのでね。……まぁいくら弱いAIだからと言っても難しいのですが。将来は強いAIの研究とかしてみたいですね。</p>
+</div>
+
+<h2><a id="h5-2"></a><span class="secno">5.2　</span>盤上彷徨のランデヴー</h2>
+<p>さて、先ほど僕はボードゲームを作ったと書きましたね。では、どんなボードゲームなのか？実はボードゲームAIについて調べると一番例として挙げられているのはオセロなのです。ですが、僕の謎のこだわりが発動してオセロは作りませんでした。代わりに「立体5目並べ」を作りました。</p>
+
+<h3><a id="h5-2-1"></a>立体5目並べとは？</h3>
+<p>みなさん5目並べはご存知でしょうか？2人用のボードゲームで、先攻が黒、後攻が白の石を打っていきます。どちらかが縦横斜め1列に5個連続して石を置けたら勝利です。詳しくはググってください(丸投げ)</p>
+<p>さて、その5目並べに「立体」とついています。どういう意味でしょうか？</p>
+<p>5目並べは平面状で縦横斜めのどれかに5つ連続で石を並べるゲームです。しかし、立体5目並べは立体になったので、縦横だけでなく、高さが加わります。つまり、高さ1列もありということです。この辺りは言葉で説明してもわかりにくいと思いうので実際のプレイ画面貼ります。</p>
+<p>ここように、勝つための石の並べ方が格段に増えます。様々な角度から状況を見て次の手を考える必要がありますね。</p>
+<p>どうでしょうか？立体5目並べについて分かっていただけましたか？次は実際にどのようなAIを作るか、どうやって動くかを書いていきます。</p>
+
+<h2><a id="h5-3"></a><span class="secno">5.3　</span>創意限界のドクマ</h2>
+<p>ここでは実際にどのようにAIが動いているかを書いていきたいと思います。既出の内容が多い記事となりますが、ご了承ください。</p>
+
+<h3><a id="h5-3-1"></a>概要</h3>
+<p>まずAIにどのような挙動が必要か、列挙してみましょう。</p>
+<ul>
+<li>盤面の状況(どこにどちら側の石があるか)を判断</li>
+<li>どこに石を置くのが良いか探索</li>
+<li>石を置く</li>
+</ul>
+<p>こんな感じですね。1つ目と3つ目は特に書くことがないと思います。黒の石があれば1、白の石があれば-1、石がなければ0と数値で置き換えれば盤面判断は容易です。石を置くのも最適な手を導きさえすればそこに石をセットするだけです。正直、2つ目がAIの全てって感じです。</p>
+<p>今回は探索と評価についてお話をしていきたいと思います。</p>
+
+<h3><a id="h5-3-2"></a>探索する</h3>
+<p>ではまず探索から。探索というのは言葉の通り、最適な手を探索することです。今回はα-β法という手法をとりました。α-β法とは探索アルゴリズムの1つです。これと似た探索アルゴリズムにミニマックス法というものがあります。α-β法とはミニマックス法を拡張したものです。簡単に言うとミニマックス法の進化版です。強いのです。</p>
+
+<h4><a id="h5-3-2-1"></a>ミニマックス法について</h4>
+<p>α-β法はミニマックス法を拡張したものなので、ミニマックス法のお話から。そもそもミニマックス法は「相手が常に自分にとって不利な手を打ってくる」という前提のもとに成り立っています。なので、相手が最適(ここでいう最適とは自分にとってもっとも不利であること)な手以外を打ってくることは考慮に入れていません。それでは、ここからは図を交えて解説をしていきます。下の図は「ゲーム木」と呼ばれるもので、これを使って最適な解を探索します。(ゲーム木1)</p>
+<p>ちなみに、1つ1つの丸は「ノード」と呼ばれます。そして「CノードはAノードの子ノードである」と言います。1つ下の階層のノードを子ノードと呼びます。もちろん、1つ上のノードは親ノードと呼びます。</p>
+<div id="min_max_1" class="image">
+<img src="images/niini/min_max_1.png" alt="ゲーム木1" class="width-080per" />
+<p class="caption">
+図5.1: ゲーム木1
+</p>
+</div>
+<p>この図は3手先まで読んだ場合のゲーム木です。仮にAIを白、プレイヤー(AIからすると敵)を黒とします。現在の盤面はGで次に手を打つのがAI(白)だとします。そしてこの図はGの状態から打てる手が2パターン存在することを表すとします。それぞれの手を打った時にに現れる盤面はAとBです。さらに、 Aから打てる手は2つ存在しそれぞれCとDの盤面が現れます。このように打つ手によってどんどん枝分かれしていきます。これがゲーム木です。この図において求めたい(探索したい)手はGの状態から打つ手となります。この場合は2択ですが、実際はもっと選択肢があります。今回は3手先まで読むとしているので、それ以上は枝分かれしていません。</p>
+<p>さて、一番下に数字が並んでいますね。これは評価値と呼ばれるもので盤面における有利さ(不利さ)を表した数値です。今回は数字が大きいほどAIにとって有利であるとします。そうすると一見「9」が数字の中で最大なのでもっとも有利な手だと思えます。ですが、先ほど書いたように「相手が常に自分にとって不利な手を打ってくる」前提で探索するアルゴリズムなので、そうやすやすと相手が「9」を選ばしてくれません。ではどのように探索していくのでしょうか？</p>
+<p>まず、G→A→Cの順で探索を行います。つまりAになるような手を打った後にCになるような手を打った場合を仮定します。Cから手を打った時、現れる盤面の点数は2と7と3ですね。Cから手を打つのは白のAIなので、自分にとって最も有利な手を打つために一番点数の高い7を選択します。(ゲーム木2)</p>
+<div id="min_max_2" class="image">
+<img src="images/niini/min_max_2.png" alt="ゲーム木2" class="width-080per" />
+<p class="caption">
+図5.2: ゲーム木2
+</p>
+</div>
+<p>これでCから打つ最適の手は7を選択することだとわかりました。この操作をDとEとFについても行います。ここで、Eから打てる手のうち、最大のものは4で2通りあります。今は左の4を選択しますがどちらでも良いです。(ゲーム木3)</p>
+<div id="min_max_3" class="image">
+<img src="images/niini/min_max_3.png" alt="ゲーム木3" class="width-080per" />
+<p class="caption">
+図5.3: ゲーム木3
+</p>
+</div>
+<p>ここで探索が1段階終了しました。次にAとBから打てる手を調べていきます。この時注意しなければならないのはAとBから手を打つのは敵なのでAIにとって最も不利な手、すなわち最も数値が小さくなる手を選択してきます(これはミニマックス法が成り立っている前提からくる)。なので、例えばAから手を打つ敵は7と8のうち小さいほうの7を選択します。(ゲーム木4)</p>
+<div id="min_max_4" class="image">
+<img src="images/niini/min_max_4.png" alt="ゲーム木4" class="width-080per" />
+<p class="caption">
+図5.4: ゲーム木4
+</p>
+</div>
+<p>Bにもこの操作を行います。4と9のうちAIにって不利な方である4が選ばれますね。(ゲーム木5)</p>
+<div id="min_max_5" class="image">
+<img src="images/niini/min_max_5.png" alt="ゲーム木5" class="width-080per" />
+<p class="caption">
+図5.5: ゲーム木5
+</p>
+</div>
+<p>さぁもうすぐ求めたかったGからの最適な手が導けます。もうおわかりかと思いますが、Gから手を打つのはAIなので最も有利になる、つまり数値が最大となる手を選びます。7と4を比較すると7の方が大きいですね。これでGからの最適な手は7だとわかりました。(ゲーム木6)</p>
+<div id="min_max_6" class="image">
+<img src="images/niini/min_max_6.png" alt="ゲーム木6" class="width-080per" />
+<p class="caption">
+図5.6: ゲーム木6
+</p>
+</div>
+<p>このように、互いに最適な手を打ち続けるという仮定の元に自分にとって最も有利になる手を選ぶのがミニマックス法です。</p>
+
+<h4><a id="h5-3-2-2"></a>α-β法について</h4>
+<p>ミニマックス法についてはおわかりいただけましたか？今回採用したα-β法はミニマックス法をもう少し効率化したものです。ミニマックス法そのままだと無駄な部分があるのです。それを解消したものがα-β法で、αカットとβカットと呼ばれる効率化の手段を取っています。これらは簡単に言うと「無駄な先読みをしない」ということです。</p>
+
+<h5><a id="h5-3-2-2-1"></a>αカット</h5>
+<p>まずはαカットから。まず図を見ていただきましょう。(ゲーム木7)</p>
+<div id="a_cut" class="image">
+<img src="images/niini/a_cut.png" alt="ゲーム木7" class="width-090per" />
+<p class="caption">
+図5.7: ゲーム木7
+</p>
+</div>
+<p>この図におけるCを求めたいとします。そして数字が入っているところは既に数字が導かれているとします。すると、CとBにおいて <span class="equation">C \geq 6</span> と <span class="equation">b \leq 3</span> が成り立ちますね。この時の6をα値、3をβ値と呼びます。すると、Cは6とBのうち大きい方を選ぶので、当然6を選びます。<span class="equation">B \leq 3</span> なのでBは絶対に選ばれません。するとAを調べなくともBが選ばれないことがわかります。すなわち、Bより先を読む必要性がないということです。これで無駄が削れますね。</p>
+
+<h4><a id="h5-3-2-3"></a>βカット</h4>
+<p>次にβカット。これはαカットの逆ですね。図を見ればわかると思います。(ゲーム木8)</p>
+<div id="b_cut" class="image">
+<img src="images/niini/b_cut.png" alt="ゲーム木8" class="width-090per" />
+<p class="caption">
+図5.8: ゲーム木8
+</p>
+</div>
+<p>注意して欲しいのは白と黒が逆転していることです。今回はAIではなくプレイヤーの立場に立って探索するものとします。これも同じくCを求めたいとします。数字を全て既出のものとすると <span class="equation">C \leq 6</span> と <span class="equation">B \geq 8</span> が成り立ちます。Cは6とBのうち最小のものを、Bは8とAのうち最大のものを選択するからですね。すると、Cは必ず6を選びます。 <span class="equation">B \geq 8</span> なので常に <span class="equation">6 \leq B</span> が成り立つからです。αカットと似たような感じです。するとAを調べる必要はなく、Bより先を探索する必要が無くなります。これがβカットです。</p>
+<p>αカットとβカットは先読みする回数を減らして処理を高速にする方法です。(俗にこの操作を「枝刈り」と呼びます)ミニマックス法と比較すると高速になってることがわかります。具体的には、ミニマックス法だと3手先まで読むのが限界(これを超えると処理が重くなりすぎてPCが固まる)だったのですが、α-β法に書き換えてからは5手先まで読むことができるようになりました。処理が軽くなるとより先の手まで読むことができるようになり、結果、より強いAIが出来上がるという寸法です。ミニマックス法やα-β法など、探索のやり方はいろいろありますが、それら探索アルゴリズムの中から効率的なものを選択して使用することでAIに限らず、より早く効率的なものが出来上がります。</p>
+
+<h4><a id="h5-3-2-4"></a>α-β法の実装</h4>
+<p>うだうだと書いてきましたがようやくコードです。コードを参照しながら具体的に話を進めていったほうがわかりやすいですしね。</p>
+<div class="emlist-code">
+<p class="caption">α-β法</p>
+<pre class="emlist language-csharp"><span style="color: #B00040">float</span> <span style="color: #0000FF">Search</span>(<span style="color: #B00040">bool</span> isAI, <span style="color: #B00040">int</span> depth, <span style="color: #B00040">float</span> alpha, <span style="color: #B00040">float</span> beta){
+
+  <span style="color: #408080; font-style: italic">// ノードの評価値</span>
+  <span style="color: #B00040">float</span> <span style="color: #008000; font-weight: bold">value</span>;
+
+  <span style="color: #408080; font-style: italic">// 子ノードの評価値</span>
+  <span style="color: #B00040">float</span> childValue;
+
+  <span style="color: #408080; font-style: italic">// 最終的に石を置く場所</span>
+  <span style="color: #B00040">int</span> bestX = <span style="color: #666666">0</span>, bestY = <span style="color: #666666">0</span>;
+
+  <span style="color: #008000; font-weight: bold">if</span> (depth == <span style="color: #666666">0</span>) {
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #0000FF">Eval</span> ();
+  }
+
+  <span style="color: #408080; font-style: italic">// プレイヤーが打つときは自分にもっとも不利な手を打ってくると仮定した上で、</span>
+  <span style="color: #408080; font-style: italic">// AIが打つときは自らの利益を最大にしたいので、</span>
+  <span style="color: #408080; font-style: italic">// AIの手番では最小値、プレイヤーの手番では最大値をはじめに代入しておく</span>
+  <span style="color: #008000; font-weight: bold">value</span> = (isAI) ? Mathf.NegativeInfinity : Mathf.Infinity;
+
+  <span style="color: #008000; font-weight: bold">for</span> (<span style="color: #B00040">int</span> x = <span style="color: #666666">0</span>; x &lt; <span style="color: #666666">5</span>; x++) {
+    <span style="color: #008000; font-weight: bold">for</span> (<span style="color: #B00040">int</span> y = <span style="color: #666666">0</span>; y &lt; <span style="color: #666666">5</span>; y++) {
+      <span style="color: #008000; font-weight: bold">if</span> (stoneHeight [x, y] &lt; <span style="color: #666666">5</span>) {
+
+        <span style="color: #408080; font-style: italic">// 石を置く</span>
+        field [stoneHeight [x, y], x, y] = (isAI) ? -<span style="color: #666666">1</span> : <span style="color: #666666">1</span>;
+
+        <span style="color: #408080; font-style: italic">// 石を置ける高さを追加</span>
+        stoneheight [x, y] += <span style="color: #666666">1</span>;
+
+        <span style="color: #408080; font-style: italic">// 再帰する</span>
+        childValue = Search (<span style="color: #008000; font-weight: bold">false</span>, !isAI, depth - <span style="color: #666666">1</span>, alpha, beta);
+
+        <span style="color: #008000; font-weight: bold">if</span> (isAI) {
+          <span style="color: #008000; font-weight: bold">if</span> (childValue &gt; <span style="color: #008000; font-weight: bold">value</span>) {
+            <span style="color: #008000; font-weight: bold">value</span> = childValue;
+            alpha = <span style="color: #008000; font-weight: bold">value</span>;
+            bestX = x;
+            bestY = y;
+          }
+
+          <span style="color: #408080; font-style: italic">// βカット</span>
+          <span style="color: #008000; font-weight: bold">if</span> (<span style="color: #008000; font-weight: bold">value</span> &gt; beta) {
+            stoneHeight [x, y] -= <span style="color: #666666">1</span>;
+            field [stoneHeight [x, y], x, y] = <span style="color: #666666">0</span>;
+            <span style="color: #008000; font-weight: bold">return</span> <span style="color: #008000; font-weight: bold">value</span>;
+          }
+        } <span style="color: #008000; font-weight: bold">else</span> {
+          <span style="color: #008000; font-weight: bold">if</span> (childValue &lt; <span style="color: #008000; font-weight: bold">value</span>) {
+            <span style="color: #008000; font-weight: bold">value</span> = childValue;
+            beta = <span style="color: #008000; font-weight: bold">value</span>;
+            bestX = x;
+            bestY = y;
+          }
+
+          <span style="color: #408080; font-style: italic">// αカット</span>
+          <span style="color: #008000; font-weight: bold">if</span> (<span style="color: #008000; font-weight: bold">value</span> &lt; alpha) {
+            stoneHeight [x, y] -= <span style="color: #666666">1</span>;
+            field [stoneHeight [x, y], x, y] = <span style="color: #666666">0</span>;
+            <span style="color: #008000; font-weight: bold">return</span> <span style="color: #008000; font-weight: bold">value</span>;
+          }
+        }
+
+        <span style="color: #408080; font-style: italic">// 試しに打った石を元に戻す</span>
+        stoneHeight [x, y] -= <span style="color: #666666">1</span>;
+        field [stoneHeight [x, y], x, y] = <span style="color: #666666">0</span>;
+      }
+    }
+  }
+
+  <span style="color: #008000; font-weight: bold">if</span> (depth == searchDepth) {
+    finish (-<span style="color: #666666">1</span>, bestX, bestY);
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+  } <span style="color: #008000; font-weight: bold">else</span> {
+    <span style="color: #408080; font-style: italic">// 子ノードから継承した値を返す</span>
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #008000; font-weight: bold">value</span>;
+  }
+}
+</pre>
+</div>
+<p>変数の説明します。</p>
+<dl>
+<dt>isAI</dt>
+<dd>手を打つのがAIかどうか</dd>
+<dt>depth</dt>
+<dd>先読みする手数、深さ</dd>
+<dt>alpha, beta</dt>
+<dd>αカット、βカットで使用するα値とβ値</dd>
+<dt>value, childValue</dt>
+<dd>各ノードの評価値と、子ノード(1つ下の階層のノード)の評価値</dd>
+<dt>bestX, bestY</dt>
+<dd>最終的に石を置く場所のX座標とY座標</dd>
+<dt>Eval()</dt>
+<dd>評価関数。後述するが、盤面の点数を返す関数</dd>
+<dt>stoneHeight [x, y]</dt>
+<dd>任意のX,Y座標の石が置ける高さ。すでにもう置けない状態の場所は探索ができないので。</dd>
+<dt>field [a, b, c]</dt>
+<dd>任意の座標の状況を表す数値。1だと黒石、-1だと白石が置いてあり、0だと石が置いてないことを表す。ちなみに field [z座標, x座標, y座標] で位置を表している</dd>
+</dl>
+<p>AIは試しに打てる場所に手を打っていって、読む手数まで来ると盤面の評価をします。そして打った時の点数をchildValueに代入していって、その中からもっとも点数が高いものをvalueに代入します。もちろん、敵が打つ番の時はもっとも点数が低いものを返します。ここまでで理解していただけると(説明する手間が省けて)めっちゃ助かりますが、それは幻想なので(誰かこの幻想をぶち殺して)ゲーム木を使います。</p>
+<div id="min_max_7" class="image">
+<img src="images/niini/min_max_7.png" alt="ゲーム木9" class="width-080per" />
+<p class="caption">
+図5.9: ゲーム木9
+</p>
+</div>
+<p>最下層(一番下のノード)でEval関数を実行して盤面の評価をします。その値をchildValueとして受け取り、子ノードの中からもっともchildValueの値が大きい(または小さい)ものをvalueに代入します。このvalueが各ノードの数値ですね。その操作をもう1つ上の階層でも行います。この際、先ほど確定したvalue値はchildValueとして扱われます。この操作を繰り返していって一番上の階層まで到達すると探索終了です。ゲーム木9の図はこれらの操作を図式化したものです。これでα-β法の説明を終わりたいと思います。</p>
+
+<h3><a id="h5-3-3"></a>評価関数</h3>
+<p>さて、探索のお話は終わりました。ここからは評価関数のお話です。</p>
+
+<h4><a id="h5-3-3-1"></a>評価関数とは？</h4>
+<p>概要のところで、「盤面の状況を判断」と書きましたね。状況を判断というのは具体的には「自分がどれだけ有利(または不利)か判断する」ということです。どちらの石がどこにあるかを見るだけではいけません。有利さや不利さを判断しなければ戦局を把握したとは言えないでしょう。</p>
+<p>そこで評価関数の出番です。有利さや不利さを判断するのにはやはり数字が必要ですね。自分にとって有利だと正の値で不利だと負の値。値が正、または負の方へ大きくなっていくと有利、または不利になっていくという感じです。その数字を「点数」と呼びます。盤面を見て点数をつけるのが評価関数の役目です。いくら探索アルゴリズムが優れていても、この評価関数がダメダメだと弱いAIになってしまいます。意外と大事なものなのです。なぜなら、いかに何手先を読もうとも、リーチされていることに気付かず放置するようなAIは弱いでしょう。探索アルゴリズムと並んで重要なものです。</p>
+
+<h4><a id="h5-3-3-2"></a>点数をつける</h4>
+<p>評価関数の機能である点数付け。点数をつけるには規則が必要ですね。どういう状況で何点つくのか。文章書くのがめんどくさくなってきたので図で済ませます。</p>
+<div id="eval" class="image">
+<img src="images/niini/eval.png" alt="評価関数" class="width-080per" />
+<p class="caption">
+図5.10: 評価関数
+</p>
+</div>
+<p>このように、黒と白が同じ列にあった場合はどう頑張っても5個並べることはできないので0点で、黒は負の数、白は正の数となっています。もちろん、同じ列に同じ色の石がおいてあると点数がつき、石の数が多いほど点数は高くなっていきます。なお、この評価関数はAIが白であった場合です。AIが黒の時は点数の符号を逆転すれば良いです。点数のつけ方についてはこんなものですかね。</p>
+
+<h4><a id="h5-3-3-3"></a>評価関数の実装</h4>
+<p>コード載せたいんですが、正直なところ長すぎて3ページを超えてしまうのでやめときます。とりあえず、こんな感じで実装しました。</p>
+<div class="emlist-code">
+<pre class="emlist">for (int i = 0; i &lt; 3; i++) {
+  for (int x = 0; x &lt; 5; x++) {
+    for (int y = 0; y &lt; 5; y++) {
+      for (int z = 0; z &lt; 5; z++){
+        ...//石の色と数をチェック
+
+      }
+    }
+  }
+}
+
+return value; //valueは盤面の点数
+</pre>
+</div>
+<div id="evaluate" class="image">
+<img src="images/niini/evaluate.png" alt="評価関数" class="width-080per" />
+<p class="caption">
+図5.11: 評価関数
+</p>
+</div>
+<p>この図には対角線や斜めが含まれていませんが、まぁだいたいこんな感じの実装です。1列ずつ石の色と数を調べていくだけの単純なロジックですね。あとは、 i の値によって [x, y, z] の順番を入れ替えていくと図のような感じになります。つまり、 x, y, z それぞれの方向に伸びる25列をチェックしていくということです。α-β法で使った(評価関数でも使うけど) field で表すと</p>
+<dl>
+<dt>i = 0</dt>
+<dd>field [x, z, y] の値をチェック</dd>
+<dt>i = 1</dt>
+<dd>field [y, x, z] の値をチェック</dd>
+<dt>i = 2</dt>
+<dd>field [z, y, x] の値をチェック</dd>
+</dl>
+<p>ってことです。こうすることで、 x, y, z 方向の列が順にチェックできます。あとはチョチョイっと対角線を調べてしまえば点数が出ますね。これぐらいで評価関数のお話は終わりにしたいと思います。</p>
+
+<h2><a id="h5-4"></a><span class="secno">5.4　</span>思考力のネクローシス</h2>
+<p>さて、これまでα-β法と評価関数のお話をしてきました。α-β法はともかく、僕自身、評価関数のコードを気に入っていません。for 文を何重にも重ねたなんとまぁ愚直なコード。なんとなくですが、効率が悪そうな気がします。これでも改良を重ねたのですが、なかなかすっきりとしたコードが書けませんでした。精進が足りないということでしょうか。</p>
+<p>ではここで評価関数について言い訳を始めます。まず、立体5目並べということで、勝ち方つまり勝つための石の置き方が通常の5目並べより相当多いです。具体的には109通りです(多分)。しかも、一直線のものもあれば、立方体の対角線上に並べるものもあります。正直なところ綺麗なロジックが組めません。僕の頭が硬い(諸説あるが脳筋ゴリラ。数学などでもゴリ押しで解く)せいもあるかもしれませんが。</p>
+<p>言い訳終わり。とにかく、完璧なコードではありません。これから精進して、美しいコードをかけるようになりたいと思います。</p>
+
+<h2><a id="h5-5"></a><span class="secno">5.5　</span>能力値のメルト</h2>
+<p>さて、ここからは余談です。もちろん今回のお話とは全く関係はございませぬ。余談といっても単なる身の上話なので興味のない人は読み飛ばしていって構いませんよ。</p>
+<p>僕は中2の6月頃にこの部活に入部しました。それまでの1年半ほどは学校に行き、家に帰ってゲームをして、また学校に行くという生活を送っていました。その時の僕は大した目標もなく、さしてやりたいこともありませんでした。そんな時期に入部した動機は「当時同クラだった部長に誘われたから」と「気まぐれ」です。初めの頃は何をやったらいいかわからなかったのでC言語の勉強をしていました。でも割とすぐに飽きてしまってそこからしばらくは何もしていませんでした。そこから夏休みに入り、ただただ時間を浪費していたのですが、夏休みの終わり頃に Unity と出会いました。最初はボールが動くだけでなんだか楽しくなってどんどん進んで行きました。夏休みが明けると文化祭の準備が少しずつ始まって行きます。初めは何もしていませんでしたが、これでは何だかこの部にいる意味を感じないなぁと思い、思い切って仕事を受けることにしました。 Unity と Kinect を使ったゲームの案があったのでそれを受けましたね。そこからはもう必死で Unity の勉強をして文化祭に間に合わせようとしまして、まぁ準備期間注も Red Bull と魔剤に頼って頑張りました。めっちゃ疲れたんですが、とってもやりがいがあって楽しかったです。この時僕は中学3年。遅すぎる文化祭初参加でしたw</p>
+<p>中3の夏、合宿を通して色々な分野に興味が出ました。そう、この時は中3の間、高校生になるまでにどんなことを勉強しようとか身につけようとしか考えていませんでした。</p>
+<p>夏休みが明け、2学期がスタートしました。ある日、学校の後、塾に行き、休み時間でスマホをいじっていた時です。</p>
+<div class="lead">
+<p>  ni-ni、部長やってみませんか？</p>
+</div>
+<p>びっくりです。いきなり部長とか言われて困っちゃいました。どういう経緯でそうなったかも分かりませんし。結局その後の授業は全く頭に入ってきませんでした。</p>
+<p>とりあえず経緯を聞くと部長が生前退位の意向を示されたため、後任を探していたところ、僕になったみたいです。僕には荷が重いと思いました。何せ僕は部に入って1年ちょっとしか経っていなかったのですから。でも、他に次期部長候補がいないなら、ということで部長を受けました。そこからが大変でした。部に在籍している期間が短い分、わからないことが多すぎたのです。特に各種イベントや文化祭関連が意味不明でしたね。文化祭を1度経験しているといっても、その時はひたすら自分の展示の調整をしていたのでその時の部長が何をしていたかなんて知らないわけですから。さらに、引き継ぎがとても雑。いや、雑というよりは雑にならざるを得なかったんですよね。昔の部員たちは文化祭や部運営に間することを一切文書化せず、引き継ぎもせず卒業していったので、そういったノウハウが受け継がれていませんでした。そういうわけでまずはマニュアル作りから始まりました。他の部員たちの力を借りてなんとかある程度マニュアルが完成したと思ったら、もう予算折衝の時期です。来年度の部の予算を決めるのが予算折衝ですが、もちろん僕はそのようなことは全く知りませんでした。とりあえず、予算をぶんどるために必死で物品の必要性を主張すると意外となんとかなっちゃいましたw</p>
+<p>さて、ここから文化祭準備、つまりこの記事を執筆している期間ですね。部長の仕事のメインです。正直なところ、マニュアルとか僕の代だけの特例だし、予算折衝はまぁ1日限りだしで、部長の仕事は文化祭期間中だけといってもいいぐらいですね。書類を書いて提出したり、集会に出席したり……</p>
+<p>で、現在に至るわけです。ここまで、部長職をこなす上で多くのことを経験してきました。顧問と物品購入について相談したり、生徒会役員と色々なやり取りをしたり。大変でしたが得るものはあったと思います。視野が広がったというかなんというか。とりあえず現状の目標も決まりました。</p>
+<p>しかし、目標が定まってしまうとこれまた厄介なことに、部長職というのが煩わしくなってくるんです。やりたいことがあるのに部長職で時間が削られる。部長職は自分にとって様々なものをもたらしてくれたけれど、部長職そのものがやりたいわけではない。困りものですね。ようやく前部長が部を去った理由が理解できました。彼は既に、自分の興味の向く先を把握して、行動していたのです。僕がそれを得るまでに相当時間がかかってしまいました。だってもう高校生ですよ？残された時間がもう少ない年頃に、今更気づいたことを今では後悔しています。なんで中1から中2まで何もして来なかったんだろう、とか。なんでもっと早く気づけなかったんだろう、とか。僕にはもう残された時間は少ないです。あ、別に死にませんよ。高3になれば否応無く受験勉強がやってきます。高校生なので少しずつでも受験の準備を進めていくために、勉強時間も増やさなければいけません。やりたいことをできる時間はもう少ないのです。だから、中学に入ってからの生き方を、今は後悔しています。</p>
+<p>さてさて、身の上話はこれでおしまい。タイトルをつけるなら、そうだな、「今更遅い、年寄りの後悔」って感じですね。なんでこんな長ったらしい話を書いたかというと、まぁ自分の中に溜め込んでた感情を吐き出したかったんですよね。だってこんな話、誰もまともに聞いてくれないじゃないですかwだからこの場を借りて、自分の気持ちを吐露して、これから進んでいきたいと思ったわけです。ここまで読んでいただいたら僕も嬉しいです。これからも精進していきたいと思います。</p>
+
+<h2><a id="h5-6"></a><span class="secno">5.6　</span>終わりと始まりのプロローグ</h2>
+<p>ここまで読んでいただき本当にありがとうございます。ついでに僕の将来の夢的な何かをここで言っときます。</p>
+<div class="lead">
+<p>  普通に生きて、普通に死ぬ</p>
+</div>
+<p>僕はこれが1番だと思っています。なんの変哲のない人生でも、人並みに幸せに過ごせたら僕はそれで満足です。</p>
+<p>どうでもいい話でしたねw では、これからもNPCAをよろしくお願いします〜</p>
+      </div>
+      <nav class="book-navi book-prev">
+                <a href="2lu3.html">
+          <div class="book-cursor"><span class="cursor-prev">◀ 「ダイクストラ法とアテナの本」 by 2lu3 (73)</span></div>
+        </a>
+              </nav>
+      <nav class="book-navi book-next">
+                <a href="enptukezuri.html">
+          <div class="book-cursor"><span class="cursor-next">▶ 「Blenderのシミュレーション機能を使う」 by enptukezuri (71)</span></div>
+        </a>
+              </nav>
+    </div>
+  </div>
+  <footer>
+      </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+  <script>
+      (function() {
+          if (!window.katex) { return; }
+          var equations = [].slice.call(document.querySelectorAll(".equation"));
+          for (var i = 0; i < equations.length; i++) {
+              katex.render(equations[i].textContent, equations[i]);
+          }
+      }) ();
+  </script>
+</body>
+</html>

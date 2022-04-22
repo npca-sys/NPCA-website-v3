@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+  <script type="text/javascript" id="MathJax-script" async="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="暗号と数学" href="Chito.html">  <meta name="generator" content="Re:VIEW" />
+  <title>フィボナッチ数と行列 | 灘校パソコン研究部部誌2021</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>灘校パソコン研究部部誌2021</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="Sugsugar.html">第1章　フィボナッチ数と行列</a></li>
+<li><a href="Chito.html">第2章　暗号と数学</a></li>
+<li><a href="sashiming.html">第3章　CTF超入門</a></li>
+<li><a href="watcol.html">第4章　QRコードを読む</a></li>
+<li><a href="maguro.html">第5章　Rolling Hashのおはなし</a></li>
+<li><a href="hinata.html">第6章　プログラミングを始める</a></li>
+<li><a href="UltimateBlacktea.html">第7章　HDDで演奏する</a></li>
+<li><a href="PCT.html">第8章　競プロの数学問の基礎！</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h1"></a><span class="secno">第1章　</span>フィボナッチ数と行列</h1>
+<p><p style="text-align:right">77回生 Sugsugar</p></p>
+
+<h2><a id="h1-1"></a><span class="secno">1.1　</span>はじめに</h2>
+<p>はじめまして、Sugsugarです。中三です。普段は競技プログラミングをしています。あとZONeを爆発させるのが得意です。</p>
+<p>今回はフィボナッチ数に見る行列累乗の話について書いていこうと思います。なお、計算量に関してランダウのO記法というものを今回は使うので、気になった人は調べてみてください。</p>
+
+<h2><a id="h1-2"></a><span class="secno">1.2　</span>行列とは？</h2>
+<p>行列と聞いてqueueを思い浮かべる人もいるでしょうが、今回は数学の行列です。具体的には、以下のようなものです。</p>
+<div class="equation">
+$$\begin{bmatrix}
+a & b \\
+c & d \\
+\end{bmatrix}$$
+</div>
+<p>たぶん高校数学でやると思います。これを使ってフィボナッチ数を高速に求めよう、というのが今回の話です。</p>
+
+<h2><a id="h1-3"></a><span class="secno">1.3　</span>行列累乗とは？</h2>
+<p>同じ行列を<span class="equation">\( k \)</span>回かけ算する(行列積の計算をする)ことを行列の累乗と呼び、</p>
+<div class="equation">
+$$A^k=\begin{bmatrix}a&b\\c&d\end{bmatrix} 
+\begin{bmatrix}a&b\\c&d\end{bmatrix} 
+\cdots\begin{bmatrix}a&b\\c&d\end{bmatrix}$$
+</div>
+<p>このように表します。なお、行列積については<a href="https://manabitimes.jp/math/1023" class="link">こ↑こ↓</a>では次に、この計算を高速化する方法について書こうと思います。</p>
+
+<h2><a id="h1-4"></a><span class="secno">1.4　</span>繰り返し二乗法</h2>
+<p>単純に行列積を<span class="equation">\( k \)</span>回行うのは(行列のサイズを無視したとして) <span class="equation">\( O(k) \)</span>回かかってしまいます。さらに高速化して<span class="equation">\( O(\log k) \)</span>で求めることを考えてみます。</p>
+<p>まず、行列ではなく素直に正整数<span class="equation">\( a,n \)</span>について<span class="equation">\( a^n \)</span>を求めることを考えます(なお、実際はnが大きくなるにつれ<span class="equation">\( a \neq 1 \)</span>のとき<span class="equation">\( a^n \)</span>の値もかなり大きくなってしまうので実際はmodを取ることを考えます)。そして、この計算は<span class="equation">\( O(\log n) \)</span>で求めることができます。その方法について以下に示していきます(<span class="equation">\( a=3 \)</span>,<span class="equation">\( n=22 \)</span>とします)。</p>
+<p>まず、指数法則より<span class="equation">\( 3^22 = (3^11)^2 \)</span>となります。そして、<span class="equation">\( 3^11 \)</span>を指数的に分解していきたいのですが、半分に割ることはできません(かなしい)。ではどうするかというと単純で、<span class="equation">\( 3^11 = 3^1 * 3^10 \)</span>とすれば片方の指数を偶数にすることができました。</p>
+<p>同様にして、<span class="equation">\( 3^22 = (3^1 * (3^1 * ((3^1)^2)^2)^2)^2 \)</span>と表すことができます。整理すると、<span class="equation">\( 3^22 = 3^2 * 3^4 * 3^{16} \)</span>と表すことができます。これはつまり、指数を2のべき乗の数で分解したということです。さて、ではこの分解した2のべき乗(ここで <span class="equation">\( 2^k \)</span>とします)の指数の累乗についてはどのように求めればよいでしょうか？そう、例えば<span class="equation">\( 3^2 = (3^1)^2 \)</span>ですし、<span class="equation">\( 3^4 = (3^2)^2 \)</span>です。つまり、<span class="equation">\( 3^(2^k) \)</span>は<span class="equation">\( 3 \)</span>を<span class="equation">\( \log_{2} k \)</span>回2乗した数と考えることができます。このことから<span class="equation">\( O(\log k) \)</span>で<span class="equation">\( a^n \)</span>の値を求めることができます。これを繰り返し二乗法といいます。コードは<a href="https://wandbox.org/permlink/JrXanQsSwuxJEARI" class="link">こ↑こ↓</a>に書いてありますので是非見てみてください。決して言葉で説明するのがめんどくさくなったというわけではないですよ。</p>
+
+<h2><a id="h1-5"></a><span class="secno">1.5　</span>行列で応用</h2>
+<p>整数ができるのならば行列でもできそうなことは直感的にわかりますが(本当？)、実際にできます。なので行列累乗のの計算は行列のサイズを無視すると<span class="equation">\( O(\log k) \)</span>で求められます。いい話。</p>
+
+<h2><a id="h1-6"></a><span class="secno">1.6　</span>フィボナッチ数で応用</h2>
+<p>さて、長々と話してきましたが本題です。忘れていた人にもう一度言うと、フィボナッチ数をこの行列累乗で求めたいという話です。フィボナッチ数は以下のように表せました。</p>
+<div class="equation">
+$$f_0 = 0,f_1 = 1,f_n = f_{n-1} + f_{n-2} (n \geq 2)$$
+</div>
+<p>では、このような行列<span class="equation">\( A \)</span>が存在すると嬉しいと思いませんか？</p>
+<div class="equation">
+$$\begin{bmatrix}f_{n+1}\\f_n\end{bmatrix}=A \begin{bmatrix}f_n\\f_{n-1}\end{bmatrix}$$
+</div>
+<p>ここで行列<span class="equation">\( A \)</span>について考えましょう。ヒントとして、<span class="equation">\( A \)</span>は2×2の行列です。そして、<span class="equation">\( f_{n+1} = f_n + f_{n-1},f_n = f_n \)</span>であり、行列積の計算方法を考えると因数分解みたいなイメージで考えることができます。</p>
+<p>さて、では答えです。</p>
+<div class="equation">
+$$A = \begin{bmatrix}1&1\\1&0\end{bmatrix}$$
+</div>
+<p>答えはこうなります。実際に計算してみるとよりわかるかもしれません。</p>
+<p>このことから、さらに以下のこともわかります。</p>
+<div class="equation">
+$$\begin{bmatrix}f_n\\f_{n-1}\end{bmatrix}=\begin{bmatrix}1&1\\1&0\end{bmatrix} \begin{bmatrix}f_{n-1}\\f_{n-2}\end{bmatrix}$$
+</div>
+<p>まあ当然といえば当然です。このことから、</p>
+<div class="equation">
+$$\begin{bmatrix}f_n\\f_{n-1}\end{bmatrix}=\begin{bmatrix}1&1\\1&0\end{bmatrix} \begin{bmatrix}1&1\\1&0\end{bmatrix} \begin{bmatrix}f_{n-1}\\f_{n-2}\end{bmatrix}$$
+</div>
+<p>となることもわかります。さて、これを繰り返すことにより</p>
+<div class="equation">
+$$\begin{bmatrix}f_{n+1}\\f_n\end{bmatrix}=\begin{bmatrix}1&1\\1&0\end{bmatrix}^n \begin{bmatrix}f_1\\f_0\end{bmatrix}$$
+</div>
+<p>つまり、</p>
+<div class="equation">
+$$\begin{bmatrix}f_{n+1}\\f_n\end{bmatrix}=\begin{bmatrix}1&1\\1&0\end{bmatrix}^n \begin{bmatrix}1\\0\end{bmatrix}$$
+</div>
+<p>となることがわかりました！あとはウイニングランです。</p>
+<p>この累乗されているところはどう求めるでしょうか？もちろん愚直にやると遅いです(というかわざわざ行列で表した意味がない)。そう、行列累乗です。これで計算量が<span class="equation">\( O(k)→O(\log k) \)</span>まで落とすことができました。うれしいですね。なお、行列積の計算量は<span class="equation">\( n×n \)</span>行列のときに<span class="equation">\( O(n^3) \)</span>かかりますが、今回<span class="equation">\( n=2 \)</span>なので無視してもよいです。というか<span class="equation">\( O(\log k) \)</span>すら定数と言い張る人がいるくらいなので気にしたら負けです。</p>
+
+<h2><a id="h1-7"></a><span class="secno">1.7　</span>フィボナッチ数の拡張</h2>
+<p>さて、今回は</p>
+<div class="equation">
+$$f_0 = 0,f_1 = 1,f_n = f_{n-1} + f_{n-2} (n \geq 2)$$
+</div>
+<p>としていましたが、</p>
+<div class="equation">
+$$f_0 = f_1 = 0, f_2 = 1, f_n = f_{n-1} + f_{n-2} + f_{n - 3} (n \geq 3)$$
+</div>
+<p>のようにトリボナッチ数列について考えてみようとするのは自然な考えです。これは</p>
+<div class="equation">
+$$\begin{bmatrix}f_{n+2}\\f_{n+1}\\f_n\end{bmatrix}=A \begin{bmatrix}f_{n+1}\\f_n\\f_{n-1}\end{bmatrix}$$
+</div>
+<p>を満たす<span class="equation">\( 3×3 \)</span>行列<span class="equation">\( A \)</span>について考えれば先ほどと同じようにできます。これをさらに拡張していくとこの行列<span class="equation">\( A \)</span>に関してある規則が見えてくるはずです。ここでは答えを言わないので、皆さん自身で考えてみてください。</p>
+
+<h2><a id="h1-8"></a><span class="secno">1.8　</span>おわりに</h2>
+<p>フィボナッチ数をコンピュータで高速に求めたいという話でした。僕は競技プログラミングというものを普段していて、この行列累乗というアルゴリズムはAtCoderでいう水～黄色で学ぶアルゴリズムとなっています。また、繰り返し二乗法はAtcoderでいう茶～緑色で学ぶアルゴリズムです。一見ただただ足すだけだと思っていた数列を行列を用いることによって計算量が大幅に激減するのはアルゴリズムの醍醐味であると思います(実際、<span class="equation">\( 10^{18} \)</span>項目だと愚直にやると人間では考えられないほど時間がかかりますが、一方でこの方法だと1秒もかからずにできます)。アルゴリズムにあまり詳しくなくてもフィボナッチ数というよく知られている話によって少しでも楽しさを理解していただけたら幸いです。</p>
+<p>P.S.　そういえば、サンプル版ではビネの公式について話す旨について書いていましたが、これは先ほどの<span class="equation">\( 2×2 \)</span>の行列<span class="equation">\( A \)</span>を用いることでなんと導出することができます。いつか必ず書きます(もしかしたら文化祭のポスターとして展示しているかもしれません)。楽しみにしていてください。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="Chito.html">
+            <div class="book-cursor"><span class="cursor-next">▶ 暗号と数学</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

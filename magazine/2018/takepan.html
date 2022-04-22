@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="簡単blenderモデリング" href="kota1024.html"><link rel="prev" title="ぱそこんであそぼ" href="taizo0122.html">  <meta name="generator" content="Re:VIEW" />
+  <title>マインクラフトのサーバー管理を楽で便利なものにしてみる話 | NPCA部誌2018</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.js" integrity="sha384-jmxIlussZWB7qCuB+PgKG1uLjjxbVVIayPJwi6cG6Zb4YKq0JIw+OMnkkEC7kYCq" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2018</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">部長挨拶</a></li>
+<li><a href="object_1037.html">1 ARKit</a></li>
+<li><a href="2lu3.html">2 写真のデータを読み込もう</a></li>
+<li><a href="hinata.html">3 すばやい文字列の探しかた</a></li>
+<li><a href="harady.html">4 簡単!VR3(00)分クッキング</a></li>
+<li><a href="taizo0122.html">5 ぱそこんであそぼ</a></li>
+<li><a href="takepan.html">6 マインクラフトのサーバー管理を楽で便利なものにしてみる話</a></li>
+<li><a href="kota1024.html">7 簡単blenderモデリング</a></li>
+<li><a href="niimi.html">8 深層学習の基礎のキソ</a></li>
+<li><a href="physics0523.html">9 JOI参戦記</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h6"></a><span class="secno">第6章　</span>マインクラフトのサーバー管理を楽で便利なものにしてみる話</h1>
+<p><p style="text-align:right">74回生 日野</p></p>
+
+<h2><a id="h6-1"></a><span class="secno">6.1　</span>誤植訂正</h2>
+<p>部誌サンプルのタイトルが「Mineraftのサーバー管理を楽で便利なものにしてみる話」になっていますが、正しくは「マインクラフトのサーバー管理を楽で便利なものにしてみる話」です。お詫びして訂正いたします。</p>
+
+<h2><a id="h6-2"></a><span class="secno">6.2　</span>初めに&amp;自己紹介</h2>
+<p>初めまして。74回の日野と申します。この度は第72回灘校文化祭・NPCAにお越しいただきありがとうございます。今回の部誌では元あるゲームを改造してみる、ということに関して部誌を書かせてもらいます。</p>
+<p>改造するゲームは「マインクラフト」ってやつです。有名ですよね。中一の一年間これに溶かしました。成績が悲惨なことになるので熱中しすぎないようにしましょう。</p>
+<p>で、本題の「どのように改造するのか」ですが、マインクラフトのサーバー管理に使える「プラグイン」というやつを作ってみます。(Mod作成だと思った人、ごめんなさい。どうあがいてもまだ作れそうにありません。)作るバージョンは1.11.2で行きます。</p>
+
+<h2><a id="h6-3"></a><span class="secno">6.3　</span>プラグインって？</h2>
+<p>いきなりプラグインの話をしても戸惑う人もいるかもしれないので、ブラウザを例にとって説明してみます。</p>
+<p>この部誌を手に取ってくれる人はたぶん「Firefox」というウェブブラウザーについて知っていると思います。このブラウザを使う人は多くいます。じゃあなぜこんなに多くの需要があるのか。答えは簡単で、拡張性が高いからです。(拡張機能自体はどのブラウザにも多少は存在するのですが、一番高いのがFirefoxです。)きっと拡張性がないFirefoxは誰からも使われないでしょう。</p>
+<p>で、どのように拡張できるのかというと、</p>
+<ul>
+<li>ダウンロードの管理</li>
+<li>マウスジェスチャーでショートカット</li>
+<li>Webページから直接動画をダウンロードする</li>
+</ul>
+<p>のように、様々です。たぶん僕が知らないだけで他にもいっぱいあるんでしょう。詳細はあんまり書きません。</p>
+<p>そしてこの拡張機能を提供してくれるのがプラグインなのです。今はFirefoxを例にとって言いましたが、このように拡張性が高いものはブラウザだけではありません。たとえば、プログラムを書く環境であったり、動画や画像の編集ソフトがあったりします。ちなみに今自分はこの部誌をAtomというエディタで書いてるんですが、これも拡張機能つけて便利にしています。そして、一部のゲームはこれらと同様に拡張性が高いのです(拡張性が高いほかのゲームに関してはグーグル先生に聞いてみてください。たぶんいっぱいある)。基本的にシングルプレイメインのゲームは拡張性高いです。</p>
+
+<h2><a id="h6-4"></a><span class="secno">6.4　</span>実際に作ってみる前の下準備</h2>
+<p>まずは作成に必要な下準備です。</p>
+
+<h3><a id="h6-4-1"></a>開発環境のDL</h3>
+<p>個人的にはEclipceがおすすめです。<a href="https://mergedoc.osdn.jp/" class="link">ここ</a>から有志のみなさんが作ってくれた日本語化プラグインつきでEclipceがインストールできます。(プラグインについては分かりますね？割といろいろなところで使われてます。)特に問題がなければ最新バージョンをインストールするのでOKです。</p>
+
+<h3><a id="h6-4-2"></a>マインクラフトのアカウントを用意する</h3>
+<p>こればっかりはストアで買ってください。間違ってもWindows10版を買わないようにね。最近円に対応して3000円固定になりました。<a href="https://minecraft.net/ja-jp/" class="link">ここ</a>で購入できます。</p>
+
+<h3><a id="h6-4-3"></a>マインクラフトのサーバーを用意する</h3>
+<p>ググってください。解説してるサイトはたくさんあります。解説してると量が膨大に...</p>
+
+<h2><a id="h6-5"></a><span class="secno">6.5　</span>「何もしない」プラグインを作ってみる</h2>
+<p>まずはプロジェクトを作成します。ファイル→新規→プロジェクトを選択してください。javaプロジェクトを選択して、「次へ」をクリックします。プロジェクト名を設定して、完了をクリックしてください。ここではプロジェクト名を<code class="inline-code tt">FirstPlugin</code>にします。</p>
+<p>次に、マインクラフトサーバーのプラグインを作成するのに必要なjavaのビルドパスを通します。次に、パッケージ・エクスプローラーの中のFirstPluginを右クリックして、プロパティー→Javaのビルドパス→外部jarの選択をクリックします。出てきたところで使用するバージョン(ここでは1.11.2)のspigotサーバーを選択します。写真のようになってたら成功です。</p>
+<div id="addotherjar" class="image">
+<img src="images/takepan/addotherjar.png" alt="このように表示されていることを確認してください。" class="width-060per" />
+<p class="caption">
+図6.1: このように表示されていることを確認してください。
+</p>
+</div>
+<p>javaのビルドパスを通せたら、パッケージを作成します。ツリーを開いて、scrのフォルダを右クリックして、新規作成→パッケージを選択してください。パッケージの名前を<code class="inline-code tt">first.plugin</code>にします。</p>
+<p>次に、ソースコードを書く場所を作成します。さっき作ったパッケージを右クリックして、新規作成→クラスを選択します。名前はここでは<code class="inline-code tt">FirstPlugin</code>とします。ここで、スーパークラスの参照をクリックします。出てきたウィンドウのボックスに<code class="inline-code tt">JavaPlugin</code>と入力して、でてきたリストの中の<code class="inline-code tt">JavaPlugin-org.bukkit.plugin.java</code>を選択してOKをクリックします。</p>
+<p>すると、画像のようにデフォルトでコードがいくつか生成されます。</p>
+<div id="createclass" class="image">
+<img src="images/takepan/createclass.png" alt="こんな感じです" class="width-060per" />
+<p class="caption">
+図6.2: こんな感じです
+</p>
+</div>
+<p>次に、サーバー起動時と終了時の処理を実装します。ソース→メソッドのオーバーライド/実装を選択し、開いた画面から<code class="inline-code tt">onDisable()</code>と<code class="inline-code tt">onEnable()</code>を選択して、OKを押します。入力されたのがわかりましたか？</p>
+<div id="onDisableandonEnable" class="image">
+<img src="images/takepan/onDisableandonEnable.png" alt="onDisableとonEnableを実装したところ" class="width-060per" />
+<p class="caption">
+図6.3: onDisableとonEnableを実装したところ
+</p>
+</div>
+<p><b>これで何も機能を持たないプラグインが完成しました。</b></p>
+<p>はい。簡単でしょ？</p>
+<p>ちなみに、追加されたonDiable()とonEnable()はメソッドと呼ばれます。詳しくはググって。</p>
+<p>ただこれだけでは動作しないので、プラグインの仕様書を作る必要があります。プロジェクトエクスプローラーのFirstPluginを右クリックして、新規→ファイルを選択します。ファイル名にplugin.ymlと入力して完了しましょう。テキストエディタが展開します。そうしたら、plugin.ymlの中に</p>
+<div class="emlist-code">
+<pre class="emlist language-yaml highlight">  <span class="na">name</span><span class="pi">:</span> <span class="s">FirstPlugin</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="s">1.0.0</span>
+  <span class="na">main</span><span class="pi">:</span> <span class="s">first.plugin.FirstPlugin</span>
+</pre>
+</div>
+<p>と入力します。ここで間違えると動かないので注意しましょう。 plugin.ymlの中身についてはあとで解説してます。</p>
+<div id="nofunctionpluginyml" class="image">
+<img src="images/takepan/nofunctionpluginyml.jpg" alt="イメージ" class="width-060per" />
+<p class="caption">
+図6.4: イメージ
+</p>
+</div>
+<p>こんな感じです。</p>
+<p>次にプログラムをコンパイルします。FirstPluginを右クリック→エクスポートを選択してください。JARファイルを選択して次へをクリックします。</p>
+<div id="choosejar" class="image">
+<img src="images/takepan/choosejar.png" alt="JARファイルを選択" class="width-060per" />
+<p class="caption">
+図6.5: JARファイルを選択
+</p>
+</div>
+<p>次に、この画面で.classpathと.projectからチェックを外して、plugin.ymlにチェックを入れてください。エクスポートは用意しているサーバーのpluginフォルダに直接してしまいましょう。名前はFirstPlugin.jarにします。この時、エクスポート先にFirstPlugin.jarまで書くようにしてください。画像を参考にしてくださいね。</p>
+<div id="JarExportConfig" class="image">
+<img src="images/takepan/JarExportConfig.png" alt="エクスポート設定" class="width-060per" />
+<p class="caption">
+図6.6: エクスポート設定
+</p>
+</div>
+<p>エクスポートできたらサーバーを起動して、plコマンドを実行してみましょう。緑色でFirstPluginと表示されていたら成功です!</p>
+
+<h2><a id="h6-6"></a><span class="secno">6.6　</span>コマンドを作る</h2>
+<p>マインクラフトをプレイしたことがある人なら、一度はマルチプレイのサーバーにつないだことがあると思います。その時に、サーバー独自のコマンドを使ったことはありませんか？実はそのコマンドたちも、プラグインによって実装されています。ここでは、コマンドを実装してみます。</p>
+
+<h3><a id="h6-6-1"></a>クラスの実装</h3>
+<div class="column">
+
+<h4><a id="column-1"></a>クラスとは？</h4>
+<p>マインクラフトのプラグインを作ってく上で、クラスの概念は重要です。マインクラフトのプラグインでは、コマンドや動作ごとに行う処理一つ一つをそれぞれのクラスを作成して行っています。下の画像のようなイメージです。</p>
+<div id="class_no_ime-ji" class="image">
+<img src="images/takepan/class_no_ime-ji.png" alt="クラスのイメージ画像" class="width-060per" />
+<p class="caption">
+図6.7: クラスのイメージ画像
+</p>
+</div>
+</div>
+<p>クラスの説明が終わったところでクラスを実装してみます。まずは、onEnableメソッドに<code class="inline-code tt">getCommand(&quot;first&quot;).setExecutor(new FirstCommand());</code>と入力してください。これは、「firstってコマンドが入力されたらFirstcommandってクラスで対応してね」という意味です。すると、<code class="inline-code tt">new FirstCommand</code>に赤線が引かれると思います。これは、「FirstCommandってなんやねんワイ知らんわ」という意味です。なので、FirstCommandというクラスを作成する必要があります。その赤線にマウスを合わせて、クラスを作成を押してください。出てきた画面では設定を変えずに作成してください。これで、<code class="inline-code tt">first</code>というコマンドを処理する専用のクラスができました。</p>
+<p>因みに、getCommandのsetExcutorの部分を<code class="inline-code tt">this</code>に設定すると、getCommandを記述したクラスで処理することができます。が、クラスのインポートが必要になりますし、何より見た目が汚くなります。お勧めしません。thisに設定する時には、<code class="inline-code tt">public class FirstPlugin extends JavaPlugin</code>を<code class="inline-code tt">public class FirstPlugin extends JavaPlugin implements CommandExecutor</code>に手動で変更してください。クラスを新規作成した時には自動で追加されるので問題ありません。</p>
+
+<h3><a id="h6-6-2"></a>onCommandメソッドの役割</h3>
+<p>さて、クラスを生成することはできましたが、この自動で入力されたonCommandとは何でしょうか？その役割を見ていきましょう。ちなみにこれもメソッドですよ～。</p>
+
+<h4><a id="h6-6-2-1"></a>onCommandメソッドの引数</h4>
+<p>onCommandメソッドの引数を見てみると<code class="inline-code tt">sender,command,label,args[]</code>の4種類が存在します。一つずつ紹介していきます。</p>
+<dl>
+<dt>sender</dt>
+<dd>コマンドを使った人の情報が入ります。使うにはPlayer型にキャストしなければいけません。</dd>
+<dt>command</dt>
+<dd>コマンドの情報が入ります。基本使わないかな？</dd>
+<dt>labelとargs[]</dt>
+<dd><code class="inline-code tt">/test a b c</code>というコマンドがあったとします。この時、labelに<code class="inline-code tt">a</code>が代入されて、args[0]に<code class="inline-code tt">b</code>、args[1]に<code class="inline-code tt">c</code>が代入されます。これでわかるよね？</dd>
+</dl>
+<p>因みに、クラス作成した直後は<code class="inline-code tt">arg0,arg1,arg2,arg3[]</code>になっています。上で紹介した<code class="inline-code tt">sender,command,label,args[]</code>のほうが簡単なので、書き換えてください。この部誌の中では<code class="inline-code tt">sender,command,label,args[]</code>で説明します。</p>
+<div id="oncommand_syoki" class="image">
+<img src="images/takepan/oncommand_syoki.png" alt="作成したすぐのクラス。変数名をそれぞれ変更することを推奨します。" class="width-100per" />
+<p class="caption">
+図6.8: 作成したすぐのクラス。変数名をそれぞれ変更することを推奨します。
+</p>
+</div>
+
+<h4><a id="h6-6-2-2"></a>onCommandメソッドの返り値</h4>
+<p>onCommandメソッドの返り値はboolean型です。trueの時には特に何も起こりませんが、falseの時にはコマンドを送った人に、あとで紹介するplugin.ymlで設定したメッセージを送信します。</p>
+
+<h3><a id="h6-6-3"></a>onCommandで何か処理してみよう</h3>
+<p>せっかくクラスとメソッドを作ったのに何もしないのはもったいないので、何か処理を実装してみましょう。ここでは、インベントリをダイヤブロックで満たしてみたいと思います。</p>
+<p>ここで、コマンドの送信者について考えてみましょう。もし、このコマンドがコンソールから実行されていたらどうなると思いますか？当然コンソールにアイテムを渡すことができずに、処理に失敗してしまします。無理やり実行するとこのようにエラーが発生します。</p>
+<div id="firstfromconsole" class="image">
+<img src="images/takepan/firstfromconsole.png" alt="consoleに無理やりアイテムを渡そうとしたらこうなる" class="width-060per" />
+<p class="caption">
+図6.9: consoleに無理やりアイテムを渡そうとしたらこうなる
+</p>
+</div>
+<p>なので、コマンドを実行した人にアイテムを渡す前に、コマンドを実行したのがコンソールかプレイヤーかを確認する必要があります。Javaで、変数の型を比較するには<code class="inline-code tt">&quot;instanceof&quot;</code>を使用します。senderがPlayer型の変数ではなかったときはsenderがコンソールなので、return falseで終了させてしまいましょう。実際に書くコードは<code class="inline-code tt"></code>となります。</p>
+<p>次に、コマンドを送信したプレイヤーの情報を取得して、Player型にキャストします。<code class="inline-code tt">Player player</code>で、プレイヤー情報を保存する変数を作成できます。次に、プレイヤー型にキャストしたsenderの情報をplayerに代入します。<code class="inline-code tt">player = (Player)sender</code>でプレイヤー型にキャストすることができます。</p>
+<p>ここで、あれ？と思った人が多いと思います。なんたって、Playerの下に赤線が引かれてますから。これは、「Player型ってなんやねんワイ知らんぞ」とコンパイラが言っているのです。なので、Player型を処理するパッケージをインポートする必要があります。Ctrl+Shift+Oを押してください。赤線がなくなったらOKです。</p>
+<p>次にプレイヤーに渡すアイテムを表す変数を作成します。。まず、ItemStack型の変数itemを作成します。このItemStack型もコンパイラは知らないので、Ctrl+Shift+OでItemStack型をインポートしてください。この時、2つの選択肢を提示されますが、<code class="inline-code tt">org.bukkit...</code>を選択してください。</p>
+<div id="which_select" class="image">
+<img src="images/takepan/which_select.png" alt="こっちを選択してください" class="width-040per" />
+<p class="caption">
+図6.10: こっちを選択してください
+</p>
+</div>
+<p>次に、itemにダイヤモンドというデータを代入します。アイテムデータはItemStackを使用することで取得できます。あとこのnewをくっつけることでインスタンスの生成をすることができます。インスタンスの生成に関してはググってください。実装すると、下のようになります。</p>
+<div class="emlist-code">
+<p class="caption">ダイヤモンドのデータを持つ変数の作成</p>
+<pre class="emlist language-java highlight"><span class="n">ItemStack</span> <span class="n">item</span><span class="o">;</span>
+<span class="n">item</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ItemStack</span><span class="o">(</span><span class="n">Material</span><span class="o">.</span><span class="na">DIAMOND</span><span class="o">);</span>
+</pre>
+</div>
+<p>次に、コマンドの実行者のインベントリを取得します。。Inventory型の変数invを作成して、playerのインベントリを保存します。またいつものように赤線が引かれるのでインポートしてください。次に、送信者のインベントリデータをinvに代入します。playerのインベントリデータは<code class="inline-code tt">player.getInventory()</code>で取得できます。</p>
+<div class="emlist-code">
+<p class="caption">インベントリの取得</p>
+<pre class="emlist language-java highlight"><span class="n">Inventory</span> <span class="n">inv</span> <span class="o">;</span>
+<span class="n">inv</span> <span class="o">=</span> <span class="n">player</span><span class="o">.</span><span class="na">getInventory</span><span class="o">();</span>
+</pre>
+</div>
+<p>最後に、インベントリにアイテムを追加する処理です。インベントリにアイテムを追加する処理は<code class="inline-code tt">addItem()</code>と<code class="inline-code tt">setItem()</code>の2種類が存在します。addItemはプレイヤーのインベントリに場所を指定せずにアイテムを追加します。アイテムを投げられる、とするとイメージがわきやすいと思います。それに対して、setItemではインベントリの指定した場所にアイテムを追加します。もとからあったアイテムは上書きされます。今回は、インベントリをダイヤブロックで満たすので、setItemを使用します。setItemの書式は<code class="inline-code tt">setItem(インベントリ番号,アイテム)</code>です。インベントリ番号は、インベントリスロット一つ一つに割り当てられています。割り当てのイメージは下の画像のような感じです。</p>
+<div id="bango" class="image">
+<img src="images/takepan/bango.png" alt="番号割り振りのイメージ　ダイヤブロックの数が番号を表す" />
+<p class="caption">
+図6.11: 番号割り振りのイメージ　ダイヤブロックの数が番号を表す
+</p>
+</div>
+<p>今回は、0~35のスロットにダイヤモンドをセットします。36回同じ処理を書くのは面倒なので、For文を使ってみましょう。</p>
+<p>プレイヤーにアイテムを渡す処理は以下のようになります。</p>
+<div class="emlist-code">
+<p class="caption">プレイヤーにアイテムを渡す</p>
+<pre class="emlist language-java highlight"><span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">36</span><span class="o">;</span><span class="n">i</span><span class="o">++){</span>
+    <span class="n">inv</span><span class="o">.</span><span class="na">setItem</span><span class="o">(</span><span class="n">i</span><span class="o">,</span><span class="n">item</span><span class="o">);</span>
+<span class="o">}</span>
+</pre>
+</div>
+<p>最後に、コマンドを実行したプレイヤーにメッセージを送信してみる機能を実装してみましょう。<code class="inline-code tt">(プレイヤー型の変数).sendMessage(&quot;メッセージの内容&quot;)</code>で、変数で指定されたプレイヤーにメッセージを送ることができます。playerにキャストして代入したのなら、<code class="inline-code tt">player.sendMessage(&quot;メッセージ内容&quot;)</code>で送信できます。</p>
+<p>さあ、これでコマンドが完成しました。</p>
+<div id="firstcommand2" class="image">
+<img src="images/takepan/firstcommand2.png" alt="ここまで" class="width-080per" />
+<p class="caption">
+図6.12: ここまで
+</p>
+</div>
+<div class="column">
+
+<h4><a id="column-2"></a>変数の初期化</h4>
+<p>上に示したコードでは変数を作成した後に代入していますが、作成するのと同時に初期化してもかまいません。例えばPlayer型の変数を作成するときに<code class="inline-code tt">Player player = (Player)sender</code>のようにすることができます。これより後ではこの方法を使っている前提で説明します。====[/column]</p>
+</div>
+
+<h3><a id="h6-6-4"></a>コマンド作成時に必要なplugin.ymlへの記載</h3>
+<p>ただ、これだけだとコマンドは実行されません。Enable時にplugin.ymlを通じてコマンドの設定をサーバーに読み込ませる必要があります。</p>
+<p>まず、plugin.ymlを開きます。開いたら、次の画像のように入力してください。commands:の後が追加されています。空白の部分はすべて<b>半角スペース2つ</b>で開けてください。タブではないです。</p>
+<div id="pluginyml_command" class="image">
+<img src="images/takepan/pluginyml_command.png" alt="plugin.ymlのイメージ" class="width-040per" />
+<p class="caption">
+図6.13: plugin.ymlのイメージ
+</p>
+</div>
+<div class="column">
+
+<h3><a id="column-3"></a>plugin.ymlの役目とそれぞれの役割</h3>
+<p>plugin.ymlは、サーバーにプラグインの情報を伝える役目をしています。それぞれの設定のセットの役割を確認してみましょう。</p>
+
+<h4><a id="h6-6-4-1"></a>サーバーの基本設定</h4>
+<dl>
+<dt>name</dt>
+<dd>必須。プラグインの名前です。plコマンドを実行したときに表示されたり、pluginフォルダの下に生成されるフォルダ名に適用されたりします。jarファイルの名前と揃えることが推奨。</dd>
+<dt>version</dt>
+<dd>必須。/versino &lt;プラグイン名&gt;が実行されたときに表示されます。バージョン管理番号です。任意の文字列が使用可能です。外部に公開したりするときには真面目に設定したほうがいいです。まあ個人で使う分には0.0.0とか1.0.0でいいでしょう。</dd>
+<dt>main</dt>
+<dd>必須。プラグインのメインクラスの場所を記述します。パッケージ名を含めて指定してください。</dd>
+<dt>description</dt>
+<dd>/version &lt;プラグイン名&gt;が実行されたときに表示されます。必須ではないですが、説明なのでつけておく価値はあります。</dd>
+<dt>commands</dt>
+<dd>プラグインによって追加されるコマンドの設定を記述します。</dd>
+</dl>
+
+<h4><a id="h6-6-4-2"></a>commandsの設定</h4>
+<dl>
+<dt>&lt;コマンド名&gt;</dt>
+<dd>コマンド名を記述します。コマンドはスラッシュ(/)を省いた状態で記述してください。</dd>
+<dt>description</dt>
+<dd>コマンドの説明文です。helpコマンドを実行したときに表示されます。</dd>
+<dt>usage</dt>
+<dd>onCommandメソッドがfalseを返した時に表示されます。&lt;command&gt;を使うと、実際にメッセージが表示されたときに&lt;command&gt;の部分が初めに設定したコマンド名に置き換わります。</dd>
+<dt>default</dt>
+<dd>権限を設定します。permissionでも同じことをしてくれますが、こちらはpermissionの簡易版です。defaultの後にtrue(全員が使用可能),false(全員が使用不可能),op(OPのみ使用可能),notop(OPのみが使用不可能)を指定することができます。</dd>
+</dl>
+<p>permissionの設定周りはここでは扱いません。探したらわかりやすいサイトがたくさん出てくると思います。</p>
+</div>
+<p>plugin.ymlの編集が終わったら、前回と同じようにしてエクスポートしてください。上書きしてもらって構いません。</p>
+<p>サーバーを起動して、plコマンドを実行して、表示されることを確認してください。プラグインが表示されたら、マインクラフトを起動してサーバーにログインして、コマンドを実行してみてください。</p>
+<div id="firstcommandkekka" class="image">
+<img src="images/takepan/firstcommandkekka.png" alt="実行結果" class="width-060per" />
+<p class="caption">
+図6.14: 実行結果
+</p>
+</div>
+<p>インベントリがダイヤブロックで満たされたら成功です!</p>
+
+<h2><a id="h6-7"></a><span class="secno">6.7　</span>configファイルを作ってみる</h2>
+<p>マインクラフトのプラグインを使ったことがある人は、コンフィグファイルを使ったことがあると思います。ここでは、コンフィグ周りの設定方法を解説したいと思います。</p>
+
+<h3><a id="h6-7-1"></a>config.ymlの作成</h3>
+<p>まず最初に元となるコンフィグを作成したいと思います。plugin.ymlと同じようにしてconfig.ymlを作成してしまいましょう。中身はここでは画像のようにしておきます。</p>
+<div id="configyml" class="image">
+<img src="images/takepan/configyml.png" alt="config.ymlの中身はこのようにしておきます。" class="width-080per" />
+<p class="caption">
+図6.15: config.ymlの中身はこのようにしておきます。
+</p>
+</div>
+
+<h3><a id="h6-7-2"></a>config.ymlをサーバーフォルダに保存させる</h3>
+<p>configファイルは起動時に読み込んでおきたいので、onEnableメソッドに記述します。</p>
+<p>plugin/&lt;プラグイン名&gt;のフォルダにconfig.ymlを保存させるには、<code class="inline-code tt">saveDefaultConfig();</code>を使います。この時、このクラスで処理することを明示するためにthisを付けて<code class="inline-code tt">this.saveDefaultConfig();</code>とします。</p>
+<p>saveDefaultConfig()の働き方は、config.ymlが存在しているか存在していないかでわけられます。もしconfig.ymlが存在しないときには、plugin/&lt;プラグイン名&gt;の中にjarファイルの中のconfig.ymlと同じものを作成し、config.ymlが存在するときには何もしません。つまり、上書きされることがない、ということです。</p>
+
+<h3><a id="h6-7-3"></a>configデータを取り込む</h3>
+<p>マインクラフトのプラグインには<code class="inline-code tt">FileConfiguration</code>という型が存在します。ここでは、configという名前の変数を作成します。御多分に洩れず、こんな型知らねーよと帰ってくるのでインポートしてやってください。この型に対して<code class="inline-code tt">getConfig()</code>の戻り値を代入するとconfigデータを取得できます。2つ合わせて<code class="inline-code tt">FileConfiguration config = getConfig()</code>となります。</p>
+<p>次に、一つ一つの項目の取り込みです。例を使って説明します。getConfigで取り込んだconfigファイルの中に、&lt;設定名&gt;: &lt;設定内容(TRUE/FALSE)&gt;というコンフィグファイルがあったとします。この時、&lt;設定内容&gt;を取得するには、<code class="inline-code tt">config.getBoolean(&quot;設定名&quot;);</code>を使うことで取得できます。この<code class="inline-code tt">getBoolean</code>の部分は、&lt;設定内容&gt;の方によって変更可能です。ここではtrueとfalseの判別を付けるために<code class="inline-code tt">getBoolean()</code>を使用します。取得したコンフィグの内容を保存するために変数を一つ作りましょう。ここでは名前を<code class="inline-code tt">config_test</code>とします。変数の初期化と同時に取得するのであれば、<code class="inline-code tt">boolean config_test = config.getBoolean(&quot;first&quot;);</code>のようになります。</p>
+<div class="column">
+
+<h4><a id="column-4"></a>使用可能なget****()シリーズの紹介</h4>
+<p>get****()シリーズには多くの種類があって、<code class="inline-code tt">getBoolean(String),getInt(String),getString(String)</code>などの簡単に想像できるものから、階層でリストアップされているものすべてを取得する<code class="inline-code tt">getList(String),getStringList(String)</code>のようなものもあります。</p>
+</div>
+<p>これでコンフィグデータを取り込むことはできました。あとはgetLoggerを使用してEnable時にtrueとfalse1を表示する処理を実装してみましょう。</p>
+<div class="emlist-code">
+<p class="caption">trueかfalseかを取得して出力する</p>
+<pre class="emlist language-java highlight"><span class="k">if</span><span class="o">(</span><span class="n">config_test</span><span class="o">){</span>
+    <span class="n">getLogger</span><span class="o">().</span><span class="na">info</span><span class="o">(</span><span class="s">"TRUE"</span><span class="o">);</span>
+<span class="o">}</span><span class="k">else</span><span class="o">{</span>
+    <span class="n">getLogger</span><span class="o">().</span><span class="na">info</span><span class="o">(</span><span class="s">"FALSE"</span><span class="o">);</span>
+<span class="o">}</span>
+</pre>
+</div>
+<p>ここまでのソースコードをまとめるとこうなります。</p>
+<div class="emlist-code">
+<p class="caption">onEnableメソッドの中</p>
+<pre class="emlist language-java highlight"><span class="k">this</span><span class="o">.</span><span class="na">saveDefaultConfig</span><span class="o">();</span>
+
+<span class="n">FileConfiguration</span> <span class="n">config</span> <span class="o">=</span> <span class="n">getConfig</span><span class="o">();</span>
+
+<span class="kt">boolean</span> <span class="n">config_test</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="na">getBoolean</span><span class="o">(</span><span class="s">"first"</span><span class="o">);</span>
+
+<span class="k">if</span><span class="o">(</span><span class="n">config_test</span><span class="o">){</span>
+    <span class="n">getLogger</span><span class="o">().</span><span class="na">info</span><span class="o">(</span><span class="s">"TRUE"</span><span class="o">);</span>
+<span class="o">}</span><span class="k">else</span><span class="o">{</span>
+    <span class="n">getLogger</span><span class="o">().</span><span class="na">info</span><span class="o">(</span><span class="s">"FALSE"</span><span class="o">);</span>
+<span class="o">}</span>
+</pre>
+</div>
+<p>ここまでできたら、エクスポートして実行してみましょう。このときに、エクスポートするフォルダにconfig.ymlを含めてください。</p>
+<div id="export_config" class="image">
+<img src="images/takepan/export_config.png" alt="エクスポートするフォルダ" class="width-100per" />
+<p class="caption">
+図6.16: エクスポートするフォルダ
+</p>
+</div>
+<p>エクスポートできたら、サーバーを起動してください。サーバーログにTRUEと出てきましたか？</p>
+<div id="config_true" class="image">
+<img src="images/takepan/config_true.png" alt="TRUEと出てくる" class="width-100per" />
+<p class="caption">
+図6.17: TRUEと出てくる
+</p>
+</div>
+<p>確認したら、サーバーを一度止めて、plugin/firstpluginの中のconfig.ymlの<code class="inline-code tt">first: true</code>を<code class="inline-code tt">first: false</code>に書き換えてください。書き換えた後でサーバーを起動してください。すると...?</p>
+<div id="config_false" class="image">
+<img src="images/takepan/config_false.png" alt="FALSEと出てくる" class="width-100per" />
+<p class="caption">
+図6.18: FALSEと出てくる
+</p>
+</div>
+<p>先ほどと違ってfalseと出てきました。成功ですね。</p>
+
+<h2><a id="h6-8"></a><span class="secno">6.8　</span>おわりに</h2>
+<p>いかがだったでしょうか？僕は中3なのでこれが初めて部誌を書く経験になります。難しいですね...部誌書くの...。とても拙く不自由な日本語だったと自分でも思います。来年こそはもっとうまく書くぞ。</p>
+<p>この部誌を読んでくれた人が一人でも「マインクラフトのプラグインを作ること」に興味を持ってくれるとうれしいです。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="taizo0122.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ ぱそこんであそぼ</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="kota1024.html">
+            <div class="book-cursor"><span class="cursor-next">▶ 簡単blenderモデリング</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

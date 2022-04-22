@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="Google Apps ScriptでTwitter botを作ってみる" href="sashiming.html"><link rel="prev" title="前書き" href="predef.html">  <meta name="generator" content="Re:VIEW" />
+  <title>JINS MEMEで美少女になる話 | NPCA部誌2019</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2019</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">前書き</a></li>
+<li><a href="object_1037.html">1 JINS MEMEで美少女になる話</a></li>
+<li><a href="sashiming.html">2 Google Apps ScriptでTwitter botを作ってみる</a></li>
+<li><a href="sarugami.html">3 Blenderで簡単モデリング！</a></li>
+<li><a href="ficorajo.html">4 C#でファイルを暗号化する</a></li>
+<li><a href="Hiro.html">5 UnityのAIを使って…</a></li>
+<li><a href="motty.html">6 Atomで快適なプログラミング環境を構築してみる</a></li>
+<li><a href="takepan.html">7 iPhoneを使ってお手軽VR</a></li>
+<li><a href="kuro.html">8 Windowsのショートカットキーについて</a></li>
+<li><a href="kusafukakota.html">9 Gmailの活用術</a></li>
+<li><a href="2lu3.html">10 未踏ジュニアとLifeWatcher</a></li>
+<li><a href="harady.html">11 グラフのおはなし</a></li>
+<li><a href="cobalt.html">12 C#の布教</a></li>
+<li><a href="RLtdExp.html">13 プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</a></li>
+<li><a href="mafusuke.html">14 Pythonの高速化について</a></li>
+<li><a href="neko.html">15 Siv3Dでゲームを作る</a></li>
+<li><a href="uraoz.html">16 明日(半年後)から始めるVRChat</a></li>
+<li><a href="hinata.html">17 NPCAの部誌執筆を支える技術</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h1"></a><span class="secno">第1章　</span>JINS MEMEで美少女になる話</h1>
+<p><p style="text-align:right">73回生 object</p></p>
+
+<h2><a id="h1-1"></a><span class="secno">1.1　</span>自己紹介</h2>
+<p>はいどーも！73回生(高2)のobjectです！今回はJINS MEMEで美少女になる話を書きました。</p>
+
+<h2><a id="h1-2"></a><span class="secno">1.2　</span>JINS MEMEとは</h2>
+<p>さて、多くの人はJINS MEMEを知らないと思うので、JINS MEMEについて説明します。</p>
+<p>まず、JINS MEMEというのはJINSが開発したメガネ型ウェアラブルデバイスです。</p>
+<div id="jins-meme" class="image">
+<img src="images/object_1037/jins-meme.jpg" alt="JINS MEME Type-HR" class="width-060per" />
+<p class="caption">
+図1.1: JINS MEME Type-HR
+</p>
+</div>
+<p>シンプルな見た目でありながら、3点式眼電位センサーおよび6軸センサーを搭載しており、Bluetoothでスマホやパソコンにデータを送信できます。</p>
+<dl>
+<dt>3点式眼電位センサー</dt>
+<dd>鼻パッドの部分にあるセンサーで視線やまばたきを検出できる</dd>
+<dt>6軸センサー</dt>
+<dd>x,y,z軸方向の加速度と角速度を計測できる</dd>
+</dl>
+<p>これら2つのセンサーによって、JINS MEMEを装着するだけで頭の動きと目の動きを取得することができます。</p>
+<p>また、開発者向けにSDKが用意されており、有志の開発によるUnityのPluginも存在するため、これらのセンサーを活かした開発が可能です。</p>
+
+<h2><a id="h1-3"></a><span class="secno">1.3　</span>SDKを使う</h2>
+<p>まずはJINS MEMEのSDKを使って計測データを取得してみましょう。</p>
+<p>JINS MEME SDKで取得可能なデータは<a href="https://jins-meme.github.io/sdkdoc/ios/data-and-event.html" class="link">ここ</a>で確認可能です。</p>
+
+<h3><a id="h1-3-1"></a>アプリID/Secretの取得</h3>
+<p>まず、JINS MEMEを<a href="https://jins-meme.com/ja/support/startup-guide/" class="link">スタートアップガイド</a>に従って初期設定します。</p>
+<p>次に、JINS MEMEを使ったアプリケーションを開発するにはアプリID/Secretを作成する必要があるので、<a href="https://developers.jins.com/ja/apps/create/" class="link">アプリ作成画面</a>から必要なことを記入してアプリを作成します。</p>
+<p>今回はiOSで開発するのでプラットフォームはiOSに設定しておきます。</p>
+
+<h3><a id="h1-3-2"></a>iOSでデプロイ</h3>
+<p>次に、<a href="https://developers.jins.com/ja/sdks/ios/" class="link">ここ</a>からSDKをダウンロードします。</p>
+<p>Xcodeで新規プロジェクトを作成し、ダウンロードしたフォルダの中にあるframework/universal/MEMELib.frameworkをプロジェクトにコピーします。</p>
+<p>次に、MEMELib.frameworkをEmbedded Binariesに追加します。</p>
+<div id="embedded-binaries" class="image">
+<img src="images/object_1037/embedded-binaries.png" alt="Embedded Binariesに追加" class="width-060per" />
+<p class="caption">
+図1.2: Embedded Binariesに追加
+</p>
+</div>
+<p>また、JINS MEMEはBLE(Bluetooth Low Energy)でスマホと通信するため、Capabilitiesの欄から、Background ModeをオンにしてBLEにチェックを付けます。</p>
+<div id="background-mode" class="image">
+<img src="images/object_1037/background-mode.png" alt="Background Mode" class="width-060per" />
+<p class="caption">
+図1.3: Background Mode
+</p>
+</div>
+<p>また、Bitcodeが有効になっているとビルドに失敗するのでBuild Settingsの欄からEnable BitcodeをNoにしておきます。</p>
+<p>次に、プロジェクト内に新規ヘッダーファイルを作成し、次のように書き加えます。</p>
+<div id="MEMETest-Bridging-Header.h" class="caption-code">
+<p class="caption">リスト1.1: MEMETest-Bridging-Header.h</p>
+<pre class="list language-objective_c highlight"><span class="cp">#import &lt;MEMELib/MEMELib.h&gt;
+</span>
+</pre>
+</div>
+<p>ヘッダーファイルを作っただけでは認識されないので、Build Settingsの欄から、Objective-C Bridging HeaderにMEMETest-Bridging-Header.hを追加します。</p>
+<div id="BridgingHeader" class="image">
+<img src="images/object_1037/BridgingHeader.png" alt="Bridging Header" class="width-060per" />
+<p class="caption">
+図1.4: Bridging Header
+</p>
+</div>
+<p>次に、アプリケーション認証をするためのコードを書きます。</p>
+<p>AppDelegate.swiftを開いて、以下のように書き加えます。</p>
+<div id="appcerrification" class="caption-code">
+<p class="caption">リスト1.2: AppDelegate.swift</p>
+<pre class="list language-swift highlight"><span class="k">let</span> <span class="nv">appId</span> <span class="o">=</span> <span class="s">"appId"</span>
+<span class="k">let</span> <span class="nv">appSecret</span> <span class="o">=</span> <span class="s">"appSecret"</span>
+
+<span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">application</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span> <span class="n">didFinishLaunchingWithOptions</span> <span class="nv">launchOptions</span><span class="p">:</span> <span class="p">[</span><span class="kt">UIApplication</span><span class="o">.</span><span class="kt">LaunchOptionsKey</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]?)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
+  <span class="c1">// Override point for customization after application launch.</span>
+  <span class="kt">MEMELib</span><span class="o">.</span><span class="nf">setAppClientId</span><span class="p">(</span><span class="n">appId</span><span class="p">,</span> <span class="nv">clientSecret</span><span class="p">:</span> <span class="n">appSecret</span><span class="p">)</span>
+  <span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>一行目と二行目に代入する値は、先程取得したアプリID/Secretで置き換えておきます。</p>
+<p>次に、データを受信するコードを書きます。</p>
+<p>ViewController.swiftを開いて以下のように書き加えます。</p>
+<div id="receivedata" class="caption-code">
+<p class="caption">リスト1.3: ViewController.swift</p>
+<pre class="list language-swift highlight"><span class="kd">import</span> <span class="kt">UIKit</span>
+
+<span class="kd">class</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="kt">MEMELibDelegate</span> <span class="p">{</span>
+
+  <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">super</span><span class="o">.</span><span class="nf">viewDidLoad</span><span class="p">()</span>
+    <span class="c1">// Do any additional setup after loading the view, typically from a nib.</span>
+    <span class="kt">MEMELib</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="k">self</span>
+  <span class="p">}</span>
+
+  <span class="k">override</span> <span class="kd">func</span> <span class="nf">didReceiveMemoryWarning</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">super</span><span class="o">.</span><span class="nf">didReceiveMemoryWarning</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">memeAppAuthorized</span><span class="p">(</span><span class="n">_</span> <span class="nv">status</span><span class="p">:</span> <span class="kt">MEMEStatus</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">MEMELib</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">startScanningPeripherals</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">memePeripheralFound</span><span class="p">(</span><span class="n">_</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="o">!</span><span class="p">,</span> <span class="n">withDeviceAddress</span> <span class="nv">address</span><span class="p">:</span> <span class="kt">String</span><span class="o">!</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">MEMELib</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()</span><span class="o">.</span><span class="nf">connect</span><span class="p">(</span><span class="n">peripheral</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">memePeripheralConnected</span><span class="p">(</span><span class="n">_</span> <span class="nv">peripheral</span><span class="p">:</span> <span class="kt">CBPeripheral</span><span class="o">!</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nv">status</span> <span class="o">=</span> <span class="kt">MEMELib</span><span class="o">.</span><span class="nf">sharedInstance</span><span class="p">()?</span><span class="o">.</span><span class="nf">startDataReport</span><span class="p">()</span>
+    <span class="nf">print</span> <span class="p">(</span><span class="n">status</span> <span class="k">as</span> <span class="kt">Any</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">memeRealTimeModeDataReceived</span><span class="p">(</span><span class="n">_</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">MEMERealTimeData</span><span class="o">!</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">print</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</pre>
+</div>
+<p>このコードでは、まず一回目の<code class="inline-code tt">sharedInstance()</code>がコールされたら先程のアプリ認証が走り、認証に成功すると<code class="inline-code tt">memeAppAuthorized</code>が呼ばれ、<code class="inline-code tt">startScanningPeripherals()</code>をコールして接続済みのJINS MEMEを探します。</p>
+<p>次に、接続済みのJINS MEMEが見つかったら<code class="inline-code tt">memePeripheralFound</code>が呼ばれ、<code class="inline-code tt">connect(peripheral)</code>をコールしてアプリとJINS MEMEを接続します。</p>
+<p>JINS MEMEとアプリが接続されたら、<code class="inline-code tt">memePeripheralConnected</code>が呼ばれ、<code class="inline-code tt">startDataReport()</code>をコールするとデータを取得開始し、<code class="inline-code tt">memeRealTimeModeDataReceived</code>でデータを受け取って出力します。</p>
+<p>実はここで少し問題があり、このコードだと事前にJINS MEME公式アプリ等でiPhoneとJINS MEMEを接続しておく必要があるのですが、公式のアプリは「スタンダードモード」という一分間に一回の通信を行うモードで動いているのに対してSDKを使った独自アプリは「リアルタイムモード」のみ利用可能です。</p>
+<p>さらに、二つのモードを同時に動かすことはできません。</p>
+<p>つまり公式のアプリでJINS MEMEを事前に接続しつつアプリ実行時はスタンダードモードでの通信を止めておく必要があります。</p>
+<p>そこで、公式アプリで一度接続を切ってから再接続した後、ライブビューでリアルタイムモードに切り替え、そのまま公式アプリを閉じて自作アプリを動かすとうまくいきます。</p>
+<div id="realtimedata" class="image">
+<img src="images/object_1037/realtimedata.png" alt="JINS MEMEからのデータを受信する" class="width-060per" />
+<p class="caption">
+図1.5: JINS MEMEからのデータを受信する
+</p>
+</div>
+<p>取得したデータは<span class="imgref">図1.5</span>のように出力されます。</p>
+
+<h2><a id="h1-4"></a><span class="secno">1.4　</span>UnityのPluginを使う</h2>
+<p>すでに述べたように、JINS MEMEには有志の開発によるUnityのPluginが存在します。</p>
+<p>せっかくなのでUnityを使って開発をしていきます。</p>
+<p>まず、<a href="https://github.com/SystemFriend/JINS-MEME-Unity-Plugin" class="link">ここ</a>からUnity用Pluginをダウンロードし、適当なUnityのプロジェクトを作成してMEMEUnity/Assetsフォルダ内をUnityのプロジェクトのAssetsフォルダに移動させます。</p>
+<p>次に、READMEに書いてあるとおりにセットアップして、MEMEUnityTest/Scenes/MainをiOSでBuildします。</p>
+<p>Buildできたら先程と同じようにJINS MEMEをiPhoneに接続してアプリを起動するとJINS MEMEの動きに合わせてCubeが動きます。</p>
+<div id="memecube" class="image">
+<img src="images/object_1037/memecube.jpg" alt="Cubeが動く" class="width-040per" />
+<p class="caption">
+図1.6: Cubeが動く
+</p>
+</div>
+
+<h2><a id="h1-5"></a><span class="secno">1.5　</span>美少女を動かす</h2>
+<p>JINS MEMEの情報をUnityで使えるようになったので、3Dモデルを動かしていきましょう。</p>
+
+<h3><a id="h1-5-1"></a>用意するもの</h3>
+<ul>
+<li><a href="http://unity-chan.com/download/releaseNote.php?id=UnityChan" class="link">ユニティちゃん</a>(動かすモデル。別になんでもいい)</li>
+<li>UniRx(Asset Storeからインストール)</li>
+</ul>
+
+<h3><a id="h1-5-2"></a>データを受け取る</h3>
+<p>まずはJINS MEMEからデータを受け取るためのコードをUniRxを使って書きます。</p>
+<div id="MyAppMEMEProxy" class="caption-code">
+<p class="caption">リスト1.4: MyAppMEMEProxy.cs</p>
+<pre class="list language-csharp highlight"><span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine.UI</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UniRx</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">MyAppMEMEProxy</span> <span class="p">:</span> <span class="n">MEMEProxy</span>
+<span class="p">{</span>
+  <span class="c1">// 自分のAppのIDとSecretを入力</span>
+  <span class="k">private</span> <span class="k">const</span> <span class="kt">string</span> <span class="n">appClientId</span> <span class="p">=</span> <span class="s">"appId"</span><span class="p">;</span>
+  <span class="k">private</span> <span class="k">const</span> <span class="kt">string</span> <span class="n">appClientSecret</span> <span class="p">=</span> <span class="s">"appSecret"</span><span class="p">;</span>
+
+  <span class="k">public</span> <span class="k">static</span> <span class="n">MyAppMEMEProxy</span> <span class="n">Instance</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+
+  <span class="k">public</span> <span class="n">Subject</span><span class="p">&lt;</span><span class="n">MEMERealtimeData</span><span class="p">&gt;</span> <span class="n">dataStream</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Subject</span><span class="p">&lt;</span><span class="n">MEMERealtimeData</span><span class="p">&gt;();</span>
+  <span class="k">public</span> <span class="n">MEMERealtimeData</span> <span class="n">Data</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">private</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="k">private</span> <span class="k">void</span> <span class="nf">Awake</span><span class="p">()</span>
+  <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">Instance</span> <span class="p">==</span> <span class="k">null</span><span class="p">){</span>
+      <span class="n">Instance</span> <span class="p">=</span> <span class="k">this</span><span class="p">;</span>
+      <span class="nf">DontDestroyOnLoad</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">gameObject</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+      <span class="nf">Destroy</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">gameObject</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">void</span> <span class="nf">OnEnable</span><span class="p">()</span>
+  <span class="p">{</span>
+    <span class="n">MEMEProxy</span><span class="p">.</span><span class="nf">StartSession</span><span class="p">(</span><span class="n">MyAppMEMEProxy</span><span class="p">.</span><span class="n">appClientId</span><span class="p">,</span> <span class="n">MyAppMEMEProxy</span><span class="p">.</span><span class="n">appClientSecret</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">void</span> <span class="nf">OnDisable</span><span class="p">()</span>
+  <span class="p">{</span>
+    <span class="n">MEMEProxy</span><span class="p">.</span><span class="nf">EndSession</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="k">public</span> <span class="k">override</span> <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span>
+  <span class="p">{</span>
+    <span class="k">base</span><span class="p">.</span><span class="nf">Start</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="k">void</span> <span class="nf">Update</span><span class="p">()</span>
+  <span class="p">{</span>
+    <span class="n">Data</span> <span class="p">=</span> <span class="n">MEMEProxy</span><span class="p">.</span><span class="nf">GetSensorValues</span><span class="p">();</span> <span class="c1">// ここでデータを受け取る</span>
+    <span class="k">if</span> <span class="p">(!</span><span class="n">Data</span><span class="p">.</span><span class="n">isValid</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">dataStream</span><span class="p">.</span><span class="nf">OnNext</span><span class="p">(</span><span class="n">Data</span><span class="p">);</span> <span class="c1">// データをストリームに流す</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+
+<h3><a id="h1-5-3"></a>注視方向を動かす</h3>
+<p>次に、この受け取ったデータを利用して注視方向を動かしてみます。</p>
+<div id="LookAtController" class="caption-code">
+<p class="caption">リスト1.5: LookAtController.cs</p>
+<pre class="list language-csharp highlight"><span class="k">using</span> <span class="nn">System.Collections</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UniRx</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">LookAtController</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
+<span class="p">{</span>
+
+  <span class="n">Vector3</span> <span class="n">baseMemeRadius</span><span class="p">;</span>
+  <span class="n">Vector3</span> <span class="n">cameraPos</span><span class="p">;</span>
+  <span class="n">Vector3</span> <span class="n">targetPos</span><span class="p">;</span>
+  <span class="n">Animator</span> <span class="n">animator</span><span class="p">;</span>
+  <span class="c1">// 基準値の状態判定用</span>
+  <span class="kt">int</span> <span class="n">existbaseMemeRadius</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+
+  <span class="c1">// Start is called before the first frame update</span>
+  <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span>
+  <span class="p">{</span>
+    <span class="n">GameObject</span> <span class="n">mainCamera</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="nf">FindGameObjectWithTag</span> <span class="p">(</span><span class="s">"MainCamera"</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">cameraPos</span> <span class="p">=</span> <span class="n">mainCamera</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">localPosition</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">targetPos</span> <span class="p">=</span> <span class="n">cameraPos</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">animator</span> <span class="p">=</span> <span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">Animator</span><span class="p">&gt;();</span>
+
+    <span class="c1">// データを受け取る</span>
+    <span class="n">MyAppMEMEProxy</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="n">dataStream</span><span class="p">.</span><span class="nf">Subscribe</span><span class="p">(</span><span class="n">data</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">existbaseMemeRadius</span> <span class="p">==</span> <span class="m">0</span> <span class="p">&amp;&amp;</span> <span class="p">!</span><span class="n">Mathf</span><span class="p">.</span><span class="nf">Approximately</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">pitch</span><span class="p">,</span> <span class="m">0.0f</span><span class="p">)</span> <span class="p">&amp;&amp;</span> <span class="p">!</span><span class="n">Mathf</span><span class="p">.</span><span class="nf">Approximately</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">yaw</span><span class="p">,</span> <span class="m">0.0f</span><span class="p">)</span> <span class="p">&amp;&amp;</span> <span class="p">!</span><span class="n">Mathf</span><span class="p">.</span><span class="nf">Approximately</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">roll</span><span class="p">,</span> <span class="m">0.0f</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 基準値を設定</span>
+        <span class="n">baseMemeRadius</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Vector3</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">pitch</span><span class="p">,</span> <span class="n">data</span><span class="p">.</span><span class="n">yaw</span><span class="p">,</span> <span class="n">data</span><span class="p">.</span><span class="n">roll</span><span class="p">);</span>
+        <span class="n">existbaseMemeRadius</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="kt">float</span> <span class="n">pitchDif</span> <span class="p">=</span> <span class="n">baseMemeRadius</span><span class="p">.</span><span class="n">x</span> <span class="p">-</span> <span class="n">data</span><span class="p">.</span><span class="n">pitch</span><span class="p">;</span>
+      <span class="kt">float</span> <span class="n">yawDif</span> <span class="p">=</span> <span class="n">baseMemeRadius</span><span class="p">.</span><span class="n">y</span> <span class="p">-</span> <span class="n">data</span><span class="p">.</span><span class="n">yaw</span><span class="p">;</span>
+      <span class="kt">float</span> <span class="n">rollDif</span> <span class="p">=</span> <span class="n">baseMemeRadius</span><span class="p">.</span><span class="n">z</span> <span class="p">-</span> <span class="n">data</span><span class="p">.</span><span class="n">roll</span><span class="p">;</span>
+
+      <span class="c1">// yaw の境界線の検知</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="nf">Abs</span><span class="p">(</span><span class="n">baseMemeRadius</span><span class="p">.</span><span class="n">y</span> <span class="p">-</span> <span class="n">data</span><span class="p">.</span><span class="n">yaw</span><span class="p">)</span> <span class="p">&gt;</span> <span class="m">180.0f</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">yaw</span> <span class="p">&gt;</span> <span class="m">180.0f</span><span class="p">)</span> <span class="p">{</span>
+          <span class="n">yawDif</span> <span class="p">=</span> <span class="n">baseMemeRadius</span><span class="p">.</span><span class="n">y</span> <span class="p">-</span> <span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">yaw</span> <span class="p">-</span> <span class="m">360.0f</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="n">yawDif</span> <span class="p">=</span> <span class="n">baseMemeRadius</span><span class="p">.</span><span class="n">y</span> <span class="p">-</span> <span class="p">(</span><span class="m">360.0f</span> <span class="p">+</span> <span class="n">data</span><span class="p">.</span><span class="n">yaw</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+
+      <span class="nf">PlayLookAt</span><span class="p">(</span><span class="n">pitchDif</span><span class="p">,</span> <span class="n">yawDif</span><span class="p">,</span> <span class="n">rollDif</span><span class="p">);</span>
+    <span class="p">}).</span><span class="nf">AddTo</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">void</span> <span class="nf">PlayLookAt</span><span class="p">(</span><span class="kt">float</span> <span class="n">pitchDif</span><span class="p">,</span> <span class="kt">float</span> <span class="n">yawDif</span><span class="p">,</span> <span class="kt">float</span> <span class="n">rollDif</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kt">float</span> <span class="n">xPos</span> <span class="p">=</span> <span class="m">0.0f</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">yPos</span> <span class="p">=</span> <span class="m">0.0f</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">zPos</span> <span class="p">=</span> <span class="m">0.0f</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">yawDif</span> <span class="p">&lt;</span> <span class="p">-</span><span class="m">120.0f</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">xPos</span> <span class="p">=</span> <span class="p">-</span><span class="m">1.5f</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">yawDif</span> <span class="p">&gt;</span> <span class="m">120.0f</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">xPos</span> <span class="p">=</span> <span class="m">1.5f</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">xPos</span> <span class="p">=</span> <span class="n">yawDif</span> <span class="p">/</span> <span class="m">90.0f</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">pitchDif</span> <span class="p">&lt;</span> <span class="p">-</span><span class="m">120.0f</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">yPos</span> <span class="p">=</span> <span class="p">-</span><span class="m">1.5f</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">pitchDif</span> <span class="p">&gt;</span> <span class="m">120.0f</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">yPos</span> <span class="p">=</span> <span class="m">1.5f</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">yPos</span> <span class="p">=</span> <span class="n">pitchDif</span> <span class="p">/</span> <span class="m">90.0f</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">rollDif</span> <span class="p">&lt;</span> <span class="p">-</span><span class="m">120.0f</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">zPos</span> <span class="p">=</span> <span class="p">-</span><span class="m">1.5f</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">rollDif</span> <span class="p">&gt;</span> <span class="m">120.0f</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">zPos</span> <span class="p">=</span> <span class="m">1.5f</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">zPos</span> <span class="p">=</span> <span class="n">rollDif</span> <span class="p">/</span> <span class="m">90.0f</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Vector3</span> <span class="n">movePos</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Vector3</span><span class="p">(</span><span class="n">xPos</span><span class="p">,</span> <span class="n">yPos</span><span class="p">,</span> <span class="n">zPos</span><span class="p">);</span>
+    <span class="n">targetPos</span> <span class="p">=</span> <span class="n">cameraPos</span> <span class="p">+</span> <span class="n">movePos</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">private</span> <span class="k">void</span> <span class="nf">OnAnimatorIK</span><span class="p">(</span><span class="kt">int</span> <span class="n">layerIndex</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">animator</span><span class="p">.</span><span class="nf">SetLookAtWeight</span><span class="p">(</span><span class="m">1.0f</span><span class="p">,</span> <span class="m">0.2f</span><span class="p">,</span> <span class="m">1.0f</span><span class="p">,</span> <span class="m">0.2f</span><span class="p">,</span> <span class="m">0f</span><span class="p">);</span>
+    <span class="n">animator</span><span class="p">.</span><span class="nf">SetLookAtPosition</span><span class="p">(</span><span class="n">targetPos</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</pre>
+</div>
+<p>Unity上でMyAppMEMEProxy.csをMEMEProxyにアタッチして、LookAtController.csをユニティちゃんにアタッチします。</p>
+<p>ユニティちゃんのAnimator ControllerはUnityChanLocomotionにして、カメラの位置等を調整した後iOSでビルドするとUnityちゃんがJINS MEMEの動きに合わせて動きます。</p>
+<div id="UnityChan" class="image">
+<img src="images/object_1037/UnityChan.jpeg" alt="ユニティちゃんが動く" class="width-040per" />
+<p class="caption">
+図1.7: ユニティちゃんが動く
+</p>
+</div>
+
+<h3><a id="h1-5-4"></a>リセットボタンを付ける</h3>
+<p>このままでは、例えばうつむいた状態でアプリを起動してしまった場合、うつむいた状態を基準として注視方向を決定するので不便です。</p>
+<p>そこで、任意のタイミングで押すことでそのときの状態を基準値に上書きするようなボタンを作ります。</p>
+<p>まずLookAtController.csに次のコードを追記します。</p>
+<div id="RestoreCenter" class="caption-code">
+<p class="caption">リスト1.6: LookAtController.cs</p>
+<pre class="list language-csharp highlight"><span class="k">public</span> <span class="k">void</span> <span class="nf">RestoreCenter</span><span class="p">(){</span>
+  <span class="n">existbaseMemeRadius</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p><code class="inline-code tt">existbaseMemeRadius</code>は0と1で基準値の状態を識別します。0の場合基準値を現在のデータに上書きして<code class="inline-code tt">existbaseMemeRadius</code>を1に戻します。</p>
+<p>ボタンは(なぜか)最初から存在するので、コードを追記したらUnity側でボタンを押したときにこの関数を呼ぶよう設定すればリセット機能が使えます。</p>
+
+<h3><a id="h1-5-5"></a>まばたきさせる</h3>
+<p>頭が一通り動くようになったので次は目を動かしていきます。</p>
+<p>まずはまばたきをさせてみましょう。</p>
+<div id="BlinkController" class="caption-code">
+<p class="caption">リスト1.7: BlinkController.cs</p>
+<pre class="list language-csharp highlight"><span class="k">using</span> <span class="nn">System.Collections</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UniRx</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">BlinkController</span> <span class="p">:</span> <span class="n">MonoBehaviour</span> <span class="p">{</span>
+
+  <span class="k">public</span> <span class="kt">float</span> <span class="n">blinkSpeed</span> <span class="p">=</span> <span class="m">0.4f</span><span class="p">;</span> <span class="c1">// まばたきの時間</span>
+  <span class="k">private</span> <span class="kt">float</span> <span class="n">timeRemaining</span> <span class="p">=</span> <span class="m">0.0f</span><span class="p">;</span>
+  <span class="k">private</span> <span class="kt">bool</span> <span class="n">timerStarted</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+  <span class="k">public</span> <span class="n">SkinnedMeshRenderer</span> <span class="n">ref_SMR_EYE_DEF</span><span class="p">;</span>
+  <span class="k">public</span> <span class="n">SkinnedMeshRenderer</span> <span class="n">ref_SMR_EL_DEF</span><span class="p">;</span>
+  <span class="k">private</span> <span class="kt">bool</span> <span class="n">isBlink</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+  <span class="k">public</span> <span class="kt">float</span> <span class="n">ratio_Close</span> <span class="p">=</span> <span class="m">85.0f</span><span class="p">;</span>
+  <span class="k">public</span> <span class="kt">float</span> <span class="n">ratio_HalfClose</span> <span class="p">=</span> <span class="m">20.0f</span><span class="p">;</span>
+  <span class="p">[</span><span class="n">HideInInspector</span><span class="p">]</span>
+  <span class="k">public</span> <span class="kt">float</span>
+        <span class="n">ratio_Open</span> <span class="p">=</span> <span class="m">0.0f</span><span class="p">;</span>
+
+  <span class="k">enum</span> <span class="n">Status</span><span class="p">{</span>
+    <span class="n">Close</span><span class="p">,</span>
+    <span class="n">HalfClose</span><span class="p">,</span>
+    <span class="n">Open</span>
+  <span class="p">}</span>
+
+  <span class="k">private</span> <span class="n">Status</span> <span class="n">eyeStatus</span><span class="p">;</span>
+
+  <span class="c1">// Start is called before the first frame update</span>
+  <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">ResetTimer</span><span class="p">();</span>
+    <span class="n">MyAppMEMEProxy</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="n">dataStream</span><span class="p">.</span><span class="nf">Subscribe</span><span class="p">(</span><span class="n">data</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">blinkStrength</span> <span class="p">&gt;=</span> <span class="m">50</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">isBlink</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}).</span><span class="nf">AddTo</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">void</span> <span class="nf">SetCloseEyes</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="n">ref_SMR_EYE_DEF</span><span class="p">.</span><span class="nf">SetBlendShapeWeight</span> <span class="p">(</span><span class="m">6</span><span class="p">,</span> <span class="n">ratio_Close</span><span class="p">);</span>
+    <span class="n">ref_SMR_EL_DEF</span><span class="p">.</span><span class="nf">SetBlendShapeWeight</span> <span class="p">(</span><span class="m">6</span><span class="p">,</span> <span class="n">ratio_Close</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">void</span> <span class="nf">SetHalfCloseEyes</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="n">ref_SMR_EYE_DEF</span><span class="p">.</span><span class="nf">SetBlendShapeWeight</span> <span class="p">(</span><span class="m">6</span><span class="p">,</span> <span class="n">ratio_HalfClose</span><span class="p">);</span>
+    <span class="n">ref_SMR_EL_DEF</span><span class="p">.</span><span class="nf">SetBlendShapeWeight</span> <span class="p">(</span><span class="m">6</span><span class="p">,</span> <span class="n">ratio_HalfClose</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">void</span> <span class="nf">SetOpenEyes</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="n">ref_SMR_EYE_DEF</span><span class="p">.</span><span class="nf">SetBlendShapeWeight</span> <span class="p">(</span><span class="m">6</span><span class="p">,</span> <span class="n">ratio_Open</span><span class="p">);</span>
+    <span class="n">ref_SMR_EL_DEF</span><span class="p">.</span><span class="nf">SetBlendShapeWeight</span> <span class="p">(</span><span class="m">6</span><span class="p">,</span> <span class="n">ratio_Open</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">void</span> <span class="nf">ResetTimer</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="n">timeRemaining</span> <span class="p">=</span> <span class="n">blinkSpeed</span><span class="p">;</span>
+    <span class="n">timerStarted</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="k">void</span> <span class="nf">Update</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(!</span><span class="n">timerStarted</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">eyeStatus</span> <span class="p">=</span> <span class="n">Status</span><span class="p">.</span><span class="n">Close</span><span class="p">;</span>
+      <span class="n">timerStarted</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">timerStarted</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">timeRemaining</span> <span class="p">-=</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">timeRemaining</span> <span class="p">&lt;=</span> <span class="m">0.0f</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">eyeStatus</span> <span class="p">=</span> <span class="n">Status</span><span class="p">.</span><span class="n">Open</span><span class="p">;</span>
+        <span class="nf">ResetTimer</span> <span class="p">();</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">timeRemaining</span> <span class="p">&lt;=</span> <span class="n">blinkSpeed</span> <span class="p">*</span> <span class="m">0.3f</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">eyeStatus</span> <span class="p">=</span> <span class="n">Status</span><span class="p">.</span><span class="n">HalfClose</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="k">void</span> <span class="nf">LateUpdate</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">isBlink</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">switch</span> <span class="p">(</span><span class="n">eyeStatus</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="n">Status</span><span class="p">.</span><span class="n">Close</span><span class="p">:</span>
+        <span class="nf">SetCloseEyes</span> <span class="p">();</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="k">case</span> <span class="n">Status</span><span class="p">.</span><span class="n">HalfClose</span><span class="p">:</span>
+        <span class="nf">SetHalfCloseEyes</span> <span class="p">();</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="k">case</span> <span class="n">Status</span><span class="p">.</span><span class="n">Open</span><span class="p">:</span>
+        <span class="nf">SetOpenEyes</span> <span class="p">();</span>
+        <span class="n">isBlink</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>ユニティちゃんには自動まばたき用のAutoBlink.csというscriptが同梱されているのですが、今回はそれを改造しています。</p>
+<p>AutoBlink.csはランダムなタイミングで<code class="inline-code tt">isBlink</code>を<code class="inline-code tt">true</code>にすることでまばたきさせるスクリプトなので、JINS MEMEから送られてくるまばたきの強さ(<code class="inline-code tt">blinkStrength</code>)の値が一定以上なら<code class="inline-code tt">isBlink</code>を<code class="inline-code tt">true</code>にするように変えています。</p>
+<p>このコードをユニティちゃんにアタッチした後、<code class="inline-code tt">ref_SMR_EYE_DEF</code>と<code class="inline-code tt">ref_SMR_EL_DEF</code>にそれぞれEYE_DEFとEL_DEF(ユニティちゃんの中にある)を参照させるとまばたきができます。</p>
+
+<h3><a id="h1-5-6"></a>視線を動かす</h3>
+<p>次に視線を動かします。JINS MEMEでは視線の上下左右の動きを5段階の強度で取得することができるので、そのデータに合わせて視線を動かします。</p>
+<div id="EyeController" class="caption-code">
+<p class="caption">リスト1.8: EyeController.cs</p>
+<pre class="list language-csharp highlight"><span class="k">using</span> <span class="nn">System.Collections</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UniRx</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">EyeController</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
+<span class="p">{</span>
+  <span class="k">private</span> <span class="n">Animator</span> <span class="n">animator</span><span class="p">;</span>
+  <span class="kt">float</span> <span class="n">weight</span><span class="p">;</span>
+  <span class="n">Vector3</span> <span class="n">LookPos</span><span class="p">;</span>
+  <span class="k">public</span> <span class="n">MeshRenderer</span> <span class="n">eyeL</span><span class="p">;</span>
+  <span class="k">public</span> <span class="n">MeshRenderer</span> <span class="n">eyeR</span><span class="p">;</span>
+  <span class="k">private</span> <span class="n">Vector2</span> <span class="n">eyeOffset</span><span class="p">;</span>
+
+  <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span>
+  <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">animator</span> <span class="p">=</span> <span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">Animator</span><span class="p">&gt;();</span>
+    <span class="n">eyeL</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="s">"eye_L_old"</span><span class="p">).</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">MeshRenderer</span><span class="p">&gt;();</span>
+    <span class="n">eyeR</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="s">"eye_R_old"</span><span class="p">).</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">MeshRenderer</span><span class="p">&gt;();</span>
+    <span class="n">eyeOffset</span> <span class="p">=</span> <span class="n">Vector2</span><span class="p">.</span><span class="n">zero</span><span class="p">;</span>
+
+    <span class="n">MyAppMEMEProxy</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="n">dataStream</span><span class="p">.</span><span class="nf">Subscribe</span><span class="p">(</span><span class="n">data</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+      <span class="k">switch</span> <span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">eyeMoveUp</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="m">1</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="p">-</span><span class="m">0.055f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="m">2</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="p">-</span><span class="m">0.1f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="m">3</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="p">-</span><span class="m">0.12f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="m">4</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="p">-</span><span class="m">0.14f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">switch</span> <span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">eyeMoveDown</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="m">1</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="m">0.055f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="m">2</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="m">0.1f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="m">3</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="m">0.12f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="m">4</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="m">0.14f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">switch</span> <span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">eyeMoveLeft</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="m">1</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="m">0.055f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="m">2</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="m">0.1f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="m">3</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="m">0.15f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="m">4</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="m">0.2f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">switch</span> <span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">eyeMoveRight</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="m">1</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="p">-</span><span class="m">0.055f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="m">2</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="p">-</span><span class="m">0.1f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="m">3</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="p">-</span><span class="m">0.15f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="m">4</span><span class="p">:</span>
+          <span class="n">eyeOffset</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="p">-</span><span class="m">0.2f</span><span class="p">;</span>
+          <span class="k">break</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="nf">PlayLookEye</span><span class="p">();</span>
+    <span class="p">}).</span><span class="nf">AddTo</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">void</span> <span class="nf">PlayLookEye</span><span class="p">(){</span>
+    <span class="n">eyeL</span><span class="p">.</span><span class="n">material</span><span class="p">.</span><span class="nf">SetTextureOffset</span><span class="p">(</span><span class="s">"_MainTex"</span><span class="p">,</span> <span class="n">eyeOffset</span><span class="p">);</span>
+    <span class="n">eyeR</span><span class="p">.</span><span class="n">material</span><span class="p">.</span><span class="nf">SetTextureOffset</span><span class="p">(</span><span class="s">"_MainTex"</span><span class="p">,</span> <span class="n">eyeOffset</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>視線を動かすのにはMaterialのSetTextureOffsetというものを使って目の位置を変えています。</p>
+<p>このスクリプトをユニティちゃんにアタッチして<code class="inline-code tt">eyeL</code>と<code class="inline-code tt">eyeR</code>にそれぞれeye_L_oldとeye_R_oldを入れると視線が動くようになります。</p>
+
+<h3><a id="h1-5-7"></a>電池残量を表示する</h3>
+<p>ここで美少女を動かす話から少し脇道にそれますが、JINS MEMEの電池残量がわかると便利なのでそれを表示する機能をつけます。</p>
+<p>まず電池の枠と内部の透過画像を用意してAssets内に放り込み、Texture TypeをSpriteに変更します。</p>
+<p>次にHierarchy内でUI -&gt; Imageと選択し、それぞれframe、batteryとしてSource Imageに対応する画像を入れます。また、中身の画像の方はImage TypeをFilledに変更し、Fill MethodをVerticalにしておきます。</p>
+<p>次にBatteryController.csを作成し、次のように書き加えます。</p>
+<div id="BatteryController" class="caption-code">
+<p class="caption">リスト1.9: BatteryController.cs</p>
+<pre class="list language-csharp highlight"><span class="k">using</span> <span class="nn">System.Collections</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine.UI</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UniRx</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">BatteryController</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
+<span class="p">{</span>
+  <span class="n">GameObject</span> <span class="n">battery</span><span class="p">;</span>
+
+  <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span>
+  <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">battery</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="s">"battery"</span><span class="p">);</span>
+    <span class="n">MyAppMEMEProxy</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="n">dataStream</span><span class="p">.</span><span class="nf">Subscribe</span><span class="p">(</span><span class="n">data</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="n">battery</span><span class="p">.</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">Image</span><span class="p">&gt;().</span><span class="n">fillAmount</span> <span class="p">=</span> <span class="n">data</span><span class="p">.</span><span class="n">powerLeft</span> <span class="p">*</span> <span class="m">0.2f</span><span class="p">;</span>
+    <span class="p">}).</span><span class="nf">AddTo</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>fillAmountで電池残量に対応して表示が変わるようにしています。</p>
+<p>このスクリプトをCanvasにアタッチすると電池残量に応じて表示が変わります。</p>
+<div id="battery" class="image">
+<img src="images/object_1037/battery.jpg" alt="左上に電池残量が表示されている" class="width-040per" />
+<p class="caption">
+図1.8: 左上に電池残量が表示されている
+</p>
+</div>
+
+<h3><a id="h1-5-8"></a>リップシンクを実装する</h3>
+<p>今まででJINS MEMEから受け取れる情報のうち使えそうなものはすべて使ったのですが、口が動いたほうがよりそれっぽいと思ったので口を動かしてみたいと思います。</p>
+<p>口を動かす方法はカメラで口の動きを認識する等があるのですが、今回はマイクで声を拾ってそれに合わせて口を動かす方法をとりたいと思います。</p>
+<p>まず、<a href="https://github.com/hecomi/MMD4Mecanim-LipSync-Plugin/releases" class="link">ここ</a>からMMD4Mecanim-LipSync-Pluginをインストールしてimportします。</p>
+<p>次に、ユニティちゃんにMMD4Mecanim-LipSync-Plugin/UnityChanLipSync.csをアタッチし、Calibrationで母音をそれぞれ録音した後、Calibrationボタンを押して、Use Micにチェックを付けると声に合わせて口が動きます。</p>
+<p>しかし、このままではiOSでビルドしたときにマイクの使用許可を取っていないのでXcodeでエラーが出ます。そこで、info.plistにマイクの使用許可を追記することでスマホでも動くようになります。</p>
+
+<h2><a id="h1-6"></a><span class="secno">1.6　</span>おわりに</h2>
+<p>最後まで読んでいただき、ありがとうございます。</p>
+<p>以上で、頭の動き、視線、瞬き、口の動きを反映させることができました。これはもう美少女になれたと言っても過言ではないでしょう(いいえ)</p>
+<p>これを機にVTuberやバ美肉に興味を持っていただけたら幸いです。(ちなみにおすすめのVTuberは<a href="https://www.youtube.com/channel/UC1EB8moGYdkoZQfWHjh7Ivw" class="link">甲賀流忍者！ぽんぽこ</a>です。見て。)</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="predef.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ 前書き</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="sashiming.html">
+            <div class="book-cursor"><span class="cursor-next">▶ Google Apps ScriptでTwitter botを作ってみる</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

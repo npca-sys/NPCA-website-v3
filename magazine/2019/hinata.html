@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="編集後記" href="postdef.html"><link rel="prev" title="明日(半年後)から始めるVRChat" href="uraoz.html">  <meta name="generator" content="Re:VIEW" />
+  <title>NPCAの部誌執筆を支える技術 | NPCA部誌2019</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2019</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">前書き</a></li>
+<li><a href="object_1037.html">1 JINS MEMEで美少女になる話</a></li>
+<li><a href="sashiming.html">2 Google Apps ScriptでTwitter botを作ってみる</a></li>
+<li><a href="sarugami.html">3 Blenderで簡単モデリング！</a></li>
+<li><a href="ficorajo.html">4 C#でファイルを暗号化する</a></li>
+<li><a href="Hiro.html">5 UnityのAIを使って…</a></li>
+<li><a href="motty.html">6 Atomで快適なプログラミング環境を構築してみる</a></li>
+<li><a href="takepan.html">7 iPhoneを使ってお手軽VR</a></li>
+<li><a href="kuro.html">8 Windowsのショートカットキーについて</a></li>
+<li><a href="kusafukakota.html">9 Gmailの活用術</a></li>
+<li><a href="2lu3.html">10 未踏ジュニアとLifeWatcher</a></li>
+<li><a href="harady.html">11 グラフのおはなし</a></li>
+<li><a href="cobalt.html">12 C#の布教</a></li>
+<li><a href="RLtdExp.html">13 プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</a></li>
+<li><a href="mafusuke.html">14 Pythonの高速化について</a></li>
+<li><a href="neko.html">15 Siv3Dでゲームを作る</a></li>
+<li><a href="uraoz.html">16 明日(半年後)から始めるVRChat</a></li>
+<li><a href="hinata.html">17 NPCAの部誌執筆を支える技術</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h17"></a><span class="secno">第17章　</span>NPCAの部誌執筆を支える技術</h1>
+<p><p style="text-align:right">72回生 Hinata</p></p>
+
+<h2><a id="h17-1"></a><span class="secno">17.1　</span>はじめに</h2>
+<p>皆さんこんにちは。72回生のHinataと申します。ちょっと前に中学に入学したと思ったら、いつの間にか最高学年となり、ついでに受験生になってしまいました。時の流れはとても速いですね。正直受験したくないです。はい。</p>
+<p>さて、今回の記事のタイトルは「NPCAの部誌執筆を支える技術」です。「〜を支える技術」って書くと、なんか技術評論社の有名な技術書シリーズみたいな雰囲気が漂って、なんかカッコよくないですか?</p>
+<p>私は2年前の文化祭のとき、4月に入ってからプロジェクトマネージャ(PM)を先輩から(交代する形で)引き継ぎ、去年も部誌PMを務めました。今年はPMを後輩に譲り、校閲を担当しました。</p>
+<p>この記事では、部誌に関してはそこそこ経験がある私が、部誌プロジェクトの技術的な話からプロジェクト管理の話までいろいろ説明しようと思います。</p>
+
+<h2><a id="h17-2"></a><span class="secno">17.2　</span>NPCAの部誌について</h2>
+<p>NPCAでは2012年度文化祭から現在に至るまで、校内の部活の中でも先駆けて、部誌を印刷物ではなくPDFとしてウェブサイト上で公開しています。今年でもう8年目です。</p>
+<p>こういう取り組みをしているのには様々な理由があります。</p>
+<ul>
+<li>分量が多いので、印刷する文化委員会印刷課の人にも(灘校では校内で部誌などを印刷しています)、製本する部員にも、来場者の方々にも、そして地球にとっても優しくない。</li>
+<li>記事の性質上ソースコードや写真が大量に含まれるので、校内印刷だとどうしても読みにくくなる。データとして公開すれば、リンクとかを遠慮なく貼れるし、リンク先に飛びやすくなる。</li>
+<li>文化祭に来た人だけでなく、来れなかった人にも見てもらえる。(ありがたいことに、この部誌を読んでいただいているエンジニアの方もいらっしゃいます)</li>
+<li>シェアが簡単</li>
+<li>なんかパソコン部っぽくてハイテクで素敵</li>
+<li><del>締切が遅くなる</del></li>
+</ul>
+<p>文化祭当日は、QRコードとURLを書いたビラをばらまいてアクセスしてもらうという運用でした。ビラは普通に校内で印刷しても問題ないクオリティのものができます。</p>
+<p>また、当時はLaTeXを直接書いて執筆していました。1人ならいざ知らず、共同執筆となるとやっぱりWordみたいなソフトはかなり厳しいので、まあ妥当な選択でしょう。</p>
+<p>さて、部誌プロジェクトが転機を迎えたのは2017年度文化祭です。この年から、様々な取り組みが始まりました。</p>
+
+<h3><a id="h17-2-1"></a>小冊子</h3>
+<p>来場者にとっては、ビラをもらってもアクセスするのにひと手間かかり、ちょっと障壁があります。紙で配ると目次だけでも目を通す人が多いことを考えると、ビラだけ配る方式だとどうしても見る人が減ってしまいます。</p>
+<p>しかし、オンラインで部誌を公開するメリットはとても大きく、とても捨てられるものではありません。そこで、部誌を抜粋してサンプルとして配布することにしました。これなら、ちょっと読んで興味を持ってくれた人をウェブサイト上の部誌に誘導することができます。</p>
+<p>まあ、その代償として製本作業が復活してしまったんですけど。しんどいね。</p>
+
+<h3><a id="h17-2-2"></a>Re:VIEWへの転換</h3>
+<p>2017年から、部誌執筆に<a href="https://github.com/kmuto/review" class="link">Re:VIEW</a>というツールを利用しています。ちなみに読み方は「リ・ビュー」らしいです。ずっと「レビュー」って読んでました。</p>
+<p>これによって、ウェブサイトで記事を直接HTMLとして公開できるようになりました。他にもいろいろ恩恵はあったのですが、それは後述します。</p>
+
+<h2><a id="h17-3"></a><span class="secno">17.3　</span>NPCA部誌執筆環境の紹介(技術的な話)</h2>
+
+<h3><a id="h17-3-1"></a>バージョン管理とリポジトリ</h3>
+<p>NPCAでは、Re:VIEWを導入する以前からGitLab(<a href="https://gitlab.com" class="link">gitlab.com</a>)のプライベートリポジトリを利用しています。最近はGitHubでもプライベートリポジトリを無制限に作れますが、当時は有料プランでしか作れませんでした。</p>
+<p>部誌だけでなく、文化祭用の展示などもGitLabで管理しています。</p>
+
+<h3><a id="h17-3-2"></a>執筆ツール</h3>
+<p>先述したように、Re:VIEWを利用しています。PDF版はreview-pdfmakerを使ってLaTeX経由で生成し、HTMLはreview-webmakerで直接生成しています。</p>
+<p>LaTeX直書きをやめてRe:VIEWを使うようになった理由はいろいろあります。</p>
+<ul>
+<li>HTML版を簡単に出せる。</li>
+<li>マークアップ形式なので、LaTeXよりも書きやすい。</li>
+<li>もし機能が足りなくても、最悪拡張できる(<code class="inline-code tt">review-ext.rb</code>)</li>
+</ul>
+<p>実際に使ってみた感想ですが、Re:VIEWには全く文句がありません。Re:VIEWよりもその背後のLaTeXがつらいです。でもこれはLaTeXを直接書いてても逃れられないので、どうしようもないですね。</p>
+<p>もともと、Re:VIEWは技術系同人誌の界隈で広まってきたツールです。とある現役部員(当時)がOBたちと同人誌を書いたときにRe:VIEWを使い、それが使いやすかったということで推薦され導入が決定した次第です。</p>
+<p>確かに見方を変えれば、サークル(部活)で集まって本を書くわけですから、部誌は立派な同人誌です。実際、灘校のアニメ研究会にはコミケで部誌を頒布した実績がありますし、大学の技術系サークルで技術系の同人誌を出しているところも結構あります。複数の作者が各々の好きなものを書くアンソロジー的な同人誌を「合同誌」と呼びます。つまり部誌は合同誌です。</p>
+
+<h3><a id="h17-3-3"></a>CI(継続的インテグレーション)</h3>
+<p>Re:VIEWプロジェクトをビルドするには、LaTeX環境が必要です。今はTeXLiveがあり、各プラットフォームに対応するインストーラも存在するので、インストールはそこまで大変ではありません。</p>
+<p>そうはいっても、いろんな落とし穴にハマる人は部員の中でも多いです。特にフォント絡みが厄介という印象があります。部員にTeXマスターがいれば話が違うのでしょうが、あれを執筆者全員にインストールさせ、ちゃんとビルドできる環境にするのはなかなか困難です。</p>
+<p>そこで、NPCAではCI(継続的インテグレーション)を活用しています。GitLabだとプライベートリポジトリでも純正のGitLab CIが使えるのです。これを利用しない手はありません。GitLab CIというのはGitLabのサーバ側でビルドするタスクを走らせてくれるスグレモノです。何が「継続的」で何が「インテグレーション」なのかは分かりませんが、とりあえずコミットごとにPDFが生成されます。</p>
+<p>さて、GitLab CIを利用するにはDockerコンテナを用意する必要があります。</p>
+<p>当初はvvakame氏の<a href="https://github.com/vvakame/docker-review" class="link">docker-review</a>を使っていたのですが、途中から使い始めたフォント用パッケージ(beramono)が足りなかったので、そのパッケージ(正確にはcollection-fontsextra)を追加した自作コンテナ(fork)に切り替えました。</p>
+<p>CIの設定ファイルはこんな感じです。ちなみに、リポジトリのルートディレクトリにはRe:VIEWプロジェクトがサンプルと部誌本編の2つあり、それぞれ独立しています。それに合わせて、ビルドタスクもサンプルと部誌本編に分かれています。</p>
+<div id="gitlab-ci" class="caption-code">
+<p class="caption">リスト17.1: .gitlab-ci.yml</p>
+<pre class="list language-yaml highlight"><span class="na">image</span><span class="pi">:</span> <span class="s">fabon/review:2.5</span>
+
+<span class="na">build_sample</span><span class="pi">:</span>
+  <span class="na">script</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">./makepdf</span><span class="nv"> </span><span class="s">sample'</span>
+  <span class="na">artifacts</span><span class="pi">:</span>
+    <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">sample/book.pdf</span>
+  <span class="na">tags</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">docker</span>
+
+<span class="na">build_bushi</span><span class="pi">:</span>
+  <span class="na">script</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">./makepdf</span><span class="nv"> </span><span class="s">bushi'</span>
+  <span class="na">artifacts</span><span class="pi">:</span>
+    <span class="na">paths</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">bushi/book.pdf</span>
+  <span class="na">tags</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">docker</span>
+</pre>
+</div>
+<div id="makepdf" class="caption-code">
+<p class="caption">リスト17.2: makepdf</p>
+<pre class="list language-bash highlight"><span class="c">#!/usr/bin/env bash</span>
+
+<span class="nb">set</span> <span class="nt">-eu</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="nv">$# </span><span class="nt">-eq</span> 0 <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="c"># 引数不足</span>
+    <span class="nb">exit </span>1
+<span class="k">fi
+
+</span><span class="nb">set</span> <span class="nt">-x</span>
+<span class="nb">cd</span> <span class="nv">$1</span>
+
+bundle <span class="nb">exec </span>review-preproc <span class="nt">-r</span> <span class="nt">--tabwidth</span><span class="o">=</span>2 <span class="k">*</span>.re
+bundle <span class="nb">exec </span>review-pdfmaker config.yml
+</pre>
+</div>
+<p>手元でPDFをビルドできない人もCIの結果を確認できるのでとても便利です。</p>
+<p>しかし、部誌に画像がたくさん含まれているせいでPDFが重くなり、おまけにページ数も相当多くなるので、GitLab(Web)上で確認できないのはちょっと大変です。どうにかならないものでしょうか。</p>
+
+<h3><a id="h17-3-4"></a>Slack連携</h3>
+<p>GitLabのコミット通知、CIの完了通知、Merge Requestの通知などがSlackに流れるようにしています。これはめちゃくちゃ便利なのでとても重宝しています。</p>
+<div id="slack-gitlab" class="image">
+<img src="images/hinata/slack-gitlab.png" alt="コミットをpushしたときの通知" class="width-070per" />
+<p class="caption">
+図17.1: コミットをpushしたときの通知
+</p>
+</div>
+<div id="slack-gitlab2" class="image">
+<img src="images/hinata/slack-gitlab2.png" alt="CIでビルドが完了したときの通知" class="width-080per" />
+<p class="caption">
+図17.2: CIでビルドが完了したときの通知
+</p>
+</div>
+
+<h3><a id="h17-3-5"></a>今後の展望</h3>
+<p>技術的な環境整備については現状でかなり満足しています。</p>
+<p>Re:VIEWで書いてGitLabで管理し、コミットごとにCIを回してPDFを生成する。CIの結果やコミットはSlackで通知されるし、完成した部誌はウェブサイト上でPDFやHTMLとして公開される。なかなかハイテクで素晴らしいじゃありませんか。</p>
+<p>しいて言うなら、日本語の質を担保する何らかのツールがあるとなお良いかもしれません。文章チェッカーの<a href="https://github.com/textlint/textlint" class="link">textlint</a>を導入するとか。</p>
+
+<h2><a id="h17-4"></a><span class="secno">17.4　</span>日本語を書く段階とリポジトリの運用について</h2>
+
+<h3><a id="h17-4-1"></a>執筆</h3>
+<p>執筆する時点ではブランチを切ったりMerge Requestしたりする意味は薄いので、全員がmasterにcommitするようにしています。Gitの素養を全部員が持っているわけじゃないですからね。執筆者は自分の記事ファイルしか編集しないので、<code class="inline-code tt">git push -f</code>する大馬鹿者さえいなければ破綻することはありません。pushできなかったらpullすればいいんです。</p>
+<p>ちなみにわざわざ言及しているので薄々察している人もいるかもしれませんが、大馬鹿者は実際にいました。しかもよりによって、部誌執筆に必要なGitの基礎を教えるハンズオンで、上級生が「<code class="inline-code tt">git push -f</code>するといいよ」と教えてしまったらしい。講師の選定はちゃんと考えましょう。</p>
+<p>ちなみに「<code class="inline-code tt">-f</code>すればええよ」と冗談でそそのかした別の上級生が元凶でした。冗談が悪質。しかしそれを冗談だと分からない人がGit教えるのはちょっと……</p>
+<p>あと、こうすると他の人の進捗が見えて、仕事が遅いNPCA部員も多少焦ってくれるんじゃないか、という淡い期待もあります。<del>実際のところ大して効果はありませんが</del></p>
+
+<h3><a id="h17-4-2"></a>校閲</h3>
+<p>ちゃんと読める文章がまとまって、全体に関する執筆・編集が一段落すると、校閲の出番です。ここからは全体の構造を変えるような規模の編集はしません。文章の誤りだけでなく、Re:VIEWフォーマットの文法が正しくない文章を訂正したりもします。文章を細かく調整するので、校閲者がMerge Requestを作り、著者に確認を取りながら修正していきます。全体がちゃんと読めるようになり、誤字脱字がなくなったらmergeします。</p>
+<p>ただし、これはあくまで理想的な話です。記事によっては完成するのが締切の直前で、そこから校閲していると間に合いません。もちろん部員が早く書いてくれればとても嬉しいのですが、これが現実というものです。それゆえに、記事が完成する前に、現時点で完成したところまで校閲することになります。別にこれでも問題はありません。ただし著者がGitを使えなかった場合、校閲した部分が全部吹き飛んで発狂することがあります。実際ありました。絶対に許さない。</p>
+
+<h2><a id="h17-5"></a><span class="secno">17.5　</span>プロジェクト管理と進捗と締切と過労死</h2>
+<p>個々の執筆者を除くと、部誌関連で大変な仕事が2つあります。校閲とPMです。</p>
+<p>校閲者の仕事は、文章の誤りを正すことです。1文字ずつ読んで誤字脱字がないかを調べたり、文章全体を読んで矛盾点がないかを調べたりします。余裕があれば内容の査読もやった方がいいと思います。記事の分量はかなり多いので、結構大変な仕事です。</p>
+<p>今年に関しては、文章のクセも個性ということで、そこまで深入りした校閲はしていません。内容の誤りも、一応気付いた分は指摘しましたが、本腰を入れてやったわけではありません。</p>
+<p>PMの仕事は、主に進捗管理です。つまり、全然仕事をしない部員たちの尻を叩くのが仕事です。出版社における編集者みたいですね。部員たちの仕事の遅さによって精神が削られます。他にも、たとえばLaTeXやRe:VIEWなどをいじる仕事などもありますが、これはプロジェクト初期に一度やっておけば大丈夫です。ただしLaTeXは本当に難しいので、この作業を後に回すと精神が死んでLaTeXの愚痴をひたすら吐き出す機械になってしまいます。</p>
+<p>2017年と2018年は、私がPMと校閲をやっていました。上を見れば分かるとおり、どっちもそこそこの重労働です。おまけに、私はウェブサイトの更新も担当していました。こちらも部員とやりとりしてデータやスクリーンショットなどを集めないといけない、とにかく対人コストのかかるそこそこの重労働です。しかも文化祭直前は文化祭ページを更新しないといけないので、一番忙しくなります。これを1人でこなすというのは明らかに無理がありました。</p>
+<p>今年は校閲とPMを分割し、人が死なないようになりました。本当は仕事を分担するという発想がもともとなくて、単に校閲までPMの手が回ってなさそうだったので引き受けただけなのですが、やっていくにつれてPMと校閲を分けることの素晴らしさに気付いたというわけです。やっぱり仕事は分担するべきです。</p>
+<p>あと、締切をちゃんと守るという意識が薄かったのが問題でした。公開がウェブサイトなので、極論を言うと文化祭当日の朝に書き終わっても載せられるんですよね。そういう甘えは本当に良くない。</p>
+
+<h3><a id="h17-5-1"></a>進捗管理どうする問題</h3>
+<p>NPCAではかつてRedmineを利用していました。今も部内Redmineは動いているものの、ほとんど使われていません。</p>
+<p>現状だと進捗確認もSlackでやってしまうのですが、Slackはチャットなので進捗管理のために作られておらず、さすがに無理があります。Slackはどんどん流れていってしまうので、確認した情報を別の場所にまとめる必要がありますよね。</p>
+<p>やはりRedmineを名実ともに復活させるべきなのでしょうか。ここらへんは部誌に限らず部全体の課題です。</p>
+
+<h2><a id="h17-6"></a><span class="secno">17.6　</span>おわりに</h2>
+<p>というわけで、NPCAの部誌執筆を支える技術の話でした。</p>
+<p>もともとは技術の話だけする予定だったんですけど、プロジェクト管理に言及したあたりからチラシの裏みたいになってしまいました。正直なところ、今は「これ部誌でやる必要あったのかな……?」と思っています。</p>
+<p>まあ、せっかく書いたので供養しておきます。同じような立場の人が読んで反面教師にしてくれるかもしれないので。</p>
+<p>絶対にプロジェクトを炎上させないようにしましょう。約束ですよ。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="uraoz.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ 明日(半年後)から始めるVRChat</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="postdef.html">
+            <div class="book-cursor"><span class="cursor-next">▶ 編集後記</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="すばやい文字列の探しかた" href="hinata.html"><link rel="prev" title="ARKit" href="object_1037.html">  <meta name="generator" content="Re:VIEW" />
+  <title>写真のデータを読み込もう | NPCA部誌2018</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.js" integrity="sha384-jmxIlussZWB7qCuB+PgKG1uLjjxbVVIayPJwi6cG6Zb4YKq0JIw+OMnkkEC7kYCq" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2018</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">部長挨拶</a></li>
+<li><a href="object_1037.html">1 ARKit</a></li>
+<li><a href="2lu3.html">2 写真のデータを読み込もう</a></li>
+<li><a href="hinata.html">3 すばやい文字列の探しかた</a></li>
+<li><a href="harady.html">4 簡単!VR3(00)分クッキング</a></li>
+<li><a href="taizo0122.html">5 ぱそこんであそぼ</a></li>
+<li><a href="takepan.html">6 マインクラフトのサーバー管理を楽で便利なものにしてみる話</a></li>
+<li><a href="kota1024.html">7 簡単blenderモデリング</a></li>
+<li><a href="niimi.html">8 深層学習の基礎のキソ</a></li>
+<li><a href="physics0523.html">9 JOI参戦記</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h2"></a><span class="secno">第2章　</span>写真のデータを読み込もう</h1>
+<p><p style="text-align:right">73回生 2lu3</p></p>
+
+<h2><a id="h2-1"></a><span class="secno">2.1　</span>はじめに</h2>
+<p>C言語を使って、BitMapという画像ファイルを読み込みます。</p>
+<p>BitMapというのは、pngやjpeg,gifなどと同じようなものです。それぞれの違いは、どのようにしてデータを保存するかです。例えば、BitMapはドット(点)ずつに色のデータが集まっています。</p>
+<div class="column">
+
+<h3><a id="column-1"></a>C言語とは</h3>
+<p>プログラミングをするための方法の一つです。パソコンの細かい動作までプログラミングをすることができますが、何かをするのにたくさん書かないといけないので敬遠されることもあります。詳しくはWiki検索をおねがいします。</p>
+</div>
+
+<h2><a id="h2-2"></a><span class="secno">2.2　</span>どのようにデータが保存されているか</h2>
+<p>パソコンのデータの全ては、0と1で表現されているのはご存知でしょうか？ですが、001001010110なんていうデータは人間には非常にわかりにくいです。</p>
+<p>そこで、いくつかの数字を塊として考えるようにします。具体的には、8個をひとかたまりにした1byte(バイト)というものが使われています。8個の桁それぞれで0か1を選ぶことができるので、2の8乗個、つまり256通りものパターンを表すことができます。さて、下の図は1byteずつBitMapの画像ファイルのデータを前から順番に読んでいったときの図です。ちなみに、2進数での1桁をビット(bit)といいます。つまり、1byteは8bitです。</p>
+<div id="bmp_data_format_original" class="image">
+<img src="images/2lu3/bmp_data_format_original.png" alt="" />
+</div>
+<p>この図の読み方は、下の図のとおりです。</p>
+<div id="how_to_read_graph" class="image">
+<img src="images/2lu3/how_to_read_graph.png" alt="" />
+</div>
+<p>さて、最初に[42]があり、次に[4D]があります。この[4D]は何でしょうか？正解は、 <b>16進数で表した数</b> です。今年は2018年ですが、この2018という数字は10進法で表されています。10貯まるごとに、1つ位を上げるから10進数というわけです。じゃあ、16進数はというと、16貯まるごとに1つ位を上げます。しかし、10という数字を1桁で表すことはできません。そこで、0～9に加えてA～Fのアルファベットを使って16個を表します。</p>
+<p>さて、16進数のままだとわかりにくいので、文字or10進数に直した図を下に載せました。</p>
+<div id="bmp_data_format_easy" class="image">
+<img src="images/2lu3/bmp_data_format_easy.png" alt="" />
+</div>
+<div id="bmp_data_format_easy_graph" class="image">
+<img src="images/2lu3/bmp_data_format_easy_graph.png" alt="" />
+</div>
+<p>2つの画像の色は対応しています。これから、それぞれについて解説をしていきます。</p>
+
+<h3><a id="h2-2-1"></a>ファイルタイプ</h3>
+<p>BitMapなので「BM」というわけです。</p>
+
+<h3><a id="h2-2-2"></a>ファイルサイズ</h3>
+<p>言葉の通り、ファイルの大きさをbyteで表します。このBitMap画像の場合、72,480,822byte、つまり約72Mbyteになります。</p>
+
+<h3><a id="h2-2-3"></a>予約領域1・2</h3>
+<p>おまじないのようなものです。</p>
+
+<h3><a id="h2-2-4"></a>画像データまでの距離</h3>
+<p>ファイル部分と情報部分のバイト数を全て足してみて下さい。54になります。要するに、一番最初から画像データ部分まで何バイトあるかという話です。</p>
+
+<h3><a id="h2-2-5"></a>情報部分のサイズ</h3>
+<p>情報部分のバイト数をすべて足すと、40になりますね。</p>
+
+<h3><a id="h2-2-6"></a>画像の幅</h3>
+<p>ピクセルというのはご存知でしょうか？簡単にいえば、1ピクセルに1つ色があって、ピクセルが集まることによって画像になります。</p>
+<p>近くからみた蟻の列は途切れているように見えても、遠くから見た蟻の列は一本の線に見えます。つまり、近くから見たらてんでばらばらな色があるようにしか見えなくても、遠くからみたら一枚の写真に見えます。</p>
+<p>さて、話が脱線しましたが、画像の横方向にピクセルがいくつあるのかがここに入っています。</p>
+
+<h3><a id="h2-2-7"></a>画像の高さ</h3>
+<p>縦方向にピクセルがいくつあるのかがここに入っています。</p>
+
+<h3><a id="h2-2-8"></a>プレーン数</h3>
+<p>これは、よくわかりませんが</p>
+<p>現在では使われなくなった概念です by Wiki(意訳)</p>
+<p>とのことなので、気にする必要はありません。ちなみに、常に1です。</p>
+
+<h3><a id="h2-2-9"></a>1画素あたりの色数</h3>
+<p>正確には、色ビット数と呼びます。24のときは、1677万色が使えるそうです。正直、全部使うことはないでしょう。</p>
+
+<h3><a id="h2-2-10"></a>圧縮形式</h3>
+<p>どのようにして圧縮をするかです。</p>
+
+<h3><a id="h2-2-11"></a>画像データのサイズ</h3>
+<p>画像データ部分のデータの大きさです。画像データのサイズと画像データまでの距離を足すと、ファイルサイズになることをお確かめ下さい。</p>
+
+<h3><a id="h2-2-12"></a>水平解像度・垂直解像度</h3>
+<blockquote><p>水平解像度（すいへいかいぞうど）とは、アナログ放送時代のテレビ・ビデオなどの映像機器の、画質の指標のひとつである。　参照元:Wiki</p></blockquote>
+<p>とのことです。</p>
+
+<h3><a id="h2-2-13"></a>パレットの色数</h3>
+<p>1画素あたりの色数が1,4,8のときに使うらしいです。上で書いたとおり、正確には色ビット数と呼びます。それぞれ、1bit : 2   種類4bit : 16  種類8bit : 256 種類色を登録することができます。</p>
+
+<h3><a id="h2-2-14"></a>重要なパレットのインデックス</h3>
+<p>0の場合もあるらしいです。使ったことはありません。</p>
+
+<h3><a id="h2-2-15"></a>青・緑・赤の輝度</h3>
+<p>色の三原色はご存知でしょうか？赤(Red)・緑(Green)・青(Blue)で、RGBとまとめて呼ばれることもあります。そして、RGBのそれぞれの色の濃さによって色を表現することができます。ここでは、1ピクセルごとに色を決めています。</p>
+
+<h2><a id="h2-3"></a><span class="secno">2.3　</span>実際の読み方</h2>
+<p>C言語でやります。</p>
+<p>やることは、順番にfread()で読み込んでいくだけです。下にサンプルコードをおいておきます。</p>
+<div class="emlist-code">
+<pre class="emlist language-c highlight"><span class="cp">#include &lt;math.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;time.h&gt;
+#include &lt;Windows.h&gt;
+#define true 1
+#define false 0
+#define HEADER_SIZE 54 //heder size 54 = 14 + 40
+#define MAX_WIDTH 3000 //upper limit of width(pixel)
+#define MAX_HEIGHT 3000 //upper limit of height(pixel)
+#define COLOR_CATEGORY_NUM 1000
+#define PLUS_MINUS(a, b, c) ((a) + (c) &gt;= b &amp;&amp; (a) - (c) &lt;= b)
+#define SIZE 10
+</span>
+<span class="c1">// r,g,b values of one pixel</span>
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+  <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">r</span><span class="p">;</span>
+  <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">g</span><span class="p">;</span>
+  <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">b</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">color_type</span><span class="p">;</span><span class="c1">// どの色か</span>
+  <span class="kt">int</span> <span class="n">color_num</span><span class="p">;</span><span class="c1">// color_categoryの場合、どれだけのピクセルがその色に入っているのか</span>
+  <span class="kt">int</span> <span class="n">sum</span><span class="p">;</span><span class="c1">// r + g + b;</span>
+<span class="p">}</span> <span class="n">color</span><span class="p">;</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+  <span class="kt">long</span> <span class="n">height</span><span class="p">;</span>
+  <span class="kt">long</span> <span class="n">width</span><span class="p">;</span>
+  <span class="n">color</span> <span class="n">data</span><span class="p">[</span><span class="n">MAX_HEIGHT</span><span class="p">][</span><span class="n">MAX_WIDTH</span><span class="p">];</span>
+  <span class="kt">int</span> <span class="n">color_num</span><span class="p">;</span><span class="c1">// 色の数</span>
+  <span class="n">color</span> <span class="n">color_category</span><span class="p">[</span><span class="n">COLOR_CATEGORY_NUM</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">img</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">ReadBmp</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">file_name</span><span class="p">,</span> <span class="n">img</span> <span class="o">*</span><span class="n">imgp</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">bmp_header_buf</span><span class="p">[</span><span class="n">HEADER_SIZE</span><span class="p">];</span> <span class="c1">// this store header data of bmp</span>
+  <span class="kt">char</span> <span class="n">bmp_type</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+  <span class="kt">long</span> <span class="n">bmp_height</span><span class="p">;</span>
+  <span class="kt">long</span> <span class="n">bmp_width</span><span class="p">;</span>
+  <span class="kt">unsigned</span> <span class="kt">short</span> <span class="n">bmp_color</span><span class="p">;</span>
+  <span class="kt">long</span> <span class="n">real_width</span><span class="p">;</span>
+
+  <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">bmp_data</span><span class="p">;</span>
+  <span class="kt">FILE</span> <span class="o">*</span><span class="n">bmp_file</span><span class="p">;</span>
+
+  <span class="n">bmp_file</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s">"rb"</span><span class="p">);</span>
+
+  <span class="k">if</span><span class="p">(</span><span class="n">bmp_file</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"</span><span class="se">\n\n\n\n</span><span class="s">Failed to open bmp file</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">// ヘッダー(両方)を取得</span>
+  <span class="n">fread</span><span class="p">(</span><span class="n">bmp_header_buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">),</span> <span class="n">HEADER_SIZE</span><span class="p">,</span> <span class="n">bmp_file</span><span class="p">);</span>
+
+  <span class="c1">// ファイルの最初がBMかどうか</span>
+  <span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bmp_type</span><span class="p">,</span> <span class="n">bmp_header_buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">bmp_type</span><span class="p">));</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">strncmp</span><span class="p">(</span><span class="n">bmp_type</span><span class="p">,</span> <span class="s">"BM"</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error: %s is not a bmp file.</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">file_name</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">imgp</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">,</span> <span class="n">bmp_header_buf</span> <span class="o">+</span> <span class="mi">18</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">bmp_width</span><span class="p">));</span>
+  <span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">imgp</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">,</span> <span class="n">bmp_header_buf</span> <span class="o">+</span> <span class="mi">22</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">bmp_height</span><span class="p">));</span>
+  <span class="n">memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bmp_color</span><span class="p">,</span> <span class="n">bmp_header_buf</span> <span class="o">+</span> <span class="mi">28</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">bmp_color</span><span class="p">));</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">bmp_color</span> <span class="o">!=</span> <span class="mi">24</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error: bmp_color = %d is not implemented in this program.</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">bmp_color</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">imgp</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">&gt;</span> <span class="n">MAX_WIDTH</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error: bmp_width = %ld &gt; %d = MAX_WIDTH</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">imgp</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">,</span> <span class="n">MAX_WIDTH</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">imgp</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">&gt;</span> <span class="n">MAX_HEIGHT</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error: bmp_height = %ld &gt; %d = MAX_HEIGHT</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">imgp</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">,</span> <span class="n">MAX_HEIGHT</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">imgp</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Error hight is under 0</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">printf</span><span class="p">(</span><span class="s">"Finished checking file format</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+  <span class="n">real_width</span> <span class="o">=</span> <span class="n">imgp</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">imgp</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">%</span> <span class="mi">4</span><span class="p">;</span><span class="c1">//calculate real width to fit 4 byte border</span>
+
+
+  <span class="k">if</span><span class="p">((</span><span class="n">bmp_data</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">calloc</span><span class="p">(</span><span class="n">real_width</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">)))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"Eroor: memory allocation failed for bmp_data</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="n">printf</span><span class="p">(</span><span class="s">"Reading data...</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">imgp</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">fread</span><span class="p">(</span><span class="n">bmp_data</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">real_width</span><span class="p">,</span> <span class="n">bmp_file</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">imgp</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">imgp</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">[</span><span class="n">imgp</span><span class="o">-&gt;</span><span class="n">height</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">].</span><span class="n">b</span> <span class="o">=</span> <span class="n">bmp_data</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="mi">3</span><span class="p">];</span>
+      <span class="n">imgp</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">[</span><span class="n">imgp</span><span class="o">-&gt;</span><span class="n">height</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">].</span><span class="n">g</span> <span class="o">=</span> <span class="n">bmp_data</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+      <span class="n">imgp</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">[</span><span class="n">imgp</span><span class="o">-&gt;</span><span class="n">height</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">].</span><span class="n">r</span> <span class="o">=</span> <span class="n">bmp_data</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">2</span><span class="p">];</span>
+      <span class="n">imgp</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">[</span><span class="n">imgp</span><span class="o">-&gt;</span><span class="n">height</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">].</span><span class="n">sum</span> <span class="o">=</span> <span class="n">bmp_data</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">bmp_data</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bmp_data</span><span class="p">[</span><span class="n">j</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">2</span><span class="p">];</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">"Finished Reading data</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+  <span class="n">printf</span><span class="p">(</span><span class="s">"Please wait a few seconds...</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+  <span class="n">free</span><span class="p">(</span><span class="n">bmp_data</span><span class="p">);</span>
+  <span class="n">fclose</span><span class="p">(</span><span class="n">bmp_file</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">FILE</span> <span class="o">*</span><span class="n">color_data_file</span><span class="p">;</span>
+  <span class="kt">FILE</span> <span class="o">*</span><span class="n">out_put_data_file</span><span class="p">;</span>
+  <span class="n">img</span> <span class="o">*</span><span class="n">receiver_data</span><span class="p">;</span>
+  <span class="n">receiver_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">img</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">img</span><span class="p">));</span>
+
+  <span class="kt">char</span> <span class="n">file_name</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+  <span class="c1">// Get file name</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">"Drag and drop a bmp picture which you want to convert</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">"And push enter key if I don't say start opening</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+  <span class="c1">// If the name of picture have \n or ", it will be failed.</span>
+  <span class="n">scanf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span> <span class="n">file_name</span><span class="p">);</span>
+
+  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">ReadBmp</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="n">receiver_data</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">//unsuccess</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// ご苦労さま</span>
+</pre>
+</div>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="object_1037.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ ARKit</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="hinata.html">
+            <div class="book-cursor"><span class="cursor-next">▶ すばやい文字列の探しかた</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

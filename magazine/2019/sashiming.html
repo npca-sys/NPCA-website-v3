@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="Blenderで簡単モデリング！" href="sarugami.html"><link rel="prev" title="JINS MEMEで美少女になる話" href="object_1037.html">  <meta name="generator" content="Re:VIEW" />
+  <title>Google Apps ScriptでTwitter botを作ってみる | NPCA部誌2019</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2019</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">前書き</a></li>
+<li><a href="object_1037.html">1 JINS MEMEで美少女になる話</a></li>
+<li><a href="sashiming.html">2 Google Apps ScriptでTwitter botを作ってみる</a></li>
+<li><a href="sarugami.html">3 Blenderで簡単モデリング！</a></li>
+<li><a href="ficorajo.html">4 C#でファイルを暗号化する</a></li>
+<li><a href="Hiro.html">5 UnityのAIを使って…</a></li>
+<li><a href="motty.html">6 Atomで快適なプログラミング環境を構築してみる</a></li>
+<li><a href="takepan.html">7 iPhoneを使ってお手軽VR</a></li>
+<li><a href="kuro.html">8 Windowsのショートカットキーについて</a></li>
+<li><a href="kusafukakota.html">9 Gmailの活用術</a></li>
+<li><a href="2lu3.html">10 未踏ジュニアとLifeWatcher</a></li>
+<li><a href="harady.html">11 グラフのおはなし</a></li>
+<li><a href="cobalt.html">12 C#の布教</a></li>
+<li><a href="RLtdExp.html">13 プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</a></li>
+<li><a href="mafusuke.html">14 Pythonの高速化について</a></li>
+<li><a href="neko.html">15 Siv3Dでゲームを作る</a></li>
+<li><a href="uraoz.html">16 明日(半年後)から始めるVRChat</a></li>
+<li><a href="hinata.html">17 NPCAの部誌執筆を支える技術</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h2"></a><span class="secno">第2章　</span>Google Apps ScriptでTwitter botを作ってみる</h1>
+<p><p style="text-align:right">75回生 sashiming</p></p>
+
+<h2><a id="h2-1"></a><span class="secno">2.1　</span>はじめに</h2>
+<p>はじめまして、75回生のsashimingです。今回初めて部誌の執筆をします、よろしくお願いします。</p>
+<p>今回の部誌では、 <b>Google Apps Script</b> (通称GAS、以下「GAS」と表記)でTwitterのbotを作ることについて書いていきます。</p>
+
+<h2><a id="h2-2"></a><span class="secno">2.2　</span>予備知識</h2>
+<p>C/C++やJavaなど、他のプログラミング言語で条件分岐、ループ、配列などの基本的なことを知っていることを前提に進めていきます。JavaScriptの基本を知っておくとなおよいです。</p>
+
+<h2><a id="h2-3"></a><span class="secno">2.3　</span>Twitter botの大まかな仕組み</h2>
+<p>今回の部誌で作るbotは以下のようなものです。</p>
+<div id="s_01" class="image">
+<img src="images/sashiming/s_01.png" alt="bot作成例" class="width-090per" />
+<p class="caption">
+図2.1: bot作成例
+</p>
+</div>
+<p>このようなbotの動作、特にツイートを実行する部分の動作はどのような仕組みになっているのでしょうか。</p>
+<p>Twitterには、<b>Twitter API</b>という仕組みがあり、プログラムからTwitterのサービスを呼び出す事ができます。言うなれば、プログラムとTwitterサービスを繋ぐ存在です。例えば、「『〇〇』という内容をツイートして」というリクエストをプログラムからTwitter APIを通してTwitterのサービスへ送ることで、実際にツイートが実行されます。図に表すと、次のようになります。</p>
+<div id="s_02" class="image">
+<img src="images/sashiming/s_02.png" alt="Twitter botの仕組み" class="width-080per" />
+<p class="caption">
+図2.2: Twitter botの仕組み
+</p>
+</div>
+<p>ここで、タイトルにもある「Google Apps Script(GAS)」はどこで使われているのかというと、プログラムの部分で使われています。次の項では、GASとはどういったものなのかを紹介します。</p>
+
+<h2><a id="h2-4"></a><span class="secno">2.4　</span>GASの概要</h2>
+
+<h3><a id="h2-4-1"></a>GASとは</h3>
+<p>クラウド上でスクリプトを実行することでGoogleのサービスを操作できる、Google公式のサービスです。</p>
+<p>GASを使うことでGmailやGoogleドライブなど、様々なサービスを操作することができます。</p>
+
+<h3><a id="h2-4-2"></a>開発環境は不要</h3>
+<p>一般的に、プログラミングでは最初に開発環境を整える必要がありますが、GASの開発環境はGoogle側で用意してくれています。必要なものはPC、ネット環境、Googleアカウントのみです。これらさえあれば、誰でもすぐにGASのプログラミングを始められます。</p>
+
+<h3><a id="h2-4-3"></a>実行はGoogleサーバー側で</h3>
+<p>普通、常に動作しているようなbot等を作る際は常時起動しているPCまたはサーバーを用意する必要がありますが、GASのスクリプトはGoogle側のサーバーで実行してくれます。つまり、<b>自分でサーバー等を準備する必要がありません</b>。</p>
+<p>また、GASにはトリガー機能があり、トリガーを設定することで定期的にスクリプトを実行することができます。そのため、<b>スクリプトエディタを起動していなくても自動的に</b>スクリプトを動かすことができます。これは定期実行系のbotを作る際には重宝する機能です。</p>
+
+<h3><a id="h2-4-4"></a>JavaScriptベース</h3>
+<p>GASを学ぶメリットとして、JavaScriptが同時に学べることが挙げられます。</p>
+<p>GASで書くスクリプトの言語はJavaScriptがベースとなっているので、JavaScriptで使える機能は基本的にGASでも使えます。そのため、GASを学ぶと同時にJavaScriptも学ぶことができます。逆に、JavaScriptを触ったことがあるならJavaScriptを書く感覚でGASを操れます。</p>
+
+<h3><a id="h2-4-5"></a>APIが叩ける</h3>
+<p>GASには、HTTPリクエストを送ってWebページの情報を取得する<code class="inline-code tt">UrlFetchApp.fetch()</code>メソッドや、JSON形式のデータを取得できる<code class="inline-code tt">JSON.parse()</code>メソッド(こちらはJavaScriptに用意されているメソッドです)などが用意されているので、APIを叩く処理が実装できます。これらのメソッドのおかげでGASでbotが作れるというわけです。</p>
+
+<h3><a id="h2-4-6"></a>ライブラリ機能</h3>
+<p>よくある処理だが実装がめんどくさい、といった機能の実装を自力でやるとなるとかなり大変です。そこで、先人の残した知恵を借りてしまいましょう。</p>
+<p>GASには、作成した関数を他のプロジェクトからでも使うことの出来る「ライブラリ機能」があります。ライブラリをインポートすれば、普通ならば数十行の実装だって、たった一文で書けてしまいます。</p>
+<p>逆に、自分で関数を書いて、ライブラリとして世に送り出すことも出来ます。自分の書いたコードで他人に貢献できるってステキじゃないですか？</p>
+
+<h2><a id="h2-5"></a><span class="secno">2.5　</span>GASを触ってみる</h2>
+<p>うだうだとGASの紹介をしているのも退屈なので、実際にGASを使ってみましょう。ここからはGoogleアカウントを既に取得しているものとして進めていきます。</p>
+<p>Googleにログインしている状態で、<a href="https://drive.google.com/" class="link">https://drive.google.com/</a>からGoogleドライブを開きましょう。</p>
+<p>次に、画面上の何もないところを右クリックして、「Google スプレッドシート」をクリックしましょう。Googleスプレッドシートが開かれるはずです。</p>
+<div id="id_01" class="image">
+<img src="images/sashiming/01.png" alt="スプレッドシート起動" class="width-070per" />
+<p class="caption">
+図2.3: スプレッドシート起動
+</p>
+</div>
+<p>上部メニューから「ツール」→「スクリプト エディタ」をクリックしましょう。次図のような画面になるはずです。</p>
+<div id="id_02" class="image">
+<img src="images/sashiming/02.png" alt="スクリプトエディタ起動" class="width-070per" />
+<p class="caption">
+図2.4: スクリプトエディタ起動
+</p>
+</div>
+<p>このエディタにスクリプトを書く形になります。それでは、実際にコードを書いてみましょう。</p>
+
+<h3><a id="h2-5-1"></a>注意</h3>
+<p>GAS(JavaScript)は仕様がかなり複雑な言語です。簡単なプログラムを作る場合には問題はないのですが、JavaScriptの仕様をフルに利用した高度なコード<a id="fnb-koudocode" href="sashiming.html#fn-koudocode" class="noteref" epub:type="noteref">*1</a>を書く場合は十分に注意して実装する必要があります。</p>
+<p>ここでは、複雑な仕様に触れない初歩の部分を載せています。僕は、JavaScriptの細かな仕様は実際にbotを作る実践段階で学んでいけばよいと思っています。</p>
+<div class="footnote" epub:type="footnote" id="fn-koudocode"><p class="footnote">[*1] 激うまギャグ</p></div>
+
+<h3><a id="h2-5-2"></a>世界に挨拶しよう</h3>
+<p>最初は皆さんおなじみHello, Worldから。次のソースコードを書きましょう。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">(){</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Hello, World"</span><span class="p">);</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>コードを書いたら、Ctrl+Sで適当な名前をつけて保存しましょう。保存ができたら、上部メニューの右向き三角形のマークのボタンを押してスクリプトを実行してください。</p>
+<p>画面上部のメッセージ「関数myFunctionを実行中...」の表示が消えたら、上部メニューから「表示」→「ログ」をクリックしましょう。<br /><code class="inline-code tt">Hello, World</code>が表示されるはずです。これでGASの世界に挨拶することができました。</p>
+<div id="id_03" class="image">
+<img src="images/sashiming/03.png" alt="Hello, World実行" class="width-080per" />
+<p class="caption">
+図2.5: Hello, World実行
+</p>
+</div>
+<dl>
+<dt>Logger.log(data)</dt>
+<dd>文字列や数値などをログとして出力する関数。主にデバッグ用に使います</dd>
+</dl>
+
+<h3><a id="h2-5-3"></a>変数を使ってみる</h3>
+<p>GASでも他言語と同じように変数が使えます。変数を宣言する方法は以下の通りです。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">var</span> <span class="nx">a</span><span class="p">;</span>  <span class="c1">// "a"という名前の変数を宣言</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="mi">334</span><span class="p">;</span>    <span class="c1">// "b"という名前の変数を宣言し、初期値を334にする</span>
+<span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="s2">"Nada Junior and Senior High School"</span><span class="p">;</span> <span class="c1">// 動的型付けなので、いろいろな型のものを入れられます</span>
+</pre>
+</div>
+<p>変数を使ったプログラムを見てみましょう。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">a</span><span class="p">;</span>
+  <span class="nx">a</span> <span class="o">=</span> <span class="s2">"SAIL AWAY"</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="mi">73</span><span class="p">;</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span>
+
+  <span class="nx">b</span> <span class="o">=</span> <span class="s2">"Nada School Festival"</span><span class="p">;</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>先ほどと同じようにして実行すると、以下のようになります。ログに73ではなく73.0と表示されるのは仕様です。</p>
+<div id="id_04" class="image">
+<img src="images/sashiming/04.png" alt="variable.gs実行結果" class="width-080per" />
+<p class="caption">
+図2.6: variable.gs実行結果
+</p>
+</div>
+<p><code class="inline-code tt">var a;</code>で変数<code class="inline-code tt">a</code>を宣言し、<code class="inline-code tt">a = &quot;SAIL AWAY&quot;;</code>で変数<code class="inline-code tt">a</code>に文字列<code class="inline-code tt">&quot;SAIL AWAY&quot;</code>を代入しています。また、<code class="inline-code tt">var b = 73;</code>で宣言と代入を同時におこなっています。</p>
+<p>8行目 <code class="inline-code tt">b = &quot;Nada School Festival&quot;;</code>のように、同じ変数に再び数値や文字列を代入することもできます。</p>
+
+<h3><a id="h2-5-4"></a>基本演算</h3>
+<p>GAS・JavaScriptでの基本演算はC/C++やJavaと同じです。</p>
+<div id="compare" class="table">
+<p class="caption">表2.2: 演算子一覧</p>
+<table>
+<tr><th>演算子</th><th>説明</th></tr>
+<tr><td><code class="inline-code tt">+</code></td><td>加算</td></tr>
+<tr><td><code class="inline-code tt">-</code></td><td>減算</td></tr>
+<tr><td><code class="inline-code tt">*</code></td><td>乗算</td></tr>
+<tr><td><code class="inline-code tt">/</code></td><td>除算(整数切り捨てにはならず、実数値になります)</td></tr>
+<tr><td><code class="inline-code tt">%</code></td><td>剰余</td></tr>
+</table>
+</div>
+<p>以上の演算子のほか、<code class="inline-code tt">++</code>でのインクリメントや、<code class="inline-code tt">--</code>でのデクリメント、<code class="inline-code tt">+=</code>や<code class="inline-code tt">-=</code>も使えます。</p>
+
+<h3><a id="h2-5-5"></a>比較演算子</h3>
+<p>以下の表のような比較演算子を使うことで2つの変数の値を比較することができます。基本的には他言語と同じですが、GAS・JavaScript特有の比較演算子があります。</p>
+<div id="compare" class="table">
+<p class="caption">表2.2: 比較演算子一覧</p>
+<table>
+<tr><th>比較演算子</th><th>説明</th></tr>
+<tr><td><code class="inline-code tt">&gt;</code></td><td>左の値が右の値より大きい</td></tr>
+<tr><td><code class="inline-code tt">&lt;</code></td><td>右の値が左の値より大きい</td></tr>
+<tr><td><code class="inline-code tt">&gt;=</code></td><td>左の値が右の値より大きい、もしくは等しい</td></tr>
+<tr><td><code class="inline-code tt">&lt;=</code></td><td>右の値が左の値より大きい、もしくは等しい</td></tr>
+<tr><td><code class="inline-code tt">==</code></td><td>左の値と右の値が等しい</td></tr>
+<tr><td><code class="inline-code tt">!=</code></td><td>左の値と右の値が異なる</td></tr>
+<tr><td><code class="inline-code tt">===</code></td><td>左の値と右の値の型や内容、すべてが同一である(<code class="inline-code tt">==</code>より厳しい比較)</td></tr>
+<tr><td><code class="inline-code tt">!==</code></td><td>左の値と右の値の型や内容が同一ではない</td></tr>
+</table>
+</div>
+<p>注意点として、GAS・JavaScriptでは<code class="inline-code tt">==</code>と<code class="inline-code tt">===</code>で違いがあります。例えば</p>
+<ul>
+<li><code class="inline-code tt">123 == &quot;123&quot;</code>は<code class="inline-code tt">true</code>ですが、</li>
+<li><code class="inline-code tt">123 === &quot;123&quot;</code>は<code class="inline-code tt">false</code>です。</li>
+</ul>
+<p>これらのことを確かめるには<code class="inline-code tt">Logger.log(123 == &quot;123&quot;);</code>などとするとするとよいです。</p>
+
+<h3><a id="h2-5-6"></a>条件分岐</h3>
+<p>条件分岐をおこなうif文の構文は、C/C++やJavaと同じです。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="k">if</span><span class="p">(</span><span class="err">条件式</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 条件式1がtrueならこの部分を実行</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="err">条件式</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// 条件式1がfalseで、条件式2がtrueのときにこの部分を実行</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="c1">// 条件式1, 2ともにfalseのときにこの部分を実行</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>以下は、if文を使ったコードの例です。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">1333</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">a</span> <span class="o">==</span> <span class="mi">1333</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"a is 1333"</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"a is not 1333"</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">a</span> <span class="o">&gt;</span> <span class="mi">1024</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"a is greater than 1024"</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">a</span> <span class="o">&lt;</span> <span class="mi">1024</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"a is less than 1024"</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>実行すると、以下の通りになります。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">a is 1333
+a is greater than 1024
+</span>
+</pre>
+</div>
+<p><code class="inline-code tt">a == 1333</code>は<code class="inline-code tt">true</code>なので、4行目が実行され、6行目は実行されません。また、<code class="inline-code tt">a &gt; 1024</code>は<code class="inline-code tt">true</code>なので9行目が実行されますが、<code class="inline-code tt">a &lt; 1024</code>は<code class="inline-code tt">false</code>なので12行目は実行されません。</p>
+<p>ここで、2行目の<code class="inline-code tt">a = 1333</code>を<code class="inline-code tt">a = 753</code>に変えてみます。すると、実行結果は以下の通りになります。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">a is not 1333
+a is less than 1024
+</span>
+</pre>
+</div>
+<p><code class="inline-code tt">a == 1333</code>は<code class="inline-code tt">false</code>なので、4行目が実行されず、6行目が実行されます。<code class="inline-code tt">a &gt; 1024</code>は<code class="inline-code tt">false</code>なので9行目は実行されませんが、<code class="inline-code tt">a &lt; 1024</code>は<code class="inline-code tt">true</code>なので12行目は実行されます。</p>
+
+<h3><a id="h2-5-7"></a>繰り返し処理</h3>
+
+<h4><a id="h2-5-7-1"></a>for文</h4>
+<p>for文は、繰り返し回数が決まっているときに使う構文です。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="k">for</span><span class="p">(</span><span class="err">初期値</span><span class="p">;</span> <span class="err">条件式</span><span class="p">;</span> <span class="err">増減式</span><span class="p">)</span> <span class="p">{</span>    <span class="c1">// 増減式の最後にはセミコロンはつけません</span>
+  <span class="c1">// 繰り返す処理</span>
+  <span class="c1">// 条件式がtrueである限りこの部分は実行されます</span>
+  <span class="c1">// 処理が終わるごとに増減式を実行します</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>以下は、for文を使ったコードの例です。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">a</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>実行結果は以下の通りです。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">0.0
+1.0
+2.0
+3.0
+4.0
+5.0
+6.0
+7.0
+8.0
+9.0
+</span>
+</pre>
+</div>
+<p>for文は、後ほど紹介する配列の要素を参照するときによく使われます。</p>
+
+<h4><a id="h2-5-7-2"></a>while文</h4>
+<p>何回繰り返すか分かっていないときはwhile文を使いましょう。while文を書くときは、無限ループになっていないか十分に確認をしましょう。さもないと、兵庫県警に逮捕されます。<a id="fnb-arrest" href="sashiming.html#fn-arrest" class="noteref" epub:type="noteref">*2</a></p>
+<div class="footnote" epub:type="footnote" id="fn-arrest"><p class="footnote">[*2] <a href="https://qiita.com/wagase/items/f4c1bf41682987ac6889" class="link">https://qiita.com/wagase/items/f4c1bf41682987ac6889</a></p></div>
+<div id="while" class="caption-code">
+<p class="caption">リスト2.1: while文.gs</p>
+<pre class="list language-javascript highlight"><span class="k">while</span><span class="p">(</span><span class="err">条件式</span><span class="p">)</span> <span class="p">{</span>    <span class="c1">// 条件式の最後にはセミコロンはつけません</span>
+  <span class="c1">// 繰り返す処理</span>
+  <span class="c1">// 条件式がtrueである限りこの部分は実行されます</span>
+  <span class="c1">// 繰り返す処理の最後には必ず増減式を書きましょう</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>以下は、while文を使ったコードの例です。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">while</span><span class="p">(</span><span class="nx">a</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+    <span class="nx">a</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>実行結果は以下の通りです。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">0.0
+2.0
+4.0
+6.0
+8.0
+</span>
+</pre>
+</div>
+
+<h4><a id="h2-5-7-3"></a>breakとcontinue</h4>
+<p>for文やwhile文のループ処理の中で<code class="inline-code tt">break;</code>を入れると、完全にループから抜け出します。以下はコード例です。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">a</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">i</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>実行結果は以下の通りです。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">0.0
+1.0
+2.0
+3.0
+4.0
+5.0
+</span>
+</pre>
+</div>
+<p><code class="inline-code tt">i</code>が<code class="inline-code tt">6</code>のときに<code class="inline-code tt">break;</code>が実行され、for文を抜け出しています。</p>
+<p><br /></p>
+<p>ループ処理の中で<code class="inline-code tt">continue;</code>を使うと、そこから後の処理は行われず、次のループに移ります。</p>
+<p>以下はコード例です。</p>
+<div id="continue_example" class="code">
+<p class="caption">リスト2.2: continue_example.gs</p>
+<table class="highlight rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="nx">a</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+    <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table>
+</div>
+<p>実行結果は以下の通りです。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">2.0
+4.0
+6.0
+7.0
+10.0
+</span>
+</pre>
+</div>
+<p>1から10までの偶数を出力するプログラムです。<code class="inline-code tt">i</code>が奇数のときは<code class="inline-code tt">continue;</code>が実行され、次のループに移ります。</p>
+
+<h3><a id="h2-5-8"></a>配列</h3>
+
+<h4><a id="h2-5-8-1"></a>通常の配列</h4>
+<p>空の配列の初期化のしかたは、次の通りです。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[];</span>
+</pre>
+</div>
+<p>配列を作成するには、角括弧を使います。</p>
+<p>初期値をもつ配列の作り方は、次の通りです。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">33</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">114</span><span class="p">,</span> <span class="mi">514</span><span class="p">,</span> <span class="mi">810</span><span class="p">];</span>
+</pre>
+</div>
+<p>初期値はもたないが要素数が定まっている配列の作り方は、次の通りです。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="c1">// 長さ 575 の配列を作る</span>
+<span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">(</span><span class="mi">575</span><span class="p">);</span>
+</pre>
+</div>
+<p>実際に長さ575の配列を作れているかどうか確認してみましょう。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">(</span><span class="mi">575</span><span class="p">);</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>実行結果は次のようになります。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">575.0
+</span>
+</pre>
+</div>
+<p><code class="inline-code tt">(配列名).length</code>で配列の長さを求めることができます。</p>
+<p>配列の後ろに要素を追加するには、<code class="inline-code tt">push()</code>を使います。使用例は次の通りです。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">33</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">114</span><span class="p">,</span> <span class="mi">514</span><span class="p">,</span> <span class="mi">1919</span><span class="p">];</span>
+  <span class="nx">arr</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">810</span><span class="p">);</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">);</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>実行結果は次のようになります。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">[33.0, 4.0, 114.0, 514.0, 1919.0, 810.0]
+</span>
+</pre>
+</div>
+<p>配列<code class="inline-code tt">[33, 4, 114, 514, 1919]</code>の後ろに<code class="inline-code tt">810</code>が追加され、<code class="inline-code tt">[33, 4, 114, 514, 1919, 810]</code>になりました。</p>
+<p>逆に、配列の先頭に要素を追加するには、<code class="inline-code tt">unshift()</code>を使います。使用例は次の通りです。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">,</span> <span class="s1">'e'</span><span class="p">];</span>
+  <span class="nx">arr</span><span class="p">.</span><span class="nx">unshift</span><span class="p">(</span><span class="s1">'a'</span><span class="p">);</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">);</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>実行結果は次のようになります。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">[a, b, c, d, e]
+</span>
+</pre>
+</div>
+<p>配列<code class="inline-code tt">['b', 'c', 'd', 'e']</code>の先頭に<code class="inline-code tt">'a'</code>が追加され、<code class="inline-code tt">['a', 'b', 'c', 'd', 'e']</code>になりました。</p>
+<p><br /></p>
+<p>配列の末尾の要素を削除するには、<code class="inline-code tt">pop()</code>を使います。使用例は次の通りです。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'p'</span><span class="p">];</span>
+  <span class="nx">arr</span><span class="p">.</span><span class="nx">pop</span><span class="p">();</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">);</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>実行結果は次のようになります。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">[a, b, c]
+</span>
+</pre>
+</div>
+<p>配列<code class="inline-code tt">['a', 'b', 'c', 'p']</code>の末尾の要素<code class="inline-code tt">'p'</code>が削除され、<code class="inline-code tt">['a', 'b', 'c']</code>になりました。</p>
+<p>逆に、配列の先頭の要素を削除するには、<code class="inline-code tt">shift()</code>を使います。使用例は次の通りです。</p>
+<div id="array04" class="caption-code">
+<p class="caption">リスト2.3: array_shift.gs</p>
+<pre class="list language-javascript highlight"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">];</span>
+  <span class="nx">arr</span><span class="p">.</span><span class="nx">shift</span><span class="p">();</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">);</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>実行結果は次のようになります。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">[b, c]
+</span>
+</pre>
+</div>
+<p>配列<code class="inline-code tt">['a', 'b', 'c']</code>の先頭の要素<code class="inline-code tt">'a'</code>が削除され、<code class="inline-code tt">['b', 'c']</code>になりました。</p>
+<p>配列の値を参照するには、他言語と同じように、<ruby>添<rp>（</rp><rt>そえ</rt><rp>）</rp></ruby><ruby>字<rp>（</rp><rt>じ</rt><rp>）</rp></ruby>をつけます。添字は1から始まる(1-indexed)のではなく、0から始まる(0-indexed)ので気をつけましょう。</p>
+<p>以下は使用例です。</p>
+<div id="array05" class="caption-code">
+<p class="caption">リスト2.4: array_index.gs</p>
+<pre class="list language-javascript highlight"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'a'</span><span class="p">,</span> <span class="s1">'b'</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">,</span> <span class="s1">'d'</span><span class="p">,</span> <span class="s1">'e'</span><span class="p">];</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>   <span class="c1">// 4 番目の値が出力されます</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="c1">// 1 番目の値が出力されます</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>実行結果は以下の通りです。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">d
+a
+</span>
+</pre>
+</div>
+<p>配列とfor文を組み合わせて、配列の全要素にアクセスすることもできます。</p>
+<p>以下は、配列とfor文を組み合わせた例です。</p>
+<div id="array06" class="caption-code">
+<p class="caption">リスト2.5: array_for.gs</p>
+<pre class="list language-javascript highlight"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="o">++</span><span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">sum</span> <span class="o">+=</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">sum</span><span class="p">);</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>配列に格納された数値の総和を求めるプログラムです。</p>
+<p>実行結果は次の通りです。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">55.0
+</span>
+</pre>
+</div>
+
+<h4><a id="h2-5-8-2"></a>連想配列</h4>
+<p>通常の配列とは違った配列として、連想配列があります。</p>
+<p>連想配列とは、キーを指定して値を紐づけることができる配列です。C++でいうところの<code class="inline-code tt">std::map</code>、Javaでいうところの<code class="inline-code tt">HashMap</code>です。</p>
+<p>通常の配列では、添字は0から始まる<b>数値</b>ですが、連想配列では<b>文字列</b>のキーを指定して、そのキーに対応する値を代入します。</p>
+<p>連想配列の初期化のしかたは、次の通りです。配列では角括弧を使いましたが、連想配列では波括弧を使います。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">var</span> <span class="nx">hash</span> <span class="o">=</span> <span class="p">{};</span>
+</pre>
+</div>
+<p>初期値をもつ連想配列をつくるには、次のようにします。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">var</span> <span class="nx">hash</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">red</span><span class="p">:</span> <span class="s2">"赤色"</span><span class="p">,</span>
+  <span class="na">blue</span><span class="p">:</span> <span class="s2">"青色"</span><span class="p">,</span>
+  <span class="na">green</span><span class="p">:</span> <span class="s2">"緑色"</span>
+<span class="p">};</span>
+</pre>
+</div>
+<p>コロンの左にキー名、右に値を書きます。</p>
+<p><br /></p>
+<p>連想配列に要素を追加するには、<code class="inline-code tt">連想配列名.キー = 値</code>や、<code class="inline-code tt">連想配列名[&quot;キー&quot;] = 値</code>などとします。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">var</span> <span class="nx">hash</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="nx">hash</span><span class="p">.</span><span class="nx">red</span> <span class="o">=</span> <span class="s2">"赤色"</span><span class="p">;</span>
+<span class="nx">hash</span><span class="p">[</span><span class="s2">"blue"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"青色"</span><span class="p">;</span>
+</pre>
+</div>
+<p>連想配列の要素の参照は<code class="inline-code tt">連想配列名.キー</code>や、<code class="inline-code tt">連想配列名[&quot;キー&quot;]</code>などとするとよいです。</p>
+<p><br /></p>
+<p>連想配列の全要素を表示するには、for-in文を使います。</p>
+<div id="hash01" class="caption-code">
+<p class="caption">リスト2.6: hash_allshow</p>
+<pre class="list language-javascript highlight"><span class="kd">var</span> <span class="nx">hash</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">red</span><span class="p">:</span> <span class="s2">"赤色"</span><span class="p">,</span>
+  <span class="na">blue</span><span class="p">:</span> <span class="s2">"青色"</span><span class="p">,</span>
+  <span class="na">green</span><span class="p">:</span> <span class="s2">"緑色"</span><span class="p">,</span>
+  <span class="na">yellow</span><span class="p">:</span> <span class="s2">"黄色"</span><span class="p">,</span>
+  <span class="na">orange</span><span class="p">:</span> <span class="s2">"橙色"</span>
+<span class="p">};</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">hash</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">key</span> <span class="o">+</span> <span class="s2">" の値: "</span> <span class="o">+</span> <span class="nx">hash</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>実行結果は以下の通りです。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">red の値: 赤色
+blue の値: 青色
+green の値: 緑色
+yellow の値: 黄色
+orange の値: 橙色
+</span>
+</pre>
+</div>
+<p>連想配列の要素を削除するには、<code class="inline-code tt">delete</code>を使います。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">var</span> <span class="nx">hash</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">red</span><span class="p">:</span> <span class="s2">"赤色"</span><span class="p">,</span>
+  <span class="na">blue</span><span class="p">:</span> <span class="s2">"青色"</span><span class="p">,</span>
+  <span class="na">orange</span><span class="p">:</span> <span class="s2">"橙色"</span><span class="p">,</span>
+  <span class="na">green</span><span class="p">:</span> <span class="s2">"緑色"</span>
+<span class="p">};</span>
+
+<span class="k">delete</span> <span class="nx">hash</span><span class="p">[</span><span class="s2">"orange"</span><span class="p">];</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">hash</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">key</span> <span class="o">+</span> <span class="s2">" の値: "</span> <span class="o">+</span> <span class="nx">hash</span><span class="p">[</span><span class="nx">key</span><span class="p">]);</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>実行結果は以下の通りです。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">red の値: 赤色
+blue の値: 青色
+green の値: 緑色
+</span>
+</pre>
+</div>
+<p>ちゃんと<code class="inline-code tt">orange</code>がキーとなる要素が削除されているのが分かります。</p>
+
+<h3><a id="h2-5-9"></a>自作関数</h3>
+<p>JavaScriptでの関数の書き方は次の通りです。</p>
+<div class="emlist-code">
+<pre class="emlist language-javascript highlight"><span class="kd">function</span> <span class="err">関数名</span> <span class="p">(</span><span class="err">引数</span><span class="mi">1</span><span class="p">,</span> <span class="err">引数</span><span class="mi">2</span><span class="p">,</span> <span class="p">...)</span> <span class="p">{</span>
+  <span class="c1">// 処理</span>
+  <span class="k">return</span> <span class="err">返り値</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>引数がない場合は空白にしても構いません。また、返り値がない場合はreturn~の文は書かなくて構いません。</p>
+<p>関数は、同じ処理を何回も実行するときに役に立ちます。</p>
+<p>以下は、関数を使ったコードの例です。</p>
+<div id="func" class="caption-code">
+<p class="caption">リスト2.7: function_example</p>
+<pre class="list language-javascript highlight"><span class="kd">function</span> <span class="nx">rating</span><span class="p">(</span><span class="nx">money</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">res</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">money</span> <span class="o">&lt;</span> <span class="mi">400</span><span class="p">)</span> <span class="nx">res</span> <span class="o">=</span> <span class="s2">"You are gray coder"</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">money</span> <span class="o">&lt;</span> <span class="mi">800</span><span class="p">)</span> <span class="nx">res</span> <span class="o">=</span> <span class="s2">"You are brown coder"</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">money</span> <span class="o">&lt;</span> <span class="mi">1200</span><span class="p">)</span> <span class="nx">res</span> <span class="o">=</span> <span class="s2">"You are green coder"</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">money</span> <span class="o">&lt;</span> <span class="mi">1600</span><span class="p">)</span> <span class="nx">res</span> <span class="o">=</span> <span class="s2">"You are cyan coder"</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">money</span> <span class="o">&lt;</span> <span class="mi">2000</span><span class="p">)</span> <span class="nx">res</span> <span class="o">=</span> <span class="s2">"You are blue coder"</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">money</span> <span class="o">&lt;</span> <span class="mi">2400</span><span class="p">)</span> <span class="nx">res</span> <span class="o">=</span> <span class="s2">"You are yellow coder"</span><span class="p">;</span>
+  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">money</span> <span class="o">&lt;</span> <span class="mi">2800</span><span class="p">)</span> <span class="nx">res</span> <span class="o">=</span> <span class="s2">"You are orange coder"</span><span class="p">;</span>
+  <span class="k">else</span> <span class="nx">res</span> <span class="o">=</span> <span class="s2">"You are red coder"</span><span class="p">;</span>
+
+  <span class="k">return</span> <span class="nx">res</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">rate</span> <span class="o">=</span> <span class="mi">1305</span><span class="p">;</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">rating</span><span class="p">(</span><span class="nx">rate</span><span class="p">));</span>
+  <span class="nx">rate</span> <span class="o">=</span> <span class="mi">2810</span><span class="p">;</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">rating</span><span class="p">(</span><span class="nx">rate</span><span class="p">));</span>
+  <span class="nx">rate</span> <span class="o">=</span> <span class="mi">421</span><span class="p">;</span>
+  <span class="nx">Logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">rating</span><span class="p">(</span><span class="nx">rate</span><span class="p">));</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p><br /></p>
+<p>AtCoder<a id="fnb-atc" href="sashiming.html#fn-atc" class="noteref" epub:type="noteref">*3</a>のレーティングから色分けを出力するプログラムです。実行結果は以下の通りです。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">You are cyan coder
+You are red coder
+You are brown coder
+</span>
+</pre>
+</div>
+<div class="footnote" epub:type="footnote" id="fn-atc"><p class="footnote">[*3] <a href="https://atcoder.jp/" class="link">https://atcoder.jp/</a></p></div>
+
+<h2><a id="h2-6"></a><span class="secno">2.6　</span>Twitter API キーの取得</h2>
+<p>一通りGASを触ってみたら、いよいよ本題です。Twitter botを作る準備をしましょう。</p>
+<p>Twitter botを作るためには、Twitter APIのAPIキーを取得しなければいけません。Twitter APIを叩くことで、スクリプトからツイートを送信したり、Twitterの様々なコンテンツ (ツイート、タイムライン、フォロワーなど)を取得したりできます。</p>
+<p>Twitter APIのAPIキーは、以前は<a href="https://apps.twitter.com/" class="link">https://apps.twitter.com/</a>から簡単に取得できましたが、2018年7月からAPIの使用条件が厳格になり、Twitterアカウントとは別に<a href="https://developer.twitter.com/" class="link">https://developer.twitter.com/</a>からの開発者アカウントの登録が必須になりました。しかも、この開発者アカウントの登録が面倒で、Twitter APIを使う目的を英語で300文字以上書かされたりします。botを作る前段階の時点で初心者殺しですね。<a id="fnb-twitterkuso" href="sashiming.html#fn-twitterkuso" class="noteref" epub:type="noteref">*4</a></p>
+<div class="footnote" epub:type="footnote" id="fn-twitterkuso"><p class="footnote">[*4] 実は少し前までは開発者アカウントの登録にはTwitter側による審査が必要で、長い時間をかけないと登録ができない鬼畜仕様でした</p></div>
+
+<h3><a id="h2-6-1"></a>開発者アカウントの登録</h3>
+<p>それでは、この面倒な開発者アカウントの登録をやっていきましょう。</p>
+<p>まず、Twitterの通常のアカウントを用意しましょう。登録手順は省略します。</p>
+<p>次に、<a href="https://developer.twitter.com/" class="link">https://developer.twitter.com/</a>にアクセスしてください。</p>
+<p>ページ右上の「Apply」をクリックした後、「Apply for a developer account」をクリックしましよう。</p>
+<div id="id_05" class="image">
+<img src="images/sashiming/05.png" alt="開発者アカウント登録手順_01" class="width-070per" />
+<p class="caption">
+図2.7: 開発者アカウント登録手順_01
+</p>
+</div>
+<p>Twitterアカウントに携帯電話番号を紐づけていないと以下のような画面になるので、「Add a valid phone number」から携帯電話番号を登録しましょう。すでに携帯電話番号を紐づけている場合は「Add a valid phone number」の部分が「Continue」になっているので、そこをクリックしましょう。</p>
+<div id="id_06" class="image">
+<img src="images/sashiming/06.png" alt="開発者アカウント登録手順_02" class="width-070per" />
+<p class="caption">
+図2.8: 開発者アカウント登録手順_02
+</p>
+</div>
+<p>Twitter APIを利用するアカウントの詳細情報を入力します。</p>
+<div id="id_07" class="image">
+<img src="images/sashiming/07.png" alt="開発者アカウント登録手順_03" class="width-070per" />
+<p class="caption">
+図2.9: 開発者アカウント登録手順_03
+</p>
+</div>
+<p>Twitter APIの使用用途にチェックを入れます。</p>
+<div id="id_08" class="image">
+<img src="images/sashiming/08.png" alt="開発者アカウント登録手順_04" class="width-070per" />
+<p class="caption">
+図2.10: 開発者アカウント登録手順_04
+</p>
+</div>
+<p>Twitter APIをどのように使用するかを詳細に記載します。<b>英語で300文字以上</b>書かないといけません。頑張って書きましょう。</p>
+<div id="id_09" class="image">
+<img src="images/sashiming/09.png" alt="開発者アカウント登録手順_05" class="width-070per" />
+<p class="caption">
+図2.11: 開発者アカウント登録手順_05
+</p>
+</div>
+<p>APIで入手した情報を政府機関が利用できるか確認されます。個人利用なのでもちろん「No」を選びましょう。</p>
+<div id="id_10" class="image">
+<img src="images/sashiming/10.png" alt="開発者アカウント登録手順_06" class="width-070per" />
+<p class="caption">
+図2.12: 開発者アカウント登録手順_06
+</p>
+</div>
+<p>利用規約に同意して、開発者アカウントの登録申請をしましょう。</p>
+<div id="id_11" class="image">
+<img src="images/sashiming/11.png" alt="開発者アカウント登録手順_07" class="width-070per" />
+<p class="caption">
+図2.13: 開発者アカウント登録手順_07
+</p>
+</div>
+<div id="id_12" class="image">
+<img src="images/sashiming/12.png" alt="開発者アカウント登録手順_08" class="width-070per" />
+<p class="caption">
+図2.14: 開発者アカウント登録手順_08
+</p>
+</div>
+<p>「あなた宛にメールを送信したよ！」という画面になり、Twitterからメールが送信されます。</p>
+<div id="id_13" class="image">
+<img src="images/sashiming/13.png" alt="開発者アカウント登録手順_09" class="width-070per" />
+<p class="caption">
+図2.15: 開発者アカウント登録手順_09
+</p>
+</div>
+<p>送信されたメールの内容です。「Confirm your email」をクリックしましょう。</p>
+<div id="id_14" class="image">
+<img src="images/sashiming/14.png" alt="開発者アカウント登録手順_10" class="width-070per" />
+<p class="caption">
+図2.16: 開発者アカウント登録手順_10
+</p>
+</div>
+<p>僕の場合、この時点でTwitter APIを使用できる状態になっていましたが、もし「審査中です」というような画面になっていた場合、審査が終わるまで待ちましょう。Twitter側からメールが来た場合、要求されている内容を英語で書いて返信してください。承認されれば、ようやく開発者アカウントの登録は終わりです。</p>
+
+<h3><a id="h2-6-2"></a>APIキー取得</h3>
+<p>Get Started(<a href="https://developer.twitter.com/en/account/get-started" class="link">https://developer.twitter.com/en/account/get-started</a>)のページから、「Create an app」をクリックしましょう。</p>
+<div id="id_15" class="image">
+<img src="images/sashiming/15.png" alt="APIキー取得_01" class="width-070per" />
+<p class="caption">
+図2.17: APIキー取得_01
+</p>
+</div>
+<p>「Create an app」をクリックします。</p>
+<div id="id_16" class="image">
+<img src="images/sashiming/16.png" alt="APIキー取得_02" class="width-070per" />
+<p class="caption">
+図2.18: APIキー取得_02
+</p>
+</div>
+<p>以下の画像の通りに必要事項を入力しましょう。</p>
+<div id="id_17" class="image">
+<img src="images/sashiming/17.png" alt="APIキー取得_03" class="width-070per" />
+<p class="caption">
+図2.19: APIキー取得_03
+</p>
+</div>
+<div id="id_18" class="image">
+<img src="images/sashiming/18.png" alt="APIキー取得_04" class="width-070per" />
+<p class="caption">
+図2.20: APIキー取得_04
+</p>
+</div>
+<div id="id_19" class="image">
+<img src="images/sashiming/19.png" alt="APIキー取得_05" class="width-070per" />
+<p class="caption">
+図2.21: APIキー取得_05
+</p>
+</div>
+<p>「Callback URLs」には次のURLを指定してください。角括弧は必要ありません。</p>
+<p>https://script.google.com/macros/d/[GASのスクリプトID]/usercallback</p>
+<p>GASのスクリプトIDは、GASのエディタの上部メニュー「ファイル」→「プロジェクトのプロパティ」を開くことで見ることができます。</p>
+<div id="id_20" class="image">
+<img src="images/sashiming/20.png" alt="スクリプトIDの場所" class="width-070per" />
+<p class="caption">
+図2.22: スクリプトIDの場所
+</p>
+</div>
+<p>必要事項を記入し終わったら、「Create」をクリックしましょう。その後、APIの使用に関する注意が出るので、一読してから「Create」をクリックしましょう。</p>
+<div id="id_21" class="image">
+<img src="images/sashiming/21.png" alt="API使用に関する注意画面" class="width-070per" />
+<p class="caption">
+図2.23: API使用に関する注意画面
+</p>
+</div>
+<p>これでAppを作成できました。今回のbot作成では、「Key and tokens」から見られる、2つのConsumer API keysを使います。</p>
+<div id="id_22" class="image">
+<img src="images/sashiming/22.png" alt="Key and tokensをクリック" class="width-070per" />
+<p class="caption">
+図2.24: Key and tokensをクリック
+</p>
+</div>
+<div id="id_23" class="image">
+<img src="images/sashiming/23.png" alt="今回使うConsumer API keys" class="width-070per" />
+<p class="caption">
+図2.25: 今回使うConsumer API keys
+</p>
+</div>
+<p>これで、APIキーを取得することができました。</p>
+
+<h2><a id="h2-7"></a><span class="secno">2.7　</span>GASでTwitter APIを使う</h2>
+<p>これでようやくAPIキーを取得することができました。あともう一息です。</p>
+<p>今度は、GASのライブラリ「TwitterWebService」<a id="fnb-twilib" href="sashiming.html#fn-twilib" class="noteref" epub:type="noteref">*5</a>を導入します(公式のものではありません)。TwitterWebServiceライブラリを導入することで、OAuth認証の処理が楽になります。</p>
+<p>GASのエディタを開いて、上部メニュー「リソース」から、「ライブラリ」を選択してください。次に、「ライブラリの追加」の欄に以下に示すプロジェクトキーを入力し、「追加」ボタンをクリックしてください。</p>
+<p>プロジェクトキー：1rgo8rXsxi1DxI_5Xgo_t3irTw1Y5cxl2mGSkbozKsSXf2E_KBBPC3xTF</p>
+<p>以下のような画面になるので、バージョンを「2」に合わせて、「保存」を押してください。</p>
+<div id="id_24" class="image">
+<img src="images/sashiming/24.png" alt="ライブラリ追加" class="width-070per" />
+<p class="caption">
+図2.26: ライブラリ追加
+</p>
+</div>
+<div id="id_25" class="image">
+<img src="images/sashiming/25.png" alt="バージョンを2に合わせて保存" class="width-070per" />
+<p class="caption">
+図2.27: バージョンを2に合わせて保存
+</p>
+</div>
+<p>これでTwitterWebServiceライブラリを導入することができました。</p>
+<div class="footnote" epub:type="footnote" id="fn-twilib"><p class="footnote">[*5] GitHub: <a href="https://gist.github.com/M-Igashi/750ab08718687d11bff6322b8d6f5d90" class="link">https://gist.github.com/M-Igashi/750ab08718687d11bff6322b8d6f5d90</a></p></div>
+
+<h3><a id="h2-7-1"></a>ツイッタランドにHello, World!</h3>
+<p>以下のソースコードを書いてください。3・4行目には、先ほど取得したConsumer API keysのAPI keyとAPI secret keyを入れてください。</p>
+<div id="twitterhello" class="code">
+<p class="caption">リスト2.8: TwitterHello.gs</p>
+<table class="highlight rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre></td><td class="rouge-code"><pre><span class="c1">// 認証用のインスタンス</span>
+<span class="kd">var</span> <span class="nx">twitter</span> <span class="o">=</span> <span class="nx">TwitterWebService</span><span class="p">.</span><span class="nx">getInstance</span><span class="p">(</span>
+  <span class="s2">" (Consumer API keysのAPI key) "</span><span class="p">,</span>
+  <span class="s2">" (Consumer API keysのAPI secret key) "</span>
+<span class="p">);</span>
+
+<span class="c1">// 認証</span>
+<span class="kd">function</span> <span class="nx">authorize</span><span class="p">(){</span>
+  <span class="nx">twitter</span><span class="p">.</span><span class="nx">authorize</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// 認証解除</span>
+<span class="kd">function</span> <span class="nx">reset</span><span class="p">(){</span>
+  <span class="nx">twitter</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// 認証後のコールバック</span>
+<span class="kd">function</span> <span class="nx">authCallback</span><span class="p">(</span><span class="nx">request</span><span class="p">){</span>
+  <span class="k">return</span> <span class="nx">twitter</span><span class="p">.</span><span class="nx">authCallback</span><span class="p">(</span><span class="nx">request</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// ここから上は変えないようにしてください</span>
+
+<span class="kd">function</span> <span class="nx">postTweet</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">service</span>  <span class="o">=</span> <span class="nx">twitter</span><span class="p">.</span><span class="nx">getService</span><span class="p">();</span>
+  <span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="s2">"Hello, World!"</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">service</span><span class="p">.</span><span class="nx">fetch</span><span class="p">(</span><span class="s2">"https://api.twitter.com/1.1/statuses/update.json"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">method</span><span class="p">:</span> <span class="s2">"post"</span><span class="p">,</span>
+    <span class="na">payload</span><span class="p">:</span> <span class="p">{</span> <span class="na">status</span><span class="p">:</span> <span class="nx">message</span> <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table>
+</div>
+<p>ソースコードを書いたら、まずauthorize関数を実行しましょう。authorize関数の走らせ方は以下の画像の通りです。</p>
+<div id="id_26" class="image">
+<img src="images/sashiming/26.png" alt="authorize関数実行手順" class="width-070per" />
+<p class="caption">
+図2.28: authorize関数実行手順
+</p>
+</div>
+<p>実行が終わったら、ログを表示させます。以下の画像のようにURLが表示されますので、ブラウザの別タブでそのURLに飛びましょう。</p>
+<div id="id_27" class="image">
+<img src="images/sashiming/27.png" alt="認証ページのURL" class="width-070per" />
+<p class="caption">
+図2.29: 認証ページのURL
+</p>
+</div>
+<p>すると、ツイ廃にとってはおなじみの画面が表示されました。「連携アプリを認証」をクリックしましょう。</p>
+<div id="id_28" class="image">
+<img src="images/sashiming/28.png" alt="おなじみの認証画面" class="width-070per" />
+<p class="caption">
+図2.30: おなじみの認証画面
+</p>
+</div>
+<p>「Success」の表示が出れば、認証成功です。このタブは閉じても構いません。ちなみに、2回目以降の実行では、以上の認証作業は必要ありません。</p>
+<p>認証が終わったので、ようやくツイート処理がおこなえます。それでは、先ほどauthorize関数を実行したのと同じようにして、postTweet関数を実行してみましょう。</p>
+<p>実行が終了した後、Twitterを開いて確認してみましょう。ちゃんと「Hello, World!」という内容のツイートが送信されています。</p>
+<div id="id_29" class="image">
+<img src="images/sashiming/29.png" alt="ツイート送信完了" class="width-070per" />
+<p class="caption">
+図2.31: ツイート送信完了
+</p>
+</div>
+
+<h2><a id="h2-8"></a><span class="secno">2.8　</span>お天気botを作る</h2>
+<p>この記事の冒頭で紹介した、明日の天気を発信するお天気botを、実際に作ってみましょう。</p>
+<p>お天気botを作るためには、明日の天気情報をどこかから入手する必要があります。今回は、Livedoorの天気API(<a href="http://weather.livedoor.com/weather_hacks/webservice" class="link">http://weather.livedoor.com/weather_hacks/webservice</a>)を利用します。これは、地域を指定するとその地域の今日・明日・明後日の天気・最高気温・最低気温のデータをJSON形式で取得できるというものです。</p>
+<p>手っ取り早く作りたいという方のために、先にソースコードを載せておきます。コード解説は後ほど。</p>
+<div id="weather" class="code">
+<p class="caption">リスト2.9: weatherbot.gs</p>
+<table class="highlight rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+</pre></td><td class="rouge-code"><pre><span class="c1">// 認証用のインスタンス</span>
+<span class="kd">var</span> <span class="nx">twitter</span> <span class="o">=</span> <span class="nx">TwitterWebService</span><span class="p">.</span><span class="nx">getInstance</span><span class="p">(</span>
+  <span class="s2">" (Consumer API keysのAPI key) "</span><span class="p">,</span>
+  <span class="s2">" (Consumer API keysのAPI secret key) "</span>
+<span class="p">);</span>
+
+<span class="c1">// 認証</span>
+<span class="kd">function</span> <span class="nx">authorize</span><span class="p">(){</span>
+  <span class="nx">twitter</span><span class="p">.</span><span class="nx">authorize</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// 認証解除</span>
+<span class="kd">function</span> <span class="nx">reset</span><span class="p">(){</span>
+  <span class="nx">twitter</span><span class="p">.</span><span class="nx">reset</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="c1">// 認証後のコールバック</span>
+<span class="kd">function</span> <span class="nx">authCallback</span><span class="p">(</span><span class="nx">request</span><span class="p">){</span>
+  <span class="k">return</span> <span class="nx">twitter</span><span class="p">.</span><span class="nx">authCallback</span><span class="p">(</span><span class="nx">request</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// ここから上は変えないようにしてください</span>
+
+<span class="kd">function</span> <span class="nx">weatherTweet</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">tweet</span><span class="p">;</span>
+  <span class="kd">var</span> <span class="nx">weatherJSON</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">UrlFetchApp</span><span class="p">.</span><span class="nx">fetch</span><span class="p">(</span><span class="s2">"http://weather.livedoor.com/forecast/webservice/json/v1?city=270000"</span><span class="p">).</span><span class="nx">getContentText</span><span class="p">());</span>
+
+  <span class="kd">var</span> <span class="nx">weather</span> <span class="o">=</span> <span class="nx">weatherJSON</span><span class="p">[</span><span class="s2">"forecasts"</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">"telop"</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">maxtemp</span> <span class="o">=</span> <span class="nx">weatherJSON</span><span class="p">[</span><span class="s2">"forecasts"</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">"temperature"</span><span class="p">][</span><span class="s2">"max"</span><span class="p">][</span><span class="s2">"celsius"</span><span class="p">];</span>
+  <span class="kd">var</span> <span class="nx">mintemp</span> <span class="o">=</span> <span class="nx">weatherJSON</span><span class="p">[</span><span class="s2">"forecasts"</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="s2">"temperature"</span><span class="p">][</span><span class="s2">"min"</span><span class="p">][</span><span class="s2">"celsius"</span><span class="p">];</span>
+
+  <span class="kd">var</span> <span class="nx">tomorrow</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+  <span class="nx">tomorrow</span><span class="p">.</span><span class="nx">setDate</span><span class="p">(</span><span class="nx">tomorrow</span><span class="p">.</span><span class="nx">getDate</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">datestr</span> <span class="o">=</span> <span class="nb">String</span><span class="p">(</span><span class="nx">tomorrow</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'月'</span> <span class="o">+</span> <span class="nb">String</span><span class="p">(</span><span class="nx">tomorrow</span><span class="p">.</span><span class="nx">getDate</span><span class="p">())</span> <span class="o">+</span> <span class="s1">'日'</span><span class="p">;</span>
+
+  <span class="nx">tweet</span> <span class="o">=</span> <span class="s2">"明日（"</span><span class="o">+</span><span class="nx">datestr</span><span class="o">+</span><span class="s2">"）の大阪の天気は "</span><span class="o">+</span><span class="nx">weather</span><span class="o">+</span><span class="s2">" の予想です。</span><span class="se">\n</span><span class="s2">最高気温は "</span><span class="o">+</span><span class="nx">maxtemp</span><span class="o">+</span><span class="s2">"℃、最低気温は"</span><span class="o">+</span> <span class="nx">mintemp</span><span class="o">+</span><span class="s2">"℃ の予想です。"</span><span class="p">;</span>
+
+  <span class="nx">twitter</span><span class="p">.</span><span class="nx">getService</span><span class="p">().</span><span class="nx">fetch</span><span class="p">(</span><span class="s2">"https://api.twitter.com/1.1/statuses/update.json"</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">method</span><span class="p">:</span> <span class="s2">"post"</span><span class="p">,</span>
+    <span class="na">payload</span><span class="p">:</span> <span class="p">{</span> <span class="na">status</span><span class="p">:</span> <span class="nx">tweet</span> <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table>
+</div>
+
+<h3><a id="h2-8-1"></a>コード解説</h3>
+<ul>
+<li>25行目</li>
+</ul>
+<p>大阪市の天気情報を <a href="http://weather.livedoor.com/forecast/webservice/json/v1?city=270000" class="link">http://weather.livedoor.com/forecast/webservice/json/v1?city=270000</a> から入手し(<code class="inline-code tt">UrlFetchApp.fetch(url)</code>)、それをJSON形式のデータとして扱えるようにしています(<code class="inline-code tt">JSON.parse()</code>)。</p>
+<p>入手したJSON形式のデータの構造の概略は次の画像の通りです。JSON形式のデータは階層構造でデータが格納されています。</p>
+<div id="id_30" class="image">
+<img src="images/sashiming/30.png" alt="天気JSONデータの構造" class="width-070per" />
+<p class="caption">
+図2.32: 天気JSONデータの構造
+</p>
+</div>
+<ul>
+<li>27~29行目：天気のJSONデータを取得</li>
+</ul>
+<p>JSON形式のデータでは、連想配列と同じようにして特定のデータにアクセスすることができます。</p>
+<p>27行目では明日の天気、</p>
+<p>28行目では明日の最高気温、</p>
+<p>29行目では明日の最低気温</p>
+<p>を参照しています。</p>
+<ul>
+<li>31~33行目：日付表示の処理</li>
+</ul>
+<p>31行目では、日付情報を格納するDate型を使い、今日の日付情報(<code class="inline-code tt">new Date()</code>)を変数<code class="inline-code tt">tomorrow</code>に代入しています。</p>
+<p>32行目では、変数<code class="inline-code tt">tomorrow</code>が今日の日付情報になっているのを明日の日付情報に直しています。</p>
+<p>33行目では、明日の日付を「○月○日」の形の文字列として変数<code class="inline-code tt">datestr</code>に代入しています。<code class="inline-code tt">tomorrow.getMonth()</code>で返ってくる値は実際の月より1小さいので(例えば5月なら4が返ってきます)、実際の月に直すために1を足しています。</p>
+<ul>
+<li>35行目：ツイート内容となる文字列型変数<code class="inline-code tt">tweet</code>をつくる</li>
+</ul>
+<p>文字列では、<code class="inline-code tt">+</code>を使うと文字列同士の結合ができます。また、<code class="inline-code tt">String()</code>を使うと、数値型のものを文字列型にキャストすることができます。</p>
+<ul>
+<li>37~40行目：ツイート送信処理</li>
+</ul>
+<p>Hello, Worldのツイートを送信したときと同じように、「変数<code class="inline-code tt">tweet</code>をツイート内容にしてツイートして」というリクエストを送っています。</p>
+
+<h3><a id="h2-8-2"></a>仕上げ</h3>
+<p>実装をしただけでは、まだ自動実行するbotとはいえません。最後の仕上げとして、このスクリプトを定期的に実行するようにしましょう。</p>
+<p>この記事の最初のほうに書いたGASの紹介で、<b>トリガー機能</b>について述べました。今回は、このトリガー機能を使って自動実行させるようにします。</p>
+<p>まず、エディタの上部メニュー「編集」→「現在のプロジェクトのトリガー」を押しましょう。別タブが開くはずです。</p>
+<p>次に、ページ右下の「トリガーを追加」を押して、次の画像のように設定してください。「時刻の選択」は自分の好きな時間帯にして構いません。「エラー通知設定」についても、自由に設定して構いません。</p>
+<div id="id_31" class="image">
+<img src="images/sashiming/31.png" alt="トリガーの設定" class="width-070per" />
+<p class="caption">
+図2.33: トリガーの設定
+</p>
+</div>
+<p>設定が終わったら、下部の「保存」を押しましょう。次の画像のような表示になれば、トリガーの設定は成功です。</p>
+<div id="id_32" class="image">
+<img src="images/sashiming/32.png" alt="トリガー設定完了" class="width-070per" />
+<p class="caption">
+図2.34: トリガー設定完了
+</p>
+</div>
+<p>実際に、「時刻の選択」で設定した時間帯になると自動的にツイートが実行されるかと思います。これでようやくお天気botの完成です！</p>
+
+<h2><a id="h2-9"></a><span class="secno">2.9　</span>さいごに</h2>
+<p>今回作ったお天気botは実装が楽な部類のもので、JavaScriptの関数をもっと学べばさらに高度なbotを作ることができます。また、GASにはスプレッドシートなどと連携した機能があるので、変数データをスプレッドシートに保存しておくといった使い方もできます。</p>
+<p>JavaScriptのリファレンスはネットにたくさん転がっており、GAS特有の関数についてもGoogle公式によるリファレンスが(英語ですが)あります。</p>
+<p>GASリファレンス：<a href="https://developers.google.com/apps-script/reference/" class="link">https://developers.google.com/apps-script/reference/</a></p>
+<p>これらを読んで、あなたも便利な機能をもったbotを作りましょう！</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="object_1037.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ JINS MEMEで美少女になる話</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="sarugami.html">
+            <div class="book-cursor"><span class="cursor-next">▶ Blenderで簡単モデリング！</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

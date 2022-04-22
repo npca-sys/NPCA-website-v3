@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+<link rel="next" title="編集後記" href="postdef.html"><link rel="prev" title="「Blenderのシミュレーション機能を使う」 by enptukezuri (71)" href="enptukezuri.html">  <meta name="generator" content="Re:VIEW" />
+  <title>「適当に構文解析する話(575)」by Hinata (72) | NPCA部誌2017</title>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2017</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">まえがき</a></li>
+<li><a href="object_1037.html">1 「TwitterのBotを作ってみる」 by object_1037 (73)</a></li>
+<li><a href="physics.html">2 「競技プログラミング入門」 by 井上誠大 (73)</a></li>
+<li><a href="taizo0122.html">3 「計算量」 by taizo0122 (72)</a></li>
+<li><a href="2lu3.html">4 「ダイクストラ法とアテナの本」 by 2lu3 (73)</a></li>
+<li><a href="niini.html">5 「BOARD;GAME 負荷領域のデジャヴ」 by ni-ni (72)</a></li>
+<li><a href="enptukezuri.html">6 「Blenderのシミュレーション機能を使う」 by enptukezuri (71)</a></li>
+<li><a href="hinata.html">7 「適当に構文解析する話(575)」by Hinata (72)</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h7"></a><span class="secno">第7章　</span>「適当に構文解析する話(575)」by Hinata (72)</h1>
+
+<h2><a id="h7-1"></a><span class="secno">7.1　</span>はじめに</h2>
+<p>おはようございます。72回生のHinataと申します。今年ついに高校生となり、老いを実感する日々を送っております。時の流れは速いですね……。2年半くらいプログラミングを続けてきましたが、ここ2年弱くらいはTwitterやTwitterやTwitterに張り付いてばかりで全く精進をしていないため、一向に成長する様子がなく悲しい気分になっています。ですので、今年こそはちゃんと精進して†圧倒的成長†を掴み取る所存でございます。</p>
+<p>今回のタイトルは「適当に構文解析する話(575)」です。こんなことを言うと「構文解析は8音だから575ではなく585だ!」とおっしゃる方もいるかもしれません。その通りです。本当に申し訳ございません。許してヒヤシンス(・ω&lt;)</p>
+<p>さて、皆さんは構文解析を実装したことがありますか? 構文解析というレベルじゃなくても、大抵の人は文字列をパースしたことならあるでしょう。ない人はごめんなさい。その時、どのように実装しましたか? 正規表現を使った、という人が多いと思います。使ってない人はごめんなさい。</p>
+<p>確かに、正規表現は強力です。単純な文字列なら簡単にパースできます。例えば、2017/05/02のような日付にマッチする正規表現は <code class="inline-code tt">/\d{4}\/\d{2}\/\d{2}/</code> となります。正規表現もそれなりに簡潔でわかりやすいですね。数字4文字、スラッシュ、数字2文字、スラッシュ、数字2文字という文字列、つまり日付にマッチします。</p>
+<p>確かに正規表現は強力ですが、弱点もあります。可読性です。そもそも正規表現は言語としてみれば比較的読みにくい部類に入ると思います。可読性が低いというのは即ち保守性が低いということです。仕様を変更するたびに長々とした正規表現を編集しないといけないなんて、考えただけでぞっとします。正規表現は簡潔なものじゃないと許されません。</p>
+<p>では、正規表現以外にどのような方法があるでしょうか? 簡単です。文字列をパースするパーサを作ればいいのです。この記事ではJSONパーサを実装します。もちろん、正規表現だけでやろうなんて難易度ルナティックなことはしません。我々は賢いので。</p>
+<p>具体的なパーサの実装方法にもいろいろあります。言語によっては文法を表した文字列(BNF記法とか)からパーサを生成するパーサジェネレータがライブラリとして提供されている場合があります。BNF記法で文法を表現してパーサジェネレータにぶち込むだけで楽なのですが、それだと仕組みがよく分からないので、今回はパーサコンビネータというものを実装しようと思います。</p>
+
+<h2><a id="h7-2"></a><span class="secno">7.2　</span>がいよう</h2>
+<p>パーサコンビネータとはなんでしょう? 当然、パーサを組み合わせるもの(コンビネータ)です。</p>
+<p>パーサは入力を引数に取りパースした結果を返す関数、パーサコンビネータはパーサを引数に取り新たなパーサを返す高階関数とみなせます。高階関数とか言ってる時点で分かる通り、一般に関数型言語と呼ばれる言語で扱うといい感じらしいです。パーサコンビネータを調べるとHaskellとかScalaとかそのあたりの言語の話がたくさん出てきますし。ちなみにこの記事で使う言語はJavaScript(JS)です。JSは関数型言語とはお世辞にも言い難いですが、関数が第一級オブジェクトですから高階関数も実装できます。問題なんか何もないよ♪</p>
+<p>パーサの入力はパースする文字列とパースを始める位置。返り値はパースが成功したどうか、パース結果、そして新しい読み取り位置です。ね、簡単でしょう?</p>
+
+<h2><a id="h7-3"></a><span class="secno">7.3　</span>じっそう</h2>
+<p>簡単なわけないだろいい加減にしろ</p>
+<p>というわけで、実装しながら理解していきましょう。</p>
+<p>例えば、hogeというトークン(字句)をパースするパーサは次のようになります。</p>
+<div class="caption-code">
+<p class="caption">リスト7.1: parseHoge</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">function</span> parseHoge(str, position) {
+    <span style="color: #008000; font-weight: bold">if</span> (str.substr(position, <span style="color: #666666">4</span>) <span style="color: #666666">===</span> <span style="color: #BA2121">&quot;hoge&quot;</span>) {
+        <span style="color: #008000; font-weight: bold">return</span> {
+            success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">true</span>,
+            match<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;hoge&quot;</span>,
+            position<span style="color: #666666">:</span> position <span style="color: #666666">+</span> <span style="color: #666666">4</span>
+        };
+    } <span style="color: #008000; font-weight: bold">else</span> {
+        <span style="color: #008000; font-weight: bold">return</span> {
+            success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">false</span>,
+            position <span style="color: #408080; font-style: italic">// position: position の糖衣構文(syntax sugar)</span>
+        };
+    }
+}
+
+<span style="color: #408080; font-style: italic">// アホ毛っていいよね</span>
+parseHoge(<span style="color: #BA2121">&quot;ahoge&quot;</span>, <span style="color: #666666">1</span>); <span style="color: #408080; font-style: italic">// { success: true, match: &quot;hoge&quot;, position: 5 }</span>
+parseHoge(<span style="color: #BA2121">&quot;ahoka&quot;</span>, <span style="color: #666666">1</span>); <span style="color: #408080; font-style: italic">// { success: false, position: 1 }</span>
+</pre>
+</div>
+<p>しかし、これでは汎用性が低すぎます。アホ毛を検出するくらいしかできません。任意の文字列をパースできるようにしてみましょう。</p>
+<div class="caption-code">
+<p class="caption">リスト7.2: string関数</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">function</span> string(str) {
+    <span style="color: #008000; font-weight: bold">const</span> length <span style="color: #666666">=</span> str.length;
+
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #008000; font-weight: bold">function</span>(target, position) {
+        <span style="color: #008000; font-weight: bold">if</span> (target.substr(position, length) <span style="color: #666666">===</span> str) {
+            <span style="color: #008000; font-weight: bold">return</span> {
+                success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">true</span>,
+                match<span style="color: #666666">:</span> str,
+                position<span style="color: #666666">:</span> position <span style="color: #666666">+</span> length
+            };
+        } <span style="color: #008000; font-weight: bold">else</span> {
+            <span style="color: #008000; font-weight: bold">return</span> {
+                success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">false</span>,
+                position
+            };
+        }
+    }
+}
+
+<span style="color: #408080; font-style: italic">// fugaってイタリア語でフーガって意味なんですよ！</span>
+<span style="color: #008000; font-weight: bold">const</span> fuga <span style="color: #666666">=</span> string(<span style="color: #BA2121">&quot;fuga&quot;</span>);
+fuga(<span style="color: #BA2121">&quot;fuga&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: true, match: &quot;fuga&quot;, position: 4 }</span>
+<span style="color: #408080; font-style: italic">// カノン(音楽用語)はドイツ語でkanonです。他意はありません。</span>
+fuga(<span style="color: #BA2121">&quot;Kanon&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: false, position: 0 }</span>
+</pre>
+</div>
+<p>とりあえずパーサができたので、パーサを引数に取り新しいパーサを返すパーサコンビネータを試しに実装してみます。</p>
+<p>repeat関数は繰り返しを表現するパーサを返します。</p>
+<div class="caption-code">
+<p class="caption">リスト7.3: repeat関数</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">function</span> repeat(parser) {
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #008000; font-weight: bold">function</span>(str, position) {
+        <span style="color: #008000; font-weight: bold">let</span> currentPosition <span style="color: #666666">=</span> position;
+        <span style="color: #008000; font-weight: bold">const</span> matchResults <span style="color: #666666">=</span> [];
+        <span style="color: #008000; font-weight: bold">while</span> (<span style="color: #008000; font-weight: bold">true</span>) {
+            <span style="color: #008000; font-weight: bold">const</span> parseResult <span style="color: #666666">=</span> parser(str, currentPosition);
+            <span style="color: #008000; font-weight: bold">if</span> (parseResult.success) {
+                matchResults.push(parseResult.match);
+                currentPosition <span style="color: #666666">=</span> parseResult.position;
+            } <span style="color: #008000; font-weight: bold">else</span> {
+                <span style="color: #008000; font-weight: bold">break</span>;
+            }
+        }
+        <span style="color: #008000; font-weight: bold">return</span> {
+            success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">true</span>,
+            match<span style="color: #666666">:</span> matchResults,
+            position<span style="color: #666666">:</span> currentPosition
+        };
+    };
+}
+
+<span style="color: #008000; font-weight: bold">const</span> hogehoge <span style="color: #666666">=</span> repeat(string(<span style="color: #BA2121">&quot;hoge&quot;</span>)); <span style="color: #408080; font-style: italic">// /(hoge)*/ という正規表現と同じ働き</span>
+hogehoge(<span style="color: #BA2121">&quot;ahogehoge&quot;</span>, <span style="color: #666666">1</span>); <span style="color: #408080; font-style: italic">// { success: true, match: [&quot;hoge&quot;, &quot;hoge&quot;], position: 9 }</span>
+hogehoge(<span style="color: #BA2121">&quot;ahoka&quot;</span>, <span style="color: #666666">1</span>); <span style="color: #408080; font-style: italic">// { success: true, match: [], position: 1 }</span>
+</pre>
+</div>
+<p>次に、パーサを連結するseq関数と、パーサを複数受け取って順次適用していくalt関数を作ります。</p>
+<div class="caption-code">
+<p class="caption">リスト7.4: seq関数</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">function</span> seq(...parsers) {
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #008000; font-weight: bold">function</span>(str, position) {
+        <span style="color: #008000; font-weight: bold">const</span> matchResults <span style="color: #666666">=</span> [];
+        <span style="color: #008000; font-weight: bold">let</span> currentPosition <span style="color: #666666">=</span> position;
+        <span style="color: #008000; font-weight: bold">for</span> (<span style="color: #008000; font-weight: bold">const</span> parser <span style="color: #008000; font-weight: bold">of</span> parsers) {
+            <span style="color: #008000; font-weight: bold">const</span> result <span style="color: #666666">=</span> parser(str, currentPosition);
+            <span style="color: #008000; font-weight: bold">if</span> (<span style="color: #666666">!</span>result.success) {
+                <span style="color: #408080; font-style: italic">// パーサが1つでも失敗したら全体として失敗する</span>
+                <span style="color: #008000; font-weight: bold">return</span> {
+                    success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">false</span>,
+                    position
+                }
+            }
+            matchResults.push(result.match);
+            currentPosition <span style="color: #666666">=</span> result.position;
+        }
+        <span style="color: #008000; font-weight: bold">return</span> {
+            success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">true</span>,
+            match<span style="color: #666666">:</span> matchResults,
+            position<span style="color: #666666">:</span> currentPosition
+        };
+    };
+}
+<span style="color: #008000; font-weight: bold">const</span> hogefuga <span style="color: #666666">=</span> seq(string(<span style="color: #BA2121">&quot;hoge&quot;</span>), string(<span style="color: #BA2121">&quot;fuga&quot;</span>));
+hogefuga(<span style="color: #BA2121">&quot;hogefuga&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: true, match: [&quot;hoge&quot;, &quot;fuga&quot;], position: 8 }</span>
+
+<span style="color: #408080; font-style: italic">// hogeにはマッチするが、fugaにはマッチしないのでおしまい</span>
+hogefuga(<span style="color: #BA2121">&quot;hogepiyo&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: false, position: 0 }</span>
+</pre>
+</div>
+<div class="caption-code">
+<p class="caption">リスト7.5: alt関数</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">function</span> alt(...parsers) {
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #008000; font-weight: bold">function</span>(str, position) {
+        <span style="color: #008000; font-weight: bold">for</span> (<span style="color: #008000; font-weight: bold">const</span> parser <span style="color: #008000; font-weight: bold">of</span> parsers) {
+            <span style="color: #008000; font-weight: bold">const</span> result <span style="color: #666666">=</span> parser(str, position);
+            <span style="color: #008000; font-weight: bold">if</span> (result.success) {
+                <span style="color: #008000; font-weight: bold">return</span> result;
+            }
+        }
+        <span style="color: #008000; font-weight: bold">return</span> {
+            success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">false</span>,
+            position
+        };
+    }
+}
+
+<span style="color: #408080; font-style: italic">// /(hoge)|(fuga)/という正規表現と同じ働き</span>
+<span style="color: #008000; font-weight: bold">const</span> hogeOrFuga <span style="color: #666666">=</span> alt(string(<span style="color: #BA2121">&quot;hoge&quot;</span>), string(<span style="color: #BA2121">&quot;fuga&quot;</span>));
+hogeOrFuga(<span style="color: #BA2121">&quot;hoge&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: true, match: &quot;hoge&quot;, position: 4 }</span>
+hogeOrFuga(<span style="color: #BA2121">&quot;fuga&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: true, match: &quot;fuga&quot;, position: 4 }</span>
+hogeOrFuga(<span style="color: #BA2121">&quot;piyo&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: false, position: 0 }</span>
+</pre>
+</div>
+<p>オプションを表現するoption関数です。</p>
+<div class="caption-code">
+<p class="caption">リスト7.6: option関数</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">function</span> option(parser) {
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #008000; font-weight: bold">function</span>(str, position) {
+        <span style="color: #008000; font-weight: bold">const</span> result <span style="color: #666666">=</span> parser(str, position);
+        <span style="color: #008000; font-weight: bold">if</span> (result.success) {
+            <span style="color: #008000; font-weight: bold">return</span> result;
+        } <span style="color: #008000; font-weight: bold">else</span> {
+            <span style="color: #008000; font-weight: bold">return</span> {
+                success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">true</span>,
+                match<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">null</span>,
+                position
+            }
+        }
+    };
+}
+</pre>
+</div>
+<p>いろいろ実装しましたが、単純な正規表現で要求を満たせるならそれで十分ですね。何も車輪の再発明をする必要はありません。そこで、正規表現にマッチすれば成功し、しなければ失敗するパーサを返すregexp関数を実装します。1つ目の引数は正規表現です。2つ目の引数、groupが指定された場合は正規表現のマッチ結果のうち、指定されたキャプチャグループの部分のみが結果として返ります。</p>
+<div class="caption-code">
+<p class="caption">リスト7.7: regexp関数</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">function</span> regexp(re, group <span style="color: #666666">=</span> <span style="color: #666666">0</span>) {
+    <span style="color: #008000; font-weight: bold">if</span> (re.multiline <span style="color: #666666">||</span> re.source.startsWith(<span style="color: #BA2121">&quot;^&quot;</span>)) {
+        <span style="color: #008000; font-weight: bold">throw</span> <span style="color: #008000; font-weight: bold">new</span> <span style="color: #008000">Error</span>(<span style="color: #BA2121">&quot;mフラグが設定されていない正規表現で^を使わないでください&quot;</span>);
+    }
+    <span style="color: #008000; font-weight: bold">let</span> flag <span style="color: #666666">=</span> <span style="color: #BA2121">&quot;y&quot;</span>;
+    <span style="color: #008000; font-weight: bold">if</span> (re.multiline) { flag <span style="color: #666666">+=</span> <span style="color: #BA2121">&quot;m&quot;</span>; }
+    <span style="color: #008000; font-weight: bold">if</span> (re.ignoreCase) { flag <span style="color: #666666">+=</span> <span style="color: #BA2121">&quot;i&quot;</span>; }
+    <span style="color: #008000; font-weight: bold">if</span> (re.unicode) { flag <span style="color: #666666">+=</span> <span style="color: #BA2121">&quot;u&quot;</span>; }
+    <span style="color: #008000; font-weight: bold">const</span> newRegexp <span style="color: #666666">=</span> <span style="color: #008000; font-weight: bold">new</span> <span style="color: #008000">RegExp</span>(re.source, flag);
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #008000; font-weight: bold">function</span>(str, position) {
+        newRegexp.lastIndex <span style="color: #666666">=</span> position;
+        <span style="color: #008000; font-weight: bold">const</span> regexpResult <span style="color: #666666">=</span> newRegexp.exec(str);
+        <span style="color: #008000; font-weight: bold">if</span> (regexpResult) {
+            <span style="color: #008000; font-weight: bold">return</span> {
+                success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">true</span>,
+                match<span style="color: #666666">:</span> regexpResult[group],
+                position<span style="color: #666666">:</span> position <span style="color: #666666">+</span> regexpResult[group].length
+            };
+        } <span style="color: #008000; font-weight: bold">else</span> {
+            <span style="color: #008000; font-weight: bold">return</span> {
+                success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">false</span>,
+                position
+            };
+        }
+    }
+}
+
+<span style="color: #008000; font-weight: bold">const</span> digits <span style="color: #666666">=</span> regexp(<span style="color: #BB6688">/\d+/</span>); <span style="color: #408080; font-style: italic">// 数字の列にマッチする正規表現です</span>
+digits(<span style="color: #BA2121">&quot;114514&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: true, match: &#39;114514&#39;, position: 6 }</span>
+digits(<span style="color: #BA2121">&quot;01234s&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: true, match: &#39;01234&#39;, position: 5 }</span>
+digits(<span style="color: #BA2121">&quot;NPCA&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: false, position: 0 }</span>
+</pre>
+</div>
+<p>このコードではstickyフラグを有効に活用しています。何をやっているのか分からない人も多数いるかとは思いますが、説明が面倒なので省かせてください。JavaScriptの知識が必要になるので。</p>
+<p>理想を言えば、falseという文字列をパースするとfalseという値が返ってきてほしいところです。そこで、パース結果を加工するmap関数を実装します。</p>
+<div class="caption-code">
+<p class="caption">リスト7.8: map関数</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">function</span> map(parser, fn) {
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #008000; font-weight: bold">function</span>(str, position) {
+        <span style="color: #008000; font-weight: bold">const</span> result <span style="color: #666666">=</span> parser(str, position);
+        <span style="color: #008000; font-weight: bold">if</span> (result.success) {
+            <span style="color: #008000; font-weight: bold">return</span> {
+                success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">true</span>,
+                match<span style="color: #666666">:</span> fn(result.match),
+                position<span style="color: #666666">:</span> result.position
+            };
+        } <span style="color: #008000; font-weight: bold">else</span> {
+            <span style="color: #008000; font-weight: bold">return</span> {
+                success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">false</span>,
+                position
+            };
+        }
+    };
+}
+
+<span style="color: #408080; font-style: italic">// () =&gt; false は function() { return false; } と等価(アロー関数)</span>
+<span style="color: #008000; font-weight: bold">const</span> falseLiteral <span style="color: #666666">=</span> map(string(<span style="color: #BA2121">&quot;false&quot;</span>), () <span style="color: #666666">=&gt;</span> <span style="color: #008000; font-weight: bold">false</span>);
+falseLiteral(<span style="color: #BA2121">&quot;false&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: true, match: false, position: 5 }</span>
+falseLiteral(<span style="color: #BA2121">&quot;true&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: false, position: 0 }</span>
+</pre>
+</div>
+<p><code class="inline-code tt">match: false</code>だとマッチしていないかのようですが、パース結果がfalseというだけです。</p>
+<p>さて、結構な数のパーサ、パーサコンビネータが揃いました。もう十分でしょう。そう思った人もいるとは思いますが、残念でした。</p>
+<p>例えば、((()))のように括弧が何重にも入れ子になった文字列をパースすることを考えます。括弧の対応が取れていなければ失敗するようにしたいですね。</p>
+<p>一見すると次のようにすれば良さそうです。</p>
+<div class="caption-code">
+<p class="caption">リスト7.9: 失敗例</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">const</span> parenthesis <span style="color: #666666">=</span> seq(string(<span style="color: #BA2121">&quot;(&quot;</span>), option(parenthesis), string(<span style="color: #BA2121">&quot;)&quot;</span>));
+</pre>
+</div>
+<p>しかし、これを実行してみると</p>
+<blockquote><p>ReferenceError: parenthesis is not defined</p></blockquote>
+<p>というエラーが出ます。option関数の引数にあるparenthesisという変数を参照しようとしますが、この時点でparenthesisという変数は存在しません。このように、変数が登場したらすぐ評価しようとする戦略のことを先行評価といいます。先行評価の対義語は遅延評価です。JSの言語仕様に遅延評価は存在しませんが、それっぽいことならできます。</p>
+<div class="caption-code">
+<p class="caption">リスト7.10: lazy関数</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">function</span> lazy(callback) {
+    <span style="color: #008000; font-weight: bold">let</span> parser;
+    <span style="color: #008000; font-weight: bold">return</span> <span style="color: #008000; font-weight: bold">function</span>(str, position) {
+        <span style="color: #008000; font-weight: bold">if</span> (<span style="color: #666666">!</span>parser) {
+            parser <span style="color: #666666">=</span> callback();
+        }
+        <span style="color: #008000; font-weight: bold">return</span> parser(str, position);
+    };
+}
+
+<span style="color: #008000; font-weight: bold">const</span> parenthesis <span style="color: #666666">=</span> seq(
+    string(<span style="color: #BA2121">&quot;(&quot;</span>),
+    option(lazy(() <span style="color: #666666">=&gt;</span> parenthesis)),
+    string(<span style="color: #BA2121">&quot;)&quot;</span>)
+);
+parenthesis(<span style="color: #BA2121">&quot;(())&quot;</span>, <span style="color: #666666">0</span>);
+<span style="color: #408080; font-style: italic">// { success: true, match: [&quot;(&quot;, [&quot;(&quot;, null, &quot;)&quot;], &quot;)&quot;], position: 4 }</span>
+</pre>
+</div>
+<p>lazy関数は、パーサを返す関数を引数に取ります。引数の関数が実行されるのは最初にパースする1回のみです。これで、再帰的な文法もパースできますね。</p>
+<p>最後に、文字列の終了を表すeof(end of file)パーサを実装します。正規表現における<code class="inline-code tt">$</code>です。実装といっても数行ですみますが。</p>
+<div class="caption-code">
+<p class="caption">リスト7.11: eofパーサ</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">function</span> eof(str, position) {
+    <span style="color: #008000; font-weight: bold">if</span> (str.length <span style="color: #666666">&gt;</span> position) {
+        <span style="color: #008000; font-weight: bold">return</span> {
+            success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">false</span>,
+            position
+        };
+    } <span style="color: #008000; font-weight: bold">else</span> {
+        <span style="color: #008000; font-weight: bold">return</span> {
+            success<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">true</span>,
+            match<span style="color: #666666">:</span> <span style="color: #008000; font-weight: bold">null</span>,
+            position
+        };
+    }
+}
+</pre>
+</div>
+
+<h2><a id="h7-4"></a><span class="secno">7.4　</span>くみたて</h2>
+<p>JSONパーサを作るための部品が揃ってきました。今まで実装してきたパーサやパーサコンビネータを組み合わせ、JSONパーサを実装しましょう。JSONの仕様書を確認しながら、文法の定義をそのままコードに起こせば簡単にパーサが作れます。</p>
+<p>JSONの文法がわからない人は<a href="http://www.json.org/json-ja.html" class="link">JSON の紹介</a>を参考にしてください。文法は単純ですし、JSを知っている人ならすぐに理解できると思います。</p>
+<p>まず、空白のパーサを作ります。JSONで許されている空白はスペース、タブ、CR、LFのみです。<code class="inline-code tt">*</code>は0回以上の繰り返しを表現するので、仮に空白がなくても空白パーサは失敗しません。</p>
+<div class="caption-code">
+<p class="caption">リスト7.12: 空白のパーサ</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">const</span> whitespace <span style="color: #666666">=</span> regexp(<span style="color: #BB6688">/[\x20\x09\x0A\x0D]*/</span>);
+</pre>
+</div>
+<p>次に、波括弧(ブレース)や角形括弧(ブラケット)、コロンやコンマ用のパーサを作ります。これらの文字の前後に空白が入ることがあるので注意しましょう。</p>
+<div class="caption-code">
+<p class="caption">リスト7.13: 記号類のパーサ</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">function</span> tokenWithWhiteSpace(str) {
+    <span style="color: #008000; font-weight: bold">return</span> map(seq(whitespace, string(str), whitespace), result <span style="color: #666666">=&gt;</span> result[<span style="color: #666666">1</span>]);
+}
+
+<span style="color: #008000; font-weight: bold">const</span> lbrace <span style="color: #666666">=</span> tokenWithWhiteSpace(<span style="color: #BA2121">&quot;{&quot;</span>);
+<span style="color: #008000; font-weight: bold">const</span> rbrace <span style="color: #666666">=</span> tokenWithWhiteSpace(<span style="color: #BA2121">&quot;}&quot;</span>);
+<span style="color: #008000; font-weight: bold">const</span> lbracket <span style="color: #666666">=</span> tokenWithWhiteSpace(<span style="color: #BA2121">&quot;[&quot;</span>);
+<span style="color: #008000; font-weight: bold">const</span> rbracket <span style="color: #666666">=</span> tokenWithWhiteSpace(<span style="color: #BA2121">&quot;]&quot;</span>);
+<span style="color: #008000; font-weight: bold">const</span> comma <span style="color: #666666">=</span> tokenWithWhiteSpace(<span style="color: #BA2121">&quot;,&quot;</span>);
+<span style="color: #008000; font-weight: bold">const</span> colon <span style="color: #666666">=</span> tokenWithWhiteSpace(<span style="color: #BA2121">&quot;:&quot;</span>);
+</pre>
+</div>
+<p>seq関数を使うと、余計な結果(前後に挟まっている空白パーサの結果)も返ってきてしまうので、map関数で真ん中の文字列パーサの結果のみを取り出しています。</p>
+<p>次に、基本的な構成要素である<code class="inline-code tt">true</code>と<code class="inline-code tt">false</code>、そして<code class="inline-code tt">null</code>のパーサを作ります。</p>
+<div class="caption-code">
+<p class="caption">リスト7.14: true、false、nullのパーサ</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">const</span> trueLiteral <span style="color: #666666">=</span> map(string(<span style="color: #BA2121">&quot;true&quot;</span>), () <span style="color: #666666">=&gt;</span> <span style="color: #008000; font-weight: bold">true</span>);
+<span style="color: #008000; font-weight: bold">const</span> falseLiteral <span style="color: #666666">=</span> map(string(<span style="color: #BA2121">&quot;false&quot;</span>), () <span style="color: #666666">=&gt;</span> <span style="color: #008000; font-weight: bold">false</span>);
+<span style="color: #008000; font-weight: bold">const</span> nullLiteral <span style="color: #666666">=</span> map(string(<span style="color: #BA2121">&quot;null&quot;</span>), () <span style="color: #666666">=&gt;</span> <span style="color: #008000; font-weight: bold">null</span>);
+</pre>
+</div>
+<p>次に、数値のパーサを作ります。0や負の数、小数や指数表記に対応する必要がありますが、幸いなことに比較的簡潔な正規表現を使うだけですみます。</p>
+<div class="caption-code">
+<p class="caption">リスト7.15: 数値のパーサ</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">const</span> numberLiteral <span style="color: #666666">=</span> map(regexp(<span style="color: #BB6688">/-?(0|[1-9]\d*)(\.\d+)?([Ee][+-]?\d+)?/</span>), <span style="color: #008000">Number</span>);
+
+numberLiteral(<span style="color: #BA2121">&quot;-3.34E1&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: true, match: -33.4, position: 7 }</span>
+</pre>
+</div>
+<p>さっきは簡潔と言いましたが、実際に書いてみるとそんなに簡潔ではありませんでした。ちょっと分解してみましょう。</p>
+<p><code class="inline-code tt">-?</code> : マイナスの記号。オプション(あってもなくてもいい)。</p>
+<p><code class="inline-code tt">(0|[1-9]\d*)</code> : 0、または0以外の数字から始まる整数。つまり0以上の整数。必須。</p>
+<p><code class="inline-code tt">(\.\d+)?</code> : 小数点と小数部分。オプション。</p>
+<p><code class="inline-code tt">([Ee][+-]?\d+)?</code> : 指数部分。オプション。</p>
+<p>前言と矛盾しているようですが、そんなに複雑ではないですね。</p>
+<p>また、<code class="inline-code tt">Number</code>関数は文字列を数値に変換する役割を果たしています。</p>
+<p>さて、次は文字列のパーサです。</p>
+<div class="caption-code">
+<p class="caption">リスト7.16: 文字列のパーサ</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">const</span> stringRegexp <span style="color: #666666">=</span>  <span style="color: #BB6688">/&quot;((\\(u[0-9A-Fa-f]{4}|[&quot;\\\/bfnrt])|[^\\&quot;\b\f\n\r\t])*)&quot;/</span>;
+<span style="color: #008000; font-weight: bold">const</span> escapeSequences <span style="color: #666666">=</span> <span style="color: #008000; font-weight: bold">new</span> Map([
+    [<span style="color: #BA2121">&quot;b&quot;</span>, <span style="color: #BA2121">&quot;\b&quot;</span>],
+    [<span style="color: #BA2121">&quot;f&quot;</span>, <span style="color: #BA2121">&quot;\f&quot;</span>],
+    [<span style="color: #BA2121">&quot;n&quot;</span>, <span style="color: #BA2121">&quot;\n&quot;</span>],
+    [<span style="color: #BA2121">&quot;r&quot;</span>, <span style="color: #BA2121">&quot;\r&quot;</span>],
+    [<span style="color: #BA2121">&quot;t&quot;</span>, <span style="color: #BA2121">&quot;\t&quot;</span>]
+]);
+<span style="color: #008000; font-weight: bold">function</span> unescapeString(str) {
+    <span style="color: #008000; font-weight: bold">return</span> str.replace(<span style="color: #BB6688">/\\(u[0-9A-Fa-f]{4}|[^u])/g</span>, (_, e) <span style="color: #666666">=&gt;</span> {
+        <span style="color: #008000; font-weight: bold">if</span> (e[<span style="color: #666666">0</span>] <span style="color: #666666">===</span> <span style="color: #BA2121">&quot;u&quot;</span>) {
+            <span style="color: #008000; font-weight: bold">return</span> <span style="color: #008000">String</span>.fromCharCode(<span style="color: #008000">parseInt</span>(e.substr(<span style="color: #666666">1</span>), <span style="color: #666666">16</span>));
+        } <span style="color: #008000; font-weight: bold">else</span> {
+            <span style="color: #008000; font-weight: bold">if</span> (escapeSequences.has(e[<span style="color: #666666">0</span>])) {
+                <span style="color: #008000; font-weight: bold">return</span> escapeSequences.get(e[<span style="color: #666666">0</span>]);
+            } <span style="color: #008000; font-weight: bold">else</span> {
+                <span style="color: #408080; font-style: italic">// バックスラッシュかスラッシュ</span>
+                <span style="color: #008000; font-weight: bold">return</span> e[<span style="color: #666666">0</span>];
+            }
+        }
+    });
+}
+<span style="color: #008000; font-weight: bold">const</span> stringLiteral <span style="color: #666666">=</span> map(regexp(stringRegexp, <span style="color: #666666">1</span>), unescapeString);
+</pre>
+</div>
+<p>正規表現で取り出した文字列をunescapeString関数でアンエスケープしています。<code class="inline-code tt">\n</code>という文字列が改行に変換されたり、<code class="inline-code tt">\u3042</code>が「あ」に変換されたりします。</p>
+<p>1行目の正規表現がよく分からないという人もいるかと思いますが、正規表現を文章で説明するのって結構面倒なんですよ。さっき数値のパーサのところで1度やりましたが、もうやりたくありません。その代わり、正規表現が一発で理解できる素晴らしい図を用意しました。かなりわかりやすくなったのではないでしょうか。One ofというのはいずれか、None ofはいずれでもない、という意味です。</p>
+<p>ちなみに、以下の画像は<a href="https://regexper.com/" class="link">regexper</a>で生成しました。このサイトはJSの正規表現を読み解く上で非常に便利なサイトですので、ぜひ使ってみてください。</p>
+<div id="diagram" class="image">
+<img src="images/hinata/diagram.png" alt="正規表現の図" class="width-090per" />
+<p class="caption">
+図7.1: 正規表現の図
+</p>
+</div>
+<p>やはり図の力は偉大ですね。見れば分かると思うので特に説明はしません。</p>
+<p>次に配列のパーサを実装したいのですが、そのためには値のパーサが必要になり、値のパーサを実装するには配列のパーサが必要になる、という循環参照が生まれてしまいます。そこで、値のパーサをlazy関数を使って先に作ってしまいましょう。ちなみに、値というのはtrue、false、null、文字列、数値、オブジェクト、配列のうち1つです。</p>
+<div class="caption-code">
+<p class="caption">リスト7.17: valueパーサ</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">const</span> value <span style="color: #666666">=</span> lazy(() <span style="color: #666666">=&gt;</span> alt(
+    object,
+    array,
+    stringLiteral,
+    numberLiteral,
+    trueLiteral,
+    falseLiteral,
+    nullLiteral
+));
+</pre>
+</div>
+<p>あとはobjectとarrayを実装するだけです。配列は値をコンマ区切りで記述し、オブジェクトはキーと値のペアをコンマ区切りで記述します。共にコンマ区切りなので、コンマ区切りパーサを実装しましょう。</p>
+<div class="caption-code">
+<p class="caption">リスト7.18: コンマ区切り表記のパーサ</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">function</span> commaSeparated(parser) {
+    <span style="color: #008000; font-weight: bold">const</span> parserWithComma <span style="color: #666666">=</span> map(seq(comma, parser), result <span style="color: #666666">=&gt;</span> result[<span style="color: #666666">1</span>]);
+    <span style="color: #008000; font-weight: bold">return</span> map(option(seq(parser, repeat(parserWithComma))), result <span style="color: #666666">=&gt;</span> {
+        <span style="color: #008000; font-weight: bold">if</span> (result <span style="color: #666666">===</span> <span style="color: #008000; font-weight: bold">null</span>) {
+            <span style="color: #408080; font-style: italic">// 空文字列</span>
+            <span style="color: #008000; font-weight: bold">return</span> [];
+        }
+        <span style="color: #008000; font-weight: bold">return</span> [result[<span style="color: #666666">0</span>]].concat(result[<span style="color: #666666">1</span>]);
+    });
+}
+<span style="color: #008000; font-weight: bold">const</span> commaSeparatedNumber <span style="color: #666666">=</span> commaSeparated(numberLiteral);
+commaSeparatedNumber(<span style="color: #BA2121">&quot;&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: true, match: [], position: 0 }</span>
+commaSeparatedNumber(<span style="color: #BA2121">&quot;2&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: true, match: [2], position: 1 }</span>
+commaSeparatedNumber(<span style="color: #BA2121">&quot;2, 3, 4,&quot;</span>, <span style="color: #666666">0</span>); <span style="color: #408080; font-style: italic">// { success: true, match: [2, 3, 4], position: 7 }</span>
+</pre>
+</div>
+<p>最後に余分なコンマ(trailing commaと呼びます)が付いていますが、パースはその手前で止まっています。</p>
+<p>あと少しで完成ですね。arrayとobjectのパーサを実装してしまいましょう。</p>
+<div class="caption-code">
+<p class="caption">リスト7.19: arrayパーサ</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">const</span> array <span style="color: #666666">=</span> map(seq(lbracket, commaSeparated(value), rbracket), result <span style="color: #666666">=&gt;</span> result[<span style="color: #666666">1</span>]);
+</pre>
+</div>
+<div class="caption-code">
+<p class="caption">リスト7.20: objectパーサ</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">const</span> keyValue <span style="color: #666666">=</span> map(seq(stringLiteral, colon, value), result <span style="color: #666666">=&gt;</span> [result[<span style="color: #666666">0</span>], result[<span style="color: #666666">2</span>]]);
+<span style="color: #008000; font-weight: bold">const</span> object <span style="color: #666666">=</span> map(seq(lbrace, commaSeparated(keyValue), rbrace), result <span style="color: #666666">=&gt;</span> {
+    <span style="color: #008000; font-weight: bold">const</span> plainObject <span style="color: #666666">=</span> {};
+    <span style="color: #008000; font-weight: bold">for</span> (<span style="color: #008000; font-weight: bold">const</span> pair <span style="color: #008000; font-weight: bold">of</span> result[<span style="color: #666666">1</span>]) {
+        <span style="color: #008000; font-weight: bold">const</span> key <span style="color: #666666">=</span> pair[<span style="color: #666666">0</span>];
+        <span style="color: #008000; font-weight: bold">const</span> value <span style="color: #666666">=</span> pair[<span style="color: #666666">1</span>];
+        plainObject[key] <span style="color: #666666">=</span> value;
+    }
+    <span style="color: #008000; font-weight: bold">return</span> plainObject;
+});
+</pre>
+</div>
+<p>最後に、parseJSON関数を実装しておしまいです。</p>
+<div class="caption-code">
+<p class="caption">リスト7.21: parseJSON関数</p>
+<pre class="list language-js"><span style="color: #008000; font-weight: bold">function</span> parseJSON(jsonString) {
+    <span style="color: #008000; font-weight: bold">const</span> json <span style="color: #666666">=</span> seq(value, eof);
+    <span style="color: #008000; font-weight: bold">const</span> parseResult <span style="color: #666666">=</span> json(jsonString, <span style="color: #666666">0</span>);
+    <span style="color: #008000; font-weight: bold">if</span> (parseResult.success) {
+        <span style="color: #008000; font-weight: bold">return</span> parseResult.match[<span style="color: #666666">0</span>];
+    } <span style="color: #008000; font-weight: bold">else</span> {
+        <span style="color: #008000; font-weight: bold">throw</span> <span style="color: #008000; font-weight: bold">new</span> <span style="color: #008000">Error</span>(<span style="color: #BA2121">&quot;Syntax Error&quot;</span>);
+    }
+}
+</pre>
+</div>
+<p>できたparseJSON関数をテストしてみましょう。JSではJSON.stringifyを使うことでオブジェクトをJSON文字列に変換することができます。</p>
+<div class="caption-code">
+<p class="caption">リスト7.22: parseJSONのテスト</p>
+<pre class="list language-js">parseJSON(JSON.stringify({
+    title<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;ゆゆ式&quot;</span>,
+    characters<span style="color: #666666">:</span> [
+        { name<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;野々原ゆずこ&quot;</span>, cv<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;大久保瑠美&quot;</span> },
+        { name<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;櫟井唯&quot;</span>, cv<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;津田美波&quot;</span> },
+        { name<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;日向縁&quot;</span>, cv<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;種田梨沙&quot;</span> },
+        { name<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;相川千穂&quot;</span>, cv<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;茅野愛衣&quot;</span> },
+        { name<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;岡野佳&quot;</span>, cv<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;潘めぐみ&quot;</span>, },
+        { name<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;長谷川ふみ&quot;</span>, cv<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;清水茉菜&quot;</span> },
+        { name<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;松本頼子&quot;</span>, cv<span style="color: #666666">:</span> <span style="color: #BA2121">&quot;堀江由衣&quot;</span> }
+    ]
+})); <span style="color: #408080; font-style: italic">// 成功する</span>
+
+parseJSON(<span style="color: #BA2121">&quot;[1, 2, 3&quot;</span>); <span style="color: #408080; font-style: italic">// Syntax Error</span>
+</pre>
+</div>
+<p>無事JSONパーサができました。成し遂げたぜ。</p>
+
+<h2><a id="h7-5"></a><span class="secno">7.5　</span>おわりに</h2>
+<p>最後まで読んでいただき、ありがとうございました。構文解析という慣れないテーマを題材にしたことを考えると、かなりしっかり書けたと思っています。</p>
+<p>思い出してみれば、部誌のテーマを何にしようかと悩んでいる頃、参考文献の1つ目のサイトにたどり着き、パーサコンビネータを知ったのがきっかけでした。じゃあこれ部誌に書いたらいいじゃんということで書きはじめたのですが、今年からはカタログというものができ、その締め切りが4月10日でした。その頃はJSONパーサのJの字もなかったのに、何を思ったか、勢いに任せてカタログで「JSONパーサを作ります」と宣言してしまったのです。実装の道筋だけは見えていたのですが、実装が非常に遅いことに定評のある私が期日を守れるのか心配でした。完成しないと予告詐欺になってしまいますからね。</p>
+<p>イチから――いいえ、ゼロから始めたJSONパーサ実装計画ですが、無事完成してよかったです、本当に。文法が単純なJSONを選んだ過去の私を褒めたい気分です。ちなみにリゼロは見てません。</p>
+<p>また来年の部誌でお会いしましょう。それではまた。</p>
+
+<h2><a id="h7-6"></a><span class="secno">7.6　</span>さんこうぶんけん</h2>
+<p><a href="http://blog.anatoo.jp/entry/2015/04/26/220026" class="link">JavaScriptでパーサコンビネータのコンセプトを理解する</a></p>
+<p><a href="https://github.com/jneen/parsimmon" class="link">parsimmon: A monadic LL(infinity) parser combinator library for javascript - GitHub</a></p>
+<p><a href="http://www.json.org/json-ja.html" class="link">JSON の紹介 - json.org</a></p>
+<p><a href="https://tools.ietf.org/html/rfc7159" class="link">RFC 7159 - The JavaScript Object Notation (JSON) Data Interchange Format</a></p>
+      </div>
+      <nav class="book-navi book-prev">
+                <a href="enptukezuri.html">
+          <div class="book-cursor"><span class="cursor-prev">◀ 「Blenderのシミュレーション機能を使う」 by enptukezuri (71)</span></div>
+        </a>
+              </nav>
+      <nav class="book-navi book-next">
+                <a href="postdef.html">
+          <div class="book-cursor"><span class="cursor-next">▶ 編集後記</span></div>
+        </a>
+              </nav>
+    </div>
+  </div>
+  <footer>
+      </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+  <script>
+      (function() {
+          if (!window.katex) { return; }
+          var equations = [].slice.call(document.querySelectorAll(".equation"));
+          for (var i = 0; i < equations.length; i++) {
+              katex.render(equations[i].textContent, equations[i]);
+          }
+      }) ();
+  </script>
+</body>
+</html>

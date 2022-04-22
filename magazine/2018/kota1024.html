@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="深層学習の基礎のキソ" href="niimi.html"><link rel="prev" title="マインクラフトのサーバー管理を楽で便利なものにしてみる話" href="takepan.html">  <meta name="generator" content="Re:VIEW" />
+  <title>簡単blenderモデリング | NPCA部誌2018</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.js" integrity="sha384-jmxIlussZWB7qCuB+PgKG1uLjjxbVVIayPJwi6cG6Zb4YKq0JIw+OMnkkEC7kYCq" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2018</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">部長挨拶</a></li>
+<li><a href="object_1037.html">1 ARKit</a></li>
+<li><a href="2lu3.html">2 写真のデータを読み込もう</a></li>
+<li><a href="hinata.html">3 すばやい文字列の探しかた</a></li>
+<li><a href="harady.html">4 簡単!VR3(00)分クッキング</a></li>
+<li><a href="taizo0122.html">5 ぱそこんであそぼ</a></li>
+<li><a href="takepan.html">6 マインクラフトのサーバー管理を楽で便利なものにしてみる話</a></li>
+<li><a href="kota1024.html">7 簡単blenderモデリング</a></li>
+<li><a href="niimi.html">8 深層学習の基礎のキソ</a></li>
+<li><a href="physics0523.html">9 JOI参戦記</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h7"></a><span class="secno">第7章　</span>簡単blenderモデリング</h1>
+<p><p style="text-align:right">74回生 kota1024</p></p>
+
+<h2><a id="h7-1"></a><span class="secno">7.1　</span>初めに</h2>
+<p>初めまして、74回生のkota1024です。今回の部誌では、多くの人が抱いているであろう「3DCGは難しい」というイメージを払拭することを目的に書いていきます。</p>
+<p>ひとつ言わなければいけないのは、写真や動画に炎や爆発のエフェクトをつけてかっこよくするとか、そういう派手なCGではないということです。物を作って転がしたりするだけです。</p>
+<p>今回はフリーの、blenderというソフトを使用します。このソフトは便利で、かつ無料なので、とてもおすすめです。</p>
+
+<h2><a id="h7-2"></a><span class="secno">7.2　</span>3DCG is easy!</h2>
+<p>「3DCGって難しそう」というイメージを持っている人、多いと思います。確かに複雑なものは大変ですが、そこまで難しいものではありません。ここでは、現実世界でも一度は見たことがあるだろう、「あるもの」を作ります。写真も交えて説明するので、何を作っているかも考えながら読んでくれたらうれしいです。注意)小冊子から修正を加えています。blenderを起動すると、何もない3d空間と、メニューなどがあります。</p>
+<div id="blend-plane" class="image">
+<img src="images/kota1024/blend-plane.png" alt="3d空間の様子" class="width-060per" />
+<p class="caption">
+図7.1: 3d空間の様子
+</p>
+</div>
+<p>初めに、今回は使わないものを収納します。メニュー5の上部に、光の三原色で塗られた三本の棒のようなものがあるはずです。これをクリックしていると、右側に3つのマークが出たり消えたりすると思うので、消えている状態にしてください。ここから3DCG制作の開始ですまず立方体を作ってみます。マウスでメニュー1左の作成を押し、メッシュの欄の立方体をクリックするだけです。これで空間に立方体を置けました。</p>
+<div id="blend-cube" class="image">
+<img src="images/kota1024/blend-cube.png" alt="立方体の様子" class="width-060per" />
+<p class="caption">
+図7.2: 立方体の様子
+</p>
+</div>
+<p>マウスホイールを押し込みながらドラッグで立方体を回してみてください...灰色の豆腐だということがわかると思います。これでもうこの立方体は立派な3DCGの仲間入りです...しょぼいですか？まだ味気ないですね、次はこのキューブを滑らかにします。</p>
+<p>画像の1番、オブジェクトメニューをクリックし、編集モードに変更します。そしてCtrlキーとBキーを同時に押し、立方体の中心の黄色い点からカーソルを少しずつ離します。これで、立方体の角がちょっと滑らかになります。ほんの少しくらい滑らかにしてクリックして確定します。</p>
+<p>メニュー3とメニュー4の間あたりにある、カメラとかのアイコンたちがある部分にマウスを持っていき、マウスホイールで右側の画面にある市松模様の球をクリックします。メニュー4の表示が変わるので、「ディフューズ」という文字の下にある白い四角をクリックします。「ディフューズ」がなければ、「新規」をクリックして、そのうえで「ディフューズ」をクリックしてくださいグレーの四角と一緒にカラフルな円なんかが出てくるので、円の右にある白と黒の棒の真ん中部分をクリックしてください。グレーの四角からマウスを離せば円と四角は消えます。これで立方体が灰色に染まったはずです。ここからカラフルにしていきます。</p>
+<p>メニュー5の中央上部、3つ並んでいる小さな立方体の、一番右(一面だけオレンジで他が灰色)をクリックします。立方体のどこかをクリックしたとき、オレンジの網のようなものが出てきたら成功です。白い棒や、オレンジの十字が出てくるなら、一番右の立方体が選ばれていません。もう一度クリックしてみてください。</p>
+<p>メニュー4の右上の「+-▼」のプラスマークをクリックして、また表示が変わったメニュー4の中央、「新規」を押してください。再びディフューズの下の白い四角をクリックし、円の中の赤い部分をクリックしてください。そして先ほどの+マークの右下の「割り当て」をクリックします。プラスマーク、新規、ディフューズをあと5回くり返して、明るめの色(青や水色、黄色や緑など)を六色ほど作ってください。(写真)プラスマークの右側の欄がこのような感じになれば成功です。出来ましたか?</p>
+<p>Aキーを二回押し、Ctrl+Rでループカットを起動しますマウスカーソルを立方体の面に合わせて、マウスホイールを一回上に回してピンクの線が2本になるようにします。左クリックして右クリックで約1/3に切ることができました。あと2回この作業を行います。マウスホイールを押し込んだままドラッグで立方体を回してやってみてください。</p>
+<div id="blend-graycube" class="image">
+<img src="images/kota1024/blend-graycube.png" alt="色変更+カット後" class="width-060per" />
+<p class="caption">
+図7.3: 色変更+カット後
+</p>
+</div>
+<p>すべてのふちを除く面が約9等分されたらokです。</p>
+<p>これで最後です。各面の中心の面(計六面)を、先ほどの六色で塗ります。右クリックで面を選んで、プラスマークの右の欄をスクロールして色を選んで、欄の下の「割り当て」をクリックします。これをあと5色分行います。選ぶ面を変更し、ふち以外の全ての面をカラフルに塗ってください(面の中心の色と同じでなくてもいいです)。全ての色が9面ずつあれば完成ですオブジェクトモードに戻してみてみましょう。</p>
+<div id="blend-colorfulcube" class="image">
+<img src="images/kota1024/blend-colorfulcube.png" alt="完成図" class="width-060per" />
+<p class="caption">
+図7.4: 完成図
+</p>
+</div>
+<p>これで完成です。何を作ったかわかりましたか?カラフルで、立方体の、9等分された面をもつ、立体パズルで、エルノー・ルービック氏が考案した、はい、そうです、ルービックキューブです。いろいろな方向から見てみてください。結構いい感じじゃないかと思いますまあ適当に塗ったのでクリア不能の可能性が高いですが。色を付けるところで扱った、割り当てを使えば、そろっていないものも作れますし...三等分を四や五にすると、16等分された面を持つルービックキューブ(ルービックリベンジ:実在します)や、25等分された面を持つルービックキューブ(プロフェッサーキューブ:実在します)も作れます。ちなみに、私は3等分の普通のルービックキューブでさえ、揃えることができません。</p>
+<p>三等分してから色の割り当てをすれば、サイコロに作り替えることもできます。全体を白にして、5等分くらいにします。一つの面の中心を赤に塗って、他の面は黒で、サイコロの各面を再現します。</p>
+<div id="blend-dice" class="image">
+<img src="images/kota1024/blend-dice.png" alt="サイコロの様子" class="width-060per" />
+<p class="caption">
+図7.5: サイコロの様子
+</p>
+</div>
+<p>ついでにもう少しリアルにします。shift+右クリックで黒or赤の面をすべて選択します。その後、Alt+Eで出てくる選択肢から、「各面ごとに」を選択します。面を押し込むことができるようになるので、少しだけ押し込んでください。そしてメニュー1の「ツール」を押し、メッシュツールの「頂点スムーズ」を押して完成です。</p>
+<div id="blend-dicelast" class="image">
+<img src="images/kota1024/blend-dicelast.png" alt="サイコロ完成図" class="width-060per" />
+<p class="caption">
+図7.6: サイコロ完成図
+</p>
+</div>
+<p>今回は立方体を題材としましたが、球や多面体、円柱、円錐などが用意されており、今回の立方体のように置くことができます。</p>
+
+<h2><a id="h7-3"></a><span class="secno">7.3　</span>おわりに</h2>
+<p>今回触れた部分は、3DCGできることのごく一部です。3DCGはとてつもなく自由度が高い分野なので、電車などの「日常生活に使うもの」や銃などの「まずお目にかからないもの」飛行装置なんかの「あったら役に立つもの」、そしてもちろん戦闘ロボなんかの「かっこいいもの」まで、何でも作れてしまいます。3DCGの可能性は無限大です。見たもの、思いついたものを作り、ここでは紹介していませんが動かすことができます。blenderは解説をしている本やウェブサイトが多く存在しています。もし少しでも興味を持ったなら、3DCGを始めるのも悪くないと思いますここまで読んでいただき、ありがとうございました。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="takepan.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ マインクラフトのサーバー管理を楽で便利なものにしてみる話</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="niimi.html">
+            <div class="book-cursor"><span class="cursor-next">▶ 深層学習の基礎のキソ</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

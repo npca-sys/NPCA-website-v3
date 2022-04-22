@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+<link rel="next" title="「計算量」 by taizo0122 (72)" href="taizo0122.html"><link rel="prev" title="「TwitterのBotを作ってみる」 by object_1037 (73)" href="object_1037.html">  <meta name="generator" content="Re:VIEW" />
+  <title>「競技プログラミング入門」 by 井上誠大 (73) | NPCA部誌2017</title>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2017</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">まえがき</a></li>
+<li><a href="object_1037.html">1 「TwitterのBotを作ってみる」 by object_1037 (73)</a></li>
+<li><a href="physics.html">2 「競技プログラミング入門」 by 井上誠大 (73)</a></li>
+<li><a href="taizo0122.html">3 「計算量」 by taizo0122 (72)</a></li>
+<li><a href="2lu3.html">4 「ダイクストラ法とアテナの本」 by 2lu3 (73)</a></li>
+<li><a href="niini.html">5 「BOARD;GAME 負荷領域のデジャヴ」 by ni-ni (72)</a></li>
+<li><a href="enptukezuri.html">6 「Blenderのシミュレーション機能を使う」 by enptukezuri (71)</a></li>
+<li><a href="hinata.html">7 「適当に構文解析する話(575)」by Hinata (72)</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h2"></a><span class="secno">第2章　</span>「競技プログラミング入門」 by 井上誠大 (73)</h1>
+
+<h2><a id="h2-1"></a><span class="secno">2.1　</span>まえがき&amp;競技プログラミングとは(小冊子の内容)</h2>
+<p>こんにちは、73回生の井上誠大です。73回生なので中学3年生ですね…(自覚が…)去年は旧中1らしくゲーム制作をしていたのですが、かなり苦労しました&gt;&lt;去年はプログラミング初心者の登竜門(?)、TE*RISを作っていたのです。が、判定はガバガバ、描画もかなり簡素なものになってしまい、いかにゲーム作りが大変か思い知らされました^^;昔の話はこのくらいにして、今年は部誌を書くことになりました!わーい!NPCAの部誌を書くのは初めてどころか、入っていた他の部でも部誌はまだ書いたことがないので、不慣れなところ、日本語が多少不自由なところもあると思いますがよろしくお願いします。</p>
+<p>僕は、今回の部誌で「競技プログラミング」について書きます。ひとまず「競技プログラミング」って何ぞや…と思われている方が相当数だと思うので、ここではそれを簡単に説明しようと思います。</p>
+<p>競技プログラミングは、簡単に言うとプログラミングを競技化したものです。と言ってもお前それ語順入れ替えただけやろ、と怒られそうなのでもうちょっと具体的に言います。短時間(だいたい1.5-8時間)で何問か出題されるプログラミングやアルゴリズムに関する問題をプログラムを組んで解く、というのが競技プログラミングです。</p>
+<p>プログラミングだのアルゴリズムなど難しそうな語句が並んでいますが、実際はプログラムを組む最低限の知識と環境、多少の算数力があれば充分楽しめます。実際、僕の場合、ゲームやWeb系統のものを開発するための知識をつけるのには挫折しましたが、競技プログラミングはすぐに慣れました。</p>
+<p>具体的にどういった問題が出題されるのか、そのバリエーションは様々で、例えばある値を計算する、あることが可能か、条件を満たすものは何通りか、条件を満たす確率はどのくらいか、最短の距離はどのくらいか、中にはゲームの必勝法を考察するものまであります。全体的に算数や数学らしい内容です。</p>
+<p>実際の競技は意外と短時間で、いかに速く解法を閃き、正確かつ迅速に正解を導き出すかも重要な要素になります。しかし、あまり速く解きすぎても誤答なら解答時間、つまり速度に多少のペナルティが科せられたりもします。</p>
+<p>競技は主にインターネット上でオンラインで開催されるので、世界中のライバルと競うことも可能です。問題文が英語…なんてこともあったりしますが今回扱う競技プログラミングのサイトは大半が日本語なので心配不要です。</p>
+<p>今回の部誌では、</p>
+<ul>
+<li><a href="http://judge.u-aizu.ac.jp/onlinejudge/index.jsp?lang=ja" class="link">Aizu Online Judge</a></li>
+<li><a href="https://atcoder.jp/?lang=ja" class="link">AtCoder</a></li>
+</ul>
+<p>この2つの競技プログラミングのWebサイトのうち初心者でも充分解くことができるような簡単な問題について解説しながら、競技プログラミングの基本中の基本を書きました。僕はC言語使いなのですが、その言語の基本も併せて多少は解説を挟むので、プログラミングに関する知識を僅かしか持っていない、そんな方でも内容を理解できるように努力したつもりです&gt;&lt;</p>
+<p>早速実際にC言語を利用して競技プログラミングの基本中の基本になる問題を解いていこうと思います。</p>
+<p>ここから扱う問題が掲載されている、主にAizu Online Judgeのアカウントは登録・設定から情報を入力すれば新規アカウントが作成できます。ここからはアカウントを持っている前提で書いてます&gt;&lt;それと、この解説がわかりづらかった場合やここに解説していない問題を解きたい、という場合はIntroduction内の多数の問題には公式で解説が付いているのでそちらを参照してください。</p>
+
+<h2><a id="h2-2"></a><span class="secno">2.2　</span>Hello World</h2>
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A" class="link">http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_A</a></p>
+<p>この問題、要は&quot;Hello World&quot;を出力する問題です。まず、解答例を書きます。(次の章以降も先に正解を書いてからそれを解説します)</p>
+<div class="emlistnum-code">
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px">1 </span><span style="color: #BC7A00">#include</span><span style="color: #408080; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #BC7A00"></span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">2 </span><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(<span style="color: #B00040">void</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">3 </span>        printf(<span style="color: #BA2121">&quot;Hello World</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">4 </span>        <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">5 </span>}
+</pre></div>
+</div>
+<p>1行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #BC7A00">#include</span><span style="color: #408080; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #BC7A00"></span>
+</pre>
+</div>
+<p>これはおまじないだと思ってください。(これを詳しく解説するまでこの部誌では到達しません&gt;&lt;)</p>
+<p>2行目と4,5行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(<span style="color: #B00040">void</span>){
+...
+        <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+}
+</pre>
+</div>
+<p>C言語ではこの{}の中の...の部分が実行される、という認識で構いません。</p>
+<p>そして3行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c">printf(<span style="color: #BA2121">&quot;Hello World</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);
+</pre>
+</div>
+<p>この命令は&quot;&quot;で囲まれた文章を表示するものです。今回のプログラムだと、Hello Worldと出力しろ、という命令になります。最後の\nは改行を表します。この後ろ向きのスラッシュ、バックスラッシュは円￥マークと同じ方法で入力できます。(競技プログラミングでは大抵出力の最後に改行が求められたりするので、これを忘れないように癖づけることを推奨します。)</p>
+<p>今回はプログラムを試しに実行するのにIdeoneを利用します。</p>
+<p><a href="http://ideone.com/" class="link">http://ideone.com/</a></p>
+<p>まず、上の大きい四角にプログラムを貼り付け、下の押すといろいろ出て来る中からpopularの中にあるCを選び、最後にRunボタンを押します。(アカウントは不要ですが、あるとプログラムが保存できて便利です)</p>
+<div id="pic01" class="image">
+<img src="images/physics/pic01.png" alt="" />
+</div>
+<p>すると、こんな感じの画面が出てきます。stdoutと書かれた場所にあるのが出力で、問題無く出力されているのが確認できました。</p>
+<div id="pic02" class="image">
+<img src="images/physics/pic02.png" alt="" />
+</div>
+<p>さて、解答が書き上がりましたが、書き上げただけでは勿論何も起こりません。解答を提出しなければなりません。</p>
+<p>まず、この丸をつけた所をクリックします。</p>
+<div id="pic03" class="image">
+<img src="images/physics/pic03.png" alt="" />
+</div>
+<p>すると、このような画面が出てきます。今回は、言語にCを選択して、ソースコードの所に書いたプログラムを貼り付け、最後に矢印で指したところから提出します。</p>
+<div id="pic04" class="image">
+<img src="images/physics/pic04.png" alt="" />
+</div>
+<p>そこから現れる画面で自分の提出の所にこのようなチェックが入れば正解です。おめでとうございます!</p>
+<div id="pic05" class="image">
+<img src="images/physics/pic05.png" alt="" />
+</div>
+
+<h2><a id="h2-3"></a><span class="secno">2.3　</span>X Cubic</h2>
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_B" class="link">http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_B</a></p>
+<p>この問題は、入力から数値を受け取り、その3乗を出力する問題です。</p>
+<div class="emlistnum-code">
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px">1 </span><span style="color: #BC7A00">#include</span><span style="color: #408080; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #BC7A00"></span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">2 </span><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(<span style="color: #B00040">void</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">3 </span>        <span style="color: #B00040">int</span> x;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">4 </span>        scanf(<span style="color: #BA2121">&quot;%d&quot;</span>,<span style="color: #666666">&amp;</span>x);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">5 </span>        printf(<span style="color: #BA2121">&quot;%d</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,x<span style="color: #666666">*</span>x<span style="color: #666666">*</span>x);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">6 </span>        <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">7 </span>}
+</pre></div>
+</div>
+<p>1,2,6,7行目は先ほどと変わりません。</p>
+<p>3行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #B00040">int</span> x;
+</pre>
+</div>
+<p>これはint型の変数xを宣言する、という命令です。はい、(プログラミング未経験であれば)何言ってるか分かりませんよね。</p>
+<p>まず、変数、これは数字などを入れておける箱、と思ってください。(次のページの図も参考にしてください)int型、とは整数、厳密にいうと±21億くらいまでの整数を入れておける箱の種類のことです。つまり、xって名前の整数を入れておく箱を用意するよ～、という命令になります。ちなみに(とは言ったもののここはとても重要)このxに何らかの数値を入れておきたい場合は、</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #B00040">int</span> x <span style="color: #666666">=</span> <span style="color: #666666">5</span>;
+</pre>
+</div>
+<p>や</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #B00040">int</span> x;
+x <span style="color: #666666">=</span> <span style="color: #666666">5</span>;
+</pre>
+</div>
+<p>などとするとxに5が入った状態になります。このように、x = y;と書くと変数xに数値yまたは変数yの値が入った状態になり、これを代入と呼びます。</p>
+<p>4行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c">scanf(<span style="color: #BA2121">&quot;%d&quot;</span>,<span style="color: #666666">&amp;</span>x);
+</pre>
+</div>
+<p>()の中身の左側、%dはint型、つまり整数の箱1つを表し、右側、&amp;xは箱xのある場所を表します。&amp;を忘れないようにしましょう(厳密にはポインタというのですが、今回は簡単のため詳しい説明はしません&gt;&lt;)このscanfという命令にこの情報を教えることで、この命令は箱xに、入力から整数1つを受け取れ、というものになります。</p>
+<p>5行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c">printf(<span style="color: #BA2121">&quot;%d</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,x<span style="color: #666666">*</span>x<span style="color: #666666">*</span>x);
+</pre>
+</div>
+<p>勘の良い方ならお気づきだと思いますが、さっきのHello Worldの時に使った命令の進化形です。()の中身の左側、%dはint型、つまり整数の箱1つを表しその後の\nは改行です。右側x*x*xはxを3つ掛けたもの、つまりxの3乗です。</p>
+<p>ちなみに、</p>
+<ul>
+<li>a+bでaとbの和</li>
+<li>a-bでaからbを引いた差</li>
+<li>a*bでaにbを掛けた積</li>
+<li>a/bでaをbで割った商</li>
+<li>a%bでaをbで割った余り</li>
+</ul>
+<p>を表します。計算の順序は3+2*4なら2*4が優先されて11になります。</p>
+<p>このprintfという命令で、箱xに入っている数値のの3乗を出力して最後に改行せよ、という意味になります。出力したからと言ってxの中身が無くなってしまう訳ではありません。</p>
+<div id="pic06" class="image">
+<img src="images/physics/pic06.png" alt="" />
+</div>
+<p>先ほどのIdeoneでプログラムに入力を渡したい場合は、stdinの枠内に書き込みます。今回は&quot;2&quot;と書き込んで実行してみます。</p>
+<div id="pic07" class="image">
+<img src="images/physics/pic07.png" alt="" />
+</div>
+<p>無事に2の3乗、8が出力されていることが確認できたので先ほどのように提出します。</p>
+
+<h2><a id="h2-4"></a><span class="secno">2.4　</span>Rectangle</h2>
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_C" class="link">http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_C</a></p>
+<p>この問題は、縦a(cm)横b(cm)の長方形の面積と周の長さを求める問題です。面積はa*b、周の長さは2*(a+b)で求められます。それさえ分かれば殆ど先ほどと同じコードで正解できます。</p>
+<div class="emlistnum-code">
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px">1 </span><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #BC7A00"></span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">2 </span><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(<span style="color: #B00040">void</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">3 </span>        <span style="color: #B00040">int</span> a,b;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">4 </span>        scanf(<span style="color: #BA2121">&quot;%d%d&quot;</span>,<span style="color: #666666">&amp;</span>a,<span style="color: #666666">&amp;</span>b);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">5 </span>        printf(<span style="color: #BA2121">&quot;%d %d</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,a<span style="color: #666666">*</span>b,<span style="color: #666666">2*</span>(a<span style="color: #666666">+</span>b));
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">6 </span>        <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">7 </span>}
+</pre></div>
+</div>
+<p>3行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #B00040">int</span> a,b;
+</pre>
+</div>
+<p><code class="inline-code tt">,</code>で区切って書くと複数の変数を同時に宣言することができます。</p>
+<p>4行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c">scanf(<span style="color: #BA2121">&quot;%d%d&quot;</span>,<span style="color: #666666">&amp;</span>a,<span style="color: #666666">&amp;</span>b);
+</pre>
+</div>
+<p>入力が空白区切りで与えられるので、このように書くことでデータを2つ受け取ることができます。</p>
+<p>5行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c">printf(<span style="color: #BA2121">&quot;%d %d</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,a<span style="color: #666666">*</span>b,<span style="color: #666666">2*</span>(a<span style="color: #666666">+</span>b));
+</pre>
+</div>
+<p>2つの%dを空白で区切ると空白区切りの出力ができます。出力させたいものは,区切りで書きます。他にも&quot;[%d]&quot;と書くとと数値を[]で囲んだり&quot;a:%d&quot;と書くとa:12345のように表示させたりできます。(ここからは実行は省略します&gt;&lt;)</p>
+
+<h3><a id="h2-4-1"></a>復習問題 Watch</h3>
+<p>ここまでの内容で解ける問題です。</p>
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_D" class="link">http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_1_D</a></p>
+<p>是非自力で解いてみてください(ここでは解答のみを挙げますが解説は公式にあります)</p>
+<div class="emlistnum-code">
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 1 </span><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #BC7A00"></span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 2 </span><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(<span style="color: #B00040">void</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 3 </span>        <span style="color: #B00040">int</span> h,m,s;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 4 </span>        scanf(<span style="color: #BA2121">&quot;%d&quot;</span>,<span style="color: #666666">&amp;</span>s);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 5 </span>        m <span style="color: #666666">=</span> s<span style="color: #666666">/60</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 6 </span>        s <span style="color: #666666">=</span> s<span style="color: #666666">%60</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 7 </span>        h <span style="color: #666666">=</span> m<span style="color: #666666">/60</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 8 </span>        m <span style="color: #666666">=</span> m<span style="color: #666666">%60</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 9 </span>        printf(<span style="color: #BA2121">&quot;%d:%d:%d</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,h,m,s);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">10 </span>        <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">11 </span>}
+</pre></div>
+</div>
+
+<h2><a id="h2-5"></a><span class="secno">2.5　</span>Small, Large, or Equal</h2>
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_2_A" class="link">http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_2_A</a></p>
+<p>2数の大小関係を求める問題です。</p>
+<div class="emlistnum-code">
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px">1 </span><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #BC7A00"></span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">2 </span><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(<span style="color: #B00040">void</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">3 </span>        <span style="color: #B00040">int</span> a,b;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">4 </span>        scanf(<span style="color: #BA2121">&quot;%d%d&quot;</span>,<span style="color: #666666">&amp;</span>a,<span style="color: #666666">&amp;</span>b);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">5 </span>        <span style="color: #008000; font-weight: bold">if</span>(a <span style="color: #666666">&lt;</span> b){printf(<span style="color: #BA2121">&quot;a &lt; b</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);}
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">6 </span>        <span style="color: #008000; font-weight: bold">else</span> <span style="color: #008000; font-weight: bold">if</span>(a <span style="color: #666666">&gt;</span> b){printf(<span style="color: #BA2121">&quot;a &gt; b</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);}
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">7 </span>        <span style="color: #008000; font-weight: bold">else</span>{printf(<span style="color: #BA2121">&quot;a == b</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,a,b);}
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">8 </span>        <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">9 </span>}
+</pre></div>
+</div>
+<p>5行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #008000; font-weight: bold">if</span>(a <span style="color: #666666">&lt;</span> b){printf(<span style="color: #BA2121">&quot;a &lt; b</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);}
+</pre>
+</div>
+<p>if(~){...}は、()の中の条件が正しければ{}の中を実行する文です。これをif文と呼びます。</p>
+<ul>
+<li>a &lt; b ならbがaより大きい</li>
+<li>a &lt;= b ならbがa以下</li>
+<li>a == b ならaとbが等しい</li>
+<li>a != b ならaとbが等しくない</li>
+</ul>
+<p>時に{}の中が実行されます。</p>
+<p>ちなみに、</p>
+<ul>
+<li>a &lt; b &amp;&amp; b &lt; c ならa &lt; b かつ b &lt; c</li>
+<li>a &lt; b || a &lt; cならa &lt; b または a &lt; c</li>
+</ul>
+<p>というように、&amp;&amp;で「かつ」、||で「または」を表すことが出来ます。</p>
+<p>6行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #008000; font-weight: bold">else</span> <span style="color: #0000FF">if</span>(a <span style="color: #666666">&gt;</span> b){printf(<span style="color: #BA2121">&quot;a &gt; b</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);}
+</pre>
+</div>
+<p>elseが付いている部分は、先ほどの条件を満たさなかった場合に実行される部分です。今回はa &gt;= bの場合です。そのあとに先ほどと同じ、条件がa &gt; bになった文が書かれており、それを満たすと{}の中が実行されます。</p>
+<p>7行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #008000; font-weight: bold">else</span>{printf(<span style="color: #BA2121">&quot;a == b</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,a,b);}
+</pre>
+</div>
+<p>またしても条件を満たさなかった場合、つまりa == bの場合、この{}の中が実行されます。</p>
+
+<h3><a id="h2-5-1"></a>復習問題 Range</h3>
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_2_B" class="link">http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_2_B</a></p>
+<p>a &lt; b &lt; cかどうか判定する問題です。</p>
+<div class="emlistnum-code">
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px">1 </span><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #BC7A00"></span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">2 </span><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(<span style="color: #B00040">void</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">3 </span>        <span style="color: #B00040">int</span> a,b,c;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">4 </span>        scanf(<span style="color: #BA2121">&quot;%d%d%d&quot;</span>,<span style="color: #666666">&amp;</span>a,<span style="color: #666666">&amp;</span>b,<span style="color: #666666">&amp;</span>c);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">5 </span>        <span style="color: #008000; font-weight: bold">if</span>(a <span style="color: #666666">&lt;</span> b <span style="color: #666666">&amp;&amp;</span> b <span style="color: #666666">&lt;</span> c){printf(<span style="color: #BA2121">&quot;Yes</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);}<span style="color: #008000; font-weight: bold">else</span>{printf(<span style="color: #BA2121">&quot;No</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);}
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">6 </span>        <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">7 </span>}
+</pre></div>
+</div>
+
+<h2><a id="h2-6"></a><span class="secno">2.6　</span>Print Many Hello World</h2>
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_3_A" class="link">http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_3_A</a></p>
+<p>&quot;Hello World&quot;を1000回出力する問題です。</p>
+<div class="emlistnum-code">
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px">1 </span><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #BC7A00"></span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">2 </span><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(<span style="color: #B00040">void</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">3 </span>        <span style="color: #B00040">int</span> i;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">4 </span>        <span style="color: #008000; font-weight: bold">for</span>(i <span style="color: #666666">=</span> <span style="color: #666666">1</span>;i <span style="color: #666666">&lt;=</span> <span style="color: #666666">1000</span>;i<span style="color: #666666">++</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">5 </span>                printf(<span style="color: #BA2121">&quot;Hello World</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">6 </span>        }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">7 </span>        <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">8 </span>}
+</pre></div>
+</div>
+<p>お察しの通り、1章のプログラムを少し書き換えただけで正解できます。</p>
+<p>4行目、6行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #008000; font-weight: bold">for</span>(i <span style="color: #666666">=</span> <span style="color: #666666">1</span>;i <span style="color: #666666">&lt;=</span> <span style="color: #666666">1000</span>;i<span style="color: #666666">++</span>){
+...
+}
+</pre>
+</div>
+<p>for(~){…}、これをfor文と呼びます。今回の場合は、iを1から1000まで、iを1ずつ加えながら{}の中身を実行という意味になります。</p>
+<p>具体的なイメージとしては</p>
+<div class="emlist-code">
+<pre class="emlist language-c">printf(<span style="color: #BA2121">&quot;Hello World</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);<span style="color: #408080; font-style: italic">//i == 1</span>
+printf(<span style="color: #BA2121">&quot;Hello World</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);<span style="color: #408080; font-style: italic">//i == 2</span>
+printf(<span style="color: #BA2121">&quot;Hello World</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);<span style="color: #408080; font-style: italic">//i == 3</span>
+...
+printf(<span style="color: #BA2121">&quot;Hello World</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);<span style="color: #408080; font-style: italic">//i == 1000</span>
+</pre>
+</div>
+<p>といった感じです。<code class="inline-code tt">i++</code>はiに1加える、<code class="inline-code tt">i--</code>ならiから1引くという意味になります。</p>
+
+<h2><a id="h2-7"></a><span class="secno">2.7　</span>Print Test Cases</h2>
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_3_B" class="link">http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_3_B</a></p>
+<p>いくつか分からない入力を最後まで受け取って形式を変換する問題です。入力の終端が0で表されます。</p>
+<div class="emlistnum-code">
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px">1 </span><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #BC7A00"></span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">2 </span><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(<span style="color: #B00040">void</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">3 </span>        <span style="color: #B00040">int</span> x,i<span style="color: #666666">=1</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">4 </span>        <span style="color: #008000; font-weight: bold">while</span>(scanf(<span style="color: #BA2121">&quot;%d&quot;</span>,<span style="color: #666666">&amp;</span>x) , x <span style="color: #666666">!=</span> <span style="color: #666666">0</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">5 </span>                printf(<span style="color: #BA2121">&quot;Case %d: %d</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,i,x);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">6 </span>                i<span style="color: #666666">++</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">7 </span>        }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">8 </span>        <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">9 </span>}
+</pre></div>
+</div>
+<p>4行目、7行目の</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #008000; font-weight: bold">while</span>(scanf(<span style="color: #BA2121">&quot;%d&quot;</span>,<span style="color: #666666">&amp;</span>x) , x <span style="color: #666666">!=</span> <span style="color: #666666">0</span>){
+        ...
+}
+</pre>
+</div>
+<p>while(~){...}をwhile文と言います。()の中の条件を満たしている間{}の中を実行し続けます。今回は、xが0でない間入力からxを受け取り続ける、という意味になります。入力が1234560なら、</p>
+<ul>
+<li>(x != 0なので)&quot;Case 1: 123\n&quot;と出力</li>
+<li>(x != 0なので)&quot;Case 2: 45\n&quot;と出力</li>
+<li>(x != 0なので)&quot;Case 3: 6\n&quot;と出力</li>
+<li>(x != 0ではなくなったので終了)</li>
+</ul>
+<p>というような感じで実行されます。</p>
+
+<h2><a id="h2-8"></a><span class="secno">2.8　</span>Reversing Numbers</h2>
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_6_A" class="link">http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_6_A</a></p>
+<p>与えられる数値を逆順に出力します。</p>
+<div class="emlistnum-code">
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px">1 </span><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #BC7A00"></span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">2 </span><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(<span style="color: #B00040">void</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">3 </span>        <span style="color: #B00040">int</span> a[<span style="color: #666666">128</span>],n,i;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">4 </span>        scanf(<span style="color: #BA2121">&quot;%d&quot;</span>,<span style="color: #666666">&amp;</span>n);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">5 </span>        <span style="color: #008000; font-weight: bold">for</span>(i <span style="color: #666666">=</span> <span style="color: #666666">1</span>;i <span style="color: #666666">&lt;=</span> n;i<span style="color: #666666">++</span>){scanf(<span style="color: #BA2121">&quot;%d&quot;</span>,<span style="color: #666666">&amp;</span>a[i]);}
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">6 </span>        <span style="color: #008000; font-weight: bold">for</span>(i <span style="color: #666666">=</span> n;i <span style="color: #666666">&gt;=</span> <span style="color: #666666">1</span>;i<span style="color: #666666">--</span>){<span style="color: #008000; font-weight: bold">if</span>(i <span style="color: #666666">!=</span> n){printf(<span style="color: #BA2121">&quot; &quot;</span>);}printf(<span style="color: #BA2121">&quot;%d&quot;</span>,a[i]);}
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">7 </span>        printf(<span style="color: #BA2121">&quot;</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">8 </span>        <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">9 </span>}
+</pre></div>
+</div>
+<p>4行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #B00040">int</span> a[<span style="color: #666666">128</span>]...
+</pre>
+</div>
+<p>また見慣れないものが出てきましたね。これは配列と言って、変数の箱をいくつか並べたものをイメージすると分かりやすいです。今回は[128]なので箱128個、0番から始まって127番まで用意されます。</p>
+<p>6行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #008000; font-weight: bold">for</span>(i <span style="color: #666666">=</span> <span style="color: #666666">1</span>;i <span style="color: #666666">&lt;=</span> n;i<span style="color: #666666">++</span>){scanf(<span style="color: #BA2121">&quot;%d&quot;</span>,<span style="color: #666666">&amp;</span>a[i]);}
+</pre>
+</div>
+<p>で1番からn番の箱に入力から数値を受け取り、</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #008000; font-weight: bold">for</span>(i <span style="color: #666666">=</span> n;i <span style="color: #666666">&gt;=</span> <span style="color: #666666">1</span>;i<span style="color: #666666">--</span>){<span style="color: #008000; font-weight: bold">if</span>(i <span style="color: #666666">!=</span> n){printf(<span style="color: #BA2121">&quot; &quot;</span>);}printf(<span style="color: #BA2121">&quot;%d&quot;</span>,a[i]);}
+</pre>
+</div>
+<p>でn番から1番の箱の順に読み込んで出力します。この問題は空白区切りで出力する問題ですが、for文{}内のif文で出力の最初以外に空白を出力して入力が区切られるようにしています。(無理矢理1行に収めたのは許してください&gt;&lt;)</p>
+
+<h2><a id="h2-9"></a><span class="secno">2.9　</span>QQ</h2>
+<p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0000&amp;lang=jp" class="link">http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0000&amp;lang=jp</a></p>
+<p>九九を出力する問題です。</p>
+<div class="emlistnum-code">
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 1 </span><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #BC7A00"></span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 2 </span><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(<span style="color: #B00040">void</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 3 </span>        <span style="color: #B00040">int</span> i,j;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 4 </span>        <span style="color: #008000; font-weight: bold">for</span>(i <span style="color: #666666">=</span> <span style="color: #666666">1</span>;i <span style="color: #666666">&lt;=</span> <span style="color: #666666">9</span>;i<span style="color: #666666">++</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 5 </span>                <span style="color: #008000; font-weight: bold">for</span>(j <span style="color: #666666">=</span> <span style="color: #666666">1</span>;j <span style="color: #666666">&lt;=</span> <span style="color: #666666">9</span>;j<span style="color: #666666">++</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 6 </span>                        printf(<span style="color: #BA2121">&quot;%dx%d=%d</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,i,j,i<span style="color: #666666">*</span>j);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 7 </span>                }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 8 </span>        }
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px"> 9 </span>        <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">10 </span>}
+</pre></div>
+</div>
+<p>4~8行目、for文の中にfor文が書かれています。</p>
+<ul>
+<li>1x1=1 (i = 1,j = 1)</li>
+<li>1x2=2 (i = 1,j = 2)</li>
+</ul>
+<p>…</p>
+<ul>
+<li>1x9=9 (i = 1,j = 9)</li>
+<li>2x1=2 (i = 2,j = 1)</li>
+</ul>
+<p>…</p>
+<ul>
+<li>9x9=81 (i = 9,j = 9)</li>
+</ul>
+<p>という風に実行されます。</p>
+<p>for文の中にfor文、while文の中にwhile文、for文の中にwhile文、while文の中にfor文…というような書き方もできます。</p>
+<p>ここまではAizu Online Judgeの問題について解説しました。他にも様々なレベルの問題があり初心者でも十分楽しめるので是非いろいろ解いてみてください!</p>
+
+<h2><a id="h2-10"></a><span class="secno">2.10　</span>AtCoderに挑戦してみよう!</h2>
+<p>ここからはAtCoderという日本の競技プログラミングのサイトを紹介します。</p>
+<p><a href="https://atcoder.jp/" class="link">https://atcoder.jp/</a></p>
+<p>毎週土曜日の21時に大抵何らかのコンテストが行われます。コンテストには、コンテストのページから「~に参加する」ボタンを押すと参加できます。</p>
+<p>せっかくなので、practiceコンテストの問題を1問解いてみましょう。</p>
+<p><a href="http://practice.contest.atcoder.jp/tasks/practice_1" class="link">http://practice.contest.atcoder.jp/tasks/practice_1</a></p>
+<p>整数a,b,cと文字列s(文字の並び)が与えられるので、a+b+cとsを1行に出力する問題です。</p>
+<div class="emlistnum-code">
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="background-color: #f0f0f0; padding: 0 5px 0 5px">1 </span><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #BC7A00"></span>
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">2 </span><span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(<span style="color: #B00040">void</span>){
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">3 </span>        <span style="color: #B00040">int</span> a,b,c;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">4 </span>        <span style="color: #B00040">char</span> s[<span style="color: #666666">128</span>];
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">5 </span>        scanf(<span style="color: #BA2121">&quot;%d%d%d&quot;</span>,<span style="color: #666666">&amp;</span>a,<span style="color: #666666">&amp;</span>b,<span style="color: #666666">&amp;</span>c);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">6 </span>        scanf(<span style="color: #BA2121">&quot;%s&quot;</span>,s);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">7 </span>        printf(<span style="color: #BA2121">&quot;%d %s</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,a<span style="color: #666666">+</span>b<span style="color: #666666">+</span>c,s);
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">8 </span>        <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+<span style="background-color: #f0f0f0; padding: 0 5px 0 5px">9 </span>}
+</pre></div>
+</div>
+<p>4行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c"><span style="color: #B00040">char</span> s[<span style="color: #666666">128</span>];
+</pre>
+</div>
+<p>charは文字を入れて置ける箱を表し、今回はその配列を用意します。</p>
+<p>6行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c">scanf(<span style="color: #BA2121">&quot;%s&quot;</span>,s);
+</pre>
+</div>
+<p><code class="inline-code tt">%s</code>は文字列を表します。文字列を文字の配列sに受け取ります。今回は&amp;は不要です。</p>
+<p>具体的には受け取る文字列が&quot;test&quot;だとしたら、</p>
+<ul>
+<li>sの0番の箱に't'</li>
+<li>sの1番の箱に'e'</li>
+<li>sの2番の箱に's'</li>
+<li>sの3番の箱に't'</li>
+<li>sの4番の箱には文字列の終わりを表す記号が入れられます。</li>
+</ul>
+<p>8行目</p>
+<div class="emlist-code">
+<pre class="emlist language-c">printf(<span style="color: #BA2121">&quot;%d %s</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,a<span style="color: #666666">+</span>b<span style="color: #666666">+</span>c,s);
+</pre>
+</div>
+<p>文字列も整数の時と同じように出力できます。</p>
+
+<h2><a id="h2-11"></a><span class="secno">2.11　</span>あとがき</h2>
+<p>今回は競技プログラミングの簡単な、プログラミングの基礎を扱う問題を紹介しましたが、少しは競技プログラミングに興味を持って頂けたでしょうか?今回紹介した問題はまだまだ第一歩に過ぎません。まだまだこの先には沢山の難しい、楽しい問題が待ち構えています。是非挑戦して頂けると競技プログラミングをやっている身としてありがたいです。それでは、また来年の部誌にご期待ください!</p>
+      </div>
+      <nav class="book-navi book-prev">
+                <a href="object_1037.html">
+          <div class="book-cursor"><span class="cursor-prev">◀ 「TwitterのBotを作ってみる」 by object_1037 (73)</span></div>
+        </a>
+              </nav>
+      <nav class="book-navi book-next">
+                <a href="taizo0122.html">
+          <div class="book-cursor"><span class="cursor-next">▶ 「計算量」 by taizo0122 (72)</span></div>
+        </a>
+              </nav>
+    </div>
+  </div>
+  <footer>
+      </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+  <script>
+      (function() {
+          if (!window.katex) { return; }
+          var equations = [].slice.call(document.querySelectorAll(".equation"));
+          for (var i = 0; i < equations.length; i++) {
+              katex.render(equations[i].textContent, equations[i]);
+          }
+      }) ();
+  </script>
+</body>
+</html>

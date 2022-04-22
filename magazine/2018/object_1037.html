@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="写真のデータを読み込もう" href="2lu3.html"><link rel="prev" title="部長挨拶" href="predef.html">  <meta name="generator" content="Re:VIEW" />
+  <title>ARKit | NPCA部誌2018</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.js" integrity="sha384-jmxIlussZWB7qCuB+PgKG1uLjjxbVVIayPJwi6cG6Zb4YKq0JIw+OMnkkEC7kYCq" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2018</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">部長挨拶</a></li>
+<li><a href="object_1037.html">1 ARKit</a></li>
+<li><a href="2lu3.html">2 写真のデータを読み込もう</a></li>
+<li><a href="hinata.html">3 すばやい文字列の探しかた</a></li>
+<li><a href="harady.html">4 簡単!VR3(00)分クッキング</a></li>
+<li><a href="taizo0122.html">5 ぱそこんであそぼ</a></li>
+<li><a href="takepan.html">6 マインクラフトのサーバー管理を楽で便利なものにしてみる話</a></li>
+<li><a href="kota1024.html">7 簡単blenderモデリング</a></li>
+<li><a href="niimi.html">8 深層学習の基礎のキソ</a></li>
+<li><a href="physics0523.html">9 JOI参戦記</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h1"></a><span class="secno">第1章　</span>ARKit</h1>
+<p><p style="text-align:right">73回生 object</p></p>
+
+<h2><a id="h1-1"></a><span class="secno">1.1　</span>自己紹介</h2>
+<p>みなさんこんにちは、73回生(高1)のobjectです。今年はARKitのことについて部誌を書きました。</p>
+
+<h2><a id="h1-2"></a><span class="secno">1.2　</span>ARKitとは</h2>
+<p>さて、多くの人はARKitというのが何なのかわからないと思いますが、なんとなくAR関連の何かだということはわかるでしょう。じゃあそのARとは何なのでしょうか。</p>
+
+<h3><a id="h1-2-1"></a>ARってなに</h3>
+<blockquote><p>AR(拡張現実)とは、人が知覚する現実環境をコンピュータにより拡張する技術、およびコンピュータにより拡張された現実環境そのものを指す言葉。(<a href="https://ja.wikipedia.org/wiki/%E6%8B%A1%E5%BC%B5%E7%8F%BE%E5%AE%9F" class="link">Wikipedia</a>より抜粋)</p></blockquote>
+<p>ARの定義を言葉で言い表すのは難しいですが、わかりやすく言うと現実空間に仮想のものをくっつける技術です。</p>
+<p>社会現象にもなったPokemon GO(もう二年近く前)で有名になりましたが、それよりも前からARは存在します。</p>
+<div id="pokemongo" class="image">
+<img src="images/object_1037/pokemongo.jpg" alt="現実にポケモンがいるように見える" class="width-060per" />
+<p class="caption">
+図1.1: 現実にポケモンがいるように見える
+</p>
+</div>
+<p>VRとよく混同されますが、ARとVRは全く違う技術です。</p>
+<dl>
+<dt>VR</dt>
+<dd>現実をまるごと作り変える(全部仮想)</dd>
+<dt>AR</dt>
+<dd>現実と仮想を組み合わせる(現実と仮想のハイブリッド)</dd>
+</dl>
+
+<h3><a id="h1-2-2"></a>ARKitってなに</h3>
+<p>ARが何なのかわかったところで、次はARKitの説明をします。ARKitというのはAppleが発表したiOS用のARフレームワークです。</p>
+<p>もっとわかりやすく言うとARKitはARを使ったiOSアプリを簡単に作るためのキットで、いままでとても難しかったiOSでのAR開発が劇的に簡単になるという画期的なものです。</p>
+<p>ARKitはA9チップ以降を搭載し、iOS11が入ったiOS端末(つまりiPhoneなら6s以降)さえあれば特別なカメラ等が必要なく、誰でも簡単に体験できるのが特徴です。</p>
+
+<h2><a id="h1-3"></a><span class="secno">1.3　</span>ARKitを使う</h2>
+
+<h3><a id="h1-3-1"></a>ARKitの凄さ</h3>
+<p>ARKitを使えばiOSでのAR開発が劇的に簡単になるとか言いましたが、実際にどれだけ簡単なのかというと、<strong>数行コードを書くだけでただのアプリをARアプリにできるレベル</strong>です。</p>
+<p>それでは実際に<strong>数行コードを書くだけで</strong>ARアプリを作ってみましょう。</p>
+
+<h3><a id="h1-3-2"></a>三行ARとHello,World!</h3>
+<p>ARKitは<strong>実質三行</strong>でARが実装できます。早速Hello,World!を表示するARアプリを作ってみましょう。</p>
+
+<h4><a id="h1-3-2-1"></a>環境構築</h4>
+<p>まず、iOSアプリを作るにはXcodeというアプリが必要です。そして、XcodeはMacでしか使えません。つまりiOSアプリ開発には<strong>Macが必要</strong>です。</p>
+<p>Macが準備できたら、次にXcodeをインストールします。Xcodeは<a href="https://itunes.apple.com/jp/app/xcode/id497799835?ls=1&amp;mt=12" class="link">ここ</a>からインストールできます。</p>
+<p>また、表示する3Dモデルを作るためにBlenderを使うので<a href="https://www.blender.org/download/" class="link">ここ</a>からインストールしておきましょう。</p>
+
+<h4><a id="h1-3-2-2"></a>モデルの作成</h4>
+<p>インストールしたBlenderを開くと立方体のオブジェクトが出てきますが、使わないのでXキーで削除しておきます。</p>
+<p>次に、左側のツールシェルフの作成タブからテキストを選択し、Tabキーで編集モードにした後、予め表示されたテキストをすべて消してHello,World!と打ち込みます。</p>
+<div id="hello1" class="image">
+<img src="images/object_1037/hello1.png" alt="Hello,World!を打ち込んだ状態" class="width-060per" />
+<p class="caption">
+図1.2: Hello,World!を打ち込んだ状態
+</p>
+</div>
+<p>次に右側にある[ジオメトリ]プロパティの[押し出し]で厚さを調整します。また、[フォント]プロパティではフォントを変更することもできます。</p>
+<div id="hello2" class="image">
+<img src="images/object_1037/hello2.png" alt="厚さとフォントを変更した状態" class="width-060per" />
+<p class="caption">
+図1.3: 厚さとフォントを変更した状態
+</p>
+</div>
+<p>UV展開ができるように左下のオブジェクト→変換でテキストをメッシュに変換します。</p>
+<p>次にテクスチャを貼ります。左上のスクリーンレイアウトをDefaultからUV Editingに変更し、テキストを編集モードで選択した状態でUキーを押してスマートUV展開を選択します。</p>
+<p>今回は全部白くていいので白い正方形の画像を用意して左下の[開く]から用意した画像を開きましょう。</p>
+<div id="uv" class="image">
+<img src="images/object_1037/uv.png" alt="UV展開後画像を開いた状態" class="width-060per" />
+<p class="caption">
+図1.4: UV展開後画像を開いた状態
+</p>
+</div>
+<p>できたらスクリーンレイアウトをDefaultに戻し、右のマテリアル(丸のアイコン)からマテリアルを追加し、その横のテクスチャで[新規作成]を押して下の[画像]のところでさっきの画像を開きます。</p>
+<p>下にあるシェーディングのところでソリッドからテクスチャに切り替えて白くなっていればモデル作成は成功です。</p>
+<div id="hello3" class="image">
+<img src="images/object_1037/hello3.png" alt="テクスチャが反映された状態" class="width-060per" />
+<p class="caption">
+図1.5: テクスチャが反映された状態
+</p>
+</div>
+<p>次に、作成したモデルをXcodeで使えるようにエクスポートします。Xcodeで使える3Dモデルの拡張子は.scnと.daeと.objです。メニューバーからエクスポートを選択し、Collada(.dae)でエクスポートします。</p>
+
+<h4><a id="h1-3-2-3"></a>Xcodeでの作業</h4>
+<p>インストールしておいたXcodeを開きます。。&quot;create a new project&quot;のところを選択するとこのような画面が出てきます。</p>
+<div id="xcode" class="image">
+<img src="images/object_1037/xcode.png" alt="アプリテンプレート選択" class="width-050per" />
+<p class="caption">
+図1.6: アプリテンプレート選択
+</p>
+</div>
+<p>ここでアプリのテンプレートを選択することができます。中央上にAR用のテンプレートがあるのでそれを選びたくなりますが、AR用テンプレートを選ぶと最初からARが実装されてしまっているので、ARKitの凄さを伝えるためにあえてSingle View Appを選びます。</p>
+<p>名前を適当に入れてアプリを作ったら、info.plistを開き、&quot;Information Properly List&quot;に&quot;Privacy - Camera Usage Description&quot;を追加します。</p>
+<p>次に、Main.storyboardを開き、右下の検索欄で&quot;ARKit SceneKit View&quot;を探し、画面全体に広げます。</p>
+<div id="storyboard" class="image">
+<img src="images/object_1037/storyboard.png" alt="storyboard" class="width-060per" />
+<p class="caption">
+図1.7: storyboard
+</p>
+</div>
+<p>次に先程作成し、エクスポートしたモデルとテクスチャをプロジェクト内に追加します。モデルのサイズが合わないので右上のところで調整しておきましょう</p>
+<div id="hello4" class="image">
+<img src="images/object_1037/hello4.png" alt="Xcodeでの表示" class="width-060per" />
+<p class="caption">
+図1.8: Xcodeでの表示
+</p>
+</div>
+<p>次にARを表示するためのコードを書きます。</p>
+<p>まず最初に右上のベン図みたいなマークを押してMain.storyboardとViewController.swiftを並べ、Ctrlキーを押しながらARSCNViewをViewController.swiftの最後の中括弧の上にドラッグ＆ドロップし、sceneViewという名前でIBOutlet接続します。</p>
+<div class="emlist-code">
+<p class="caption">ViewController.swift</p>
+<pre class="emlist language-swift highlight"><span class="c1">// IBOutlet接続</span>
+<span class="kd">@IBOutlet</span> <span class="k">var</span> <span class="nv">sceneView</span><span class="p">:</span> <span class="kt">ARSCNView</span><span class="o">!</span>
+</pre>
+</div>
+<p>次に、ARKitをインポートします。</p>
+<div class="emlist-code">
+<p class="caption">ViewController.swift</p>
+<pre class="emlist language-swift highlight"><span class="c1">//ARKitのインポート</span>
+<span class="kd">import</span> <span class="kt">ARKit</span>
+</pre>
+</div>
+<p>最後に<code class="inline-code tt">.viewDidLoad()</code>に次の三行を追加します。</p>
+<div class="emlist-code">
+<p class="caption">ViewController.swift</p>
+<pre class="emlist language-swift highlight"><span class="c1">// シーンの生成</span>
+<span class="n">sceneView</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="kt">SCNScene</span><span class="p">(</span><span class="nv">named</span><span class="p">:</span> <span class="s">"helloworld.dae"</span><span class="p">)</span><span class="o">!</span>
+
+<span class="c1">// セッションのコンフィギュレーション生成</span>
+<span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">ARWorldTrackingConfiguration</span><span class="p">()</span>
+
+<span class="c1">// セッション開始</span>
+<span class="n">sceneView</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="nf">run</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
+</pre>
+</div>
+<p>これでARアプリを作ることができました。早速動かしてみましょう。</p>
+<p>ARKitの起動にはカメラが必要なのでシュミレータではなく実機を接続してシュミレーションします。</p>
+<p>平面を検出できたらHello,World!が表示されると思います。</p>
+<div id="helloworld1" class="image">
+<img src="images/object_1037/helloworld1.jpg" alt="Hello,World!" class="width-060per" />
+<p class="caption">
+図1.9: Hello,World!
+</p>
+</div>
+<p>違う方向から見ても固定されているようにみえるのがわかります</p>
+<div id="helloworld2" class="image">
+<img src="images/object_1037/helloworld2.jpg" alt="違う方向から" class="width-060per" />
+<p class="caption">
+図1.10: 違う方向から
+</p>
+</div>
+<p>ね?簡単でしょ?</p>
+<p>モデルをいちいち作ったりしたので若干面倒でしたが、肝心のARの実装は非常に簡単にできました。</p>
+
+<h2><a id="h1-4"></a><span class="secno">1.4　</span>ARKitの機能</h2>
+
+<h3><a id="h1-4-1"></a>さっきの説明</h3>
+<p>次のアプリを作る前にさっきのHello,World!の説明をします。</p>
+<div class="emlist-code">
+<p class="caption">ViewController.swift</p>
+<pre class="emlist language-swift highlight"><span class="kd">import</span> <span class="kt">UIKit</span>
+<span class="kd">import</span> <span class="kt">ARKit</span>
+
+<span class="kd">class</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">UIViewController</span> <span class="p">{</span>
+
+         <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
+           <span class="k">super</span><span class="o">.</span><span class="nf">viewDidLoad</span><span class="p">()</span>
+           <span class="n">sceneView</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="kt">SCNScene</span><span class="p">(</span><span class="nv">named</span><span class="p">:</span> <span class="s">"helloworld.dae"</span><span class="p">)</span><span class="o">!</span>
+
+           <span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">ARWorldTrackingConfiguration</span><span class="p">()</span>
+
+           <span class="n">sceneView</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="nf">run</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
+         <span class="p">}</span>
+
+         <span class="k">override</span> <span class="kd">func</span> <span class="nf">didReceiveMemoryWarning</span><span class="p">()</span> <span class="p">{</span>
+           <span class="k">super</span><span class="o">.</span><span class="nf">didReceiveMemoryWarning</span><span class="p">()</span>
+         <span class="p">}</span>
+
+         <span class="kd">@IBOutlet</span> <span class="k">var</span> <span class="nv">sceneView</span><span class="p">:</span> <span class="kt">ARSCNView</span><span class="o">!</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>コードを書き加えるとこのようになっているはずです。</p>
+<p>最初から書かれているコードは無視して、まず2行目の<code class="inline-code tt">import ARKit</code>というのはアプリ内でARKitを使えるようにするためのコードです。</p>
+<p>次に、8行目の<code class="inline-code tt">sceneView.scene = SCNScene(named: &quot;helloworld.dae&quot;)!</code>はシーン(表示するもの)を生成して、ARSCNViewにセットするコードで、この場合はhelloworld.daeという名前の3Dモデルを表示しています。</p>
+<p>10行目の<code class="inline-code tt">let configuration = ARWorldTrackingConfiguration()</code>はコンフィギュレーションの作成です。</p>
+<p><code class="inline-code tt">ARWorldTrackingConfiguration</code>というのはデバイスの向き等をトラッキングし、現実世界の面を検出するコンフィギュレーションです。</p>
+<p>12行目の<code class="inline-code tt">sceneView.session.run(configuration)</code>はセッションの開始、つまり現実世界の認識やデバイスのモーションの解析を開始するということです。</p>
+<p>また、<code class="inline-code tt">session.pause()</code>メソッドでセッションを中断することもできます。</p>
+
+<h3><a id="h1-4-2"></a>水平、垂直面検出</h3>
+<p>ARKitには平面検出及び垂直面検出の機能があります。<a id="fnb-site" href="object_1037.html#fn-site" class="noteref" epub:type="noteref">*1</a></p>
+<div class="footnote" epub:type="footnote" id="fn-site"><p class="footnote">[*1] 垂直面検出はiOS11.3以降でのみ使用可能</p></div>
+<p>デフォルトではこの機能が無効になっているので、使いたい場合は自分で設定する必要があります。</p>
+<p>まずは平面を検出して、可視化するアプリを作りましょう。</p>
+<p>Xcodeを開いてARテンプレートでアプリを作った後、ViewController.swiftをこのように変更します。</p>
+<div class="emlist-code">
+<p class="caption">ViewController.swift</p>
+<pre class="emlist language-swift highlight"><span class="kd">import</span> <span class="kt">UIKit</span>
+<span class="kd">import</span> <span class="kt">ARKit</span>
+
+<span class="kd">class</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="kt">ARSCNViewDelegate</span><span class="p">,</span><span class="kt">ARSessionDelegate</span><span class="p">{</span>
+
+  <span class="kd">@IBOutlet</span> <span class="k">var</span> <span class="nv">sceneView</span><span class="p">:</span> <span class="kt">ARSCNView</span><span class="o">!</span>
+
+  <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">super</span><span class="o">.</span><span class="nf">viewDidLoad</span><span class="p">()</span>
+
+      <span class="c1">// デリゲートをセット</span>
+      <span class="n">sceneView</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="k">self</span>
+      <span class="n">sceneView</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="k">self</span>
+
+      <span class="c1">// シーンをセット</span>
+      <span class="n">sceneView</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="kt">SCNScene</span><span class="p">()</span>
+
+      <span class="c1">// コンフィギュレーションの生成</span>
+      <span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">ARWorldTrackingConfiguration</span><span class="p">()</span>
+
+      <span class="c1">// 平面検出を有効化</span>
+      <span class="n">configuration</span><span class="o">.</span><span class="n">planeDetection</span> <span class="o">=</span> <span class="o">.</span><span class="n">horizontal</span>
+
+      <span class="c1">// セッション開始</span>
+      <span class="n">sceneView</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="nf">run</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="c1">// ARSCNViewDelegate</span>
+
+  <span class="c1">// 追加されたとき</span>
+  <span class="kd">func</span> <span class="nf">renderer</span><span class="p">(</span><span class="n">_</span> <span class="nv">renderer</span><span class="p">:</span> <span class="kt">SCNSceneRenderer</span><span class="p">,</span> <span class="n">didAdd</span> <span class="nv">node</span><span class="p">:</span> <span class="kt">SCNNode</span><span class="p">,</span> <span class="k">for</span> <span class="nv">anchor</span><span class="p">:</span> <span class="kt">ARAnchor</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">guard</span> <span class="k">let</span> <span class="nv">planeAnchor</span> <span class="o">=</span> <span class="n">anchor</span> <span class="k">as?</span> <span class="kt">ARPlaneAnchor</span> <span class="k">else</span> <span class="p">{</span><span class="nf">fatalError</span><span class="p">()}</span>
+      <span class="nf">print</span><span class="p">(</span><span class="s">"anchor:</span><span class="se">\(</span><span class="n">anchor</span><span class="se">)</span><span class="s">, node: </span><span class="se">\(</span><span class="n">node</span><span class="se">)</span><span class="s">, node geometry: </span><span class="se">\(</span><span class="kt">String</span><span class="p">(</span><span class="nv">describing</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+
+      <span class="c1">// 平面ジオメトリを作成</span>
+      <span class="k">let</span> <span class="nv">geometry</span> <span class="o">=</span> <span class="kt">SCNPlane</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">(</span><span class="n">planeAnchor</span><span class="o">.</span><span class="n">extent</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>
+                              <span class="nv">height</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">(</span><span class="n">planeAnchor</span><span class="o">.</span><span class="n">extent</span><span class="o">.</span><span class="n">z</span><span class="p">))</span>
+      <span class="n">geometry</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">first</span><span class="p">?</span><span class="o">.</span><span class="n">diffuse</span><span class="o">.</span><span class="n">contents</span> <span class="o">=</span> <span class="kt">UIColor</span><span class="o">.</span><span class="n">yellow</span><span class="o">.</span><span class="nf">withAlphaComponent</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+      <span class="c1">// 平面ジオメトリを持つノードを作成</span>
+      <span class="k">let</span> <span class="nv">planeNode</span> <span class="o">=</span> <span class="kt">SCNNode</span><span class="p">(</span><span class="nv">geometry</span><span class="p">:</span> <span class="n">geometry</span><span class="p">)</span>
+                        <span class="c1">//x-z平面に合わせる</span>
+      <span class="n">planeNode</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="kt">SCNMatrix4MakeRotation</span><span class="p">(</span><span class="o">-</span><span class="kt">Float</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+      <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">async</span><span class="p">(</span><span class="nv">execute</span><span class="p">:</span> <span class="p">{</span>
+          <span class="c1">// 検出したアンカーに対応するノードに子ノードとして持たせる</span>
+          <span class="n">node</span><span class="o">.</span><span class="nf">addChildNode</span><span class="p">(</span><span class="n">planeNode</span><span class="p">)</span>
+      <span class="p">})</span>
+  <span class="p">}</span>
+
+  <span class="c1">// 更新されたとき</span>
+  <span class="kd">func</span> <span class="nf">renderer</span><span class="p">(</span><span class="n">_</span> <span class="nv">renderer</span><span class="p">:</span> <span class="kt">SCNSceneRenderer</span><span class="p">,</span> <span class="n">didUpdate</span> <span class="nv">node</span><span class="p">:</span> <span class="kt">SCNNode</span><span class="p">,</span> <span class="k">for</span> <span class="nv">anchor</span><span class="p">:</span> <span class="kt">ARAnchor</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">guard</span> <span class="k">let</span> <span class="nv">planeAnchor</span> <span class="o">=</span> <span class="n">anchor</span> <span class="k">as?</span> <span class="kt">ARPlaneAnchor</span> <span class="k">else</span> <span class="p">{</span><span class="nf">fatalError</span><span class="p">()}</span>
+
+      <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">async</span><span class="p">(</span><span class="nv">execute</span><span class="p">:</span> <span class="p">{</span>
+          <span class="c1">// 平面ジオメトリのサイズを更新</span>
+          <span class="k">for</span> <span class="n">childNode</span> <span class="k">in</span> <span class="n">node</span><span class="o">.</span><span class="n">childNodes</span> <span class="p">{</span>
+              <span class="k">guard</span> <span class="k">let</span> <span class="nv">plane</span> <span class="o">=</span> <span class="n">childNode</span><span class="o">.</span><span class="n">geometry</span> <span class="k">as?</span> <span class="kt">SCNPlane</span> <span class="k">else</span> <span class="p">{</span><span class="k">continue</span><span class="p">}</span>
+              <span class="n">plane</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="kt">CGFloat</span><span class="p">(</span><span class="n">planeAnchor</span><span class="o">.</span><span class="n">extent</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+              <span class="n">plane</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="kt">CGFloat</span><span class="p">(</span><span class="n">planeAnchor</span><span class="o">.</span><span class="n">extent</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+              <span class="k">break</span>
+          <span class="p">}</span>
+      <span class="p">})</span>
+  <span class="p">}</span>
+  <span class="c1">// 削除されたとき</span>
+  <span class="kd">func</span> <span class="nf">renderer</span><span class="p">(</span><span class="n">_</span> <span class="nv">renderer</span><span class="p">:</span> <span class="kt">SCNSceneRenderer</span><span class="p">,</span> <span class="n">didRemove</span> <span class="nv">node</span><span class="p">:</span> <span class="kt">SCNNode</span><span class="p">,</span> <span class="k">for</span> <span class="nv">anchor</span><span class="p">:</span> <span class="kt">ARAnchor</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="k">self</span><span class="o">.</span><span class="n">classForCoder</span><span class="se">)</span><span class="s">/"</span> <span class="o">+</span> <span class="kd">#function</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="c1">// ARSessionDelegate</span>
+
+  <span class="c1">// 追加されたとき</span>
+  <span class="kd">func</span> <span class="nf">session</span><span class="p">(</span><span class="n">_</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">ARSession</span><span class="p">,</span> <span class="n">didAdd</span> <span class="nv">anchors</span><span class="p">:</span> <span class="p">[</span><span class="kt">ARAnchor</span><span class="p">])</span> <span class="p">{</span>
+      <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="k">self</span><span class="o">.</span><span class="n">classForCoder</span><span class="se">)</span><span class="s">/"</span> <span class="o">+</span> <span class="kd">#function</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="c1">// 更新されたとき</span>
+  <span class="kd">func</span> <span class="nf">session</span><span class="p">(</span><span class="n">_</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">ARSession</span><span class="p">,</span> <span class="n">didUpdate</span> <span class="nv">anchors</span><span class="p">:</span> <span class="p">[</span><span class="kt">ARAnchor</span><span class="p">])</span> <span class="p">{</span>
+      <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="k">self</span><span class="o">.</span><span class="n">classForCoder</span><span class="se">)</span><span class="s">/"</span> <span class="o">+</span> <span class="kd">#function</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="c1">// 削除されたとき</span>
+  <span class="kd">func</span> <span class="nf">session</span><span class="p">(</span><span class="n">_</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">ARSession</span><span class="p">,</span> <span class="n">didRemove</span> <span class="nv">anchors</span><span class="p">:</span> <span class="p">[</span><span class="kt">ARAnchor</span><span class="p">])</span> <span class="p">{</span>
+      <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="k">self</span><span class="o">.</span><span class="n">classForCoder</span><span class="se">)</span><span class="s">/"</span> <span class="o">+</span> <span class="kd">#function</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>これで動かすとしっかりと平面検出ができるのがわかります。</p>
+<div id="horizontal" class="image">
+<img src="images/object_1037/horizontal.jpeg" alt="平面検出" class="width-060per" />
+<p class="caption">
+図1.11: 平面検出
+</p>
+</div>
+<p>まず平面検出を有効化するためには、コンフィギュレーションの<code class="inline-code tt">planeDetection</code>プロパティに<code class="inline-code tt">.horizontal</code>を追加する必要があります。</p>
+<p>垂直面検出の場合は<code class="inline-code tt">.horizontal</code>の代わりに<code class="inline-code tt">.vertical</code>を追加します。</p>
+<div id="vertical" class="image">
+<img src="images/object_1037/vertical.jpeg" alt="垂直面検出" class="width-060per" />
+<p class="caption">
+図1.12: 垂直面検出
+</p>
+</div>
+<div class="emlist-code">
+<pre class="emlist language-swift highlight">        <span class="c1">// 平面検出の有効化</span>
+        <span class="n">configuration</span><span class="o">.</span><span class="n">planeDetection</span> <span class="o">=</span> <span class="o">.</span><span class="n">horizontal</span>
+</pre>
+</div>
+
+<h4><a id="h1-4-2-1"></a>ARAnchor</h4>
+<p>ARAnchorはARの空間内に何らかのオブジェクトを配置するための位置、向きを表すクラスです。</p>
+<p>これによって、デバイスを動かしてもオブジェクトはアンカー(錨)で固定されているように表示されます。</p>
+<p>また、ARAnchorにはARPlaneAnchorというサブクラスがあり、平面,垂直面検出時に得られるアンカーはこの型で動きます。</p>
+<p>ARPlaneAnchorには平面の中心を表すcenterプロパティと大きさを表すextentプロパティ、アラインメントを示すalignmentプロパティがあります。</p>
+<p>center、extentともにvector_float3型ですが、extentは平面の大きさを示すのでx,zのみで大きさは決まり、yの値は常にゼロです。</p>
+
+<h4><a id="h1-4-2-2"></a>ARSCNViewDelegate</h4>
+<p>ARSCNViewDelegateではアンカーと対応するノードが追加、更新、削除されるときにメソッドを呼ぶことができます。</p>
+<div class="emlist-code">
+<pre class="emlist language-swift highlight">        <span class="c1">// ノードが追加されたとき</span>
+        <span class="kd">func</span> <span class="nf">renderer</span><span class="p">(</span><span class="n">_</span> <span class="nv">renderer</span><span class="p">:</span> <span class="kt">SCNSceneRenderer</span><span class="p">,</span> <span class="n">didAdd</span> <span class="nv">node</span><span class="p">:</span> <span class="kt">SCNNode</span><span class="p">,</span> <span class="k">for</span> <span class="nv">anchor</span><span class="p">:</span> <span class="kt">ARAnchor</span><span class="p">)</span>
+
+        <span class="c1">// 更新</span>
+        <span class="kd">func</span> <span class="nf">renderer</span><span class="p">(</span><span class="n">_</span> <span class="nv">renderer</span><span class="p">:</span> <span class="kt">SCNSceneRenderer</span><span class="p">,</span> <span class="n">didUpdate</span> <span class="nv">node</span><span class="p">:</span> <span class="kt">SCNNode</span><span class="p">,</span> <span class="k">for</span> <span class="nv">anchor</span><span class="p">:</span> <span class="kt">ARAnchor</span><span class="p">)</span>
+
+        <span class="c1">// 削除</span>
+        <span class="kd">func</span> <span class="nf">renderer</span><span class="p">(</span><span class="n">_</span> <span class="nv">renderer</span><span class="p">:</span> <span class="kt">SCNSceneRenderer</span><span class="p">,</span> <span class="n">didRemove</span> <span class="nv">node</span><span class="p">:</span> <span class="kt">SCNNode</span><span class="p">,</span> <span class="k">for</span> <span class="nv">anchor</span><span class="p">:</span> <span class="kt">ARAnchor</span><span class="p">)</span>
+</pre>
+</div>
+
+<h4><a id="h1-4-2-3"></a>ARSessionDelegate</h4>
+<p>ARSessionDelegateではアンカーが追加、更新、削除されたときにメソッドを呼ぶことができます。</p>
+<div class="emlist-code">
+<pre class="emlist language-swift highlight">        <span class="c1">// アンカーが追加されたとき</span>
+        <span class="kd">func</span> <span class="nf">session</span><span class="p">(</span><span class="n">_</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">ARSession</span><span class="p">,</span> <span class="n">didAdd</span> <span class="nv">anchors</span><span class="p">:</span> <span class="p">[</span><span class="kt">ARAnchor</span><span class="p">])</span>
+
+        <span class="c1">// 更新</span>
+        <span class="kd">func</span> <span class="nf">session</span><span class="p">(</span><span class="n">_</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">ARSession</span><span class="p">,</span> <span class="n">didUpdate</span> <span class="nv">anchors</span><span class="p">:</span> <span class="p">[</span><span class="kt">ARAnchor</span><span class="p">])</span>
+
+        <span class="c1">// 削除</span>
+        <span class="kd">func</span> <span class="nf">session</span><span class="p">(</span><span class="n">_</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">ARSession</span><span class="p">,</span> <span class="n">didRemove</span> <span class="nv">anchors</span><span class="p">:</span> <span class="p">[</span><span class="kt">ARAnchor</span><span class="p">])</span>
+</pre>
+</div>
+
+<h3><a id="h1-4-3"></a>平面に物を置く</h3>
+<p>最後に、平面を検出した後、そこにオブジェクトを置くアプリを作ってみましょう。</p>
+<div class="emlist-code">
+<p class="caption">ViewController.swift</p>
+<pre class="emlist language-swift highlight"><span class="kd">import</span> <span class="kt">UIKit</span>
+<span class="kd">import</span> <span class="kt">ARKit</span>
+
+<span class="kd">class</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="kt">ARSCNViewDelegate</span><span class="p">,</span> <span class="kt">ARSessionDelegate</span> <span class="p">{</span>
+
+  <span class="kd">@IBOutlet</span> <span class="k">var</span> <span class="nv">sceneView</span><span class="p">:</span> <span class="kt">ARSCNView</span><span class="o">!</span>
+
+  <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">super</span><span class="o">.</span><span class="nf">viewDidLoad</span><span class="p">()</span>
+
+    <span class="n">sceneView</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="k">self</span>
+    <span class="n">sceneView</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="k">self</span>
+
+    <span class="c1">// シーンを生成してARSCNViewにセット</span>
+    <span class="n">sceneView</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="kt">SCNScene</span><span class="p">()</span>
+
+    <span class="c1">// セッションのコンフィギュレーションを生成</span>
+    <span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">ARWorldTrackingConfiguration</span><span class="p">()</span>
+    <span class="n">configuration</span><span class="o">.</span><span class="n">planeDetection</span> <span class="o">=</span> <span class="o">.</span><span class="n">horizontal</span>
+
+    <span class="c1">// セッション開始</span>
+    <span class="n">sceneView</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="nf">run</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="c1">// MARK: - ARSCNViewDelegate</span>
+
+  <span class="kd">func</span> <span class="nf">renderer</span><span class="p">(</span><span class="n">_</span> <span class="nv">renderer</span><span class="p">:</span> <span class="kt">SCNSceneRenderer</span><span class="p">,</span> <span class="n">didAdd</span> <span class="nv">node</span><span class="p">:</span> <span class="kt">SCNNode</span><span class="p">,</span> <span class="k">for</span> <span class="nv">anchor</span><span class="p">:</span> <span class="kt">ARAnchor</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">guard</span> <span class="k">let</span> <span class="nv">planeAnchor</span> <span class="o">=</span> <span class="n">anchor</span> <span class="k">as?</span> <span class="kt">ARPlaneAnchor</span> <span class="k">else</span> <span class="p">{</span><span class="nf">fatalError</span><span class="p">()}</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"anchor:</span><span class="se">\(</span><span class="n">anchor</span><span class="se">)</span><span class="s">, node: </span><span class="se">\(</span><span class="n">node</span><span class="se">)</span><span class="s">, node geometry: </span><span class="se">\(</span><span class="kt">String</span><span class="p">(</span><span class="nv">describing</span><span class="p">:</span> <span class="n">node</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span><span class="se">)</span><span class="s">"</span><span class="p">)</span>
+
+    <span class="c1">// 平面ジオメトリを作成</span>
+    <span class="k">let</span> <span class="nv">geometry</span> <span class="o">=</span> <span class="kt">SCNPlane</span><span class="p">(</span><span class="nv">width</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">(</span><span class="n">planeAnchor</span><span class="o">.</span><span class="n">extent</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>
+                            <span class="nv">height</span><span class="p">:</span> <span class="kt">CGFloat</span><span class="p">(</span><span class="n">planeAnchor</span><span class="o">.</span><span class="n">extent</span><span class="o">.</span><span class="n">z</span><span class="p">))</span>
+    <span class="n">geometry</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">first</span><span class="p">?</span><span class="o">.</span><span class="n">diffuse</span><span class="o">.</span><span class="n">contents</span> <span class="o">=</span> <span class="kt">UIColor</span><span class="o">.</span><span class="n">yellow</span><span class="o">.</span><span class="nf">withAlphaComponent</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="c1">// 平面ジオメトリを持つノードを作成</span>
+    <span class="k">let</span> <span class="nv">planeNode</span> <span class="o">=</span> <span class="kt">SCNNode</span><span class="p">(</span><span class="nv">geometry</span><span class="p">:</span> <span class="n">geometry</span><span class="p">)</span>
+    <span class="n">planeNode</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="kt">SCNMatrix4MakeRotation</span><span class="p">(</span><span class="o">-</span><span class="kt">Float</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">async</span><span class="p">(</span><span class="nv">execute</span><span class="p">:</span> <span class="p">{</span>
+      <span class="c1">// 検出したアンカーに対応するノードに子ノードとして持たせる</span>
+      <span class="n">node</span><span class="o">.</span><span class="nf">addChildNode</span><span class="p">(</span><span class="n">planeNode</span><span class="p">)</span>
+    <span class="p">})</span>
+    <span class="c1">// シーンの生成</span>
+    <span class="k">let</span> <span class="nv">scene</span> <span class="o">=</span> <span class="kt">SCNScene</span><span class="p">(</span><span class="nv">named</span><span class="p">:</span> <span class="s">"art.scnassets/ship.scn"</span><span class="p">)</span><span class="o">!</span>
+
+    <span class="c1">// オブジェクトのノード作成</span>
+    <span class="k">let</span> <span class="nv">virtualObjectNode</span> <span class="o">=</span> <span class="kt">SCNNode</span><span class="p">()</span>
+
+    <span class="c1">// 別のノードに載せ替える</span>
+    <span class="k">for</span> <span class="n">child</span> <span class="k">in</span> <span class="n">scene</span><span class="o">.</span><span class="n">rootNode</span><span class="o">.</span><span class="n">childNodes</span> <span class="p">{</span>
+      <span class="n">virtualObjectNode</span><span class="o">.</span><span class="nf">addChildNode</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">//  オブジェクトを載せる</span>
+    <span class="n">node</span><span class="o">.</span><span class="nf">addChildNode</span><span class="p">(</span><span class="n">virtualObjectNode</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">renderer</span><span class="p">(</span><span class="n">_</span> <span class="nv">renderer</span><span class="p">:</span> <span class="kt">SCNSceneRenderer</span><span class="p">,</span> <span class="n">didUpdate</span> <span class="nv">node</span><span class="p">:</span> <span class="kt">SCNNode</span><span class="p">,</span> <span class="k">for</span> <span class="nv">anchor</span><span class="p">:</span> <span class="kt">ARAnchor</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">guard</span> <span class="k">let</span> <span class="nv">planeAnchor</span> <span class="o">=</span> <span class="n">anchor</span> <span class="k">as?</span> <span class="kt">ARPlaneAnchor</span> <span class="k">else</span> <span class="p">{</span><span class="nf">fatalError</span><span class="p">()}</span>
+
+    <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">async</span><span class="p">(</span><span class="nv">execute</span><span class="p">:</span> <span class="p">{</span>
+      <span class="c1">// 平面ジオメトリのサイズを更新</span>
+      <span class="k">for</span> <span class="n">childNode</span> <span class="k">in</span> <span class="n">node</span><span class="o">.</span><span class="n">childNodes</span> <span class="p">{</span>
+        <span class="k">guard</span> <span class="k">let</span> <span class="nv">plane</span> <span class="o">=</span> <span class="n">childNode</span><span class="o">.</span><span class="n">geometry</span> <span class="k">as?</span> <span class="kt">SCNPlane</span> <span class="k">else</span> <span class="p">{</span><span class="k">continue</span><span class="p">}</span>
+        <span class="n">plane</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="kt">CGFloat</span><span class="p">(</span><span class="n">planeAnchor</span><span class="o">.</span><span class="n">extent</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">plane</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="kt">CGFloat</span><span class="p">(</span><span class="n">planeAnchor</span><span class="o">.</span><span class="n">extent</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">break</span>
+      <span class="p">}</span>
+    <span class="p">})</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">renderer</span><span class="p">(</span><span class="n">_</span> <span class="nv">renderer</span><span class="p">:</span> <span class="kt">SCNSceneRenderer</span><span class="p">,</span> <span class="n">didRemove</span> <span class="nv">node</span><span class="p">:</span> <span class="kt">SCNNode</span><span class="p">,</span> <span class="k">for</span> <span class="nv">anchor</span><span class="p">:</span> <span class="kt">ARAnchor</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="k">self</span><span class="o">.</span><span class="n">classForCoder</span><span class="se">)</span><span class="s">/"</span> <span class="o">+</span> <span class="kd">#function</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="c1">// MARK: - ARSessionDelegate</span>
+
+  <span class="kd">func</span> <span class="nf">session</span><span class="p">(</span><span class="n">_</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">ARSession</span><span class="p">,</span> <span class="n">didAdd</span> <span class="nv">anchors</span><span class="p">:</span> <span class="p">[</span><span class="kt">ARAnchor</span><span class="p">])</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="k">self</span><span class="o">.</span><span class="n">classForCoder</span><span class="se">)</span><span class="s">/"</span> <span class="o">+</span> <span class="kd">#function</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">session</span><span class="p">(</span><span class="n">_</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">ARSession</span><span class="p">,</span> <span class="n">didUpdate</span> <span class="nv">anchors</span><span class="p">:</span> <span class="p">[</span><span class="kt">ARAnchor</span><span class="p">])</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="k">self</span><span class="o">.</span><span class="n">classForCoder</span><span class="se">)</span><span class="s">/"</span> <span class="o">+</span> <span class="kd">#function</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">session</span><span class="p">(</span><span class="n">_</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">ARSession</span><span class="p">,</span> <span class="n">didRemove</span> <span class="nv">anchors</span><span class="p">:</span> <span class="p">[</span><span class="kt">ARAnchor</span><span class="p">])</span> <span class="p">{</span>
+    <span class="nf">print</span><span class="p">(</span><span class="s">"</span><span class="se">\(</span><span class="k">self</span><span class="o">.</span><span class="n">classForCoder</span><span class="se">)</span><span class="s">/"</span> <span class="o">+</span> <span class="kd">#function</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>このように変更して、動かしてみましょう。</p>
+<div id="ships" class="image">
+<img src="images/object_1037/ships.jpg" alt="平面検出とオブジェクト" class="width-060per" />
+<p class="caption">
+図1.13: 平面検出とオブジェクト
+</p>
+</div>
+<p>平面の上に3Dモデルが乗っているのがわかります。</p>
+<p>内容は簡単で、先程は平面のアンカーに対応したノードを作りましたが、そこに別の、オブジェクトのノードを載せただけです。</p>
+
+<h3><a id="h1-4-4"></a>デバッグオプション</h3>
+<p>ARSCNViewにはdebugOptionsというプロパティがあり、その名の通りデバッグに関する機能を利用できます。</p>
+<p>2018年5月現在、debugOptionsの型であるSCNDebugOptionsの持つオプション一覧は以下のとおりです。</p>
+<div id="scndebugoptions" class="table">
+<p class="caption">表1.1: SCNDebugOptions一覧</p>
+<table>
+<tr><th>オプション名</th><th>内容</th></tr>
+<tr><td>showBoundingBoxes</td><td>任意のノードのバウンディングボックス(境界を示す箱)を可視化する</td></tr>
+<tr><td>showWireframe</td><td>シーンのジオメトリを<strong>ワイヤーフレーム付き</strong>で描画する</td></tr>
+<tr><td>renderAsWireframe</td><td>ジオメトリを<strong>ワイヤーフレームだけ</strong>で描画する</td></tr>
+<tr><td>showSkeletons</td><td>ボーンを可視化する</td></tr>
+<tr><td>showCreases</td><td>細分化した状態で表示する #@#英語がよくわからなかったので消すかも</td></tr>
+<tr><td>showConstraints</td><td>シーン内のノードに作用する制約オブジェクトを可視化する</td></tr>
+<tr><td>showCameras</td><td>カメラを可視化する</td></tr>
+<tr><td>showLightInfluences</td><td>シーン内のSCNLightの位置を可視化する</td></tr>
+<tr><td>showLightExtents</td><td>各SCNLightに影響を受ける領域を可視化する</td></tr>
+<tr><td>showPhysicsShapes</td><td>各ノードに追加されているSCNPhysicsBodyを可視化する</td></tr>
+<tr><td>showPhysicsFields</td><td>各SCNPhysicsBodyに影響を受ける領域を可視化する</td></tr>
+</table>
+</div>
+<p>ARKitではSCNDebugOptionsに加えて、ARSCNView用のARSCNDebugOptionsが用意されています。</p>
+<div id="arscndebugoptions" class="table">
+<p class="caption">表1.2: ARSCNDebugOptions一覧</p>
+<table>
+<tr><th>オプション名</th><th>内容</th></tr>
+<tr><td>showWorldOrigin</td><td>AR空間の座標軸を可視化する</td></tr>
+<tr><td>showFeaturePoints</td><td>ARKitが検出した特徴点群を可視化する</td></tr>
+</table>
+</div>
+<p>最も、ARSCNDebugOptionsはSCNDebugOptions型なのでdebugOptionsプロパティに普通に指定できます。</p>
+
+<h4><a id="h1-4-4-1"></a>実際に適用する</h4>
+<p>まずはshowBoundingBoxesオプションを適用してみましょう。</p>
+<div class="emlist-code">
+<pre class="emlist language-swift highlight">  <span class="n">sceneView</span><span class="o">.</span><span class="n">debugOptions</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="n">showBoundingBoxes</span><span class="p">]</span>
+</pre>
+</div>
+<p>このコードをセッションを開始するコードの前に記述して動かすとこうなります。</p>
+<p>他のオプションを使う場合は<code class="inline-code tt">.showBoundingBoxes</code>を<code class="inline-code tt">.showWireframe</code>等に変更します。</p>
+<p>また、ARSCNDebugOptionsを使う場合は<code class="inline-code tt">ARSCNDebugOptions.showFeaturePoints</code>のようにします。</p>
+<div id="boundingbox" class="image">
+<img src="images/object_1037/boundingbox.jpeg" alt=".showBoundingBoxes" class="width-030per" />
+<p class="caption">
+図1.14: .showBoundingBoxes
+</p>
+</div>
+<p>以下、オプションを適用した場合の画像を載せます。</p>
+<div id="wireflame" class="image">
+<img src="images/object_1037/wireflame.jpeg" alt=".showWireframe" class="width-030per" />
+<p class="caption">
+図1.15: .showWireframe
+</p>
+</div>
+<div id="wireonly" class="image">
+<img src="images/object_1037/wireonly.jpeg" alt=".renderAsWireframe" class="width-030per" />
+<p class="caption">
+図1.16: .renderAsWireframe
+</p>
+</div>
+<div id="bone" class="image">
+<img src="images/object_1037/bone.jpeg" alt=".showSkeletons" class="width-030per" />
+<p class="caption">
+図1.17: .showSkeletons
+</p>
+</div>
+<p>showSkeletonsオプションはボーンが存在するモデルでのみ機能します。</p>
+<div id="camera" class="image">
+<img src="images/object_1037/camera.jpeg" alt=".showCameras" class="width-030per" />
+<p class="caption">
+図1.18: .showCameras
+</p>
+</div>
+<div id="light" class="image">
+<img src="images/object_1037/light.jpeg" alt=".showLightInfluences" class="width-030per" />
+<p class="caption">
+図1.19: .showLightInfluences
+</p>
+</div>
+<p>ライトを追加したためモデルの見た目が変わっていますが、このオプションの影響ではありません。</p>
+<div id="lightextent" class="image">
+<img src="images/object_1037/lightextent.jpeg" alt=".showLightExtents" class="width-030per" />
+<p class="caption">
+図1.20: .showLightExtents
+</p>
+</div>
+<div id="worldorigin" class="image">
+<img src="images/object_1037/worldorigin.jpeg" alt=".showWorldOrigin" class="width-030per" />
+<p class="caption">
+図1.21: .showWorldOrigin
+</p>
+</div>
+<div id="featurepoint" class="image">
+<img src="images/object_1037/featurepoint.jpeg" alt=".showFeaturePoints" class="width-030per" />
+<p class="caption">
+図1.22: .showFeaturePoints
+</p>
+</div>
+
+<h2><a id="h1-5"></a><span class="secno">1.5　</span>おわりに</h2>
+<p>最後まで読んでいただき、ありがとうございます。</p>
+<p>この記事ではARKitの基本的な機能を説明したつもりですが、それはARKitの機能のほんの一部に過ぎません。</p>
+<p>この記事を機にARおよびARKitに興味を持っていただけたら幸いです。</p>
+<p>それでは、また来年お会いしましょう!(部誌を書くとは言ってない)</p>
+
+<h2><a id="h1-6"></a><span class="secno">1.6　</span>参考文献</h2>
+<p><a href="https://developer.apple.com/documentation/arkit" class="link">ARKit公式ドキュメント(英語)</a></p>
+<p><a href="https://peaks.cc/books/iOS11" class="link">iOS11 Programing</a></p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="predef.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ 部長挨拶</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="2lu3.html">
+            <div class="book-cursor"><span class="cursor-next">▶ 写真のデータを読み込もう</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

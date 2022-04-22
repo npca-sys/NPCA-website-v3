@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="ぱそこんであそぼ" href="taizo0122.html"><link rel="prev" title="すばやい文字列の探しかた" href="hinata.html">  <meta name="generator" content="Re:VIEW" />
+  <title>簡単!VR3(00)分クッキング | NPCA部誌2018</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.js" integrity="sha384-jmxIlussZWB7qCuB+PgKG1uLjjxbVVIayPJwi6cG6Zb4YKq0JIw+OMnkkEC7kYCq" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2018</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">部長挨拶</a></li>
+<li><a href="object_1037.html">1 ARKit</a></li>
+<li><a href="2lu3.html">2 写真のデータを読み込もう</a></li>
+<li><a href="hinata.html">3 すばやい文字列の探しかた</a></li>
+<li><a href="harady.html">4 簡単!VR3(00)分クッキング</a></li>
+<li><a href="taizo0122.html">5 ぱそこんであそぼ</a></li>
+<li><a href="takepan.html">6 マインクラフトのサーバー管理を楽で便利なものにしてみる話</a></li>
+<li><a href="kota1024.html">7 簡単blenderモデリング</a></li>
+<li><a href="niimi.html">8 深層学習の基礎のキソ</a></li>
+<li><a href="physics0523.html">9 JOI参戦記</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h4"></a><span class="secno">第4章　</span>簡単!VR3(00)分クッキング</h1>
+<p><p style="text-align:right">74回生 harady</p></p>
+
+<h2><a id="h4-1"></a><span class="secno">4.1　</span>始まりと終わりのプロローグ</h2>
+<p>こんにちは。74回生のharady(原井)です。今回初めて部誌を書くので多分初めましてだと思います。偉大なる先輩方の精進っぷりを指をくわえて眺めていたら、気づいたらもう中3になってました。嘘やろ...。時がたつのは早いので皆さん気を付けましょう。</p>
+<p>今回の文化祭に向けて僕は、VRゲーム「寿司(が)打」を作りました。この部誌では、このゲームをUnity+Oculusで3(00*4以上)分かけて作った様子をまとめました。一応ツールなどは小冊子にまとめたのですがここにも書いておくと、材料は</p>
+<ul>
+<li>スペックの高いパソコン</li>
+<li>VR機器(Oculus,VIVE...)</li>
+<li>開発ソフト(Unity,Unreal Engine...)</li>
+<li>技術</li>
+<li>やる気</li>
+</ul>
+<p>です。VRゲームはおろか、普通のゲームですらUnityで完成させたことがなかったのでUnityの使い方として良くない点があるかもしれませんが、大目に見て下さい。また作り始めたのが4月に入ってからなので、随所に手抜き工事の痕跡が残っています。許ちて。それと表記揺れがあるかもしれませんが、見逃して下さい。</p>
+<p>それでは「寿司(が)打」制作記の始まり始まり～</p>
+
+<h2><a id="h4-2"></a><span class="secno">4.2　</span>概要</h2>
+<p>まず、何をするにしても、行動計画を立てることは重要です。このゲームの制作過程を数段階に分けて書くと、</p>
+<ul>
+<li>どんなゲームにするか</li>
+<li>モデル用意</li>
+<li>配置&amp;テクスチャ決め</li>
+<li>プログラミング</li>
+</ul>
+<p>といった感じになるかと思います。以降ではこれに従って書いていきます。</p>
+
+<h2><a id="h4-3"></a><span class="secno">4.3　</span>どんなゲーム?</h2>
+<p>このゲームのコンセプトは初めから決まっていました。「寿司の気持ちになるゲーム」です。回転寿司の寿司の気持ちになるVRゲームを作ったら面白いんじゃね?w、というネタ会話からすべては始まりました。</p>
+<p>作る前から決めていた仕様は</p>
+<ul>
+<li>プレイヤーは皿の上</li>
+<li>回る</li>
+<li>捕食者が取りに来る</li>
+</ul>
+<p>ぐらいでしょうか。書いてから気付きましたが、ただの回転寿司ですね。これらの実装はプログラミングの項にまとめます。</p>
+
+<h2><a id="h4-4"></a><span class="secno">4.4　</span>下拵え</h2>
+<p>制作を開始する前に少し準備が必要です。まずVR対応するUnityのProject側の設定をしなくてはなりません。これは簡単で、上のメニューバーからEdit → ProjectSettings → Player → Other Settings → Virtual Realty supportedにチェックを入れるだけです。Oculusを接続していたらおそらく自動で認識されます。</p>
+<p>あとOculusの公式が配布しているOculusPlatformとOVRとOvrAvatarをUnityにインポートして下さい。これらの詳しい使い方はググって...。一応OvrAvatarの使い方だけ説明すると、OvrAvatar → Content → Prefabs → LocalAvatarをヒエラルキーにコピーすればよいです。カメラにはOVR Camera RigとOVR Managerをアタッチします。</p>
+
+<h2><a id="h4-5"></a><span class="secno">4.5　</span>モデルが無いと始まらないよ!</h2>
+<p>いざ制作スタート! ...モデルが、無い...。3Dモデルが無いゲームを3Dゲームと呼んでいいのか?断じて否だ!</p>
+<p>はい、というわけでまずモデルを用意するところから始めましょう。自分の欲しい3Dモデルは、WebのフリーモデルやUnityのAsset Storeを探せば大抵見つかりますが、探すのに時間が掛かるし、目的のモデルが見つかるとも限りません。そんな時は自分でモデルを用意してしまいましょう!(嘘つけ絶対こっちのほうが時間掛かるやろ)</p>
+<p>モデル制作はBlenderというフリーソフトを使って行いました。Blenderの使い方はkota氏が部誌にまとめていますが皿とレーンの作り方を大雑把にまとめると、</p>
+
+<h3><a id="h4-5-1"></a>皿</h3>
+<div id="dish" class="image">
+<img src="images/harady/dish.png" alt="" class="width-050per" />
+</div>
+<p>断面の半分を作ってスクリューモディファイアで1周し、それに再分割曲面モディファイアを適用した...んだと思います。覚えてません...テクスチャはUV展開して然るべき場所にネットで見つけた六角形の画像を加工して貼り付けました。</p>
+
+<h3><a id="h4-5-2"></a>レーン</h3>
+<div id="re-nn" class="image">
+<img src="images/harady/re-nn.png" alt="" class="width-050per" />
+</div>
+<p>直線部分と円周部分を分けて作りました。円周部分の作り方は皿と同じです。テクスチャはめんどくさかったのでUV展開せず、Blenderのマテリアル割り当て機能を使いました。</p>
+<p>完成したらオブジェクトの原点?(Pivot)をCtrl+Alt+Shift+Cで重心に動かしましょう。これを怠るとUnityでの作業がとてもやりにくくなります。</p>
+<p>Blenderを使う上で覚えておいたほうが良いショートカットがいくつかあります。AキーやUnDoのCtrl+ZやReDoのCtrl+Shift+Zなどは必須だと思います。他にもたくさんあるのでググるなりなんなりして下さい。</p>
+<p>できた3Dモデルを.fbxでメッシュのみエクスポートしておきます。(.blendのままでも良いみたいなのですが、ライトなどがくっついてきて邪魔だったので.fbxにしました)。ここで問題になるのが座標系です。Blenderは右手座標系のZ-up、Unityは左手座標系のY-upなのでBlenderで作ったモデルをそのままエクスポートするとUnityにインポートする際に向きが変わってしまいます。エクスポートするときに左下のメニューで前方をZ、上をYに設定し、トランスフォームを適用にチェックを入れましょう。これをしないと後々少しめんどくさいことになります。</p>
+
+<h2><a id="h4-6"></a><span class="secno">4.6　</span>どこに置くの?</h2>
+<p>さぁUnityを使うぞ! ...どうやって画面を作るんだ...</p>
+<p>Unityを使ったゲーム制作は、まずモデルを配置するところから始まります。まずはUnityのメニューバーのGameObject → 3D Object → Cubeで立方体を作りましょう。こいつを拡大して床にします。このままでは白色1色で味気ないのでテクスチャを設定します。Asset Storeで見つけたフリーの木の床のテクスチャを使いました。</p>
+<p>床ができたら次はレーンの配置です。先程作ったレーンをUnityにインポートして(0,~,0)に置きます。Y座標は上下を表すので適宜調整しましょう。インポートする際はモデルとテクスチャを一緒にインポートしましょう。そうしないとモデルにテクスチャがつきません(多分)。</p>
+<p>レーンが置けたら次は皿を設置します。皿を動かすプログラムの関係で円周部と直線部の境目に置きました。ここで僕は気付きました。なんか皿がのっぺりしてる...</p>
+<div id="dish1" class="image">
+<img src="images/harady/dish1.png" alt="" class="width-050per" />
+</div>
+<p>この問題の解決には少し時間がかかりました。Blender側でマテリアルをいじっても全然反映されないのです。考えてみるとこれは当たり前で、Blenderで設定しているのはあくまでBlenderでレンダリングする際の設定なので、この設定がUnityに反映される訳がないのです。という訳でUnity側でマテリアルを編集しましょう。</p>
+<div id="dish3" class="image">
+<img src="images/harady/dish3.png" alt="" class="width-100per" />
+</div>
+<div id="dish2" class="image">
+<img src="images/harady/dish2.png" alt="" class="width-050per" />
+</div>
+<p>めでたく皿が光るようになりました。やれやれ、やっとできた...ダメでした。ちょっと前に書いたBlenderのエクスポート設定を知らなかった自分は普通に皿を回転させて使っていたのです。ここに大きな罠が潜んでいて、Unityにおいて回転されたオブジェクトのx,y,z軸は回転する前と角度が変わってしまうのです。モデルをもう一度エクスポートし直せばいいのですが、そうと知らなかった当時の僕は皿のモデルの親にEmptyを作り、Emptyを回転させることで解決しました。この問題はこのあと腕を実装するときにも再び発生します。何はともあれひとまず問題は解決しました。</p>
+<p>あとは適当に壁や天井を作りましょう。ここは本質ではないので手抜きです。</p>
+<div id="tenzyou" class="image">
+<img src="images/harady/tenzyou.png" alt="" class="width-050per" />
+</div>
+<p>天井を設置すると太陽光(最初からあるDirectional Light,平行光線)が通らなくなり画面が暗くなります。そこで天井の中心付近にPoint Lightを1個設置しました。</p>
+<p>これで一通り配置できました。お次はプログラミングです。一番面倒、というかこれが本編かもしれません。</p>
+
+<h2><a id="h4-7"></a><span class="secno">4.7　</span>No Programming No Creating game ~とある似非プログラマーの死~</h2>
+<p>おい、このゲーム動かねぇぞ!　当たり前だろ、プログラム1個も書いてないんだぞ!　はい。プログラムのないゲームが動くはずがないのでプログラミングしていきましょう。ちなみに言語はC#です。</p>
+<p>まずはプレイヤーの移動スクリプトです。回転寿司ですのでレーンの上をレーンに沿って動く必要があります。ここからはスクリプトを貼り付けて解説するスタイルで行きます。ちなみにファイル名は適当です。というわけで移動スクリプト...の前に一つ。都合上スクリプトの名前をゲーム内での名前と変えている場合があります。本来スクリプトの名前とclassの後に書くものは同じでなければなりません。</p>
+
+<h3><a id="h4-7-1"></a>移動スクリプト</h3>
+<div class="emlist-code">
+<p class="caption">Move.cs</p>
+<pre class="emlist language-csharp highlight"><span class="k">using</span> <span class="nn">System.Collections</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">moveOther</span> <span class="p">:</span> <span class="n">MonoBehaviour</span> <span class="p">{</span>
+    <span class="n">Vector3</span> <span class="n">center</span><span class="p">;</span>
+    <span class="n">Vector3</span> <span class="n">center2</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">starttime</span><span class="p">;</span>
+    <span class="c1">// Use this for initialization</span>
+    <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">center</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="s">"center"</span><span class="p">).</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
+        <span class="n">center2</span> <span class="p">=</span> <span class="n">center</span><span class="p">;</span>
+        <span class="n">center2</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="p">-</span><span class="n">center</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+        <span class="n">starttime</span> <span class="p">=</span> <span class="n">Time</span><span class="p">.</span><span class="n">time</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Update is called once per frame</span>
+    <span class="k">void</span> <span class="nf">Update</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span> <span class="p">&gt;</span> <span class="m">4f</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">transform</span><span class="p">.</span><span class="nf">RotateAround</span><span class="p">(</span><span class="n">center2</span><span class="p">,</span> <span class="n">Vector3</span><span class="p">.</span><span class="n">up</span><span class="p">,</span> <span class="p">-</span><span class="m">180f</span> <span class="p">/</span> <span class="m">14f</span> <span class="p">*</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">x</span> <span class="p">&lt;</span> <span class="p">-</span><span class="m">4f</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">transform</span><span class="p">.</span><span class="nf">RotateAround</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">Vector3</span><span class="p">.</span><span class="n">up</span><span class="p">,</span> <span class="p">-</span><span class="m">180f</span> <span class="p">/</span> <span class="m">14f</span> <span class="p">*</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">z</span> <span class="p">&lt;</span> <span class="m">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">+=</span> <span class="k">new</span> <span class="nf">Vector3</span><span class="p">(</span><span class="m">0.5f</span> <span class="p">*</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">+=</span> <span class="k">new</span> <span class="nf">Vector3</span><span class="p">(-</span><span class="m">0.5f</span> <span class="p">*</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>もっと短くなるかもしれませんが、これをもとに説明していきます。</p>
+<p>最初の3行はおまじないだと思ってて下さい。&quot;名前空間&quot;でググると大体わかると思います。</p>
+<p>次の<code class="inline-code tt">public~</code>もUnityでスクリプトを作ると最初から書いてある部分で、変更してはなりません。</p>
+<p>実際の処理は次の行からです。最初の数行では処理に使う変数を定義しています。変数とは色々な型の値を取り扱うもので、座標を表す変数や整数を表す変数など様々なものがあります。ここでは移動する為に必要な座標を表す変数と時間を記録する変数を定義しています。</p>
+<p>'//'はコメントアウトです。//をかいた行は無視されるのでコメントを書くことができます。</p>
+<p>次の<code class="inline-code tt">Void Start()</code>で<code class="inline-code tt">Start</code>関数を定義しています。<code class="inline-code tt">Start</code>のあとの'{'から、数行下の'}'までが<code class="inline-code tt">Start</code>関数です。関数というのは、足し算引き算等の様々な処理をまとめて記述したもので、関数を呼び出すだけで、関数内で書かれた処理がすべてまとめて行われます。<code class="inline-code tt">Start</code>関数というのはUnityがスクリプトを実行するときに、最初に1回だけ実行される関数で、ここで値の代入やオブジェクトの初期配置等の処理を行います。今回のスクリプトでは皿を動かすときの目印となる地点の座標と、タイマーの最初の時間を決めています。</p>
+<p>次の<code class="inline-code tt">Void Update()</code>で<code class="inline-code tt">Update</code>関数を定義しています。<code class="inline-code tt">Update</code>関数はUnityが毎フレーム実行する関数です。フレームというのはすべての処理を始めてから終わるまでの時間で、1秒間に数十から数百回フレームが加算されます。フレーム数はプログラムの重さによって変わります。重いゲームでは、処理に時間がかかるので、必然的にフレーム数は落ちます。秒間フレーム数は常に変化するので、移動用の関数などを<code class="inline-code tt">Update</code>関数内で使う場合には後述する処理が必要です。</p>
+<p>では<code class="inline-code tt">Update()</code>関数内の移動処理を解説していきます。はじめのifは条件分岐です。()内の条件を満たしていると{}内の処理が行われます。その次のelse内に書かれた処理は直前のif文の条件を満たしていない場合に実行されます。else ifは直前のif文の条件を満たしていない、かつ()内の条件を満たしているときに実行されます。詳しく見ていきましょう。</p>
+<p><br /></p>
+<p>3つの()内で皿が今どこにいるかを判断しています。直線部なのか円周部なのか、みたいな感じです。直線部ならtransform.position(皿の場所)のX座標を1秒に0.5ずつ増やし、円周部では<code class="inline-code tt">transform.RotateAround()</code>関数でcenterという座標を中心に毎秒180/14°回しています。Vector3というのは3次元ベクトルを表す型で、<code class="inline-code tt">Time.deltaTime</code>は先程書いた<code class="inline-code tt">Update</code>関数の問題点を解決する為に書いています。<code class="inline-code tt">Time.deltaTime</code>でそのフレームを処理するのにかかった時間(秒)を取得することができます。毎フレームで秒速 * 秒だけ処理を行うことで一定の変化を表現できるというわけです。長くなるので次からは一部抜粋して載せていこうと思います。</p>
+<p>このゲームでは腕が飛んでくる仕様なのでお次は腕を生成するスクリプトと生成した腕を動かすスクリプト。その前に腕の説明をしておくと、現状Unityの標準の3DモデルであるCylinderを利用しています。文化祭本番では腕のモデルになってる...かもしれません。まずは生成から</p>
+
+<h3><a id="h4-7-2"></a>腕</h3>
+
+<h4><a id="h4-7-2-1"></a>腕を生成</h4>
+<div class="emlist-code">
+<p class="caption">eatSushi.cs</p>
+<pre class="emlist language-csharp highlight"><span class="k">public</span> <span class="k">class</span> <span class="nc">eatsushi</span> <span class="p">:</span> <span class="n">MonoBehaviour</span> <span class="p">{</span>
+    <span class="n">Transform</span> <span class="n">arm_point</span><span class="p">;</span>
+    <span class="n">Transform</span> <span class="n">dish</span><span class="p">;</span>
+    <span class="k">public</span> <span class="n">GameObject</span> <span class="n">arm_pf</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">time</span><span class="p">;</span>
+    <span class="c1">// Use this for initialization</span>
+    <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">arm_point</span> <span class="p">=</span> <span class="n">transform</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="s">"arm"</span><span class="p">);</span>
+        <span class="n">dish</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="s">"Main Camera"</span><span class="p">).</span><span class="n">transform</span><span class="p">;</span>
+        <span class="n">Vector3</span> <span class="k">add</span> <span class="p">=</span> <span class="n">arm_point</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>
+        <span class="k">add</span><span class="p">.</span><span class="n">x</span> <span class="p">=</span> <span class="k">add</span><span class="p">.</span><span class="n">x</span> <span class="p">+</span> <span class="n">Random</span><span class="p">.</span><span class="nf">Range</span><span class="p">(-</span><span class="m">0.5f</span><span class="p">,</span> <span class="m">0.5f</span><span class="p">)</span> <span class="p">-</span> <span class="m">0.5f</span><span class="p">;</span>
+        <span class="k">add</span><span class="p">.</span><span class="n">y</span> <span class="p">+=</span> <span class="n">Random</span><span class="p">.</span><span class="nf">Range</span><span class="p">(-</span><span class="m">0.5f</span><span class="p">,</span> <span class="m">0.5f</span><span class="p">);</span>
+        <span class="n">arm_point</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">=</span> <span class="k">add</span><span class="p">;</span>
+        <span class="n">arm_point</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="nf">LookAt</span><span class="p">(</span><span class="n">dish</span><span class="p">);</span>
+        <span class="n">time</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="nf">Instantiate</span><span class="p">(</span><span class="n">arm_pf</span><span class="p">,</span><span class="n">arm_point</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">,</span><span class="n">arm_point</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Update is called once per frame</span>
+    <span class="k">void</span> <span class="nf">Update</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">time</span> <span class="p">+=</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">time</span> <span class="p">&gt;</span> <span class="m">5f</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">Instantiate</span><span class="p">(</span><span class="n">arm_pf</span><span class="p">,</span> <span class="n">arm_point</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">arm_point</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">rotation</span><span class="p">);</span>
+            <span class="n">time</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>ちょっと長いですね...では解説していきます。</p>
+<p>まずこのスクリプトは捕食者に対してアタッチします。</p>
+<p>はじめの<code class="inline-code tt">Transform</code>はオブジェクトの位置や角度などをまとめて記憶する型です。座標と角度を指定して使う関数の引数に指定できます。<code class="inline-code tt">GameObject</code>は、1つのオブジェクトの持つ情報をすべて格納できる型です。</p>
+<p><code class="inline-code tt">Start</code>関数内では生成すべき腕を読み込み、所定の座標に乱数を足した座標を生成し、<code class="inline-code tt">Instantiate()</code>で生成しています。また、一定時間ごとに生成する為にタイマーを設定しています。</p>
+<p><code class="inline-code tt">Update</code>関数内で5秒ごとに生成する処理を記述しています。<code class="inline-code tt">Start</code>関数内で処理を開始した時間を記録しておき、<code class="inline-code tt">Time.time</code>で取得した今の時間との差が5を超えたときにタイマーを0にセットし、腕を生成すればいいわけです。</p>
+<p>お次は腕を動かすスクリプト。命名が適当だけど許ちて。</p>
+
+<h4><a id="h4-7-2-2"></a>腕を飛ばす</h4>
+<div class="emlist-code">
+<p class="caption">Shot.cs</p>
+<pre class="emlist language-csharp highlight"><span class="k">public</span> <span class="k">class</span> <span class="nc">momove</span> <span class="p">:</span> <span class="n">MonoBehaviour</span> <span class="p">{</span>
+    <span class="n">Transform</span> <span class="n">dish</span><span class="p">;</span>
+    <span class="c1">// Use this for initialization</span>
+    <span class="kt">float</span> <span class="n">starttime</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">attack</span><span class="p">;</span>
+        <span class="k">void</span> <span class="nf">Start</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="n">dish</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="s">"TrackingSpace/CenterEyeAnchor"</span><span class="p">).</span><span class="n">transform</span><span class="p">;</span>
+        <span class="c1">//transform.Rotate(new Vector3(1, 0, 0) * 180);</span>
+        <span class="n">transform</span><span class="p">.</span><span class="nf">LookAt</span><span class="p">(</span><span class="n">dish</span><span class="p">);</span>
+        <span class="n">starttime</span> <span class="p">=</span> <span class="n">Time</span><span class="p">.</span><span class="n">time</span><span class="p">;</span>
+        <span class="n">attack</span> <span class="p">=</span> <span class="n">Random</span><span class="p">.</span><span class="nf">Range</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">4</span><span class="p">);</span>
+    <span class="p">}</span>
+
+        <span class="c1">// Update is called once per frame</span>
+        <span class="k">void</span> <span class="nf">Update</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">attack</span> <span class="p">==</span> <span class="m">0</span><span class="p">)</span> <span class="nf">normalAttack</span><span class="p">();</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">attack</span> <span class="p">==</span> <span class="m">1</span><span class="p">)</span> <span class="nf">fastAttack</span><span class="p">();</span>
+        <span class="k">else</span> <span class="nf">ballisticAttack</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">void</span> <span class="nf">normalAttack</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">transform</span><span class="p">.</span><span class="nf">LookAt</span><span class="p">(</span><span class="n">dish</span><span class="p">);</span>
+        <span class="n">transform</span><span class="p">.</span><span class="nf">Rotate</span><span class="p">(</span><span class="k">new</span> <span class="nf">Vector3</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span> <span class="p">*</span> <span class="m">90</span><span class="p">);</span>
+        <span class="n">transform</span><span class="p">.</span><span class="nf">Translate</span><span class="p">(</span><span class="n">Vector3</span><span class="p">.</span><span class="n">up</span> <span class="p">*</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="p">*</span> <span class="m">0.75f</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">void</span> <span class="nf">fastAttack</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">transform</span><span class="p">.</span><span class="nf">LookAt</span><span class="p">(</span><span class="n">dish</span><span class="p">);</span>
+        <span class="n">transform</span><span class="p">.</span><span class="nf">Rotate</span><span class="p">(</span><span class="k">new</span> <span class="nf">Vector3</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span> <span class="p">*</span> <span class="m">90</span><span class="p">);</span>
+        <span class="n">transform</span><span class="p">.</span><span class="nf">Translate</span><span class="p">(</span><span class="n">Vector3</span><span class="p">.</span><span class="n">up</span> <span class="p">*</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="p">*</span> <span class="m">1f</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">void</span> <span class="nf">ballisticAttackfh</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">transform</span><span class="p">.</span><span class="nf">Translate</span><span class="p">(</span><span class="n">transform</span><span class="p">.</span><span class="n">up</span> <span class="p">*</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="p">*</span> <span class="m">1.5f</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">void</span> <span class="nf">ballisticAttacklh</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">transform</span><span class="p">.</span><span class="nf">LookAt</span><span class="p">(</span><span class="n">dish</span><span class="p">);</span>
+        <span class="n">transform</span><span class="p">.</span><span class="nf">Rotate</span><span class="p">(</span><span class="k">new</span> <span class="nf">Vector3</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span> <span class="p">*</span> <span class="m">90</span><span class="p">);</span>
+        <span class="n">transform</span><span class="p">.</span><span class="nf">Translate</span><span class="p">(</span><span class="n">Vector3</span><span class="p">.</span><span class="n">up</span> <span class="p">*</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="p">*</span> <span class="m">2f</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">void</span> <span class="nf">ballisticAttack</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Time</span><span class="p">.</span><span class="n">time</span> <span class="p">-</span> <span class="n">starttime</span> <span class="p">&lt;</span> <span class="m">3f</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">ballisticAttackfh</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="nf">ballisticAttacklh</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>長い...。この関数は腕自体にアタッチします。生成するスクリプトから制御しようと思ったのですが、複数生成されたオブジェクトのそれぞれに個別の処理をすることができなかったので、腕自体にアタッチしました。結果的にこのほうがコードが書きやすくなってると思います。</p>
+<p>腕には3種類の飛ばし方を設定しました。<code class="inline-code tt">Start</code>関数内でランダムに切り替えています。また<code class="inline-code tt">Transform</code>型の<code class="inline-code tt">dish</code>にVRの目を指定し、そこをめがけて腕が飛ぶようにしています。この仕様によって目の前に腕が迫ってくる演出ができます。</p>
+<div id="sozai" class="image">
+<img src="images/harady/sozai.png" alt="" class="width-050per" />
+</div>
+<div id="kuruyo" class="image">
+<img src="images/harady/kuruyo.png" alt="" class="width-050per" />
+</div>
+<p>3種類それぞれの説明をする前に1つだけ。各関数のどれも、移動する前にRotateしていたり、移動の方向もオブジェクトに対する前方ではなく上方になっています。ここには大きな罠(?)が潜んでいて、Unityの円柱はもともと前方が側面になっているのです(多分)。腕の親にEmptyを設定して、このEmptyを回せば解決する気がするのですが、実験している時間がなかったのでこのような形になっています。</p>
+<div id="cylinder" class="image">
+<img src="images/harady/cylinder.png" alt="" class="width-050per" />
+</div>
+<p>では3種類を見ていきましょう。</p>
+<p><code class="inline-code tt">normalAttack</code>はnormalなAttackです。最もゆっくり飛んできます。最初にdish(目の中心)の方向を向き、少し上に書いた処理を行い、上方向(要するに皿の方向)めがけて秒速0.75で飛ばしています。</p>
+<p><code class="inline-code tt">fastAttack</code>はfastなAttackです。速いです。処理方法は<code class="inline-code tt">normalAttack</code>と同じですが、速度が秒速1になっています。</p>
+<p><code class="inline-code tt">ballisticAttack</code>は<code class="inline-code tt">ballisticAttackfh</code>と<code class="inline-code tt">ballisticAttacklh</code>から出来ています。まず上に飛んで行って、そこから皿めがけて飛んでくる仕様です。飛び始めてからの時間3秒以下の時<code class="inline-code tt">ballisticAttackfh</code>が実行され、腕は秒速1.5で上へ飛んでいき、その後<code class="inline-code tt">ballisticAttacklh</code>が実行され下向きに秒速2で飛んできます。</p>
+<p>どれも飛ばし方自体は大したことありませんね。</p>
+<p>では次。パンチ&amp;当たり判定です。多分ここが一番大変でした。飛んできた腕をパンチする部分と、消しきれなかった腕が顔に当たる処理です。2つとも貼ります。</p>
+
+<h3><a id="h4-7-3"></a>パンチ&amp;当たり判定</h3>
+<div class="emlist-code">
+<p class="caption">hit.cs</p>
+<pre class="emlist language-csharp highlight"><span class="k">using</span> <span class="nn">System.Collections</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine.VR</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">hit</span> <span class="p">:</span> <span class="n">MonoBehaviour</span> <span class="p">{</span>
+    <span class="kt">float</span> <span class="n">vl</span><span class="p">;</span>
+    <span class="n">Vector3</span> <span class="n">dif</span><span class="p">;</span>
+    <span class="n">Vector3</span> <span class="n">dif1</span><span class="p">;</span>
+    <span class="n">Rigidbody</span> <span class="n">rb</span><span class="p">;</span>
+    <span class="n">AudioClip</span> <span class="n">sound</span><span class="p">;</span>
+    <span class="n">die</span> <span class="n">Die</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">score</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="c1">// Use this for initialization</span>
+        <span class="k">void</span> <span class="nf">Start</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="n">rb</span> <span class="p">=</span> <span class="k">this</span><span class="p">.</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">Rigidbody</span><span class="p">&gt;</span> <span class="p">();</span>
+        <span class="n">dif</span> <span class="p">=</span> <span class="n">InputTracking</span><span class="p">.</span><span class="nf">GetLocalPosition</span><span class="p">(</span><span class="n">VRNode</span><span class="p">.</span><span class="n">RightHand</span><span class="p">);</span>
+        <span class="n">sound</span> <span class="p">=</span> <span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">AudioSource</span><span class="p">&gt;().</span><span class="n">clip</span><span class="p">;</span>
+        <span class="n">Die</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="s">"CenterEyeAnchor"</span><span class="p">).</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">die</span><span class="p">&gt;();</span>
+    <span class="p">}</span>
+    <span class="k">void</span> <span class="nf">OnTriggerEnter</span><span class="p">(</span><span class="n">Collider</span> <span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">gameObject</span><span class="p">.</span><span class="n">tag</span> <span class="p">==</span> <span class="s">"enemy"</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">Destroy</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">gameObject</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">vl</span> <span class="p">&gt;</span> <span class="m">2f</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nf">Ddie</span><span class="p">();</span>
+                <span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">AudioSource</span><span class="p">&gt;().</span><span class="nf">PlayOneShot</span><span class="p">(</span><span class="n">sound</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+        <span class="c1">// Update is called once per frame</span>
+        <span class="k">void</span> <span class="nf">Update</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="n">dif1</span> <span class="p">=</span> <span class="n">InputTracking</span><span class="p">.</span><span class="nf">GetLocalPosition</span><span class="p">(</span><span class="n">VRNode</span><span class="p">.</span><span class="n">RightHand</span><span class="p">)</span> <span class="p">-</span> <span class="n">dif</span><span class="p">;</span>
+        <span class="n">vl</span> <span class="p">=</span> <span class="n">Vector3</span><span class="p">.</span><span class="nf">Magnitude</span><span class="p">(</span><span class="n">dif1</span><span class="p">);</span>
+        <span class="n">vl</span> <span class="p">=</span> <span class="n">vl</span> <span class="p">/</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">;</span>
+        <span class="n">dif</span> <span class="p">=</span> <span class="n">InputTracking</span><span class="p">.</span><span class="nf">GetLocalPosition</span><span class="p">(</span><span class="n">VRNode</span><span class="p">.</span><span class="n">RightHand</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">void</span> <span class="nf">Ddie</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">Die</span><span class="p">.</span><span class="n">combo</span><span class="p">++;</span>
+        <span class="n">Die</span><span class="p">.</span><span class="n">score</span> <span class="p">+=</span> <span class="n">Die</span><span class="p">.</span><span class="n">scorep</span><span class="p">;</span>
+        <span class="n">Die</span><span class="p">.</span><span class="n">hit</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<div class="emlist-code">
+<p class="caption">die.cs</p>
+<pre class="emlist language-csharp highlight"><span class="k">public</span> <span class="k">class</span> <span class="nc">die</span> <span class="p">:</span> <span class="n">MonoBehaviour</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="n">hit</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="n">combo</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="n">scorep</span> <span class="p">=</span> <span class="m">2000</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="n">score</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="c1">// Use this for initialization</span>
+        <span class="k">void</span> <span class="nf">Start</span> <span class="p">()</span> <span class="p">{</span>
+
+        <span class="p">}</span>
+
+    <span class="k">void</span> <span class="nf">OnTriggerEnter</span><span class="p">(</span><span class="n">Collider</span> <span class="n">other</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">gameObject</span><span class="p">.</span><span class="n">tag</span> <span class="p">==</span> <span class="s">"enemy"</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">hit</span><span class="p">++;</span>
+            <span class="nf">Destroy</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">gameObject</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Update is called once per frame</span>
+    <span class="k">void</span> <span class="nf">Update</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">hit</span> <span class="p">&gt;=</span> <span class="m">6</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">hit</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+            <span class="n">combo</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">combo</span> <span class="p">&gt;=</span> <span class="m">5</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">scorep</span> <span class="p">+=</span> <span class="m">10000</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>上が(右)腕と用スクリプトで下がプレイヤーへの当たり判定用のスクリプトです。右腕と書いたのは、スクリプト中でRightHandと書いてある部分を左腕ではLeftHandにする必要があるからです。VR機器のデータを取り扱う場合には上のスクリプトのように<code class="inline-code tt">using UnityEngine.VR</code>を記述する必要があります。上のスクリプトで音を鳴らす処理をしている箇所があります。音はAsset Storeなどで探しましょう。さすがに自作する気力はありませんでした。音が用意出来たら右腕(OvrAvatarを使っている場合)Tracking Space直下のRightHandAnchorにアタッチします。</p>
+
+<h4><a id="h4-7-3-1"></a>パンチ</h4>
+<p>先に上のスクリプトの処理の中身を書きます。上のスクリプトではパンチに関する判定を行っています。具体的には自分の腕が飛んできた腕に一定の速度以上でぶつかったときに飛んできた腕を消すという処理です。では説明していきます。</p>
+<p>初めの変数の宣言で<code class="inline-code tt">Rigidbody</code>と<code class="inline-code tt">die</code>という新しい型が登場しています。<code class="inline-code tt">Rigidbody</code>はUnityが物理演算の為に使う項目です。<code class="inline-code tt">die</code>型の変数を宣言すると、その変数がdie.cs(下のスクリプト)に書いてある内容を取得する為に使えるようになります。<code class="inline-code tt">Start</code>関数内で<code class="inline-code tt">die</code>型のDieに、CenterEyeAnchor(目の中心)にアタッチされたdie.csを代入しています。あるオブジェクトに付いている要素を取得するには、<code class="inline-code tt">対象のオブジェクト.GetComponent&lt;取得したい要素&gt;()</code>を実行すれば良いです。対象のオブジェクトは、対象がアタッチ先の<code class="inline-code tt">GameObject</code>の場合は書かなくてもよいですが(わかりやすくする為にthisと書いてもよい)、そうでない場合は<code class="inline-code tt">GameObject.Find(&quot;対象の名前&quot;)</code>で対象の<code class="inline-code tt">GameObject</code>を発見できます。またdifに右腕の座標(現実世界における)を代入しています。</p>
+<p><br /></p>
+<p><code class="inline-code tt">OnTriggerEnter</code>関数は物体が他の物体に当たった時に呼び出される関数です。関数の中身は自分で記述します。この関数を利用する為には衝突する物体と衝突される物体の双方にColliderとRigidbodyコンポーネントがアタッチされている必要があります。()内のotherは関数の引数です。ここに衝突した相手の情報が入って関数が呼び出されます。衝突した相手のtag(詳細はググって)がenemyの時に衝突相手を消します。この場合だと飛んできた腕が消えます。また次のif文は衝突時のプレイヤーのパンチの速さによって分岐します。パンチが一定速度以上の時に音が鳴り、Ddie関数が呼ばれます。<code class="inline-code tt">Ddie</code>関数は下のdie.csで定義した<code class="inline-code tt">combo</code>を増やす処理とスコアを加算する処理とhitを帳消しにする処理を記述しました。</p>
+<p><br /></p>
+<p>パンチの速度の検知が少し大変でした。試行錯誤の結果、現在の拳の座標(dif1)と1フレーム前の拳の座標(dif)の3次元ベクトルの差を取得してベクトルの長さを計算し、<code class="inline-code tt">Time.deltaTime</code>で割っています。なぜ<code class="inline-code tt">Time.deltaTime</code>で割るかですが、理由は簡単で、速さ = 距離 / 時間だからです。ベクトルの長さは<code class="inline-code tt">Vector3.Magnitude()</code>で求められます。この関数は与えられた座標の<code class="inline-code tt">sprt(x*x + y*y + z*z)</code>を返します。</p>
+<div id="harady" class="image">
+<img src="images/harady/harady.jpeg" alt="3次元ベクトルの長さ" class="width-050per" />
+<p class="caption">
+図: 3次元ベクトルの長さ
+</p>
+</div>
+<p>はじめはRightHandAnchorのUnity内での座標を取得して処理しようと思ったのですが、皿ごと動くので常に値が変わってしまうという問題があり、次に皿に対する相対座標でやろうとしたのですがそれも上手くいかず困っていたのですが、普通にコントローラーの現実の座標を取得することで処理できました。ちなみにここではUnityの標準の機能を使ってコントローラーの位置を取得していますが、別にOculusの機能を使っても構いません。</p>
+<p>パンチ判定はUpdate関数内で行っています。毎フレーム更新されるのでいつOnTriggerEnterが呼び出されても大丈夫です。では下のスクリプトの解説に移りましょう。下のスクリプトはCenterEyeAnchorにアタッチします。</p>
+
+<h4><a id="h4-7-3-2"></a>対プレイヤー当たり判定</h4>
+<p><code class="inline-code tt">combo</code>は見ての通りコンボです。scorepはスコアをどれだけ加算するかを示しています。<code class="inline-code tt">combo</code>の数に応じてこの値を増やします。<code class="inline-code tt">score</code>も見ての通りスコアです。3つとも<code class="inline-code tt">public</code>と書いていますが、これを書くことによってこの変数が他のスクリプトから参照できるようになります。今回はhit.csで3つの値を加算するのでそれぞれ<code class="inline-code tt">public</code>をつけています。このスクリプトは目の中心にアタッチされています。目の中心を中心とする球状に当たり判定が存在し、ここに飛んできた腕が当たると、(パンチに失敗すると)飛んできた腕が消え、hitが加算されます。hitが6以上になるとコンボが途切れます。hit.csの<code class="inline-code tt">Ddie</code>内の処理によって、プレイヤーが飛んできた腕をパンチした際にhitが0になるよう設定されているので、6連続で飛んでくる腕を触ることすらできなかった場合のみコンボが途切れる仕様です。</p>
+
+<h3><a id="h4-7-4"></a>スコア表示</h3>
+<p>お次はスコア表示。これはスコアの計算の実装は済んでいるので表示するだけです。スクリプトを書く前にスコアを表示する場所を用意して、そこにCanvasをWorldSpaceで設置し、直下に白色のImageとTextを2つ配置しました。Textが意味不明にぼやけましたが、Canvas ScalerのDynamic Pixel Per Unitの値を大きくすることで解決します。やりすぎ注意。片方は単純にScoreという文字列を書くだけです。もう片方はその少し下に配置し、先ほど計算したscoreの値を表示します。Canvasの下のどの順番で並べるかで表示順が変わるので気を付けて下さい。</p>
+<div id="canvas" class="image">
+<img src="images/harady/canvas.png" alt="" class="width-100per" />
+</div>
+<p>では表示スクリプト。</p>
+<div class="emlist-code">
+<p class="caption">NowScore.cs</p>
+<pre class="emlist language-csharp highlight"><span class="k">using</span> <span class="nn">System.Collections</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine.UI</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">NowScore</span> <span class="p">:</span> <span class="n">MonoBehaviour</span> <span class="p">{</span>
+    <span class="n">Text</span> <span class="n">targetText</span><span class="p">;</span>
+    <span class="n">die</span> <span class="n">Die</span><span class="p">;</span>
+        <span class="c1">// Use this for initialization</span>
+        <span class="k">void</span> <span class="nf">Start</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="n">targetText</span> <span class="p">=</span> <span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">Text</span><span class="p">&gt;();</span>
+        <span class="n">Die</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="nf">Find</span><span class="p">(</span><span class="s">"CenterEyeAnchor"</span><span class="p">).</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">die</span><span class="p">&gt;();</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Update is called once per frame</span>
+        <span class="k">void</span> <span class="nf">Update</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="n">targetText</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span> <span class="n">Die</span><span class="p">.</span><span class="n">score</span><span class="p">.</span><span class="nf">ToString</span><span class="p">();</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>このスクリプトはスコアを表示する為のTextにアタッチします。</p>
+<p>Textを扱う際には<code class="inline-code tt">using UnityEngine.UI</code>を書きます。このスクリプトは少し理解しにくいです。</p>
+<p>初めに<code class="inline-code tt">Text</code>型の<code class="inline-code tt">targetText</code>を宣言しています。ここに<code class="inline-code tt">Start</code>関数内でスコアを表示する為のTextという<code class="inline-code tt">GameObject</code>のText要素を代入します(わかりにくいですね)。またDieにはCenterEyeAnchorのdieを代入します。あとは簡単です。フレーム毎にtargetText.text(targetTextの文字列)に<code class="inline-code tt">Die.score</code>を代入すれば良いだけです。ただし<code class="inline-code tt">Die.score</code>は<code class="inline-code tt">int</code>(整数)で<code class="inline-code tt">targetText.text</code>は<code class="inline-code tt">string</code>(文字列)なので<code class="inline-code tt">Die.score</code>を<code class="inline-code tt">ToString()</code>で文字列に変換する必要があります。</p>
+<div id="score" class="image">
+<img src="images/harady/score.png" alt="" class="width-100per" />
+</div>
+<p>ちなみに画像に使われているフォントはGreen EnergyフォントとMKSD-UltraLightフォントです。左のフォントはとある飲料で見たことがある人がいるかもしれません。</p>
+
+<h3><a id="h4-7-5"></a>ハイスコア</h3>
+<p>PlayerPrefs機能を使っています。詳細はググって下さい。</p>
+
+<h2><a id="h4-8"></a><span class="secno">4.8　</span>終わりと始まりのプロローグ</h2>
+<p>どうでしたか?VR3(00*4)分クッキング。初めて部誌を書くので読みにくい文章になってしまったかもしれません。あるいはスクリプトの印象しか残らないかも...。まぁこの部誌でVRゲームの作り方やゲーム制作の手軽さが少しでも分かってもらえたら嬉しいです(絶対手軽さは伝わりませんねw)。今回のゲーム制作で僕は初めてUnityでゲームを完成させました。またBlenderも初めて使いました。すべての工程の感想としては、「なにか問題が起こった時に原因を考えて直す作業や、自分の作りたい物をモデリングするのは楽しい」ということでしょうか。また一つアドバイスをすると、わからない部分が出てきたり謎のエラーが発生することはよくあります。そんな時はすぐにググりましょう。Google先生は常に私たちに道を示してくれます。あと、ベクトルの長さの図は吉岡先輩に作って頂きました。ありがとうございました。</p>
+<p>...なんかめちゃくちゃ堅苦しくなりましたね(ほんまか?)。偉大なる先輩方に倣ってネタ性に溢れるクッソ面白い部誌を書くつもりだったのですが...。どうやらまだ精進が足りないようです。</p>
+<p>今回のゲームはNeutralさんのタイピングゲーム「寿司打」から名前を貰っています。部員もよくやる(?)とても素晴らしいタイピングゲームです。皆さんも挑戦してみて下さい。筆者は雑魚なので高級コース15000円ぐらいが限界です。プロタイプerになりたい。</p>
+<p>部誌を書き始めたのが本番数日前なので誤字等あるかもしれませんが大目に見て下さい...。まだ文化祭が終わってないなら是非寿司(が)打をやってみて下さいね。ではまた来年の部誌で会いましょう!</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="hinata.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ すばやい文字列の探しかた</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="taizo0122.html">
+            <div class="book-cursor"><span class="cursor-next">▶ ぱそこんであそぼ</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

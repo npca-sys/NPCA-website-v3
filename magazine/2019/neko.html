@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="明日(半年後)から始めるVRChat" href="uraoz.html"><link rel="prev" title="Pythonの高速化について" href="mafusuke.html">  <meta name="generator" content="Re:VIEW" />
+  <title>Siv3Dでゲームを作る | NPCA部誌2019</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2019</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">前書き</a></li>
+<li><a href="object_1037.html">1 JINS MEMEで美少女になる話</a></li>
+<li><a href="sashiming.html">2 Google Apps ScriptでTwitter botを作ってみる</a></li>
+<li><a href="sarugami.html">3 Blenderで簡単モデリング！</a></li>
+<li><a href="ficorajo.html">4 C#でファイルを暗号化する</a></li>
+<li><a href="Hiro.html">5 UnityのAIを使って…</a></li>
+<li><a href="motty.html">6 Atomで快適なプログラミング環境を構築してみる</a></li>
+<li><a href="takepan.html">7 iPhoneを使ってお手軽VR</a></li>
+<li><a href="kuro.html">8 Windowsのショートカットキーについて</a></li>
+<li><a href="kusafukakota.html">9 Gmailの活用術</a></li>
+<li><a href="2lu3.html">10 未踏ジュニアとLifeWatcher</a></li>
+<li><a href="harady.html">11 グラフのおはなし</a></li>
+<li><a href="cobalt.html">12 C#の布教</a></li>
+<li><a href="RLtdExp.html">13 プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</a></li>
+<li><a href="mafusuke.html">14 Pythonの高速化について</a></li>
+<li><a href="neko.html">15 Siv3Dでゲームを作る</a></li>
+<li><a href="uraoz.html">16 明日(半年後)から始めるVRChat</a></li>
+<li><a href="hinata.html">17 NPCAの部誌執筆を支える技術</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h15"></a><span class="secno">第15章　</span>Siv3Dでゲームを作る</h1>
+<p><p style="text-align:right">75回生　neko</p></p>
+
+<h2><a id="h15-1"></a><span class="secno">15.1　</span>はじめに</h2>
+<p>75回生のnekoです。Siv3Dでゲームを作っていこうと思います。</p>
+
+<h2><a id="h15-2"></a><span class="secno">15.2　</span>Siv3Dとは</h2>
+<p>Siv3Dとは、C++のライブラリで、簡単に言えばゲームやツールを作りやすくするものです。</p>
+<p>Siv3Dは2012年に初めて公開された比較的新しいライブラリで、グラフィカルでインタラクティブなアプリケーションを作ることができます。</p>
+<p>しかし、最近、より実用的でモダンな設計にするために、Siv3Dの開発を終了し、OpenSiv3Dの開発がされているのですが、まだ開発途中で、リファレンスなどが乏しい状況なので、今回はSiv3Dで開発していくことにします。</p>
+<p>C++の知識が多少必要ですが、公式Wikiにチュートリアルが載っていますし、C++を学びながらゲームを作ることができます。</p>
+
+<h2><a id="h15-3"></a><span class="secno">15.3　</span>Siv3Dの良い所</h2>
+<p>短いコードで簡単に書けること。特に当たり判定が非常に楽に実装できることです。</p>
+<p>どれだけ短いコードで書けるかというのを公式サイトから引用したものを紹介します。</p>
+<div id="oekaki" class="caption-code">
+<p class="caption">リスト15.1: oekaki.cpp</p>
+<pre class="list language-c++ highlight"><span class="cp">#include &lt;Siv3D.hpp&gt;
+</span>
+<span class="kt">void</span> <span class="nf">Main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Image</span> <span class="n">image</span><span class="p">(</span><span class="n">Window</span><span class="o">::</span><span class="n">Size</span><span class="p">(),</span> <span class="n">Palette</span><span class="o">::</span><span class="n">White</span><span class="p">);</span>
+
+    <span class="n">DynamicTexture</span> <span class="n">texture</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">System</span><span class="o">::</span><span class="n">Update</span><span class="p">())</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="o">::</span><span class="n">MouseL</span><span class="p">.</span><span class="n">pressed</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Line</span><span class="p">(</span><span class="n">Mouse</span><span class="o">::</span><span class="n">PreviousPos</span><span class="p">(),</span> <span class="n">Mouse</span><span class="o">::</span><span class="n">Pos</span><span class="p">()).</span><span class="n">overwrite</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">Palette</span><span class="o">::</span><span class="n">Orange</span><span class="p">);</span>
+
+            <span class="n">texture</span><span class="p">.</span><span class="n">fill</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="n">texture</span><span class="p">.</span><span class="n">draw</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<div id="oekaki" class="image">
+<img src="images/neko/oekaki.png" alt="実際の画面" />
+<p class="caption">
+図15.1: 実際の画面
+</p>
+</div>
+<p>オレンジ色のペンで絵を描くだけのプログラムですが、これだけで実装できます。</p>
+<p>このように短いコードでプログラムを書くことができます。</p>
+
+<h2><a id="h15-4"></a><span class="secno">15.4　</span>環境構築</h2>
+<p>まず、環境構築ですが、公式wikiに結構分かりやすく書いてあると思うのでそれを見ればできると思います。ちなみに、この部誌ではVisual Studio 2019で開発していこうと思います。</p>
+
+<h2><a id="h15-5"></a><span class="secno">15.5　</span>Siv3Dの基本</h2>
+<p>基本的なSiv3Dの仕様について書いていきます。</p>
+<p>プログラムは基本的にこのようなコードで書きます</p>
+<div id="kihon" class="caption-code">
+<p class="caption">リスト15.2: kihon.cpp</p>
+<pre class="list language-c++ highlight"><span class="cp">#include &lt;Siv3D.hpp&gt;
+</span>
+<span class="kt">void</span> <span class="n">Main</span><span class="p">(){</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="n">System</span><span class="o">::</span><span class="n">Update</span><span class="p">()){</span>
+
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p><code class="inline-code tt">while(System::Update()){}</code>の部分が、メインループで、フレーム毎の処理を書きます。フレームは最大60FPSです。</p>
+<p>また、座標についてですが、画面の左上がx=0、y=0で、右に行くと、+x、下に行くと+yです。</p>
+<p>他にも、図形を作る方法だったり色々あるんですが、これからコードを書くときにある程度の解説を交えつつ書いていくので大丈夫です。詳しくは、公式wikiのチュートリアルを見ればわかります。ただ、C++の知識はある程度ある(for文やif文が分かるくらい)前提で書きます。</p>
+
+<h2><a id="h15-6"></a><span class="secno">15.6　</span>作るゲームの概要</h2>
+<p>作るゲームはいたってシンプルで、右から現れる障害物をジャンプして避けるというゲームです。では、ゲームを実装していきます。</p>
+
+<h2><a id="h15-7"></a><span class="secno">15.7　</span>プレイヤーをジャンプさせる</h2>
+<p>とりあえず、キャラクターのデザインを後回しにして長方形にしておきます。ジャンプの実装ですが、重力を加速度を使って実装するわけではなく、ただの等速運動で実装します。</p>
+<div id="jamp" class="caption-code">
+<p class="caption">リスト15.3: jamp.cpp</p>
+<pre class="list language-c++ highlight"><span class="cp">#include &lt;Siv3D.hpp&gt;
+</span>
+<span class="kt">void</span> <span class="nf">Main</span><span class="p">()</span>
+<span class="p">{</span>
+
+        <span class="n">Point</span> <span class="n">player_pos</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>  <span class="c1">//プレイヤーの座標の変数</span>
+
+        <span class="kt">bool</span> <span class="n">Canfly</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//飛べるかどうか</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">System</span><span class="o">::</span><span class="n">Update</span><span class="p">())</span> <span class="p">{</span>
+
+    <span class="c1">//spaceキーが押されていてかつ、Canflyがtrueであればプレイヤーのy座標を30下げる(上に30上げる)</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="o">::</span><span class="n">KeySpace</span><span class="p">.</span><span class="n">pressed</span> <span class="o">&amp;&amp;</span> <span class="n">Canfly</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">player_pos</span><span class="p">.</span><span class="n">y</span> <span class="o">-=</span> <span class="mi">30</span><span class="p">;</span>
+
+                <span class="p">}</span>
+    <span class="c1">//プレイヤーのジャンプが上限(この場合100)になった、またはスペースキーが離されたらCanflyをfalseにする。</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">player_pos</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">100</span> <span class="o">||</span> <span class="n">Input</span><span class="o">::</span><span class="n">KeySpace</span><span class="p">.</span><span class="n">released</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">Canfly</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="p">}</span>
+    <span class="c1">//地面についたらCanflyをtrueにする。</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">player_pos</span><span class="p">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">300</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">Canfly</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+
+    <span class="c1">//重力</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">player_pos</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">player_pos</span><span class="p">.</span><span class="n">y</span> <span class="o">+=</span> <span class="mi">15</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="n">Rect</span><span class="p">(</span><span class="n">player_pos</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">).</span><span class="n">draw</span><span class="p">();</span>   <span class="c1">//プレイヤー描画</span>
+
+                <span class="n">Line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">350</span><span class="p">).</span><span class="n">draw</span><span class="p">();</span>    <span class="c1">//地面描画</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+
+
+</pre>
+</div>
+<p>「プレイヤーのジャンプが上限(この場合100)になった、またはスペースキーが離されたらCanflyをfalseにする」というのは、二段ジャンプを防ぐためです。</p>
+<p>これで、とりあえず長方形がジャンプするプログラムはできあがりました。</p>
+
+<h2><a id="h15-8"></a><span class="secno">15.8　</span>敵を生成する</h2>
+<p>敵をまず、Arrayを使って管理します。そして、画面外右で敵を生成して、画面外左で敵を消します。</p>
+<p>先程書いたコードの説明は省きます。</p>
+<div id="enemy" class="caption-code">
+<p class="caption">リスト15.4: enemy.cpp</p>
+<pre class="list language-c++ highlight">
+<span class="cp">#include &lt;Siv3D.hpp&gt;
+</span>
+<span class="kt">void</span> <span class="nf">Main</span><span class="p">()</span>
+<span class="p">{</span>
+        <span class="n">Point</span> <span class="n">player_pos</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
+        <span class="kt">bool</span> <span class="n">Canfly</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="n">Array</span><span class="o">&lt;</span><span class="n">Rect</span><span class="o">&gt;</span> <span class="n">enemies</span><span class="p">;</span><span class="c1">//敵を管理するもの</span>
+
+        <span class="n">Rect</span> <span class="n">destroy</span><span class="p">(</span><span class="o">-</span><span class="mi">500</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span><span class="c1">//ここに当たったら敵を消す。</span>
+
+        <span class="n">int32</span> <span class="n">frame_record</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="n">System</span><span class="o">::</span><span class="n">Update</span><span class="p">())</span> <span class="p">{</span>
+
+                <span class="c1">//60~120のランダムな間隔で敵を生成</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">frame_record</span>  <span class="o">==</span> <span class="n">System</span><span class="o">::</span><span class="n">FrameCount</span><span class="p">())</span> <span class="p">{</span>
+                        <span class="n">enemies</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="mi">1200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">);</span>
+                        <span class="n">frame_record</span> <span class="o">+=</span> <span class="n">Random</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span><span class="mi">120</span><span class="p">);</span>
+
+                <span class="p">}</span>
+
+                <span class="c1">//敵を動かす</span>
+
+                <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">enemies</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">enemies</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="n">it</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">it</span><span class="o">-&gt;</span><span class="n">moveBy</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+                <span class="p">}</span>
+
+
+
+
+                <span class="c1">//プレイヤーの処理</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">Input</span><span class="o">::</span><span class="n">KeySpace</span><span class="p">.</span><span class="n">pressed</span> <span class="o">&amp;&amp;</span> <span class="n">Canfly</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">player_pos</span><span class="p">.</span><span class="n">y</span> <span class="o">-=</span> <span class="mi">30</span><span class="p">;</span>
+
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">player_pos</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">100</span> <span class="o">||</span> <span class="n">Input</span><span class="o">::</span><span class="n">KeySpace</span><span class="p">.</span><span class="n">released</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">Canfly</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">player_pos</span><span class="p">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">300</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">Canfly</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">player_pos</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">player_pos</span><span class="p">.</span><span class="n">y</span> <span class="o">+=</span> <span class="mi">15</span><span class="p">;</span>
+                <span class="p">}</span>
+    <span class="c1">//画面外左に行ったら敵を削除</span>
+                <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">it</span> <span class="o">=</span> <span class="n">enemies</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">enemies</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="n">it</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">intersects</span><span class="p">(</span><span class="n">destroy</span><span class="p">))</span> <span class="p">{</span>
+                                <span class="n">enemies</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">it</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span><span class="c1">//ここないとバグる</span>
+                        <span class="p">}</span>
+                <span class="p">}</span>
+
+                <span class="c1">//描画</span>
+
+                <span class="n">Rect</span><span class="p">(</span><span class="n">player_pos</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">).</span><span class="n">draw</span><span class="p">();</span>
+                <span class="n">Line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">350</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">350</span><span class="p">).</span><span class="n">draw</span><span class="p">();</span>
+
+    <span class="c1">//敵描画</span>
+                <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="n">x</span> <span class="o">:</span> <span class="n">enemies</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">x</span><span class="p">.</span><span class="n">draw</span><span class="p">();</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+
+</pre>
+</div>
+
+<h2><a id="h15-9"></a><span class="secno">15.9　</span>最後</h2>
+<p>あとは、プレイヤーと敵のデザインと当たり判定を実装するだけです。これらは、この部誌で解説する必要がないと思う(自分で作ってみてほしい)ので説明しません。</p>
+
+<h2><a id="h15-10"></a><span class="secno">15.10　</span>最後に</h2>
+<p>どんな人が、この文章を読んでいるかわかりませんが、Siv3Dおもしろそうだなぁと思ったり、ちょっとゲームを作ってみたくなったと思ったら是非自分でSiv3Dを入れて、ゲームを作ってみてください。そして、ここまで読んでくれてありがとうございました。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="mafusuke.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ Pythonの高速化について</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="uraoz.html">
+            <div class="book-cursor"><span class="cursor-next">▶ 明日(半年後)から始めるVRChat</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

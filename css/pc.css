@@ -1,0 +1,417 @@
+@charset "utf-8";
+
+body{
+	color: #333;
+	margin-top: 10px;
+	margin-bottom: 40px;
+	overflow: scroll;
+}
+
+div#main{
+	width: 940px;
+}
+
+header{
+	height: 110px;
+	background: url('../img/top/upper_index.png') top no-repeat;
+}
+
+header>h2{
+	margin-top: 30px;
+	margin-left: 20px;
+	width: 630px;
+	height: 60px;
+	float: left;
+}
+
+header>ul{
+	float: right;
+	font-size: 0.9em;
+	margin-right: 30px;
+}
+
+header>ul>li{
+	float: left;
+	height: 30px;
+	padding-right: 20px;
+}
+
+nav{
+
+}
+
+nav>ul#site_nav{
+	height: 50px;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+nav>h1{
+}
+
+div.ie{
+	vertical-align: middle;
+	position: relative;
+}
+
+div.ie img{
+	vertical-align: top;
+	width: 1.5em;
+	height: 1.5em;
+}
+div.ie p{
+	line-height: 1.5em;
+}
+
+nav>ul#site_nav>li{
+	float: left;
+	height: 50px;
+	width: 180px;
+}
+
+nav>ul#site_nav>li:not(:first-child){
+	border-left: 1px solid rgb(160, 160, 255);
+}
+
+nav>ul#site_nav>li:hover{
+	background-position: 0 -50px;
+	border-top: 3px solid red;
+	margin-top: -3px;
+}
+nav>ul#site_nav>li.now{
+	background-position: 0 -50px;
+	border-top: 3px solid red;
+	margin-top: -3px;
+}
+
+nav>ul#site_nav>li>a{
+	text-indent: -9999px;
+}
+
+nav>ul#site_nav>li#toppage{
+	background-image: url('../img/top/nav_top1.png');
+}
+
+nav>ul#site_nav>li#whats_npca{
+	background-image: url('../img/top/nav_npca1.png');
+}
+
+nav>ul#site_nav>li#activity{
+	background-image: url('../img/top/nav_activity1.png');
+}
+
+nav>ul#site_nav>li#works{
+	background-image: url('../img/top/nav_works1.png');
+}
+
+nav>ul#site_nav>li#blog{
+	background-image: url('../img/top/nav_blog1.png');
+}
+
+nav>ul#page_nav{
+	border-left: 2px solid blue;
+	float: left;
+	font-size: 1.1em;
+	list-style: inside;
+	padding-top: 35px;
+	padding-bottom: 10px;
+	padding-left: 5px;
+	width: 172px;
+}
+
+nav>h2{
+	background-image: url('../img/side/index.png');
+	display: block;
+	height: 30px;
+	text-indent: -9999px;
+	width: 176px;
+	margin-bottom: -30px;
+}
+
+/*コンテンツ部*/
+div#content_center{
+	width: 700px;
+	margin-left: 180px;
+}
+
+div#content_center>*:not(h2, h1, .more, .magazine, tbody *){
+	margin-left: 20px;
+}
+
+div#content_center>ul:not(#whats_npca_ul, tbody *){
+	padding-left: 20px;
+}
+
+/*h1タグ*/
+.h1image{
+	width: 700px;
+}
+
+/*h2タグ*/
+div#content_center h2{
+	color: #333;
+	height: 25px;
+	line-height: 30px;
+	margin: 30px 0 25px;
+}
+div#content_center h2:before {
+	border-left: 0.5em solid #00f;
+	border-right: 0.25em solid #39f;
+	content: "";
+	font-size: 0.83em; /* 5/6 */
+	margin-right: 0.25em;
+}
+
+ul.activity>li{
+	list-style-position: inside;
+}
+
+ul.activity>li>span{
+	float: right;
+}
+table.activity{
+}
+table.activity td:first-child{
+	width:550px;
+}
+table.activity td{
+	width:110px;
+}
+
+ul#whats_npca_ul{
+	padding-left: 40px;
+}
+
+/*続きを見るボタン*/
+p.more{
+	background-image: url('../img/contents/more.png');
+	width: 105px;
+	height: 20px;
+	overflow: hidden;
+	text-indent: -9999px;
+}
+
+p.more:hover{
+	background-position: 0 20px;
+}
+
+p.more:active{
+	background-position: 0 40px;
+}
+
+p.more>a{
+	width: 100px;
+	height: 20px;
+}
+
+/* 作品紹介 */
+.introduction{
+	margin-bottom: 30px;
+}
+
+/*部誌紹介*/
+div.magazine{
+	float: right;
+	margin-bottom: 2em;
+	width: 700px;
+}
+
+div.magazine>h3,div.magazine>h4{
+	margin-left: 200px;
+}
+
+						/*文化祭ページ*/
+div.magazine>h3.magtitle, div.fes h3{
+	border-bottom: 1px rgb(51, 51, 51) dotted;
+	color: #333;
+	font-size: 1.2em;
+	font-weight: 700;
+	height: 25px;
+	line-height: 30px;
+	margin: 0 0 25px;
+}
+div.magazine>h3.magtitle:before, div.fes h3:before {
+	border-left: 0.5em solid #6f6;
+	border-right: 0.25em solid #9fc;
+	content: "";
+	font-size: 0.83em; /* 5/6 */
+	margin-right: 0.25em;
+}
+
+div.magazine>h4.collapse:before{
+	color: #999;
+	content: ">";
+	transform: rotate(90deg);
+}
+
+div.magazine>img{
+	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.4);
+	float: left;
+	margin: 0 20px 20px;
+	width: 180px;
+}
+
+div.magazine>ul{
+	float: left;
+	width: 220px;
+	padding-right: 10px;
+}
+
+.magtitle>span{
+	float: right;
+	font-weight: normal;
+	font-size: 0.6em;
+}
+
+p.download{
+	animation: dl-wave 1s linear infinite;
+	background: #55acee;
+	display: block;
+	float: left;
+	padding: 0.8em 1em;
+	transition: background 1s, border 1s, box-shadow 1s;
+}
+p.download:hover{
+	background: #6BF;
+}
+p.download>a:active, p.download>a:focus{
+	color: rgba(250, 250, 250, 0.7);
+}
+/*
+p.download{
+	clear: both;
+	float: right;
+	margin-right: -20px;
+	margin-top: -50px;
+}
+p.download>a.dl-txt{
+	height: 50px;
+	width: 270px;
+}
+*/
+
+/*プログラム紹介*/
+.program_etc h1{
+	display: inline;
+}
+.program_etc a.all_download{
+	margin-left: 300px;
+}
+.program_etc table{
+	margin-left: auto;
+	margin-right: auto;
+}
+.program_etc td{
+	padding-left: 20px;
+	padding-right: 20px;
+	width: 180px;
+}
+.program_etc td>p{
+}
+.program_etc td>p.discribe{
+}
+.program_etc td>a>img{
+	border: 1px solid black;
+	height: 135px;
+	width: 180px;
+}
+
+ol{
+	list-style-position: inside;
+	padding-left: 1.0em;
+	text-indent: -1.0em;
+}
+
+/*プログラム紹介以外で使っているかもしれない*/
+
+section{
+	overflow: hidden;
+	border: 2px dotted black;
+	margin-bottom: 40px;
+}
+
+section h1{
+	padding: 10px;
+}
+
+/*連絡先ページ*/
+
+p.size{
+}
+
+a.banner{
+}
+
+a.banner>img{
+	margin-left:40px;
+}
+
+pre.xhtml{
+	margin-left:40px;
+}
+
+/*文化祭ページ*/
+div.fes h3{
+}
+
+div.left{
+	margin-left: 0px;
+}
+
+div.timetable>table{
+	width: 100%;
+	border-collapse: collapse;
+	background: none repeat scroll 0px 0px #d7e8fa;
+}
+div.timetable>table>tbody>tr{
+	border: 2px solid rgb(102,153,255);
+}
+div.timetable>table>tbody>tr.show_now{
+	background-color:rgb(255, 255, 255);
+}
+div.timetable>table>tbody>tr.show_end{
+	background-color:rgb(204,204,204);
+	color:rgb(153,153,153);
+}
+
+div.timetable>table>tbody>tr>td:first-child{
+	width: 30%;
+}
+div.timetable>table>tbody>tr>td{
+	text-align:center;
+}
+div.fes img.fes{
+	float			:left;
+	width			:150px;
+	height			:100px;
+	margin-bottom	:30px;
+}
+
+div.fes2{
+	margin			:-150px 0 0 200px;
+	width			:500px;
+}
+
+div.fes2 p{
+	float			:left;
+	text-indent: 0em;
+	width:350px;
+}
+
+div.fes >  p{
+	float: left;
+	margin			:-130px 0 0 200px;
+	width			:500px;
+	text-indent: 0em;
+}
+
+div.fes2 a.fes{
+	display			:block;
+	float			:right;
+	font-size		:smaller;
+}
+
+div.fes2 a.fes2{
+	display			:block;
+	float			:right;
+}

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+  <script type="text/javascript" id="MathJax-script" async="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="Rolling Hashのおはなし" href="maguro.html"><link rel="prev" title="CTF超入門" href="sashiming.html">  <meta name="generator" content="Re:VIEW" />
+  <title>QRコードを読む | 灘校パソコン研究部部誌2021</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>灘校パソコン研究部部誌2021</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="Sugsugar.html">第1章　フィボナッチ数と行列</a></li>
+<li><a href="Chito.html">第2章　暗号と数学</a></li>
+<li><a href="sashiming.html">第3章　CTF超入門</a></li>
+<li><a href="watcol.html">第4章　QRコードを読む</a></li>
+<li><a href="maguro.html">第5章　Rolling Hashのおはなし</a></li>
+<li><a href="hinata.html">第6章　プログラミングを始める</a></li>
+<li><a href="UltimateBlacktea.html">第7章　HDDで演奏する</a></li>
+<li><a href="PCT.html">第8章　競プロの数学問の基礎！</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h4"></a><span class="secno">第4章　</span>QRコードを読む</h1>
+<p><p style="text-align:right">76回生 watcol</p></p>
+
+<h2><a id="h4-1"></a><span class="secno">4.1　</span>はじめに</h2>
+<p>はじめまして。76回生(高1)のwatcolです。初めて部誌を書きます。拙い文章ですが、最後まで目を通していただけると幸いです。それでは、早速本題に移りましょう。</p>
+
+<h2><a id="h4-2"></a><span class="secno">4.2　</span>QRコードとは</h2>
+<p>さて、みなさんは下のようなものを見たことがあるでしょうか。</p>
+<div id="original" class="image">
+<img src="images/watcol/original.png" alt="QRコード" class="width-040per" />
+<p class="caption">
+図4.1: QRコード
+</p>
+</div>
+<p>近年見かけることの多い(この文化祭の会場でもよく見かけますね)この形、ご存知の方も多いと思いますが、QRコードと呼ばれるものです。</p>
+<p>ここにURLなどの情報を入れておくと、読み取った時にWebサイトへアクセスできたり、LINEなどでは友達が追加できたりもします。(ちなみに、上のQRコードを読み取るとNPCAの公式Webサイト<a id="fnb-site" href="watcol.html#fn-site" class="noteref" epub:type="noteref">*1</a>にアクセスできます。)</p>
+<p>このQRコードは「マトリックス型2次元コード」と呼ばれるものの一つで、一種のバーコードのようなものです。しかし、一般的なバーコードに比べて多くの情報を詰め込める<a id="fnb-info" href="watcol.html#fn-info" class="noteref" epub:type="noteref">*2</a>ほか、汚れや破損に強く、少しなら壊れていても読み取ることができます(経験がある方もいるのではないでしょうか)。</p>
+<div class="footnote" epub:type="footnote" id="fn-site"><p class="footnote">[*1] <a href="../../index.html" class="link">https://www.npca.jp</a></p></div>
+<div class="footnote" epub:type="footnote" id="fn-info"><p class="footnote">[*2] 数字のみだと7,089文字、英語だと4,926文字、日本語でも1,817文字詰め込めます。</p></div>
+
+<h2><a id="h4-3"></a><span class="secno">4.3　</span>QRコードを読む</h2>
+<p>しかし、このQRコードには一つ致命的な欠点があります。それは<b>人間には理解できない</b>ということです。これでは手元に携帯やスマートフォンがなければ何が書いてあるか全くわかりません。皆さんも読めるようになりたいですよね??</p>
+<p>そこで、この記事では、QRコードの読み方について紹介していこうと思います。</p>
+
+<h2><a id="h4-4"></a><span class="secno">4.4　</span>データの解釈の仕方</h2>
+<p>QRコードでは、2進数の1を黒いセル(1つ1つのブロックのこと)に、0を白いセルに置き換え、決まった順番で並べることによってデータを数値の列として表現しています。なので、どんなデータがどのように並べられているか、そしてそれをどのように解釈すればいいのかがわかれば、(理論上は)我々人間にもQRコードの内容を理解することができます。ということで、まずはQRコードの大まかな構造を見てみましょう。</p>
+
+<h2><a id="h4-5"></a><span class="secno">4.5　</span>QRコードの構造</h2>
+<div id="cutting" class="image">
+<img src="images/watcol/cutting.png" alt="QRコードの構造" class="width-040per" />
+<p class="caption">
+図4.2: QRコードの構造
+</p>
+</div>
+<p><span class="imgref"><a href="watcol.html#cutting">図4.2</a></span>を見てください。これは、先程のQRコードをデータの役割ごとに色付けしたものです。早速、それぞれの部分について見ていきましょう。</p>
+
+<h3><a id="h4-5-1"></a>形が決まっている部分(水色)</h3>
+<div id="determined" class="image">
+<img src="images/watcol/determined.png" alt="定常部の詳解図" class="width-040per" />
+<p class="caption">
+図4.3: 定常部の詳解図
+</p>
+</div>
+<p>どのQRコードでも同じ形をしている部分です。次のように分類されます。</p>
+<dl>
+<dt>①余白領域</dt>
+<dd>「ただの余白??」思われるかもしれませんが、たかが余白、されど余白。この部分がないと正しく読み取ることができません。公式の仕様では上下左右共に最低で4セル分必要とされています。</dd>
+<dt>②切り出しシンボル</dt>
+<dd>おなじみの形ですね。機械はこれを見てQRコードを認識しています。ファインダーパターンとも呼ばれます。注意しなければいけないのは、周りの白い部分を含めて切り出しシンボルだということです。</dd>
+<dt>③アライメントパターン</dt>
+<dd>皆さんは②の形が右下にだけ無いのを不思議に思ったことはありませんか？これは機械的に向きを判定できるようにする機構です。機械でこの形が右下に来るようにQRコードを回転させればいいので、私たちは逆さのままQRコードを読み取ることができるというわけです。</dd>
+<dt>④タイミングパターン</dt>
+<dd>すべてのQRコードにこの形があることを知っていた方は少ないのではないのでしょうか?これはQRコードが歪んでいるときやセルの位置がずれているときに、読み取るデータがそのままずれてしまうのを防いでいます。</dd>
+<dt>⑤ダークモジュール</dt>
+<dd>忘れられがちですが、このセルは必ず黒になっています。後述のフォーマット情報領域でセル数を調整するためにあります。</dd>
+</dl>
+
+<h3><a id="h4-5-2"></a>フォーマット情報領域(赤色)</h3>
+<p>フォーマット情報領域は、そのQRコードについての情報を表す部分です。この情報によって後述するデータ本体の読み方が変わるため、注意して読む必要があります。</p>
+<div id="format" class="image">
+<img src="images/watcol/format.png" alt="フォーマット情報領域の読み方" class="width-040per" />
+<p class="caption">
+図4.4: フォーマット情報領域の読み方
+</p>
+</div>
+<p>さて、この領域の読み方ですが、まず上の図のような順番で黒を<code class="tt">1</code>、白を<code class="tt">0</code>として1セルずつ読んでいきます。このとき①と②では同じ情報になっているはずです。これはどちらかがかくれていたり、汚れていたりする場合でも読み取れるようにするための工夫なのですが、今回はどちらかを無視してもらって構いません。</p>
+<p>その後、このデータ(上のQRコードでは<code class="tt">111110110101010</code>になります。)をそれぞれの桁について<code class="tt">101010000010010</code>と比べて、次のようなルールで処理します。(このような処理を<b>XOR演算</b>といって、競技プログラミングなどでよくつかわれます。)</p>
+<ul>
+<li>それぞれの数が同じならば、その桁を<code class="tt">0</code>とします。</li>
+<li>それぞれの数が異なる、その桁を<code class="tt">1</code>とします。</li>
+</ul>
+<p>この例では次のようになります。</p>
+<div class="equation">
+$$  \begin{array}{rr}
+    & \texttt{111110110101010} \\
+    & \texttt{101010000010010} \\
+  \hline
+    & \texttt{010100110111000} \\
+  \end{array}$$
+</div>
+<p><code class="tt">010100110111000</code>となりましたね。このうち最初の2桁は「誤り訂正レベル」、その次の3桁は「マスクパターン」と呼ばれる情報です。残りの10桁は「誤り訂正符号」と呼ばれる、読み取りが間違っていないか調べるためだけの情報なので無視して構いません。では、この2つの情報について詳しく見ていきましょう。</p>
+
+<h4><a id="h4-5-2-1"></a>誤り訂正レベル</h4>
+<p>QRコードがどのくらいの汚れを許容するかという情報が入っていて、低い方から「L」(7%の誤りを許容)、「M」(15%の誤りを許容)、「Q」(25%の誤りを許容)、「H」(30%の誤りを許容)です(ここでのパーセンテージは後述するデータ領域を100としたときのもの)。上で求めた数との対応は以下の通りです。</p>
+<div id="error_correction_level" class="table">
+<p class="caption">表4.1: 誤り訂正レベル</p>
+<table>
+<tr><th>コード</th><th>誤り訂正レベル</th></tr>
+<tr><td><code class="tt">01</code></td><td>L</td></tr>
+<tr><td><code class="tt">00</code></td><td>M</td></tr>
+<tr><td><code class="tt">11</code></td><td>Q</td></tr>
+<tr><td><code class="tt">10</code></td><td>H</td></tr>
+</table>
+</div>
+<p>誤り訂正レベルが高くなるほど汚れには強くなりますが、その代わりにQRコードが大きくなったり、読み取りに時間がかかったりするので、シチュエーションに合ったものを選ぶ必要があります。</p>
+<p>ここまで言っておいてなんですが、正直誤り訂正レベルはQRコードを読むときには関係無いので、今回は無視してもらって構いません。</p>
+
+<h4><a id="h4-5-2-2"></a>マスクパターン</h4>
+<p>QRコードでは、コード内の白と黒のバランスを良くしたり、コード内に誤ってファインダーパターンが出て来たりしないようにするために、後述のデータ領域を加工するのですが、そのために使われるのがこのマスクパターンです。上で求めた数との対応は以下の通りです。</p>
+<div id="mask_pattern" class="table">
+<p class="caption">表4.2: マスクパターン</p>
+<table>
+<tr><th>コード</th><th>マスクパターン</th></tr>
+<tr><td><code class="tt">000</code></td><td><span class="equation">\( (i+j) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">001</code></td><td><span class="equation">\( i \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">010</code></td><td><span class="equation">\( j \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">011</code></td><td><span class="equation">\( (i+j) \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">100</code></td><td><span class="equation">\( ((i \div 2) + (j \div 3)) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">101</code></td><td><span class="equation">\( ij \bmod 2 + ij \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">110</code></td><td><span class="equation">\( (ij \bmod 3 + ij) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">111</code></td><td><span class="equation">\( (ij \bmod 3 + i + j) \bmod 2 = 0 \)</span></td></tr>
+</table>
+</div>
+<p>ここで、<span class="equation">\( i \)</span>は一番上の行を0としたときの行番号、<span class="equation">\( j \)</span>は一番左の列を0としたときの行番号です。この数式が成り立つようなセルを反転(白を黒に、黒を白にする)して読む必要があります。</p>
+<p>数式を見ても分かりにくいと思うので、図にしてみました。</p>
+<div id="mask000" class="image">
+<img src="images/watcol/mask000.png" alt="&lt;span class=&quot;equation&quot;&gt;\( (i+j) \bmod 2 = 0 \)&lt;/span&gt;" class="width-025per" />
+<p class="caption">
+図4.5: <span class="equation">\( (i+j) \bmod 2 = 0 \)</span>
+</p>
+</div>
+<div id="mask001" class="image">
+<img src="images/watcol/mask001.png" alt="&lt;span class=&quot;equation&quot;&gt;\( i \bmod 2 = 0 \)&lt;/span&gt;" class="width-025per" />
+<p class="caption">
+図4.6: <span class="equation">\( i \bmod 2 = 0 \)</span>
+</p>
+</div>
+<div id="mask010" class="image">
+<img src="images/watcol/mask010.png" alt="&lt;span class=&quot;equation&quot;&gt;\( j \bmod 3 = 0 \)&lt;/span&gt;" class="width-025per" />
+<p class="caption">
+図4.7: <span class="equation">\( j \bmod 3 = 0 \)</span>
+</p>
+</div>
+<div id="mask011" class="image">
+<img src="images/watcol/mask011.png" alt="&lt;span class=&quot;equation&quot;&gt;\( (i+j) \bmod 3 = 0 \)&lt;/span&gt;" class="width-025per" />
+<p class="caption">
+図4.8: <span class="equation">\( (i+j) \bmod 3 = 0 \)</span>
+</p>
+</div>
+<div id="mask100" class="image">
+<img src="images/watcol/mask100.png" alt="&lt;span class=&quot;equation&quot;&gt;\( ((i \div 2) + (j \div 3)) \bmod 2 = 0 \)&lt;/span&gt;" class="width-025per" />
+<p class="caption">
+図4.9: <span class="equation">\( ((i \div 2) + (j \div 3)) \bmod 2 = 0 \)</span>
+</p>
+</div>
+<div id="mask101" class="image">
+<img src="images/watcol/mask101.png" alt="&lt;span class=&quot;equation&quot;&gt;\( ij \bmod 2 + ij \bmod 3 = 0 \)&lt;/span&gt;" class="width-025per" />
+<p class="caption">
+図4.10: <span class="equation">\( ij \bmod 2 + ij \bmod 3 = 0 \)</span>
+</p>
+</div>
+<div id="mask110" class="image">
+<img src="images/watcol/mask110.png" alt="&lt;span class=&quot;equation&quot;&gt;\( (ij \bmod 3 + ij) \bmod 2 = 0 \)&lt;/span&gt;" class="width-025per" />
+<p class="caption">
+図4.11: <span class="equation">\( (ij \bmod 3 + ij) \bmod 2 = 0 \)</span>
+</p>
+</div>
+<div id="mask111" class="image">
+<img src="images/watcol/mask111.png" alt="&lt;span class=&quot;equation&quot;&gt;\( (ij \bmod 3 + i + j) \bmod 2 = 0 \)&lt;/span&gt;" class="width-025per" />
+<p class="caption">
+図4.12: <span class="equation">\( (ij \bmod 3 + i + j) \bmod 2 = 0 \)</span>
+</p>
+</div>
+<p>この図のピンクの部分を白黒反転させることになります。</p>
+
+<h4><a id="h4-5-2-3"></a>早見表</h4>
+<p>これまでの作業、正直面倒ですよね。</p>
+<p>ということでフォーマット情報から誤り訂正符号、マスクパターンが一瞬で分かる表を作りました。</p>
+<div id="format_table" class="table">
+<p class="caption">表4.3: 早見表</p>
+<table>
+<tr><th>フォーマット情報</th><th>誤り訂正符号</th><th>マスクパターン</th></tr>
+<tr><td><code class="tt">111011111000100</code></td><td>L</td><td><span class="equation">\( (i+j) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">111001011110011</code></td><td>L</td><td><span class="equation">\( i \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">111110110101010</code></td><td>L</td><td><span class="equation">\( j \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">111100010011101</code></td><td>L</td><td><span class="equation">\( (i+j) \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">110011000101111</code></td><td>L</td><td><span class="equation">\( ((i \div 2) + (j \div 3)) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">110001100011000</code></td><td>L</td><td><span class="equation">\( ij \bmod 2 + ij \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">110110001000001</code></td><td>L</td><td><span class="equation">\( (ij \bmod 3 + ij) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">110100101110110</code></td><td>L</td><td><span class="equation">\( (ij \bmod 3 + i + j) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">101010000010010</code></td><td>M</td><td><span class="equation">\( (i+j) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">101000100100101</code></td><td>M</td><td><span class="equation">\( i \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">101111001111100</code></td><td>M</td><td><span class="equation">\( j \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">101101101001011</code></td><td>M</td><td><span class="equation">\( (i+j) \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">100010111111001</code></td><td>M</td><td><span class="equation">\( ((i \div 2) + (j \div 3)) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">100000011001110</code></td><td>M</td><td><span class="equation">\( ij \bmod 2 + ij \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">100111110010111</code></td><td>M</td><td><span class="equation">\( (ij \bmod 3 + ij) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">100101010100000</code></td><td>M</td><td><span class="equation">\( (ij \bmod 3 + i + j) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">011010101011111</code></td><td>Q</td><td><span class="equation">\( (i+j) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">011000001101000</code></td><td>Q</td><td><span class="equation">\( i \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">011111100110001</code></td><td>Q</td><td><span class="equation">\( j \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">011101000000110</code></td><td>Q</td><td><span class="equation">\( (i+j) \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">010010010110100</code></td><td>Q</td><td><span class="equation">\( ((i \div 2) + (j \div 3)) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">010000110000011</code></td><td>Q</td><td><span class="equation">\( ij \bmod 2 + ij \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">010111011011010</code></td><td>Q</td><td><span class="equation">\( (ij \bmod 3 + ij) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">010101111101101</code></td><td>Q</td><td><span class="equation">\( (ij \bmod 3 + i + j) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">001011010001001</code></td><td>H</td><td><span class="equation">\( (i+j) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">001001110111110</code></td><td>H</td><td><span class="equation">\( i \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">001110011100111</code></td><td>H</td><td><span class="equation">\( j \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">001100111010000</code></td><td>H</td><td><span class="equation">\( (i+j) \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">000011101100010</code></td><td>H</td><td><span class="equation">\( ((i \div 2) + (j \div 3)) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">000001001010101</code></td><td>H</td><td><span class="equation">\( ij \bmod 2 + ij \bmod 3 = 0 \)</span></td></tr>
+<tr><td><code class="tt">000110100001100</code></td><td>H</td><td><span class="equation">\( (ij \bmod 3 + ij) \bmod 2 = 0 \)</span></td></tr>
+<tr><td><code class="tt">000100000111011</code></td><td>H</td><td><span class="equation">\( (ij \bmod 3 + i + j) \bmod 2 = 0 \)</span></td></tr>
+</table>
+</div>
+<p>ご参考までに。</p>
+
+<h3><a id="h4-5-3"></a>データ領域(無色)</h3>
+<p>ところで、上の例でのフォーマット情報領域は<code class="tt">111110110101010</code>でしたね。これを上の早見表に照し合わせると、マスクパターンは「<span class="equation">\( j \bmod 3 = 0 \)</span>」であることが分かります。ルールに従ってセルを反転させると以下のようになります。</p>
+<div id="masked" class="image">
+<img src="images/watcol/masked.png" alt="マスク処理後" class="width-040per" />
+<p class="caption">
+図4.13: マスク処理後
+</p>
+</div>
+<p>さらに、これを色分けすると以下のとおりです。</p>
+<div id="data" class="image">
+<img src="images/watcol/data.png" alt="データ領域" class="width-040per" />
+<p class="caption">
+図4.14: データ領域
+</p>
+</div>
+<p>この章(節？)では、これらの領域を解読していきます。</p>
+<p>はじめに、このデータ領域の読み進め方ですが、以下のように右下から2列ずつ、ギザギザに読んでいきます。この場合も白は<code class="tt">0</code>、黒(と赤)は<code class="tt">1</code>に変換します。</p>
+<div id="order" class="image">
+<img src="images/watcol/order.png" alt="データ領域の読み方" />
+<p class="caption">
+図4.15: データ領域の読み方
+</p>
+</div>
+<p>例えば<span class="imgref"><a href="watcol.html#data">図4.14</a></span>の右下の黄緑の部分は「<code class="tt">0100</code>」となります。それではこのことを頭に入れつつ、データ領域を解読していきましょう。</p>
+
+<h4><a id="h4-5-3-1"></a>①モード指示子</h4>
+<p>QRコードでは扱える文字数を少しでも増やすために扱うデータの種類(数字、英語、日本語など)に応じて符号化モードと呼ばれるものが存在します。このモード指示子はそのQRコードで使われる符号化モードを示すためのものです。</p>
+<div id="modes" class="table">
+<p class="caption">表4.4: モード指示子</p>
+<table>
+<tr><th>モード指示子</th><th>符号化モード</th><th>扱える文字</th><th>データ密度</th></tr>
+<tr><td><code class="tt">0001</code></td><td>数字モード</td><td>数字(0~9)</td><td>10セル/3文字</td></tr>
+<tr><td><code class="tt">0010</code></td><td>英数字モード</td><td>数字(0~9)、大文字アルファベット(A-Z)、空白、$、%、*、+、-、.、/、:</td><td>11セル/2文字</td></tr>
+<tr><td><code class="tt">0100</code></td><td>8ビットモード</td><td>全てのデータ</td><td>8セル/1バイト</td></tr>
+<tr><td><code class="tt">1000</code></td><td>漢字モード</td><td>漢字、ひらがな、カタカナ、全角英数字など</td><td>13セル/1文字</td></tr>
+</table>
+</div>
+
+<h4><a id="h4-5-3-2"></a>②文字数指示子</h4>
+<p>後述するデータコード語の文字数(8ビットモードの場合はバイト数)を表すものです。この領域の大きさはQRコードの大きさや符号化モードによって変わり、その対応は以下の通りです。(QRコードの大きさは「バージョン」というもので表現され、例の場合はバージョン2です。)</p>
+<div id="bytes" class="table">
+<p class="caption">表4.5: 文字数指示子の大きさ(セル数)</p>
+<table>
+<tr><th>バージョン</th><th>数字モード</th><th>英数字モード</th><th>8ビットモード</th><th>漢字モード</th></tr>
+<tr><td>1~9</td><td>10</td><td>9</td><td>8</td><td>8</td></tr>
+<tr><td>10~26</td><td>12</td><td>11</td><td>16</td><td>10</td></tr>
+<tr><td>27~40</td><td>14</td><td>13</td><td>16</td><td>12</td></tr>
+</table>
+</div>
+<p>上の例ではバージョン2、8ビットモードなので8セル読み進めると、<code class="tt">00010011</code>で、10進数に変換すると19になります。なので、下のデータコード語は8セル×19バイトで152セルあることが分かります。</p>
+
+<h4><a id="h4-5-3-3"></a>③データコード語</h4>
+<p>やっと本題です。ここからQRコードの中身(「https://・・・」といった情報)を読んでいきます。符号化モードによって読み方が大きく異なるので、それぞれ見ていきましょう。</p>
+
+<h5><a id="h4-5-3-3-1"></a>数字モード</h5>
+<p>まず10セル読み進めて、10進数に直します。例えば<code class="tt">0001111011</code>の場合「123」です。このように、上で得た文字数と照し合わせながら、3文字ずつ読み進めていきます。最後に1文字余ったら4セル、2文字余ったら7セル読み進めて、10進数に直します。これを順番に繋ぎ合わせると、数字が出来上がります。</p>
+
+<h5><a id="h4-5-3-3-2"></a>英数字モード</h5>
+<p>まず11セル読み進めて、10進数に直します。そして、これを45で割って、商、余りをそれぞれ以下の表を見て英数字に直します。</p>
+<div id="letters" class="table">
+<p class="caption">表4.6: 英数字モード</p>
+<table>
+<tr><th>コード</th><th>文字</th></tr>
+<tr><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>1</td></tr>
+<tr><td>︙</td><td>︙</td></tr>
+<tr><td>9</td><td>9</td></tr>
+<tr><td>10</td><td>A</td></tr>
+<tr><td>︙</td><td>︙</td></tr>
+<tr><td>35</td><td>Z</td></tr>
+<tr><td>36</td><td>空白</td></tr>
+<tr><td>37</td><td>$</td></tr>
+<tr><td>38</td><td>%</td></tr>
+<tr><td>39</td><td>*</td></tr>
+<tr><td>40</td><td>+</td></tr>
+<tr><td>41</td><td>-</td></tr>
+<tr><td>42</td><td>.</td></tr>
+<tr><td>43</td><td>/</td></tr>
+<tr><td>44</td><td>:</td></tr>
+</table>
+</div>
+<p>例えば<code class="tt">10000011000</code>の場合10進数に直すと1048で、45で割ると商が23、余りが13だから「ND」となります。このように2文字ずつ読み進め、1文字余ったら6セル読んで10進数に直し、上の表で英数字に直します。これを繋ぎ合わせると、英数字の文字列が出来上がります。</p>
+
+<h5><a id="h4-5-3-3-3"></a>8ビットモード</h5>
+<p>このモードは様々な種類のデータを表現できるのですが、英数字の文字列として読むときは、8セルずつ読み進めて、10進数に直し、以下の表(Asciiコード表といいます。)を使って文字に変換します。</p>
+<div id="ascii" class="table">
+<p class="caption">表4.7: アスキーコード表</p>
+<table>
+<tr><th>コード</th><th>文字</th></tr>
+<tr><td>32</td><td>空白</td></tr>
+<tr><td>33</td><td>!</td></tr>
+<tr><td>34</td><td>&quot;</td></tr>
+<tr><td>35</td><td>#</td></tr>
+<tr><td>36</td><td>$</td></tr>
+<tr><td>37</td><td>%</td></tr>
+<tr><td>38</td><td>&amp;</td></tr>
+<tr><td>39</td><td>&#39;</td></tr>
+<tr><td>40</td><td>(</td></tr>
+<tr><td>41</td><td>)</td></tr>
+<tr><td>42</td><td>*</td></tr>
+<tr><td>43</td><td>+</td></tr>
+<tr><td>44</td><td>,</td></tr>
+<tr><td>45</td><td>-</td></tr>
+<tr><td>46</td><td>.</td></tr>
+<tr><td>47</td><td>/</td></tr>
+<tr><td>48</td><td>0</td></tr>
+<tr><td>49</td><td>1</td></tr>
+<tr><td>︙</td><td>︙</td></tr>
+<tr><td>57</td><td>9</td></tr>
+<tr><td>58</td><td>:</td></tr>
+<tr><td>59</td><td>;</td></tr>
+<tr><td>60</td><td>&lt;</td></tr>
+<tr><td>61</td><td>=</td></tr>
+<tr><td>62</td><td>&gt;</td></tr>
+<tr><td>63</td><td>?</td></tr>
+<tr><td>64</td><td>@</td></tr>
+<tr><td>65</td><td>A</td></tr>
+<tr><td>︙</td><td>︙</td></tr>
+<tr><td>90</td><td>Z</td></tr>
+<tr><td>91</td><td>[</td></tr>
+<tr><td>92</td><td>\</td></tr>
+<tr><td>93</td><td>]</td></tr>
+<tr><td>94</td><td>^</td></tr>
+<tr><td>95</td><td>_</td></tr>
+<tr><td>96</td><td>`</td></tr>
+<tr><td>97</td><td>a</td></tr>
+<tr><td>︙</td><td>︙</td></tr>
+<tr><td>122</td><td>Z</td></tr>
+<tr><td>123</td><td>{</td></tr>
+<tr><td>124</td><td>|</td></tr>
+<tr><td>125</td><td>}</td></tr>
+<tr><td>126</td><td>~</td></tr>
+</table>
+</div>
+<p>これを繋ぎ合わせると、文字列ができます。コードがこの表に無い場合、諦めて別の方法で読む必要があります。(ここでは解説しません。)</p>
+
+<h5><a id="h4-5-3-3-4"></a>漢字モード</h5>
+<p>まず13セル読み進め、<b>16進数</b>(<code class="tt">123456789abcdef</code>で表す)に直します。例えば<code class="tt">0000100100000</code>なら<code class="tt">120</code>になります。そしてこれを<code class="tt">c0</code>で割った商について、<code class="tt">00</code>〜<code class="tt">1e</code>なら<code class="tt">81</code>を、<code class="tt">1f</code>〜<code class="tt">2a</code>なら<code class="tt">c1</code>を足します。(例の場合は<code class="tt">120÷c0＝01</code>だから<code class="tt">01＋81＝82</code>)また、余りについては<code class="tt">40</code>を足します。(例だと<code class="tt">120％c0＝60</code>だから<code class="tt">60＋40＝a0</code>)そしてこれらをつなげたもの(<code class="tt">82a0</code>)を<a href="http://charset.7jp.net/sjis.html" class="link">こちらの表</a>を使って文字に変換します。(例だと「あ」)このように13セルずつ読んでいき、一文字ずつ繋げると文字列が出来上がります。</p>
+
+<h5><a id="h4-5-3-3-5"></a>図にすると</h5>
+<p>こんな感じ</p>
+<div id="reading" class="image">
+<img src="images/watcol/reading.png" alt="QRコードを読む" class="width-040per" />
+<p class="caption">
+図4.16: QRコードを読む
+</p>
+</div>
+<p>ということでこのQRコードの中身は「https://www.npca.jp」(NPCAの公式サイト)であることが分かりました。ここからはおまけです。</p>
+
+<h4><a id="h4-5-3-4"></a>④終端パターン・埋め草ビット</h4>
+<p>白を最低4つ、残りのセル数が8で割り切れるようになるまで続けます。入っているデータがギリギリの場合は省略できます。ちなみに「埋め草」とは元々穴を埋めるために使った草や雑木のことで、そこから転じて新聞や雑誌ではスペースを埋めるための記事のことを「埋め草」と言ったりします。ここでは空いたスペースを埋めるデータ列のことを言います。(話題不足)</p>
+
+<h4><a id="h4-5-3-5"></a>⑤埋め草コード語</h4>
+<p>「<code class="tt">11101100</code>」、「<code class="tt">00010001</code>」が交互に並んでいるものです。なぜ「<code class="tt">00000000</code>」ではダメかというと白が極端に多くなるからです。ちなみに「埋め草」とは元々穴を埋めるために使った草や雑木のことで、そこから転じて新聞や雑誌ではスペースを埋めるための記事のことを「埋め草」と言ったりします。ここでは空いたスペースを埋めるデータ列のことを言います。(2回目)(ホントに話題がない)</p>
+
+<h4><a id="h4-5-3-6"></a>⑥誤り訂正符号</h4>
+<p>QRコードに汚れなどがあったり、真ん中に<del>変な</del>ロゴが入っていたり、単純に読み取りミスをしたりしたときなど、それを確認・修正できないと読み取り精度が格段に下がってしまいます。そこで、誤り訂正という読み取り時のミスを訂正するための技術があり、そのためのデータがここに入っています。QRコードでは<a href="https://ja.wikipedia.org/wiki/%E3%83%AA%E3%83%BC%E3%83%89%E3%83%BB%E3%82%BD%E3%83%AD%E3%83%A2%E3%83%B3%E7%AC%A6%E5%8F%B7" class="link">リード・ソロモン符号</a>という技術が使われているのですが、僕には何のことかさっぱり分かりません。数学などに詳しいという方は調べてみてください。<del>そして僕に教えてください。</del></p>
+
+<h2><a id="h4-6"></a><span class="secno">4.6　</span>まとめ</h2>
+<p>これで長い長い解説は終わりです。とはいえ、読み方自体の説明はごく少量でしたね。<del>ほんまか？</del></p>
+<p>ということで、これからはQRコードを<b>最速で</b>読む方法を解説します。</p>
+<ol>
+<li>まずフォーマット情報の3〜5番目のセルを読みます。</li>
+<li><a href="watcol.html#h4-5-2-3">「早見表」</a>で対応する3〜5番目の数字を見つけます(これがマスクパターンになります)</li>
+<li>(以下、色の反転を意識しつつ、右下から)モード指示子を読みます。(<a href="watcol.html#h4-5-3-1">「①モード指示子」</a>参照)</li>
+<li>今読んでいるQRコードのバージョン、符号化モードを踏まえて、文字数指示子の長さを確認して、文字数を把握します。(<a href="watcol.html#h4-5-3-2">「②文字数指示子」</a>参照)</li>
+<li>データコード語を4で得た文字数分読みます。(<a href="watcol.html#h4-5-3-3">「③データコード語」</a>参照)</li>
+</ol>
+<p>ということで、暇なときに試してみてはいかがでしょうか。時間が溶けますよ。</p>
+
+<h2><a id="h4-7"></a><span class="secno">4.7　</span>おわりに</h2>
+<p>気付けばなかなかの大作になってしまいましたが、これでやっとおしまいです。軽い気持ちでページを開けて、後悔した方もいるのではないのでしょうか。ちなみに、この記事中に大量に存在する画像は「<a href="https://krita.org/jp/" class="link">Krita</a>」というソフトで作成しました。興味のある方は調べてみてください。非常にドット絵を作るのに向いています。(個人の感想)最後に、この記事を最後まで読んでくださった<del>奇特な</del>方、本当にありがとうございました。</p>
+
+<h2><a id="h4-8"></a><span class="secno">4.8　</span>参考</h2>
+<ul>
+<li><a href="https://ja.wikipedia.org/wiki/QR%E3%82%B3%E3%83%BC%E3%83%89" class="link">https://ja.wikipedia.org/wiki/QR%E3%82%B3%E3%83%BC%E3%83%89</a></li>
+<li><a href="https://www.thonky.com/qr-code-tutorial" class="link">https://www.thonky.com/qr-code-tutorial</a></li>
+<li><a href="https://qiita.com/Kta-M/items/6f7049a1e78b1fe7e883" class="link">https://qiita.com/Kta-M/items/6f7049a1e78b1fe7e883</a></li>
+</ul>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="sashiming.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ CTF超入門</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="maguro.html">
+            <div class="book-cursor"><span class="cursor-next">▶ Rolling Hashのおはなし</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

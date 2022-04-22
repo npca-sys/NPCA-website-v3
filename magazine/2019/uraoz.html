@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="NPCAの部誌執筆を支える技術" href="hinata.html"><link rel="prev" title="Siv3Dでゲームを作る" href="neko.html">  <meta name="generator" content="Re:VIEW" />
+  <title>明日(半年後)から始めるVRChat | NPCA部誌2019</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2019</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">前書き</a></li>
+<li><a href="object_1037.html">1 JINS MEMEで美少女になる話</a></li>
+<li><a href="sashiming.html">2 Google Apps ScriptでTwitter botを作ってみる</a></li>
+<li><a href="sarugami.html">3 Blenderで簡単モデリング！</a></li>
+<li><a href="ficorajo.html">4 C#でファイルを暗号化する</a></li>
+<li><a href="Hiro.html">5 UnityのAIを使って…</a></li>
+<li><a href="motty.html">6 Atomで快適なプログラミング環境を構築してみる</a></li>
+<li><a href="takepan.html">7 iPhoneを使ってお手軽VR</a></li>
+<li><a href="kuro.html">8 Windowsのショートカットキーについて</a></li>
+<li><a href="kusafukakota.html">9 Gmailの活用術</a></li>
+<li><a href="2lu3.html">10 未踏ジュニアとLifeWatcher</a></li>
+<li><a href="harady.html">11 グラフのおはなし</a></li>
+<li><a href="cobalt.html">12 C#の布教</a></li>
+<li><a href="RLtdExp.html">13 プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</a></li>
+<li><a href="mafusuke.html">14 Pythonの高速化について</a></li>
+<li><a href="neko.html">15 Siv3Dでゲームを作る</a></li>
+<li><a href="uraoz.html">16 明日(半年後)から始めるVRChat</a></li>
+<li><a href="hinata.html">17 NPCAの部誌執筆を支える技術</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h16"></a><span class="secno">第16章　</span>明日(半年後)から始めるVRChat</h1>
+<p><p style="text-align:right">74回生 uraoz</p></p>
+
+<h2><a id="h16-1"></a><span class="secno">16.1　</span>VRChatとは</h2>
+<ul>
+<li>VTuberたちに会え…ないです。</li>
+<li>女 の 子 に な れ る</li>
+</ul>
+
+<h2><a id="h16-2"></a><span class="secno">16.2　</span>用意するもの</h2>
+
+<h3><a id="h16-2-1"></a>パソコン</h3>
+<p>VRだからってスペックの暴力をする必要はありません。ただkawaii女の子を60FPSで感じたい！って人はメモリとCPUを強くしましょう。グラフィックボードは勝手に生えてきます。</p>
+
+<h3><a id="h16-2-2"></a>VR機器</h3>
+<p>機器は実質二択でオススメなのはOculus Rift。指の操作がしやすいし安い。次にHTC VIVE(Proも有りかも)。値は張りますがフルトラッキングが可能。PS4のVRでも外部ツールを使えばPCに接続出来るようですが。</p>
+<p>実はVRChatはデスクトップでもできてマウスとキーボードで操作できるのでVR機器はいらn…あったほうが楽しいです。</p>
+<p>Oculus Questというマシンなしで動作する機器もありますがモデルの頂点数、ワールドの規模がかなり制限されてしまうのでおすすめしません。</p>
+<p>今後Oculus Riftの後継機としてRift Sの販売が予定されています。要チェックです。(というかRiftは現在購入できません)</p>
+
+<h3><a id="h16-2-3"></a>ソフトウェア</h3>
+
+<h4><a id="h16-2-3-1"></a>ボイスチェンジャー&amp;仮想音声ケーブル</h4>
+<p>ボイストレーニングして女声を手に入れるのは茨の道なのでボイチェンに頼りましょう。</p>
+
+<h4><a id="h16-2-3-2"></a>Steam</h4>
+<p>VRChatはSteamの無料ゲームの１つとして提供されています。Oculusからもアクセスできます。</p>
+
+<h4><a id="h16-2-3-3"></a>Unity &amp; Blender</h4>
+<p>自作アバターは紳士の嗜み。あとUnityにはVRChatSDKを。</p>
+
+<h2><a id="h16-3"></a><span class="secno">16.3　</span>前準備</h2>
+
+<h3><a id="h16-3-1"></a>ボイチェンの調整&amp;接続</h3>
+<p>ボイチェンを使えばどんな声でも美少女になれるわけではなく多少の努力は必要です。自分の声にあったピッチ調整を。</p>
+
+<h3><a id="h16-3-2"></a>アバターの用意</h3>
+<p>これ地獄です。モデリングソフトの使い方覚えて下絵描いてそれに合わせて概形作って細部作って色塗って手直しして挫折してまたやり直してボーン作ってそれをUnityで動くようにしてパーティクルとかも用意してetc.(モデリング、リギング、テクスチャ)となり冗談抜きで半年かかるのでこだわりがない人は素直にUnityのアセットストアでアバターを買いましょう。(有り難いことにフリーのアバターもあります)</p>
+<p>VRChat内で開催されているVケットにて自作アバターを販売しているサークルさんもあるのでそこで直接見て購入してもいいかもしれません。しかしその場合しっかりと利用規約は守りましょう。MMDや他ゲームのモデルの無許可ぶっこ抜きなんてもってのほかです。垢消せ。</p>
+<p>一応デフォルトのアバターにあのUnity-chanがいますので、すぐ美少女にはなれます。</p>
+
+<h2><a id="h16-4"></a><span class="secno">16.4　</span>デメリット</h2>
+<p>成績が落ちる。月でテンションが上下するようになる。(要出典)</p>
+
+<h2><a id="h16-5"></a><span class="secno">16.5　</span>それではレッツkawaiiライフ！</h2>
+<p>来年は技術的な文章を書きたい</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="neko.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ Siv3Dでゲームを作る</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="hinata.html">
+            <div class="book-cursor"><span class="cursor-next">▶ NPCAの部誌執筆を支える技術</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

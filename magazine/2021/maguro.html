@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+  <script type="text/javascript" id="MathJax-script" async="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="プログラミングを始める" href="hinata.html"><link rel="prev" title="QRコードを読む" href="watcol.html">  <meta name="generator" content="Re:VIEW" />
+  <title>Rolling Hashのおはなし | 灘校パソコン研究部部誌2021</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>灘校パソコン研究部部誌2021</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="Sugsugar.html">第1章　フィボナッチ数と行列</a></li>
+<li><a href="Chito.html">第2章　暗号と数学</a></li>
+<li><a href="sashiming.html">第3章　CTF超入門</a></li>
+<li><a href="watcol.html">第4章　QRコードを読む</a></li>
+<li><a href="maguro.html">第5章　Rolling Hashのおはなし</a></li>
+<li><a href="hinata.html">第6章　プログラミングを始める</a></li>
+<li><a href="UltimateBlacktea.html">第7章　HDDで演奏する</a></li>
+<li><a href="PCT.html">第8章　競プロの数学問の基礎！</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h5"></a><span class="secno">第5章　</span>Rolling Hashのおはなし</h1>
+<p><p style="text-align:right">76回生 maguro</p></p>
+
+<h2><a id="h5-1"></a><span class="secno">5.1　</span>はじめに</h2>
+<p>こんにちは。76回生(高1)のmaguroです。中学生活はあっという間で、すぐに高校生になってしまいました。</p>
+<p>最近は専ら競技プログラミングをしています(Capture The Flagもちょっとだけやっています)。</p>
+<p>部誌に書く内容に迷っていたら、ちょうど実生活でも活かせそうなRolling Hashというアルゴリズムを勉強したのでそのことについて書きたいと思います。</p>
+<p>前提の知識として、計算量という概念を扱います。詳しくはWikipediaの「ランダウの記号」のページをご覧ください。また、少し数学(数Ⅰ・A程度)の知識があると読みやすいと思います。</p>
+
+<h2><a id="h5-2"></a><span class="secno">5.2　</span>導入</h2>
+<p>突然ですが、次の問題を考えてみましょう。</p>
+<div class="column">
+
+<h3><a id="column-1"></a>文字列の完全一致検索問題</h3>
+<p><span class="equation">\( N \)</span> 文字の文字列 <span class="equation">\( S \)</span> が与えられます。</p>
+<p>今、太郎君は長さ <span class="equation">\( A \)</span> の文字列 <span class="equation">\( T \)</span> が <span class="equation">\( S \)</span> の中に含まれているかを知りたいです。 <span class="equation">\( T \)</span> が <span class="equation">\( S \)</span> に含まれていないなら <span class="equation">\( -1 \)</span> を、含まれているならば文字列が <span class="equation">\( S \)</span> の先頭から何番目から始まっているかを全て、昇順に返すプログラムを作成してください。</p>
+<ul>
+<li><span class="equation">\( 1 \leq A \leq N \leq 10^6 \)</span></li>
+<li><span class="equation">\( S, T \)</span> は英小文字からなる。</li>
+</ul>
+</div>
+<p>ひとつの方法としては、それぞれの検索において <span class="equation">\( S \)</span> の <span class="equation">\( 1 \)</span> 文字目から <span class="equation">\( A \)</span> 文字目までが <span class="equation">\( T \)</span> と一致する、<span class="equation">\( 2 \)</span> 文字目から <span class="equation">\( A + 1 \)</span> 文字目までが <span class="equation">\( T \)</span> と一致する、<span class="equation">\( 3 \)</span> 文字目から <span class="equation">\( A + 2 \)</span> 文字目までが <span class="equation">\( T \)</span> と一致する……という風に愚直に調べる方法があります。</p>
+<p>しかし、これだと計算量が <span class="equation">\( O(NA) \)</span> となってしまい、 <span class="equation">\( N \)</span> や <span class="equation">\( A \)</span> が100万のような大きい値になるとかなり時間が掛かってしまいます。そこでRolling Hashの出番です。</p>
+
+<h2><a id="h5-3"></a><span class="secno">5.3　</span>Rolling Hashってなに？</h2>
+<p>Rolling Hashとは、<b>「文字列を1つの大きな数字としてみる」</b>というアイデアを用いて、文字列検索を高速に行うアルゴリズムです。</p>
+<p>ここでの「1つの大きな数字」が<b>ハッシュ</b>と言われるものです。ハッシュの値をハッシュ値と言います。</p>
+<p>ただ、いきなり文字列を数字として扱うのは難しいのでもう少し簡単にした問題を考えてみましょう。</p>
+<div class="column">
+
+<h3><a id="column-2"></a>数字の一致問題</h3>
+<p><span class="equation">\( 1 \)</span> 以上 <span class="equation">\( 9 \)</span> 以下の整数からなる長さ<span class="equation">\( N \)</span> の文字列 <span class="equation">\( S \)</span> が与えられます。</p>
+<p><span class="equation">\( S \)</span> の空でない連続する部分列のうち、 <span class="equation">\( 10 \)</span> 進法の整数とみなしたときに桁数が <span class="equation">\( A \)</span> の正の整数 <span class="equation">\( T \)</span> と等しくなるものは存在するでしょうか？もし存在しないなら <span class="equation">\( -1 \)</span> を、存在するならばその文字列が <span class="equation">\( S \)</span> の先頭から何番目から始まっているかを全て、昇順に返すプログラムを作成してください。</p>
+<ul>
+<li><span class="equation">\( 1 \leq A \leq N \leq 10^6 \)</span></li>
+<li><span class="equation">\( S, B \)</span> は <span class="equation">\( 1 \)</span> から <span class="equation">\( 9 \)</span> までの数字からなる</li>
+</ul>
+</div>
+<p>ここで、 <span class="equation">\( S \)</span> の連続する部分列 <span class="equation">\( S' \)</span> に対して、 <span class="equation">\( S' \)</span> のハッシュ値を<b>S&#39; を10進法の整数とみなしたときの値</b>と定義します。ハッシュ値が等しい <span class="equation">\( 2 \)</span> つの文字列は当然等しいです。よって、ハッシュ値を高速に計算することが出来たらこの問題は解けそうです。</p>
+<p>では、どうやってハッシュ値を高速に計算するのでしょうか？</p>
+
+<h2><a id="h5-4"></a><span class="secno">5.4　</span>ハッシュ値の計算</h2>
+<p>上の問題で <span class="equation">\( S = 123456789 \)</span> である場合を考えます。</p>
+<p>また、 <span class="equation">\( S \)</span> の <span class="equation">\( a \)</span> 文字目から <span class="equation">\( b \)</span> 文字目の前までのハッシュ値を <span class="equation">\( hash[a][b] \)</span> と書くことにします<a id="fnb-zero" href="maguro.html#fn-zero" class="noteref" epub:type="noteref">*1</a>。例えば <span class="equation">\( hash[0][3] = 123 \)</span> 、 <span class="equation">\( hash[1][4] = 234 \)</span> です。</p>
+<div class="footnote" epub:type="footnote" id="fn-zero"><p class="footnote">[*1] 現実の世界では物を1から数えることがほとんどですが、プログラミングの世界では0から数えることが多いです。ここでは文字列の前から何番目を数えるときに0から数えることにします。</p></div>
+<p>ここで、 <span class="equation">\( hash[0][6] = 123456 \)</span> 、 <span class="equation">\( hash[0][2] = 12 \)</span> から、 <span class="equation">\( hash[2][6] = hash[0][6] - hash[0][4] \times 10^4 \)</span> であることが分かります。これは一般に拡張することができ、 <span class="equation">\( hash[a][b] = hash[0][b] - hash[0][a] \times 10^{b - a} \)</span> が成り立ちます（証明は読者に任せます）。この式に出てくる <span class="equation">\( 10 \)</span> のことをハッシュの法と言うことにします。</p>
+<p>また、 <span class="equation">\( hash[0][i]\ (0 \leq i \leq N) \)</span> は、 <span class="equation">\( S \)</span> の <span class="equation">\( j \)</span> 文字目を <span class="equation">\( S_j \)</span> とおくと、 <span class="equation">\( hash[0][0] = 0,hash[0][i] = hash[0][i - 1] \times 10 + S_{i - 1}\ (1 \leq i \leq N) \)</span> を用いると <span class="equation">\( O(N) \)</span> で求めることができます<a id="fnb-rolling" href="maguro.html#fn-rolling" class="noteref" epub:type="noteref">*2</a>。</p>
+<div class="footnote" epub:type="footnote" id="fn-rolling"><p class="footnote">[*2] この操作がRolling HashのRollingに当たる部分です。</p></div>
+<p>よって、 <span class="equation">\( hash[0][0],hash[0][1],hash[0][2],\cdots,hash[0][N] \)</span> 、また <span class="equation">\( 10^0,10^1,10^2,\cdots,10^N \)</span> を事前に求めることで任意の <span class="equation">\( a,b\ (0 \leq a \leq b \leq N) \)</span> について <span class="equation">\( hash[a][b] \)</span> を <span class="equation">\( O(1) \)</span> で求めることができ、元の問題は全ての連続する部分列についてハッシュ値を求めることで <span class="equation">\( O(N) \)</span> で求めることができました。</p>
+<p><br /></p>
+<p>文字列の完全一致検索問題に戻ってみましょう。この問題は、数字の一致問題で出てきた <span class="equation">\( S \)</span> が数字から英小文字になっています。ここで、数字の一致問題の解法を10進法から27進法に変えるとどうでしょうか。仮に、 <span class="equation">\( a = 1,b = 2,\cdots,z = 26 \)</span>として、ハッシュの法を <span class="equation">\( 27 \)</span> にすると、解法はほとんど一緒であることが分かります。</p>
+
+<h2><a id="h5-5"></a><span class="secno">5.5　</span>ハッシュの衝突</h2>
+<p>ここまででハッシュはそのまま扱ってきましたが、このままだとハッシュの最大値が  <span class="equation">\( 27^N - 1 \fallingdotseq 10^{1.4 \times 10^5} \)</span> になり、いくらコンピューターでもこのような量の数字は扱えません。そこで、多くの場合ハッシュはある整数 <span class="equation">\( m \)</span> で割った余りにすることが多いです（この <span class="equation">\( m \)</span>のことを mod と呼ぶことにします）。</p>
+<p>しかし、ハッシュをこのようにしたときにある問題が発生します。それが <b>ハッシュの衝突</b>です。</p>
+<p>ハッシュの衝突とは、本来は異なっている文字列が同じハッシュを取ることです。当然ですがこのような事態はなるべく避けられないといけません。</p>
+<p>そこで、なるべく衝突を回避し、かつ高速に動作するために以下のような工夫をしています。</p>
+
+<h3><a id="h5-5-1"></a>0 が割り当てられるような文字を作らない</h3>
+<p>例えば、 <span class="equation">\( a = 0 \)</span> としたときに、 <span class="equation">\( ba \)</span> と <span class="equation">\( baaa \)</span> は同じハッシュを取ってしまいます。これは必ず避けられないといけません。</p>
+
+<h3><a id="h5-5-2"></a>m をなるべく大きくする</h3>
+<p>ハッシュは全て <span class="equation">\( m \)</span> で割った余りになるので、必ず <span class="equation">\( 1 \)</span> 以上  <span class="equation">\( m \)</span> 未満になります。よって、 <span class="equation">\( m \)</span> 個以上のハッシュを生成した場合、必ずどこかのハッシュ同士が衝突してしまいます。そのため、 <span class="equation">\( m \)</span> はなるべく大きくする必要があります。</p>
+<p>また、ハッシュが <span class="equation">\( 1 \)</span> 以上 <span class="equation">\( m \)</span> 未満のランダムな値を取るとき、ハッシュが衝突する確率は想像以上に高いです。</p>
+<p><a href="https://ja.wikipedia.org/wiki/%E8%AA%95%E7%94%9F%E6%97%A5%E6%94%BB%E6%92%83" class="link">誕生日攻撃 - Wikipedia</a> にあるように、 <span class="equation">\( 32 \)</span> ビット（すなわち <span class="equation">\( 2^{32} - 1 \fallingdotseq 4.3 \times 10^9 \)</span>）の mod を用いて Rolling Hash をすると、　<span class="equation">\( 10^5 \)</span> 個のハッシュを生成するだけでハッシュが衝突する確率が <span class="equation">\( 75\% \)</span> 程度あることが分かります。</p>
+<p>mod を <span class="equation">\( 64 \)</span> ビット（すなわち <span class="equation">\( 2^{64} - 1 \fallingdotseq 1.84 \times 10^{19} \)</span>）の mod を用いて Rolling Hash をしても、 <span class="equation">\( 7.2 \times 10^9 \)</span> 個のハッシュを生成すると衝突する確率が <span class="equation">\( 75\% \)</span> 程度ありますが、これ以上 mod を増やすと実装がややこしくなったり実行時間が長くなったりする可能性があります。なので後ろの方に掲載している実装は <span class="equation">\( 64 \)</span> ビットの mod を用いています。心配なら <span class="equation">\( 128 \)</span> ビットの mod を用いると良いでしょう。</p>
+
+<h3><a id="h5-5-3"></a>ハッシュの法をランダムな値にする</h3>
+<p>Codeforces などのハック<a id="fnb-hack" href="maguro.html#fn-hack" class="noteref" epub:type="noteref">*3</a>が存在する競技プログラミングのコンテストでは、いくら mod を大きくしたとしても、悪意のあるユーザーがわざとハッシュを衝突させようとする可能性があります。そこで、これを回避するために、ハッシュの法を実行時ランダムな値にするという方法があります（mod をランダムな値にする方法もありますが、割り算をするときに mod が定数だと実行時間が短くなります）。これで、いくら悪意のあるユーザーでもハッシュの衝突を意図的に起こすのは難しくなります。</p>
+<div class="footnote" epub:type="footnote" id="fn-hack"><p class="footnote">[*3] 他人のユーザーが提出しているコードで、間違っているものを見つけた時に、正しくない解答をそのコードが出力するような入力を与えることで、自分の点数を得るシステム。</p></div>
+
+<h3><a id="h5-5-4"></a>mod を2 のべき乗にしない</h3>
+<p>先ほど「mod を乱数にするといくら悪意のあるユーザーでもハッシュの衝突を意図的に起こすのは難しくなる」という話をしましたが、 mod が <span class="equation">\( 2 \)</span> のべき乗の時は話が別です。このとき、ハッシュの法を乱数にしていても、意図的に非常に高い確率でハッシュを衝突させることが出来ます。絶対にやめましょう。</p>
+
+<h2><a id="h5-6"></a><span class="secno">5.6　</span>最後に</h2>
+<p>Rolling Hash の話をしてきましたが如何でしたでしょうか。ハッシュの衝突を回避するにあたって気を付けないといけないことはまだあるのですが、ここでは割愛します。</p>
+<p>最後に<a href="https://maguroplusia.github.io/Library/String/RollingHash.cpp" class="link">自分の書いた実装（C++）</a>を掲載しておきます。競技プログラミング特有の書き方（using namespace std;等）があるのは大目に見てください。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="watcol.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ QRコードを読む</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="hinata.html">
+            <div class="book-cursor"><span class="cursor-next">▶ プログラミングを始める</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

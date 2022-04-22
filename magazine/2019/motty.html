@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="iPhoneを使ってお手軽VR" href="takepan.html"><link rel="prev" title="UnityのAIを使って…" href="Hiro.html">  <meta name="generator" content="Re:VIEW" />
+  <title>Atomで快適なプログラミング環境を構築してみる | NPCA部誌2019</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2019</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">前書き</a></li>
+<li><a href="object_1037.html">1 JINS MEMEで美少女になる話</a></li>
+<li><a href="sashiming.html">2 Google Apps ScriptでTwitter botを作ってみる</a></li>
+<li><a href="sarugami.html">3 Blenderで簡単モデリング！</a></li>
+<li><a href="ficorajo.html">4 C#でファイルを暗号化する</a></li>
+<li><a href="Hiro.html">5 UnityのAIを使って…</a></li>
+<li><a href="motty.html">6 Atomで快適なプログラミング環境を構築してみる</a></li>
+<li><a href="takepan.html">7 iPhoneを使ってお手軽VR</a></li>
+<li><a href="kuro.html">8 Windowsのショートカットキーについて</a></li>
+<li><a href="kusafukakota.html">9 Gmailの活用術</a></li>
+<li><a href="2lu3.html">10 未踏ジュニアとLifeWatcher</a></li>
+<li><a href="harady.html">11 グラフのおはなし</a></li>
+<li><a href="cobalt.html">12 C#の布教</a></li>
+<li><a href="RLtdExp.html">13 プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</a></li>
+<li><a href="mafusuke.html">14 Pythonの高速化について</a></li>
+<li><a href="neko.html">15 Siv3Dでゲームを作る</a></li>
+<li><a href="uraoz.html">16 明日(半年後)から始めるVRChat</a></li>
+<li><a href="hinata.html">17 NPCAの部誌執筆を支える技術</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h6"></a><span class="secno">第6章　</span>Atomで快適なプログラミング環境を構築してみる</h1>
+<p><p style="text-align:right">75回生 motty0523</p></p>
+
+<h2><a id="h6-1"></a><span class="secno">6.1　</span>前書き</h2>
+
+<h3><a id="h6-1-1"></a>ご挨拶</h3>
+<p>こんにちは、75回生のmotty0533です。</p>
+<p>今年初めて部誌を書きます。</p>
+<p>よろしくお願いいたします。</p>
+
+<h3><a id="h6-1-2"></a>プログラミングってなにが重要？</h3>
+<p>早速ですが、皆さんはプログラミングをするときに何が一番重要だと思いますか？</p>
+<p>そりゃどの言語を選ぶかだろ！と言われそうですね。もちろん僕もそう思います。</p>
+<p>でも、複数の言語を使い分ける人だってたくさんいるはずです。</p>
+<p>例えば、競技プログラミングはC++を使って、普段の開発ではJavaを使う...などなど。</p>
+<p>そうなってくると、言語の選択以外にも重要な事が出てくると思います。</p>
+<p><b>そう、エディタです。</b></p>
+<p>例えば、C言語では<a href="https://visualstudio.microsoft.com/ja/" class="link">Visual Studio</a>を使っているとしましょう。そして、Javaの環境を整えたいと思っていることにします。</p>
+<p>ところが、Visual StudioでJavaは使えません。となると、別のエディタを使う必要が出てきます。</p>
+<p>要は、それぞれの言語に合わせて、違うエディタを使わなければいけないことになるわけです。</p>
+<p>いやこれ、めんどくさいですよね。</p>
+<p>C++使うときにVisual Studio使って、その後Javaで例えば<a href="https://www.eclipse.org/downloads/" class="link">Eclipse</a>を使って...効率悪いですよね。</p>
+<p>というわけで、出来る限り一つのエディタでコンパクトにコーディングしたいわけです。</p>
+<p>これを解決してくれる凄腕エディタはいくつもあるのですが、今回は僕が気に入っている、<b>Atom</b>というエディタを使って、プログラミング環境を構築してみたいと思います。</p>
+<p>というわけで、お待たせいたしました。やっと本題に入ります。</p>
+
+<h2><a id="h6-2"></a><span class="secno">6.2　</span>とりあえずAtomを自分のパソコンに入れよう</h2>
+
+<h3><a id="h6-2-1"></a>Atomのインストール</h3>
+<p>さて、まずはAtomを自分のパソコンに入れないと何も始まりません。</p>
+<p><a href="https://atom.io/" class="link">ここ</a>でインストーラをゲットしましょう。</p>
+<p>インストーラを実行すれば何もしなくても勝手にインストールを進めてくれます。</p>
+<p>しばらくたったらこんな画面が出てくるはずです。</p>
+<div id="id_Atom_E5_88_9D_E6_9C_9F_E7_94_BB_E9_9D_A2" class="image">
+<img src="images/motty/Atom初期画面.jpg" alt="待ってたらこの画面が勝手に開くはず" class="width-060per" />
+<p class="caption">
+図6.1: 待ってたらこの画面が勝手に開くはず
+</p>
+</div>
+
+<h3><a id="h6-2-2"></a>ちょっとした設定</h3>
+<p>ここから基本的な設定を進めていきます。</p>
+<p>まずは下の画像が示している、&quot;Show Welcome Guide when opening Atom&quot;という部分のチェックマークを外しちゃいましょう。</p>
+<p>毎回これが出てこられても邪魔です。</p>
+<div id="id_Atom_E5_88_9D_E6_9C_9F_E7_94_BB_E9_9D_A2_EF_BC_92" class="image">
+<img src="images/motty/Atom初期画面２.jpg" alt="このチェックマークを外そう" class="width-060per" />
+<p class="caption">
+図6.2: このチェックマークを外そう
+</p>
+</div>
+<p>さて、邪魔者を消したところで、次にメニューバーや、設定画面の日本語化をしてみましょう。</p>
+<p><b>japanese-menu</b>という有名なパッケージがあります。まずは、画面左上のメニューバーから&quot;File&quot;→&quot;Settings&quot;を選択しましょう。</p>
+<div id="id__E8_A8_AD_E5_AE_9A_E7_94_BB_E9_9D_A2_E3_82_AA_E3_83_BC_E3_83_97_E3_83_B3" class="image">
+<img src="images/motty/設定画面オープン.jpg" alt="環境設定を開く" class="width-060per" />
+<p class="caption">
+図6.3: 環境設定を開く
+</p>
+</div>
+<p>さて、それを開けたらいよいよパッケージをインストールします。</p>
+<p>Settingsタブの中にある、&quot;Install&quot;を選択して、Search packagesのところに<b>&quot;japanese-menu&quot;</b>と入力しましょう。一番上の候補に出てきたパッケージをインストールすると、日本語化されているはずです。</p>
+<div id="id_japanese-manu_E3_82_A4_E3_83_B3_E3_82_B9_E3_83_88_E3_83_BC_E3_83_AB" class="image">
+<img src="images/motty/japanese-manuインストール.jpg" alt="パッケージをインストール" class="width-060per" />
+<p class="caption">
+図6.4: パッケージをインストール
+</p>
+</div>
+<div id="id__E6_97_A5_E6_9C_AC_E8_AA_9E_E5_8C_96_E5_AE_8C_E4_BA_86" class="image">
+<img src="images/motty/日本語化完了.jpg" alt="日本語化成功！" class="width-060per" />
+<p class="caption">
+図6.5: 日本語化成功！
+</p>
+</div>
+<p>さて、このへんで一息入れましょう。肝心なことがまだわかっていなくて気になっている方もいらっしゃると思うので、少し解説します。</p>
+<div class="column">
+
+<h3><a id="column-1"></a>そもそもAtomってなんなの？使う利点は？</h3>
+<p>Atomは、GitHubが提供しているテキストエディタです。</p>
+<p>オープンソースで開発されており、パッケージと呼ばれる拡張機能を追加することでより自分好みのエディタにすることができます。</p>
+<p>GitHubが提供していることもあって、特にGitと連携したりということが楽ちんにできます。</p>
+<div id="id_git_E3_81_A8Atom" class="image">
+<img src="images/motty/gitとAtom.png" alt="実際にこの記事を書いているときにもGitと連携させている" class="width-060per" />
+<p class="caption">
+図6.6: 実際にこの記事を書いているときにもGitと連携させている
+</p>
+</div>
+<p>ちなみに、似たような機能を持つエディタには、Microsoftが提供している<a href="https://azure.microsoft.com/ja-jp/products/visual-studio-code/" class="link">Visual Studio Code</a>や、</p>
+<p><a href="https://www.sublimetext.com/3" class="link">Subilime Text</a>などがあります。</p>
+</div>
+
+<h2><a id="h6-3"></a><span class="secno">6.3　</span>GCCを導入する</h2>
+
+<h3><a id="h6-3-1"></a>コンパイラがプログラミングに必要</h3>
+<p>ここから少し脱線します。 プログラミングをしたい！となったときに必要なものに、<b>コンパイラ</b>があります。</p>
+<p>このコンパイラが、HelloWorldなどを実行してくれているわけですね。</p>
+<p>今回は、C/C++用のコンパイラ、GCCを導入していきたいと思います。</p>
+<p>既にGCCを導入済みの方は、飛ばしてもらって大丈夫です。</p>
+
+<h3><a id="h6-3-2"></a>MinGWをインストール</h3>
+<p>さて、まずはMinGWというものを<a href="http://bit.ly/2NOBXG9" class="link">ここ</a>からダウンロードして、インストーラを実行しましょう。</p>
+<p>そのまま言われたとおりに進めると、下のような画面になってインストールできるはずです。</p>
+<p>この部分はそんなに難しくないので割愛させていただきます。</p>
+<div id="id_Mingw_E3_82_A4_E3_83_B3_E3_82_B9_E3_83_88_E3_83_BC_E3_83_AB" class="image">
+<img src="images/motty/Mingwインストール.png" alt="進めていくとこんな感じになってインストールできるはず" class="width-060per" />
+<p class="caption">
+図6.7: 進めていくとこんな感じになってインストールできるはず
+</p>
+</div>
+<p>さて、これでMinGWはインストールできましたが、肝心のGCCはまだパソコンに入っていません。</p>
+
+<h3><a id="h6-3-3"></a>いよいよGCCのインストール</h3>
+<p>ここから更にもうひと手間...いや、2、3手間加える必要があります。</p>
+<p>まずはスタートメニューからMinGWを開きましょう。</p>
+<p>そうすると、こんな感じの画面が開くはずです。</p>
+<div id="id_Mingw_E3_81_84_E3_82_93_E3_81_99_E3_81_A8_E3_82_8C_E3_83_BC_E3_81_97_E3_82_87_E3_82_93" class="image">
+<img src="images/motty/Mingwいんすとれーしょん.png" alt="こんな感じのが開くはず" class="width-060per" />
+<p class="caption">
+図6.8: こんな感じのが開くはず
+</p>
+</div>
+<p>さて、ここからついにGCCをインストールします。</p>
+<p>まずは、<b>mingw32-base</b>という項目を右クリックしましょう。</p>
+<p>そうすると、下の画面のような感じのが出てくるはずです。</p>
+<div id="id__E5_8F_B3_E3_82_AF_E3_83_AA_E3_83_83_E3_82_AF_E3_81_BF_E3_82_93_E3_81_98_E3_83_BC_E3_81_A0_E3_81_B6_E3_82_8A_E3_82_85_E3_83_BC" class="image">
+<img src="images/motty/右クリックみんじーだぶりゅー.png" alt="画像では既にインストール済みですが本来はここをクリックする" class="width-060per" />
+<p class="caption">
+図6.9: 画像では既にインストール済みですが本来はここをクリックする
+</p>
+</div>
+<p>出てきたら、赤線で示してある、<b>Mark for Installation</b>をクリックしてください。</p>
+<p>これでこの項目をインストールするリストに追加できました。</p>
+<p>さて、この動作をもう一度行います。</p>
+<p>今度は<b>mingw32-gcc-g++</b>という項目に同じことを行ってください。</p>
+<p>右クリックして、<b>Mark for Installation</b>をクリックです。</p>
+<p>これで下準備は整いました。</p>
+<p>後は下の画像のように、<b>Installtion→Apply Changes</b>とクリックしましょう。</p>
+<div id="id__E3_83_81_E3_82_A7_E3_83_B3_E3_82_B8_E3_82_B6gcc" class="image">
+<img src="images/motty/チェンジザgcc.png" alt="こうしよう" class="width-060per" />
+<p class="caption">
+図6.10: こうしよう
+</p>
+</div>
+<p>さて、ここまで来たら、後は<b>Apply</b>をクリックするだけです。</p>
+<div id="id_gcc_E3_82_A4_E3_83_B3_E3_82_B9_E3_83_88_E3_83_BC_E3_83_AB" class="image">
+<img src="images/motty/gccインストール.png" alt="こうしてやろう！" class="width-060per" />
+<p class="caption">
+図6.11: こうしてやろう！
+</p>
+</div>
+<p>さて、うまくいったら下の画像のようになるはずです。closeしてやりましょう。</p>
+<div id="id__E3_82_AF_E3_83_AD_E3_83_BC_E3_82_BA" class="image">
+<img src="images/motty/クローズ.png" alt="閉じちゃえ！" class="width-060per" />
+<p class="caption">
+図6.12: 閉じちゃえ！
+</p>
+</div>
+
+<h3><a id="h6-3-4"></a>GCCインストール完了</h3>
+<p>さて、これで一通りGCCをインストールできました。でもまだ作業は残っています。</p>
+<p>もうちょっとがんばりましょう。一息入れましょうか。</p>
+<div class="column">
+
+<h3><a id="column-2"></a>MinGWってなんなの？</h3>
+<p>さて、ここまで長々と説明してきましたが、そもそもMinGWってなんなんだよという方もいらっしゃると思います。</p>
+<p>ということで、今から説明していきます。(説明なんて良いから早く環境整えたいという方は飛ばしてください)</p>
+<p>さて、先程GCCというのはコンパイラの一種だという事を言いました。</p>
+<p>では、なぜGCCを直接インストールできず、MinGWとかいうものを使わなくてはいけないのでしょうか。</p>
+<p>ってまぁ、僕も詳しくは知りません。(おい)</p>
+<p>単純に言うと、「これを使ったほうが楽だから」でしょうか。</p>
+<p>そもそもGCCというものはWindows向けに作られたものではありません。</p>
+<p>それをWindows環境に移植したものが、MinGWなわけですね。</p>
+<p>MinGWの中には、いろいろ便利なものが入っていて、それがGCCを使いやすくしている、と言ったほうがわかりやすいかもしれません。</p>
+<p>とにかく、このMinGWは偉大、ということですね。</p>
+<p>なんだか解説になっていませんが、アバウトに捉えていればいいと思います。</p>
+</div>
+
+<h2><a id="h6-4"></a><span class="secno">6.4　</span>GCCのパスを通す</h2>
+
+<h3><a id="h6-4-1"></a>パスを通さないと、不便</h3>
+<p>さて、ここから最後の過程に入ります。</p>
+<p>使いやすくするためには、<b>「パスを通す」</b>という作業をする必要があります。</p>
+<p>もうちょっと頑張りましょう。</p>
+
+<h3><a id="h6-4-2"></a>パスを通す</h3>
+<p>まずはコントロールパネルを開きましょう。</p>
+<p>そして、<b>システムとセキュリティ、システム、システムの詳細設定</b>の順に開いてください。</p>
+<div id="id__E3_82_B3_E3_83_B3_E3_83_88_E3_83_AD_E3_83_BC_E3_83_AB_E3_83_91_E3_83_8D_E3_83_AB_E3_82_AA_E3_83_BC_E3_83_97_E3_83_B3" class="image">
+<img src="images/motty/コントロールパネルオープン.png" alt="これを開いて" class="width-040per" />
+<p class="caption">
+図6.13: これを開いて
+</p>
+</div>
+<div id="id__E3_82_B3_E3_83_B3_E3_83_88_E3_83_AD_E3_83_BC_E3_83_AB_E3_83_91_E3_83_8D_E3_83_AB_E3_82_AA_E3_83_BC_E3_83_97_E3_83_B3_EF_BC_92" class="image">
+<img src="images/motty/コントロールパネルオープン２.png" alt="これを開いて" class="width-040per" />
+<p class="caption">
+図6.14: これを開いて
+</p>
+</div>
+<div id="id__E3_82_B3_E3_83_B3_E3_83_88_E3_83_AD_E3_83_BC_E3_83_AB_E3_83_91_E3_83_8D_E3_83_AB_E3_82_AA_E3_83_BC_E3_83_97_E3_83_B3_EF_BC_93" class="image">
+<img src="images/motty/コントロールパネルオープン３.png" alt="こうだ！" class="width-040per" />
+<p class="caption">
+図6.15: こうだ！
+</p>
+</div>
+<p>さて、それが開けたら、<b>環境変数</b>をクリックしてください。</p>
+<div id="id__E7_92_B0_E5_A2_83_E5_A4_89_E6_95_B0_EF_BC_81" class="image">
+<img src="images/motty/環境変数！.png" alt="ここをクリック" class="width-060per" />
+<p class="caption">
+図6.16: ここをクリック
+</p>
+</div>
+<p>下の画面のようになったら、<b>PATH</b>という項目を選択して、<b>編集</b>をクリックします。</p>
+<div id="id__E3_83_91_E3_82_B9_E3_82_92_E7_B7_A8_E9_9B_86" class="image">
+<img src="images/motty/パスを編集.png" alt="画像のように" class="width-060per" />
+<p class="caption">
+図6.17: 画像のように
+</p>
+</div>
+<p>そして、<b>新規</b>から、<b>C:\MinGW\bin</b>を追加します。</p>
+<div id="id__E3_83_91_E3_82_B9_E3_82_92_E8_BF_BD_E5_8A_A0" class="image">
+<img src="images/motty/パスを追加.png" alt="あとちょい" class="width-060per" />
+<p class="caption">
+図6.18: あとちょい
+</p>
+</div>
+<p>さて、あとはOKを押せばこれでパスは追加できました。</p>
+
+<h3><a id="h6-4-3"></a>完了</h3>
+<p>お疲れ様です。これでGCCをインストールしてパスを通せたのでめでたく便利に使える状態になりました。</p>
+<p>では早速プログラミングができる環境を作っていきましょう。</p>
+
+<h2><a id="h6-5"></a><span class="secno">6.5　</span>Atomおすすめパッケージ集</h2>
+
+<h3><a id="h6-5-1"></a>注意点</h3>
+<p>さて、ここからは僕がおすすめしたいパッケージを書ける限り書いていくのですが、GCCを導入していることからもわかるとおり、記事のテーマとしてはC言語、C++がメインなのでどうしても他の言語用のパッケージについては若干説明が薄くなってしまうと思います。</p>
+<p>では早速おすすめのパッケージを紹介していきたいと思います。</p>
+
+<h3><a id="h6-5-2"></a>linter系</h3>
+
+<h4><a id="h6-5-2-1"></a>linter</h4>
+<p>書いたコードを静的解析、要はErrorやWarningのある場所があったら場所を知らせてくれます。</p>
+<p>なくてもプログラミングはできますが、あるとより快適にプログラミングをすることができます。</p>
+<p>ちなみにこれは実際に静的解析するパッケージの前提のものなので、動作させるためには他のパッケージも導入する必要があります。</p>
+<p>また、言語に応じてパッケージを入れる必要があり、例えばC言語でGCCを使っているなら「linter-gcc」というパッケージを入れないといけません。</p>
+<p>ここは言語によって変わってくるので、割愛させていただきます。</p>
+
+<h4><a id="h6-5-2-2"></a>linter-ui-default</h4>
+<p>同じくlinterの前提パッケージの一つです。</p>
+
+<h4><a id="h6-5-2-3"></a>busy-signal</h4>
+<p>同じくlinterの前提パッケージの一つです。</p>
+
+<h4><a id="h6-5-2-4"></a>Intentions</h4>
+<p>同じく前提パッケージの一つです。</p>
+
+<h3><a id="h6-5-3"></a>gpp-compiler</h3>
+<p>F5ボタン一つでC++、Cのコードを実行するパッケージです。</p>
+<p>コマンドプロンプトからいちいち実行するのがめんどくさい人におすすめ。</p>
+
+<h3><a id="h6-5-4"></a>atom-runner</h3>
+<p>これもコードを実行できるパッケージですが、こちらはC++、C以外でも実行することができます。</p>
+<ul>
+<li>実行：Ctrl+R(Win,LinuxではAlt+R)</li>
+<li>停止：Ctrl+Shift+C</li>
+<li>実行ウィンドウを閉じる：Esc</li>
+</ul>
+
+<h3><a id="h6-5-5"></a>open-recent</h3>
+<p>開いたことのあるプロジェクトやファイルを開くことができます。</p>
+<p>よくわからない場所に保存してしまったファイルをいちいち探して開かなくてもよくなるので便利ですね。</p>
+<div id="open-recent" class="image">
+<img src="images/motty/open-recent.png" alt="履歴からファイルなどを開ける" class="width-060per" />
+<p class="caption">
+図6.19: 履歴からファイルなどを開ける
+</p>
+</div>
+
+<h3><a id="h6-5-6"></a>minimap</h3>
+<p>Sublime Textなどに標準で装備されているminimapをAtomで使えるようになります。</p>
+<div id="minimap" class="image">
+<img src="images/motty/minimap.png" alt="Atomでminimapが使える" class="width-060per" />
+<p class="caption">
+図6.20: Atomでminimapが使える
+</p>
+</div>
+
+<h3><a id="h6-5-7"></a>file-icons</h3>
+<p>プログラミング言語ごとにファイルのアイコンを変更してくれます。かなりの数のファイルの種類に対応しているのでわかりやすくて便利です。</p>
+<p>他にもたくさん便利なパッケージはありますが、キリがないので今回はこの辺にしたいと思います。</p>
+
+<h2><a id="h6-6"></a><span class="secno">6.6　</span>最後に</h2>
+<p>長くなりましたが、ここまで読んでいただきありがとうございました。</p>
+<p>皆さんが快適にプログラミングをできるよう祈っています。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="Hiro.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ UnityのAIを使って…</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="takepan.html">
+            <div class="book-cursor"><span class="cursor-next">▶ iPhoneを使ってお手軽VR</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

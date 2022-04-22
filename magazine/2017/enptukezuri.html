@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+<link rel="next" title="「適当に構文解析する話(575)」by Hinata (72)" href="hinata.html"><link rel="prev" title="「BOARD;GAME 負荷領域のデジャヴ」 by ni-ni (72)" href="niini.html">  <meta name="generator" content="Re:VIEW" />
+  <title>「Blenderのシミュレーション機能を使う」 by enptukezuri (71) | NPCA部誌2017</title>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2017</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">まえがき</a></li>
+<li><a href="object_1037.html">1 「TwitterのBotを作ってみる」 by object_1037 (73)</a></li>
+<li><a href="physics.html">2 「競技プログラミング入門」 by 井上誠大 (73)</a></li>
+<li><a href="taizo0122.html">3 「計算量」 by taizo0122 (72)</a></li>
+<li><a href="2lu3.html">4 「ダイクストラ法とアテナの本」 by 2lu3 (73)</a></li>
+<li><a href="niini.html">5 「BOARD;GAME 負荷領域のデジャヴ」 by ni-ni (72)</a></li>
+<li><a href="enptukezuri.html">6 「Blenderのシミュレーション機能を使う」 by enptukezuri (71)</a></li>
+<li><a href="hinata.html">7 「適当に構文解析する話(575)」by Hinata (72)</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h6"></a><span class="secno">第6章　</span>「Blenderのシミュレーション機能を使う」 by enptukezuri (71)</h1>
+
+<h2><a id="h6-1"></a><span class="secno">6.1　</span>初めに</h2>
+<p>どうも、71回生のenptukezuriと言います。ここしばらくはアマ研に亡命しているのでNPCAではあまり活動していません。それならなんで部誌なんか書くんだって思う方がいるかもしれませんが、よく見てください、なんとこの部誌には、ほかに71回生の執筆者はいないんですね。高2にもなって誰も記事を書かないってのはさすがにね、まあそういうことです。</p>
+<p>さて、今回のタイトルは「Blenderのシミュレーション機能を使う」ということなんですが、内容は主に煙シミュレーションについて、レベルは入門書程度となっています。そんなわけで、Blenderについてよく知らないという方でも理解できると思います。それでは、Blender初心者の、Blender初心者による、Blender初心者のためのBlenderシミュレーション機能の記事、始めていきたいと思います。</p>
+
+<h2><a id="h6-2"></a><span class="secno">6.2　</span>Blenderについて</h2>
+<p>ご存知の方も多いと思いますが、Blenderはオープンソースの3DCG制作ツールです。無料でありながら市販のソフトにも負けない機能性を持つと言われています。説明はこのくらいにして、とりあえず過去作を見せてみたいと思います。</p>
+<div id="t-rex" class="image">
+<img src="images/enptukezuri/t-rex.jpg" alt="恐竜です、多分。" class="width-050per" />
+<p class="caption">
+図6.1: 恐竜です、多分。
+</p>
+</div>
+<p>まあ初心者丸出しですがお許しください。Blenderはこのようなモデリングだけでなく、アニメーション制作などにも使えます。ちなみに今回使うBlenderのバージョンは2.78cです。</p>
+
+<h2><a id="h6-3"></a><span class="secno">6.3　</span>Blenderのインストール</h2>
+<p>すでにBlenderをインストール済みの方は読み飛ばしていただいて構いません。Blenderのダウンロードサイト(<a href="https://www.blender.org/download/" class="link">https://www.blender.org/download/</a>)からお使いのPCに応じたBlenderのインストーラーをダウンロードして、あとはその指示に従えばインストールできます。</p>
+<div id="blender_dl" class="image">
+<img src="images/enptukezuri/blender_dl.jpg" alt="blenderのダウンロードサイト" class="width-050per" />
+<p class="caption">
+図6.2: blenderのダウンロードサイト
+</p>
+</div>
+
+<h2><a id="h6-4"></a><span class="secno">6.4　</span>煙シミュレーション</h2>
+<p>今回は煙シミュレーションについて扱います。手動で作ると途方もなく時間がかかってしまいそうな煙も、煙シミュレーションなら一発です。とりあえずどんな事ができるか見てみましょう。</p>
+<div id="smoke" class="image">
+<img src="images/enptukezuri/smoke.jpg" alt="煙シミュレーションの見本" class="width-050per" />
+<p class="caption">
+図6.3: 煙シミュレーションの見本
+</p>
+</div>
+<p>この画像では煙だけでなく炎も付けています。それではさっそく実際の使い方を見ていきます。</p>
+
+<h3><a id="h6-4-1"></a>クイック煙を使う</h3>
+<p>Blenderで煙シミュレーションを使う上で最も簡単な方法がクイック煙です。まずBlenderを起動します。最初に立方体のオブジェクトが選択されているはずです。その上で、図6.4のように、Object &gt; Quick Effects &gt; Quick Smokeと選択すれば、図6.5のようになります。</p>
+<div id="QS1" class="image">
+<img src="images/enptukezuri/QS1.jpg" alt="クイック煙の手順1" class="width-050per" />
+<p class="caption">
+図6.4: クイック煙の手順1
+</p>
+</div>
+<div id="QS2" class="image">
+<img src="images/enptukezuri/QS2.jpg" alt="クイック煙の手順2" class="width-050per" />
+<p class="caption">
+図6.5: クイック煙の手順2
+</p>
+</div>
+<p>先ほどの立方体が、辺だけになり、外側に新たに直方体が生成されています。そこで下側Timelineの真ん中あたりにある右向きの三角印のボタンをクリックして、再生してみます。すると、内側の立方体から煙が出ているのが分かります。これで一応は煙シミュレーションが使えたことになります。</p>
+
+<h3><a id="h6-4-2"></a>クイック煙を使わない方法</h3>
+<p>クイック煙で自動でやってくれるいくつかの設定を手動でする方法を見ていきましょう。まず、先ほどのウィンドウを閉じて、新しくBlenderを起動します。すでに立方体Shift+Aまたは、3Dビューの下側にある「追加」から、追加メニューを開いて、 メッシュ &gt; 立方体として新に立方体を生成します。さらに、オブジェクトモードとなっているところを、編集モードに変更します。下のようにトランスフォームマニピュレーターを拡大縮小に設定します。</p>
+<div id="TFMN" class="image">
+<img src="images/enptukezuri/TFMN.jpg" alt="フローの設定" class="width-020per" />
+<p class="caption">
+図6.6: フローの設定
+</p>
+</div>
+<p>中央の丸を適当にドラッグして拡大します。そして、再びオブジェクトモードに戻します。最初の立方体を選択して、左側プロパティタブの物理演算を開いて、煙&gt;フローと選択します。</p>
+<div id="SF1" class="image">
+<img src="images/enptukezuri/SF1.jpg" alt="フローの設定" class="width-050per" />
+<p class="caption">
+図6.7: フローの設定
+</p>
+</div>
+<p>次に、拡大した立方体を選択して、物理演算を開いて、スモーク&gt;ドメインと選択します。この立方体が</p>
+<div id="SD1" class="image">
+<img src="images/enptukezuri/SD1.jpg" alt="ドメインの設定" class="width-050per" />
+<p class="caption">
+図6.8: ドメインの設定
+</p>
+</div>
+<p>先ほどと同じように、再生してみると、</p>
+<div id="S1" class="image">
+<img src="images/enptukezuri/S1.jpg" alt="煙シミュレーションの再生" class="width-050per" />
+<p class="caption">
+図6.9: 煙シミュレーションの再生
+</p>
+</div>
+<p>のようになります。先ほどとは違って内側の立方体が辺だけにはなっていませんが、今回のテーマとは関係がないので割愛します。フローは、煙を発生させたり、消滅させたりするオブジェクト(ここでは煙の発生)で、ドメインとはシミュレーションを行う範囲を表すオブジェクトです。ドメインの外側ではシミュレーションは行われません。フローやドメインはメッシュオブジェクトであればどのようなものでも設定可能です。図6.10は、スザンヌをフローに、UV球をドメインに設定した例ですが、ドメインは立方体にするのが一般的です。ここではコリジョンについては触れませんでしたが、あとで扱いたいと思います。</p>
+<div id="SBS" class="image">
+<img src="images/enptukezuri/SBS.jpg" alt="立方体以外を設定した場合" class="width-050per" />
+<p class="caption">
+図6.10: 立方体以外を設定した場合
+</p>
+</div>
+
+<h3><a id="h6-4-3"></a>オブジェクト内での煙の発生位置のコントロール</h3>
+
+<h4><a id="h6-4-3-1"></a>頂点グループを使う</h4>
+<p>オブジェクトの中で、特定の頂点の周辺から煙を発生させるように設定してみます。まず頂点グループを作っていきます。オブジェクトモードで内側の立方体を選択して、編集モードにします。そして、プロパティエディタからデータ(逆三角形っぽいボタン)を選択、頂点グループタブを開いて、右側のプラスボタンから新しい頂点グループを追加します。3Dビューで煙の発生源に設定したい頂点を選択して、頂点グループタブ下側の割り当てボタンを押します。これで頂点グループに頂点の割り当てが完了しました。</p>
+<div id="VG" class="image">
+<img src="images/enptukezuri/VG.jpg" alt="頂点グループの作成" class="width-050per" />
+<p class="caption">
+図6.11: 頂点グループの作成
+</p>
+</div>
+<p>再びオブジェクトモードに戻して、内側の立方体を選択した状態で、物理演算を選択します。下側フローの詳細設定のタブを開いて、頂点グループに先ほど追加した頂点グループを割り当てます。その状態でもう一度再生してみます。</p>
+<div id="VGS" class="image">
+<img src="images/enptukezuri/VGS.jpg" alt="頂点グループを設定した煙シミュレーション" class="width-050per" />
+<p class="caption">
+図6.12: 頂点グループを設定した煙シミュレーション
+</p>
+</div>
+<p>こんな風に頂点グループに設定された頂点から煙を発生させることができました。</p>
+
+<h4><a id="h6-4-3-2"></a>テクスチャを使う</h4>
+<p>テクスチャを基にして煙の生成範囲を設定してみます。画像ではわかりやすいように平面から発生させています。まず、適当なテクスチャを作ります。プロパティエディタの「テクスチャ」から「新規」をクリックして新しいテクスチャを作ります。タイプから、適当なタイプを選択します。ここではとりあえず「変調ノイズ」にしておきます。フローに設定されているオブジェクトを選択して、プロパティエディタの「物理演算」の中の「煙のフローの詳細設定」タブを開きます。そして、「テクスチャを使用」のチェックボックスにチェックを入れます。その下に先ほど生成したテクスチャを設定します。この状態で再生した状態を上から見たのがこちらです。テクスチャが反映されているのが分かります。</p>
+<div id="NZT" class="image">
+<img src="images/enptukezuri/NZT.jpg" alt="ノイズテクスチャを利用した煙シミュレーション" class="width-050per" />
+<p class="caption">
+図6.13: ノイズテクスチャを利用した煙シミュレーション
+</p>
+</div>
+
+<h3><a id="h6-4-4"></a>煙の設定</h3>
+<p>煙の設定に一部を説明します。</p>
+
+<h4><a id="h6-4-4-1"></a>フロー</h4>
+
+<h5><a id="h6-4-4-1-1"></a>煙タブでの設定</h5>
+<dl>
+<dt>フロータイプ</dt>
+<dd></dd>
+</dl>
+<p>ここで煙とか炎とか流出口とか設定出来ます。図6.16では、左から煙、煙+炎、炎に設定した立方体を、左上に流出口に設定した平面を配置しています。炎に設定しても、炎からも煙が出ます。流出口は、接触した煙や炎を消滅させます。</p>
+<div id="SFC" class="image">
+<img src="images/enptukezuri/SFC.jpg" alt="フロータイプの比較" class="width-050per" />
+<p class="caption">
+図6.14: フロータイプの比較
+</p>
+</div>
+<dl>
+<dt>サーフェス</dt>
+<dd>メッシュの表面から発生する煙の量を変更します。</dd>
+<dt>ボリューム</dt>
+<dd>立体のメッシュオブジェクトの内部から発生する煙の量を設定します。</dd>
+<dt>密度</dt>
+<dd>発生する煙の密度</dd>
+<dt>絶対密度</dt>
+<dd>オンにすると</dd>
+<dt>初期速度</dt>
+<dd>ソースに設定した値に発生源の速度を掛けた初速を煙に与え、ノーマルに設定した速度を発生源の法線の方向に与えます。</dd>
+<dt>煙の色</dt>
+<dd>そのまま煙の色が設定できます。</dd>
+<dt>サブフレーム</dt>
+<dd>フレームの間に追加でサンプリングする回数を設定します。設定するとより細かくシミュレーションが計算されます。</dd>
+</dl>
+
+<h4><a id="h6-4-4-2"></a>ドメイン</h4>
+
+<h5><a id="h6-4-4-2-1"></a>煙タブでの設定</h5>
+<dl>
+<dt>解像度</dt>
+<dd>シミュレーションの細かさを設定します。</dd>
+<dt>時間</dt>
+<dd>拡大縮小でシミュレーション速度を設定します。</dd>
+<dt>周囲の境界の状態</dt>
+<dd></dd>
+</dl>
+<p>解放されている部分に接触した煙は消滅します。</p>
+
+<h5><a id="h6-4-4-2-2"></a>煙の適応ドメイン</h5>
+<p>これを設定すると、ドメインの中で煙の存在範囲に応じた範囲でシミュレーションされます。無駄な計算が減るので軽量になります。</p>
+
+<h5><a id="h6-4-4-2-3"></a>高解像度の煙</h5>
+<p>煙の模様を細かく出すことができます</p>
+<div id="HS" class="image">
+<img src="images/enptukezuri/HS.jpg" alt="高解像度の煙" class="width-050per" />
+<p class="caption">
+図6.15: 高解像度の煙
+</p>
+</div>
+
+<h3><a id="h6-4-5"></a>パーティクルシステム</h3>
+<p>これまでは煙はオブジェクトから直接発生していましたが、パーティクルを発生源にすることも可能です。パーティクルは簡単に言うと粒子です。新しくBlenderを起動して、最初の立方体が表示されている状態にします。プロパティエディタの「パーティクル」から下にある新規をクリックします。</p>
+<p>するとパーティクルシステムが新しく作成されます。再生してみると、図6.16のように立方体からパーティクルが発生して降っていきます。</p>
+<div id="PS" class="image">
+<img src="images/enptukezuri/PS.jpg" alt="パーティクルシステム" class="width-050per" />
+<p class="caption">
+図6.16: パーティクルシステム
+</p>
+</div>
+<p>煙を生成するうえでは、パーティクルは上に行ってくれるとありがたいので、「フィールドの重み」タブから、「エフェクターのグループ」の「重力」をクリックしてたとえば-1のように負の数を打ち込みます。あまりに絶対値の大きい数を設定するとすごい勢いで飛んでいくのでわかりにくいかと思います。Shift+←とするか、現在のフレームを表す緑色の線をドラッグしてタイムラインを開始フレームまで戻し手から、再度再生します。すると図6.17のようにパーティクルが上に行きます。</p>
+<div id="PSR" class="image">
+<img src="images/enptukezuri/PSR.jpg" alt="パーティクルシステム" class="width-050per" />
+<p class="caption">
+図6.17: パーティクルシステム
+</p>
+</div>
+<p>それではこのパーティクルから煙を発生させてみましょう。ここで立方体にクイック煙をかけます。「煙」タブを開いて、フローソースの設定をメッシュからパーティクルシステムに変更します。その下のパーティクルシステムの項目に、先ほど作成したパーティクルシステムを設定します。すると、図6.18のように、煙がパーティクルから発生します。</p>
+<div id="PSRS" class="image">
+<img src="images/enptukezuri/PSRS.jpg" alt="パーティクルから発生した煙" class="width-050per" />
+<p class="caption">
+図6.18: パーティクルから発生した煙
+</p>
+</div>
+<p>これでは煙が立ち込めすぎて嫌なので、ドメインに設定されているオブジェクトを選択して、「煙」タブから消滅のチェックボックスにチェックを入れます。ここではその下の時間を3ぐらいに設定しておくといい感じになりそうです。これでパーティクルから発生した煙が3フレームで消滅するようになりました。それから再びフローに設定されている立方体を選択して、「パーティクル」から「放射」タブの寿命を20に設定しておきます。これで発生したパーティクルが20フレームで消滅するようになりました。</p>
+<div id="PSRS2" class="image">
+<img src="images/enptukezuri/PSRS2.jpg" alt="設定を変更" class="width-050per" />
+<p class="caption">
+図6.19: 設定を変更
+</p>
+</div>
+<p>===コリジョン</p>
+<p>メッシュオブジェクトを選択した状態で、ドメイン、フローの横にあるコリジョンを選択すると、オブジェクトにコリジョンを設定することができます。図6.20はスザンヌにコリジョンを設定して下から煙を当てた状態です。煙がスザンヌにさえぎられているのが分かります。</p>
+<div id="SC" class="image">
+<img src="images/enptukezuri/SC.jpg" alt="コリジョンを設定したスザンヌ" class="width-050per" />
+<p class="caption">
+図6.20: コリジョンを設定したスザンヌ
+</p>
+</div>
+
+<h2><a id="h6-5"></a><span class="secno">6.5　</span>煙のマテリアル設定</h2>
+<p>ここからは煙にマテリアルを設定していきます。</p>
+
+<h3><a id="h6-5-1"></a>blenderレンダー</h3>
+<p>クイックスモークで生成した炎+煙をレンダリングした様子が図6.21です。</p>
+<div id="LD" class="image">
+<img src="images/enptukezuri/LD.jpg" alt="そのまま" class="width-050per" />
+<p class="caption">
+図6.21: そのまま
+</p>
+</div>
+<p>通常使うマテリアルとは異なり、マテリアルタイプはボリューム、テクスチャタイプはボクセルデータとなっています。設定を見ていきます。</p>
+
+<h3><a id="h6-5-2"></a>シェーディングパネル</h3>
+<dl>
+<dt>散乱</dt>
+<dd>ドメイン内で光が散乱します。この値を大きくすると、ボリューム内に光が届かなくなるので暗くなります。</dd>
+<dt>非対称</dt>
+<dd>光がどちらに散乱するかを指定します。</dd>
+<dt>透過色</dt>
+<dd>光が透過した時の光の色の設定</dd>
+<dt>放射</dt>
+<dd>ボリュームが発する光の量の設定</dd>
+<dt>反射</dt>
+<dd>反射光の設定</dd>
+</dl>
+
+<h3><a id="h6-5-3"></a>照明パネル</h3>
+<p>ここではライティングの方法について設定できます。</p>
+
+<h3><a id="h6-5-4"></a>色の設定</h3>
+<p>カラーランプを使って炎のグラデーションを設定します。まずデフォルトの炎の様子がこちらです。</p>
+<div id="LD2" class="image">
+<img src="images/enptukezuri/LD2.jpg" alt="そのまま" class="width-050per" />
+<p class="caption">
+図6.22: そのまま
+</p>
+</div>
+<p>プロパティエディタからテクスチャを開いて、「色」タブを開きます。</p>
+<div id="CL1" class="image">
+<img src="images/enptukezuri/CL1.jpg" alt="カラーランプ設定前" class="width-050per" />
+<p class="caption">
+図6.23: カラーランプ設定前
+</p>
+</div>
+<p>はじめこのようになっています。ここからグリッドと色を調整します。</p>
+<div id="CL2" class="image">
+<img src="images/enptukezuri/CL2.jpg" alt="そのまま" class="width-050per" />
+<p class="caption">
+図6.24: そのまま
+</p>
+</div>
+<div id="CL3" class="image">
+<img src="images/enptukezuri/CL3.jpg" alt="カラーランプ設定後" class="width-050per" />
+<p class="caption">
+図6.25: カラーランプ設定後
+</p>
+</div>
+<p>例えばこのようになります。</p>
+<div id="CEF" class="image">
+<img src="images/enptukezuri/CEF.jpg" alt="カラーランプ設定後" class="width-050per" />
+<p class="caption">
+図6.26: カラーランプ設定後
+</p>
+</div>
+<p>再生してみると、透き通った炎ができました。</p>
+
+<h3><a id="h6-5-5"></a>Cyclesレンダー</h3>
+<p>blenderレンダーはこのくらいにして、Cyclesレンダーを見てみます。初期状態から、レンダーをCyclesレンダーに設定して、立方体にクイック煙を掛けて、煙のタイプを煙+炎にします。どこか適当なところで画面を分割して、ノードエディタを開きます。</p>
+<div id="CSF1" class="image">
+<img src="images/enptukezuri/CSF1.jpg" alt="初期状態" class="width-050per" />
+<p class="caption">
+図6.27: 初期状態
+</p>
+</div>
+<p>記事のためにこのような配置にしていますが、やりやすいようにやってくれれば構いません。このマテリアルは、シミュレーションの結果から煙と炎を作って足し合わせるようになっています。これだけで基本のマテリアルはできているのですが、今回はBlenderレンダーと同じように薄い炎を作ってみたいと思います。</p>
+<p>ノードエディタで「追加」&gt;「コンバータ」&gt;「数式」として数式のノードを作成し、「追加」になっているところを「乗算」に変更します。この乗算ノードをすでにある属性ノードと乗算ノードで挟む形で接続します。そしてカラーランプのアルファのソケットをどちらかの乗算ノードの余ったソケットにつなぎます。</p>
+<div id="SFNS2" class="image">
+<img src="images/enptukezuri/SFNS2.jpg" alt="乗算のノードを追加" class="width-050per" />
+<p class="caption">
+図6.28: 乗算のノードを追加
+</p>
+</div>
+<p>この時点ではまだ変化はありません。それでは先ほどと同じようにカラーランプをいじってみます。</p>
+<div id="CSF2" class="image">
+<img src="images/enptukezuri/CSF2.jpg" alt="炎を薄くする" class="width-050per" />
+<p class="caption">
+図6.29: 炎を薄くする
+</p>
+</div>
+<p>ついでに煙の密度がつながっている乗算の値も5から1に落としてやれば、こんな風に透き通った炎ができました。背景はプロパティエディタからワールドの設定を変更して背景を黒くしています。今回はこの辺で完成ということにしてレンダリングを行います。プロパティエディタのレンダーボタンからレンダータブのレンダーを押してレンダリングします。しばらく待つとUV/画像エディターに結果が出力されるので、F3を押して、あとはメモ帳などでもやるように普通に保存します。</p>
+<div id="fire" class="image">
+<img src="images/enptukezuri/fire.png" alt="結果" class="width-050per" />
+<p class="caption">
+図6.30: 結果
+</p>
+</div>
+<p>ちなみにこの後もう少し適当にマテリアルをいじっていると、こんな風になりました。</p>
+<div id="CSF3" class="image">
+<img src="images/enptukezuri/CSF3.jpg" alt="青くしてみた" class="width-050per" />
+<p class="caption">
+図6.31: 青くしてみた
+</p>
+</div>
+
+<h2><a id="h6-6"></a><span class="secno">6.6　</span>終わりに</h2>
+<p>いかがだったでしょうか。この様に煙シミュレーションを使えば簡単に煙や炎を作ることができます。以上で煙シミュレーションの機能をすべてではありませんが使える程度には紹介できたと思っています。それではお読みいただきありがとうございました。</p>
+      </div>
+      <nav class="book-navi book-prev">
+                <a href="niini.html">
+          <div class="book-cursor"><span class="cursor-prev">◀ 「BOARD;GAME 負荷領域のデジャヴ」 by ni-ni (72)</span></div>
+        </a>
+              </nav>
+      <nav class="book-navi book-next">
+                <a href="hinata.html">
+          <div class="book-cursor"><span class="cursor-next">▶ 「適当に構文解析する話(575)」by Hinata (72)</span></div>
+        </a>
+              </nav>
+    </div>
+  </div>
+  <footer>
+      </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+  <script>
+      (function() {
+          if (!window.katex) { return; }
+          var equations = [].slice.call(document.querySelectorAll(".equation"));
+          for (var i = 0; i < equations.length; i++) {
+              katex.render(equations[i].textContent, equations[i]);
+          }
+      }) ();
+  </script>
+</body>
+</html>

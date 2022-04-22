@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話" href="RLtdExp.html"><link rel="prev" title="グラフのおはなし" href="harady.html">  <meta name="generator" content="Re:VIEW" />
+  <title>C#の布教 | NPCA部誌2019</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2019</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">前書き</a></li>
+<li><a href="object_1037.html">1 JINS MEMEで美少女になる話</a></li>
+<li><a href="sashiming.html">2 Google Apps ScriptでTwitter botを作ってみる</a></li>
+<li><a href="sarugami.html">3 Blenderで簡単モデリング！</a></li>
+<li><a href="ficorajo.html">4 C#でファイルを暗号化する</a></li>
+<li><a href="Hiro.html">5 UnityのAIを使って…</a></li>
+<li><a href="motty.html">6 Atomで快適なプログラミング環境を構築してみる</a></li>
+<li><a href="takepan.html">7 iPhoneを使ってお手軽VR</a></li>
+<li><a href="kuro.html">8 Windowsのショートカットキーについて</a></li>
+<li><a href="kusafukakota.html">9 Gmailの活用術</a></li>
+<li><a href="2lu3.html">10 未踏ジュニアとLifeWatcher</a></li>
+<li><a href="harady.html">11 グラフのおはなし</a></li>
+<li><a href="cobalt.html">12 C#の布教</a></li>
+<li><a href="RLtdExp.html">13 プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</a></li>
+<li><a href="mafusuke.html">14 Pythonの高速化について</a></li>
+<li><a href="neko.html">15 Siv3Dでゲームを作る</a></li>
+<li><a href="uraoz.html">16 明日(半年後)から始めるVRChat</a></li>
+<li><a href="hinata.html">17 NPCAの部誌執筆を支える技術</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h12"></a><span class="secno">第12章　</span>C#の布教</h1>
+<p><p style="text-align:right">74回生 cobalt</p></p>
+<p>こんにちは、cobaltです。私はC#というプログラミング言語が大好きなので、C#について書いていこうと思います</p>
+
+<h2><a id="h12-1"></a><span class="secno">12.1　</span>まずプログラミング言語って何</h2>
+<p>プログラミング言語とは、コンピューター(この場合はスマートフォンなんかも含みます)に命令するために作られた人工言語です。長い歴史(70年ほど)と多くの種類があり、コンピューターの扱う2進数に近いものや、人間の扱う言葉に近いもの、3種類の言葉しか使わないものなど色々な種類があります。</p>
+
+<h2><a id="h12-2"></a><span class="secno">12.2　</span>じゃあC#って何</h2>
+<p>C#は、アンダース・ヘルスバーグというプログラマが設計した言語で、Cという言語を改良して作られたC++という言語に影響を受けて作られたのがC#です[C]→[C++]→[C+++]という理屈に基づき、プラスマーク四つを右上、右下、左上、左下に並べると#に見えることから、C++++ = C#という名前になったと言われています。</p>
+
+<h2><a id="h12-3"></a><span class="secno">12.3　</span>特徴</h2>
+<p>構文はCや、C++、それとJavaなどの影響を受けています。オブジェクト指向と呼ばれる部類の言語なので、クラスの概念があります。Microsoft .NET Frameworkの中心言語であり、.NET Frameworkにおいて最も高い生産性を持つと言われています。UnityのスクリプトはC#で書く必要があります。Unityのようなゲーム製作にも向いている言語ということです。</p>
+
+<h2><a id="h12-4"></a><span class="secno">12.4　</span>実例</h2>
+
+<h3><a id="h12-4-1"></a>オブジェクト指向の代名詞とも言えるクラスによって、コードをスマートに記述できる。</h3>
+<p>ゲーム制作を例に挙げましょう。今、ゲームの中に「小石」や「棒」と言ったアイテムを作るとします。クラスを用いない場合は、<code class="inline-code tt">StoneID</code>、<code class="inline-code tt">StickName</code>と言った変数でIDや名前を管理するでしょう。「剣」を追加するとなれば、<code class="inline-code tt">SwordID</code>や<code class="inline-code tt">SwordName</code>などの変数に加え、<code class="inline-code tt">SwordAttack</code>などの関数も必要になります。これではどの変数がどのアイテムのものなのかが伝わりにくく、読みづらくて仕方ありません。</p>
+<p>ここでクラスの出番です。クラスを使う一つ目の利点は、<code class="inline-code tt">StoneName</code>や<code class="inline-code tt">StoneID</code>を<code class="inline-code tt">Stone.Name</code> <code class="inline-code tt">Stone.ID</code>のように纏める事ができることです。IDと名前を<code class="inline-code tt">Item</code>クラスに纏める事で、Itemをベースに作った<code class="inline-code tt">Stone</code>や<code class="inline-code tt">Stick</code>からIDと名前にアクセスできるようになります。これなら変数も無闇に増えませんし、どのアイテムのIDなのかも一目でわかります。</p>
+<p>二つ目の利点は、<code class="inline-code tt">Item</code>クラスを拡張したものをアイテムとして扱える事です。<code class="inline-code tt">Item</code>クラスを親とする<code class="inline-code tt">Weapon</code>クラスを作り、<code class="inline-code tt">Weapon</code>クラスに<code class="inline-code tt">Attack</code>関数(C#ではメソッドと呼びます)を定義します。<code class="inline-code tt">Weapon</code>クラスは<code class="inline-code tt">Item</code>クラスの特徴を自動で受け継いでいるので、<code class="inline-code tt">Weapon</code>クラスでもIDや名前を扱う事ができます。<code class="inline-code tt">Weapon</code>クラスを元に<code class="inline-code tt">Sword</code>を作れば、<code class="inline-code tt">Sword</code>からID、名前に加え、<code class="inline-code tt">Attack</code>メソッドを扱う事が出来ます。</p>
+<p>ピストルやマシンガンといった銃火器も追加してみましょう。<code class="inline-code tt">Weapon</code>をベースに<code class="inline-code tt">Pistol</code>と<code class="inline-code tt">MachineGun</code>を作って... ですが<code class="inline-code tt">Weapon</code>クラスは剣や斧を想定したものなので、<code class="inline-code tt">Weapon</code>クラスをベースとする銃は殴ることしかできません。<code class="inline-code tt">Weapon</code>を書き換えるしかないのでしょうか。</p>
+<p>そこで<code class="inline-code tt">Weapon</code>クラスをさらに拡張してみましょう。<code class="inline-code tt">Weapon</code>クラスを親とする<code class="inline-code tt">Gun</code>クラスを作り、射程や弾速を<code class="inline-code tt">Range</code>、<code class="inline-code tt">BulletSpeed</code>というように定義します。<code class="inline-code tt">Gun.Attack</code>を遠隔攻撃に書き換えてしまいましょう。<code class="inline-code tt">override Attack</code>というように、<code class="inline-code tt">override</code>キーワードを使うことで<code class="inline-code tt">Attack</code>関数の挙動を乗っ取って、遠隔攻撃に書き換えてしまいます。親である<code class="inline-code tt">Weapon</code>クラスには影響は及ばないので、安心して遠隔攻撃できます。</p>
+<p>これで<code class="inline-code tt">Weapon</code>をベースに作った<code class="inline-code tt">Sword</code>の挙動を変えることなく、<code class="inline-code tt">Gun</code>クラスをベースに作る<code class="inline-code tt">Pistol</code>や<code class="inline-code tt">MachineGun</code>を追加することができます。<code class="inline-code tt">Item</code>クラスの要素である<code class="inline-code tt">Pistol.ID</code>等もちゃんと使えます。</p>
+
+<h3><a id="h12-4-2"></a>アクセス修飾子、プロパティによってカプセル化ができる。</h3>
+<p>この機能は共同開発で役に立つものです。AさんとBさんによる共同開発を例にしましょう。Aさんは<code class="inline-code tt">Weapon</code>に武器のリーチを示す変数と、リーチを設定するメソッドを作りました。このメソッドはリーチを負の値に設定できないようにするためのものでした。Bさんはそのメソッドの存在を知らず、武器のリーチを直接<code class="inline-code tt">=</code>で変更するコードを書きました。ここでBさんのコードに不備があり、武器のリーチが負の値に設定され、エラーが発生しました。</p>
+<p>この事件の原因はリーチ変数がメソッドを介せずに変更できてしまうことです。C#(などの言語)にはこれを防ぐ仕組みとしてアクセス修飾子があります。クラス内で変数を宣言する際、前に<code class="inline-code tt">private</code>と記述することでクラス内からしかその値を扱えなくなります。この「クラス内」には継承先のクラスは含まれていません。継承先のクラスもその変数を扱えるようにするには<code class="inline-code tt">protected</code>と記述します。リーチ変数を変更するメソッドを作り、このメソッド内でリーチを負の値に設定することができないように記述すればエラーを防ぐことができます。どこからでも自由にアクセスできるようにするには<code class="inline-code tt">public</code>と記述します。</p>
+<p>クラスが複雑になってくると、<code class="inline-code tt">private</code>や<code class="inline-code tt">protected</code>の数も増えてきます。この変数全てに<code class="inline-code tt">setID</code> <code class="inline-code tt">setName</code> <code class="inline-code tt">setReach</code>とメソッドを書いていくのは手間がかかります。そこでC#(とVB)独自の機能、自動実装プロパティの出番です。変数の宣言の後に中括弧で、変数の値を変更するメソッド<code class="inline-code tt">set</code>(自動で引数<code class="inline-code tt">value</code>が用意されます)と変数の値を取得するメソッド<code class="inline-code tt">get</code>を書くことができます。</p>
+<p>この<code class="inline-code tt">set</code>,<code class="inline-code tt">get</code>は<code class="inline-code tt">=</code>で変数の値を変更する/取得する場合にも適用されます。リーチ変数の<code class="inline-code tt">set</code>の中に負の値に設定できないようにすれば、<code class="inline-code tt">=</code>を用いて変数の値を負の値に指定しようとしても無視されるようになります。また、<code class="inline-code tt">private set; public get;</code>と書けば、値の変更はクラス内でのみ行え、値の取得は自由に行える「取得専用」の変数を作ることができます。</p>
+
+<h3><a id="h12-4-3"></a>ガベージコレクションが優秀</h3>
+<p>C++で任意の長さの配列が欲しいときは<code class="inline-code tt">new</code>キーワードを用います。また、不要になった配列は、<code class="inline-code tt">delete</code>キーワードを使って明示的に破棄する必要があります。</p>
+<p>対してC#には、C++の<code class="inline-code tt">delete</code>キーワードのようなものはありません。不要になった配列やクラスは、CPUが暇なときにまとめて破棄されます(ガベージコレクションと呼ばれます)。Pythonなどにも同じような機能がありますが、C#(とJava)のガベージコレクションは他の言語より優秀で、不要なものを確実に破棄できるといわれています。</p>
+<p>明示的な破棄が必要なクラスもあるでしょう。C#はそのようなクラスの為に、<code class="inline-code tt">using</code>ステートメントというものを用意しています。<code class="inline-code tt">using</code>ステートメントを使って宣言されたクラスは、ステートメントの終了と同時に破棄されます。この機能を使えば、<code class="inline-code tt">delete</code>を忘れた配列がメモリを圧迫するようなことはなくなります</p>
+
+<h3><a id="h12-4-4"></a>多次元配列が高速</h3>
+<p>多次元配列は便利です。配列を入れ子状に宣言することで、書けるコードは大きく広がります。多くの言語の多次元配列は配列を配列にしてアクセスしています。多次元配列へのアクセスは、配列へのアクセスを次元数回繰り返す操作になります。100回程度のアクセスならどうでもいいですが、10^7以上になってくるとこの繰り返しが問題になってきます。</p>
+<p>C#の多次元配列は、配列の配列ではありません。連続したメモリ領域として確保されます。これにより多次元配列へのアクセスは次元数の逆数倍に高速化されます。</p>
+
+<h3><a id="h12-4-5"></a>LINQが最強</h3>
+<p>「配列に<code class="inline-code tt">for</code>を回して、中身が0に等しい要素の数を数える」「配列に<code class="inline-code tt">for</code>を回して、中身の要素を絶対値に書き換える」このような配列に対する成形、計測などの操作、頻繁に使いますよね。でも毎回<code class="inline-code tt">for</code>文を書くのは面倒...そこでC#の出番です。</p>
+<p>この2つの操作は<code class="inline-code tt">Count(v=&gt;v==0)</code>、<code class="inline-code tt">Select(v=&gt;Math.Abs(v))</code>で出来ます。別の配列を作ったり<code class="inline-code tt">for</code>でindexを気にする必要はありません。これがLanguage INtegrated Query、LINQの力です。</p>
+<p>LINQにはこの2つの他にも様々な力を秘めています。条件を満たす要素の抽出や、重複要素の排除、条件を満たすはじめの要素の取得と、LINQに含まれるメソッドの数は50を超えます。LINQを使いこなすことで、C#のコードはより読みやすく、短くなるのです。</p>
+
+<h2><a id="h12-5"></a><span class="secno">12.5　</span>終わりに</h2>
+<p>C#には便利な機能が枚挙に暇がないほどあります。ここではその中でも特に便利な5つに絞って紹介しました。この部誌を読んで少しでも「C#って便利そうだな」と感じていただけたら幸いです。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="harady.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ グラフのおはなし</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="RLtdExp.html">
+            <div class="book-cursor"><span class="cursor-next">▶ プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

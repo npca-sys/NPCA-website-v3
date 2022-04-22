@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+<link rel="next" title="「ダイクストラ法とアテナの本」 by 2lu3 (73)" href="2lu3.html"><link rel="prev" title="「競技プログラミング入門」 by 井上誠大 (73)" href="physics.html">  <meta name="generator" content="Re:VIEW" />
+  <title>「計算量」 by taizo0122 (72) | NPCA部誌2017</title>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2017</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">まえがき</a></li>
+<li><a href="object_1037.html">1 「TwitterのBotを作ってみる」 by object_1037 (73)</a></li>
+<li><a href="physics.html">2 「競技プログラミング入門」 by 井上誠大 (73)</a></li>
+<li><a href="taizo0122.html">3 「計算量」 by taizo0122 (72)</a></li>
+<li><a href="2lu3.html">4 「ダイクストラ法とアテナの本」 by 2lu3 (73)</a></li>
+<li><a href="niini.html">5 「BOARD;GAME 負荷領域のデジャヴ」 by ni-ni (72)</a></li>
+<li><a href="enptukezuri.html">6 「Blenderのシミュレーション機能を使う」 by enptukezuri (71)</a></li>
+<li><a href="hinata.html">7 「適当に構文解析する話(575)」by Hinata (72)</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h3"></a><span class="secno">第3章　</span>「計算量」 by taizo0122 (72)</h1>
+
+<h2><a id="h3-1"></a><span class="secno">3.1　</span>はじめに</h2>
+
+<h3><a id="h3-1-1"></a>自己紹介と説明</h3>
+<p>あの小冊子からわざわざ本編にお越しいただいてありがとうございます。72回生のtaizo0122です。なぜか高校生になりました。最近時間の流れの速さに恐ろしさを感じています。中学時代はなかなか実のない生活を送っていたので、高校生のうちに世界に羽ばたく素晴らしい人間になりたいと思っております。</p>
+<p>この記事では、競技プログラミングにおける基本的で有名で便利な考え方を説明していきます。（といっても、NPCAに好き好んでくるような方々にとっては知っていて当たり前の内容かもしれません。）文中のソースコードは100パーセントC++で書かれています。多少雑多なソースコードになっているかもしれませんがご了承ください。もしC++がわからなくても、考え方ぐらいは見てもらえると嬉しいです。</p>
+
+<h3><a id="h3-1-2"></a>競技プログラミングとは</h3>
+<p>みなさん、競技プログラミングというものをご存知でしょうか。普通だと、何かのサービスやソフトを作ることを目的にプログラムを組むんですが、競技プログラミングは、</p>
+<blockquote><p>競技プログラミングでは、参加者全員に同一の課題が出題され、より早く、与えられた要求を満足するプログラムを正確に記述することを競う。コンピュータサイエンスや数学の知識を必要とする問題が多い。新卒学生の採用活動などに使われることもある。多くのコンテストでオンラインジャッジが採用されている。(<a href="https://ja.wikipedia.org/wiki/%E7%AB%B6%E6%8A%80%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0" class="link">Wikipedia</a>より)</p></blockquote>
+<p>らしいです。競技プログラミングには、プログラム自体の正誤以外にも、時間制限、メモリ制限があります。そのため、正しいプログラムを書くこと以外にも、速くて軽いプログラムを書くことも求められているわけです。</p>
+<div id="limit" class="image">
+<img src="images/taizo0122/limit.png" alt="時間制限" class="width-050per" />
+<p class="caption">
+図3.1: 時間制限
+</p>
+</div>
+<p>図3.1のように、問題ごとに時間、メモリ容量が制限されています。</p>
+<p>今回の部誌では競技プログラミングと計算量について説明しようと思います。計算量というのは、</p>
+<blockquote><p>アルゴリズムの計算量(けいさんりょう)とは、計算機がそのアルゴリズムの実行に要する計算資源の量をいい、アルゴリズムのスケーラビリティを示す。(<a href="https://ja.wikipedia.org/wiki/%E8%A8%88%E7%AE%97%E8%A4%87%E9%9B%91%E6%80%A7%E7%90%86%E8%AB%96#.E8.A8.88.E7.AE.97.E5.95.8F.E9.A1.8C.E3.81.A8.E8.A8.88.E7.AE.97.E9.87.8F.E3.83.BB.E8.A4.87.E9.9B.91.E6.80.A7" class="link">Wikipedia</a>より)</p></blockquote>
+<p>らしいです。Wikipedia先生ありがとうございます。要するに、プログラムを実行するときにかかる時間を表す指標です。同じ問題を解くに当たっても、プログラムが違えば実行にかかる時間も変わります。</p>
+<p>計算量には、実行にかかる時間を表す時間計算量と、実行に使うメモリの量を表す空間計算量の２種類があるのですが、今回は時間計算量を取り扱うので、「計算量」と書いているところは「時間計算量」とみなしてください。</p>
+<p>ちなみに、計算複雑性理論については、P=NP問題とかなんか色々有るんですが、そんな難しいことは書かないです(というか書けません)。</p>
+
+<h2><a id="h3-2"></a><span class="secno">3.2　</span>計算量のいろは</h2>
+
+<h3><a id="h3-2-1"></a>計算量が違うパターン</h3>
+<p>計算量は、先程も言ったとおり、プログラムを実行するのにかかる時間を表す指標のことです。「プログラムが違うと実行にかかる時間も変わるってどういうこと?」という話ですが、例えば、1からNの総和を求めるとします。</p>
+<ul>
+<li>素直に計算する</li>
+<li>公式を使う</li>
+</ul>
+<p>素直に計算すると(N-1)回の足し算が必要ですが、(1+N)*N/2の公式を使えば、足し算掛け算割り算の計3回で済みます。こんな感じで、計算方法によってかかる時間は変わります。ちなみに、ガウスは2つめの計算方法を小学生の時に思いついたそうです。ちょっと意味がわからないですね。</p>
+
+<h3><a id="h3-2-2"></a>O記法</h3>
+<p>計算量はOという記号を用いて表します。幾つかのルールが有るので、説明しておきます。</p>
+<ul>
+<li>最大次数の項のみを残す</li>
+<li>係数は1にする</li>
+</ul>
+<p>例:</p>
+<ul>
+<li><span class="equation">O(N-1)</span> → <span class="equation">O(N)</span></li>
+<li><span class="equation">O(2N^2+4N)</span> → <span class="equation">O(N^2)</span></li>
+<li><span class="equation">O(2^N+N^2)</span> → <span class="equation">O(2^N)</span></li>
+<li><span class="equation">O(N+M)</span> → 違う変数はまとめられない</li>
+</ul>
+<p>(理由)計算量は、入力サイズが大きい場合を想定しているので、最大次数以外の項は計算量にあまり影響を及ぼさないからです。</p>
+<p>(例) <span class="equation">O(N^2+N)</span>の場合</p>
+<ul>
+<li>N=1 → 2</li>
+<li>N=1000 → 1001000</li>
+<li>N=1000000 → 1000000001000</li>
+</ul>
+<p>このように、Nが大きくなるにつれて<span class="equation">O(N^2)</span>とほとんど等しくなります。また、定数倍程度の違いは無視できます。</p>
+<p>ここまでの説明で、競技プログラミングや計算量についてある程度のことはわかったと思います。次の章からは、冒険者キョウ=ギ君といっしょに具体例を交えて学んでいきましょう。</p>
+
+<h2><a id="h3-3"></a><span class="secno">3.3　</span>あらすじ</h2>
+<p>この世に、自分が異世界を冒険する妄想を一度もしたことがない人間はいないでしょう（たぶん）。人類はみな冒険が好きなのです。昔々、ある世界に、物事を全てアルゴリズムで考えてしまう天才頭脳の冒険者キョウ=ギ君がいました。彼は、どんな事件も持ち前の頭脳と戦闘スキルで解決してしまう、文武両道のすご腕冒険者です。この記事は、そんなキョウ=ギ君の伝説を記す英雄譚である---</p>
+
+<h2><a id="h3-4"></a><span class="secno">3.4　</span>冒険者の生活</h2>
+
+<h3><a id="h3-4-1"></a>おなかがすいた</h3>
+<p>伝説の冒険者といえども、おなかは減ります。にんげんだもの。キョウ=ギ君は今町で一番人気の食堂にいます。この食堂は、メニューの豊富さで有名です。食事のメニューごとに満腹度と満足度が与えられるので、満腹度がキョウ=ギ君の限界を超えないように選んだときの、満足度の合計の最大値を求めます。</p>
+<p>まずは、各メニューに対し食べるか食べないかで分岐しながら探索をしてみます。</p>
+<div class="emlist-code">
+<pre class="emlist language-c++"><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;cstdio&gt;</span><span style="color: #BC7A00"></span>
+<span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;algorithm&gt;</span><span style="color: #BC7A00"></span>
+
+<span style="color: #008000; font-weight: bold">using</span> <span style="color: #008000; font-weight: bold">namespace</span> std;
+
+<span style="color: #008000; font-weight: bold">const</span> <span style="color: #B00040">int</span> MAX_N<span style="color: #666666">=100</span>;
+
+<span style="color: #B00040">int</span> n,W;<span style="color: #408080; font-style: italic">//n:メニューの個数　W:キョウ=ギ君のお腹の容量</span>
+<span style="color: #B00040">int</span> w[MAX_N],v[MAX_N];<span style="color: #408080; font-style: italic">//w:満腹度　v:満足度</span>
+
+ <span style="color: #408080; font-style: italic">//i番目以降のメニューから満腹度の合計がj以下になるように選ぶ</span>
+<span style="color: #B00040">int</span> <span style="color: #0000FF">solve</span>(<span style="color: #B00040">int</span> i, <span style="color: #B00040">int</span> j) {
+  <span style="color: #B00040">int</span> res;<span style="color: #408080; font-style: italic">//res:満足度の合計</span>
+  <span style="color: #008000; font-weight: bold">if</span> (i <span style="color: #666666">==</span> n) {
+    <span style="color: #408080; font-style: italic">// 全てのメニューをチェックし終えたときは、満足度の合計の最大値は0で確定</span>
+    res <span style="color: #666666">=</span> <span style="color: #666666">0</span>;
+  } <span style="color: #008000; font-weight: bold">else</span> <span style="color: #008000; font-weight: bold">if</span> (j <span style="color: #666666">&lt;</span> w[i]) {
+    <span style="color: #408080; font-style: italic">// お腹の容量が足りないので食べない</span>
+    res <span style="color: #666666">=</span> solve(i <span style="color: #666666">+</span> <span style="color: #666666">1</span>, j);
+  } <span style="color: #008000; font-weight: bold">else</span> {
+    <span style="color: #408080; font-style: italic">// メニューiを食べるか食べないかを選び、満足度の高い方を選択する</span>
+    res <span style="color: #666666">=</span> max(solve(i <span style="color: #666666">+</span> <span style="color: #666666">1</span>, j), solve(i <span style="color: #666666">+</span> <span style="color: #666666">1</span>, j <span style="color: #666666">-</span> w[i]) <span style="color: #666666">+</span> v[i]);
+  }
+  <span style="color: #008000; font-weight: bold">return</span> res;
+}
+
+<span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(){
+  scanf(<span style="color: #BA2121">&quot;%d%d&quot;</span>,<span style="color: #666666">&amp;</span>n,<span style="color: #666666">&amp;</span>W);
+  <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;</span>n; i<span style="color: #666666">++</span>){
+                scanf(<span style="color: #BA2121">&quot;%d%d&quot;</span>,<span style="color: #666666">&amp;</span>w[i],<span style="color: #666666">&amp;</span>v[i]);
+        }
+  printf(<span style="color: #BA2121">&quot;%d</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,solve(<span style="color: #666666">0</span>,W));
+  <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+}
+</pre>
+</div>
+<p>この方法だと、探索の深さはメニューの個数であるn、各深さにおいて食べるか食べないかの2通りの分岐が発生しており、<span class="equation">O(2^n)</span>となってしまいます。実は、このアルゴリズムだと、同じ<code class="inline-code tt">solve(i,j)</code>が何度も呼び出される可能性があります。同じ<code class="inline-code tt">solve(i,j)</code>に対して何度も計算をする必要は無いので、最初の計算結果を記憶するようにしてみます。</p>
+<div class="emlist-code">
+<pre class="emlist language-c++"><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;cstdio&gt;</span><span style="color: #BC7A00"></span>
+<span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;algorithm&gt;</span><span style="color: #BC7A00"></span>
+<span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;cstring&gt;</span><span style="color: #BC7A00"></span>
+
+<span style="color: #008000; font-weight: bold">using</span> <span style="color: #008000; font-weight: bold">namespace</span> std;
+
+<span style="color: #008000; font-weight: bold">const</span> <span style="color: #B00040">int</span> MAX_N<span style="color: #666666">=100</span>;
+<span style="color: #008000; font-weight: bold">const</span> <span style="color: #B00040">int</span> MAX_W<span style="color: #666666">=1000</span>;
+
+<span style="color: #B00040">int</span> n,W;
+<span style="color: #B00040">int</span> w[MAX_N],v[MAX_W];
+<span style="color: #B00040">int</span> dp[MAX_N <span style="color: #666666">+</span> <span style="color: #666666">1</span>][MAX_W <span style="color: #666666">+</span> <span style="color: #666666">1</span>];
+
+<span style="color: #B00040">int</span> <span style="color: #0000FF">solve</span>(<span style="color: #B00040">int</span> i, <span style="color: #B00040">int</span> j){
+  <span style="color: #008000; font-weight: bold">if</span>(dp[i][j]<span style="color: #666666">&gt;=0</span>){
+    <span style="color: #408080; font-style: italic">// すでに調べていた場合その結果を利用</span>
+    <span style="color: #008000; font-weight: bold">return</span> dp[i][j];
+  }
+  <span style="color: #B00040">int</span> res;
+   <span style="color: #008000; font-weight: bold">if</span> (i <span style="color: #666666">==</span> n) {
+      res <span style="color: #666666">=</span> <span style="color: #666666">0</span>;
+    } <span style="color: #008000; font-weight: bold">else</span> <span style="color: #008000; font-weight: bold">if</span> (j <span style="color: #666666">&lt;</span> w[i]) {
+     res <span style="color: #666666">=</span> solve(i <span style="color: #666666">+</span> <span style="color: #666666">1</span>, j);
+    } <span style="color: #008000; font-weight: bold">else</span> {
+     res <span style="color: #666666">=</span> max(solve(i <span style="color: #666666">+</span> <span style="color: #666666">1</span>, j), solve(i <span style="color: #666666">+</span> <span style="color: #666666">1</span>, j <span style="color: #666666">-</span> w[i]) <span style="color: #666666">+</span> v[i]);
+    }
+  <span style="color: #008000; font-weight: bold">return</span> dp[i][j]<span style="color: #666666">=</span> res;
+}
+
+<span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(){
+  scanf(<span style="color: #BA2121">&quot;%d%d&quot;</span>,<span style="color: #666666">&amp;</span>n,<span style="color: #666666">&amp;</span>W);
+  <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;</span>n; i<span style="color: #666666">++</span>){
+    scanf(<span style="color: #BA2121">&quot;%d%d&quot;</span>,<span style="color: #666666">&amp;</span>w[i],<span style="color: #666666">&amp;</span>v[i]);
+  }
+  memset(dp, <span style="color: #666666">-1</span>, <span style="color: #008000; font-weight: bold">sizeof</span>(dp));<span style="color: #408080; font-style: italic">//-1はまだ調べていないことを示す</span>
+  printf(<span style="color: #BA2121">&quot;%d</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,solve(<span style="color: #666666">0</span>,W));
+  <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+}
+</pre>
+</div>
+<p>この改良によって、同じ引数では最初の１回しか再帰呼び出しが行われず、引数の組み合わせはnW通りしかないため、O(nW)となりました。このように、テーブルを作り、そこで値を保持しておく手法はメモ化と呼ばれます。このメモ化テーブルについて、</p>
+<p>	<span class="equation">dp[i][j]</span>:i番目以降のメニューから満腹度の合計がj以下となるように選んだときの満足度の合計の最大値</p>
+<p>とすると、</p>
+<p>	<span class="equation">dp[n][j]=0</span>;</p>
+<p>	<span class="equation">dp[i][j]=\begin{cases}dp[i+1][j] &amp; (j&lt;w[i]) \\ max(dp[i+1][j],dp[i+1][j-w[i]]+v[i]) &amp; (j \geq w[i]) \end{cases}</span></p>
+<p>という漸化式が成り立ちます。再帰関数の代わりに、直接この漸化式を適用して計算していくことで、単純な2重ループで問題が解けます。このように、漸化式を適用するなどして順に解を求めていく手法を動的計画法(Dynamic Programming)、つまりDPといいます。</p>
+<div class="emlist-code">
+<pre class="emlist language-c++"><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;cstdio&gt;</span><span style="color: #BC7A00"></span>
+<span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;algorithm&gt;</span><span style="color: #BC7A00"></span>
+
+<span style="color: #008000; font-weight: bold">using</span> <span style="color: #008000; font-weight: bold">namespace</span> std;
+
+<span style="color: #008000; font-weight: bold">const</span> <span style="color: #B00040">int</span> MAX_N<span style="color: #666666">=100</span>;
+<span style="color: #008000; font-weight: bold">const</span> <span style="color: #B00040">int</span> MAX_W<span style="color: #666666">=1000</span>;
+
+<span style="color: #B00040">int</span> n,W;
+<span style="color: #B00040">int</span> w[MAX_N],v[MAX_N];
+<span style="color: #B00040">int</span> dp[MAX_N <span style="color: #666666">+</span> <span style="color: #666666">1</span>][MAX_W <span style="color: #666666">+</span> <span style="color: #666666">1</span>];
+
+<span style="color: #B00040">void</span> <span style="color: #0000FF">solve</span>() {
+  <span style="color: #008000; font-weight: bold">for</span> (<span style="color: #B00040">int</span> i <span style="color: #666666">=</span> n <span style="color: #666666">-</span> <span style="color: #666666">1</span>; i <span style="color: #666666">&gt;=</span> <span style="color: #666666">0</span>; i<span style="color: #666666">--</span>) {
+    <span style="color: #008000; font-weight: bold">for</span> (<span style="color: #B00040">int</span> j <span style="color: #666666">=</span> <span style="color: #666666">0</span>; j <span style="color: #666666">&lt;=</span> W; j<span style="color: #666666">++</span>) {
+      <span style="color: #008000; font-weight: bold">if</span> (j <span style="color: #666666">&lt;</span> w[i]){
+        dp[i][j] <span style="color: #666666">=</span> dp[i <span style="color: #666666">+</span> <span style="color: #666666">1</span>][j];
+      }
+      <span style="color: #008000; font-weight: bold">else</span>{
+        dp[i][j] <span style="color: #666666">=</span> max(dp[i <span style="color: #666666">+</span> <span style="color: #666666">1</span>][j], dp[i <span style="color: #666666">+</span> <span style="color: #666666">1</span>][j <span style="color: #666666">-</span> w[i]] <span style="color: #666666">+</span> v[i]);
+      }
+    }
+  }
+  printf(<span style="color: #BA2121">&quot;%d</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,dp[<span style="color: #666666">0</span>][W]);
+}
+
+<span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(){
+  scanf(<span style="color: #BA2121">&quot;%d%d&quot;</span>,<span style="color: #666666">&amp;</span>n,<span style="color: #666666">&amp;</span>W);
+  <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;</span>n; i<span style="color: #666666">++</span>){
+    scanf(<span style="color: #BA2121">&quot;%d%d&quot;</span>,<span style="color: #666666">&amp;</span>w[i],<span style="color: #666666">&amp;</span>v[i]);
+  }
+  solve();
+  <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+}
+</pre>
+</div>
+<p>この方法でも、先ほどと同じく<span class="equation">O(nW)</span>になりますが、見た目はこちらのほうがきれいですね。しかし、キョウ=ギ君がとんでもない大食漢だった場合、このアルゴリズムだと時間がかかってしまいます。そこで、逆に満足度に対する最小の満腹度を求めてみましょう。</p>
+<p>	<span class="equation">dp[i+1][j]</span>:i番目までのメニューから満足度の合計がjとなるように選んだときの満腹度の合計の最小値(そのような解が存在しない場合は十分大きな数INF)</p>
+<p>とすると、i番目までのメニューから満足度の合計がjになるような選び方は、</p>
+<p>	i-1番目までのメニューから満足度の合計がjとなるように選ぶ</p>
+<p>	i-1番目までのメニューから満足度の合計がj-v[i]となるように選び、i番目のメニューを追加する</p>
+<p>の２通りがあるので、</p>
+<p>	<span class="equation">dp[0][j]=INF</span></p>
+<p>	<span class="equation">dp[0][0]=0</span></p>
+<p>	<span class="equation">dp[i+1][j]=min(dp[i][j],dp[i][j-v[i]]+w[i])</span></p>
+<p>という漸化式が成り立ちます。最終的な答えは、<span class="equation">dp[n][i] \leq W</span>となる最大のjになります。</p>
+<div class="emlist-code">
+<pre class="emlist language-c++"><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;cstdio&gt;</span><span style="color: #BC7A00"></span>
+<span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;algorithm&gt;</span><span style="color: #BC7A00"></span>
+
+<span style="color: #008000; font-weight: bold">using</span> <span style="color: #008000; font-weight: bold">namespace</span> std;
+
+<span style="color: #BC7A00">#define INF 12345678910</span>
+<span style="color: #008000; font-weight: bold">const</span> <span style="color: #B00040">int</span> MAX_N<span style="color: #666666">=100</span>;
+<span style="color: #008000; font-weight: bold">const</span> <span style="color: #B00040">int</span> MAX_V<span style="color: #666666">=100</span>;
+
+<span style="color: #B00040">int</span> n,W;
+<span style="color: #B00040">int</span> w[MAX_N],v[MAX_N];
+<span style="color: #B00040">int</span> dp[MAX_N <span style="color: #666666">+</span> <span style="color: #666666">1</span>][MAX_N<span style="color: #666666">*</span>MAX_V <span style="color: #666666">+</span> <span style="color: #666666">1</span>];
+
+<span style="color: #B00040">void</span> <span style="color: #0000FF">solve</span>() {
+  fill(dp[<span style="color: #666666">0</span>], dp[<span style="color: #666666">0</span>]<span style="color: #666666">+</span>MAX_N<span style="color: #666666">*</span>MAX_V <span style="color: #666666">+</span> <span style="color: #666666">1</span>, INF);
+  dp[<span style="color: #666666">0</span>][<span style="color: #666666">0</span>]<span style="color: #666666">=0</span>;
+  <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;</span>n; i<span style="color: #666666">++</span>){
+    <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> j<span style="color: #666666">=0</span>; j<span style="color: #666666">&lt;=</span>MAX_N<span style="color: #666666">*</span>MAX_V; j<span style="color: #666666">++</span>){
+      <span style="color: #008000; font-weight: bold">if</span>(j <span style="color: #666666">&lt;</span> v[i]){
+        dp[i<span style="color: #666666">+1</span>][j]<span style="color: #666666">=</span>dp[i][j];
+      }<span style="color: #008000; font-weight: bold">else</span>{
+        dp[i<span style="color: #666666">+1</span>][j]<span style="color: #666666">=</span>min(dp[i][j], dp[i][j<span style="color: #666666">-</span>v[i]]<span style="color: #666666">+</span>w[i]);
+      }
+    }
+  }
+  <span style="color: #B00040">int</span> res <span style="color: #666666">=</span> <span style="color: #666666">0</span>;
+  <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;=</span>MAX_N<span style="color: #666666">*</span>MAX_V; i<span style="color: #666666">++</span>) <span style="color: #008000; font-weight: bold">if</span>(dp[n][i]<span style="color: #666666">&lt;=</span>W) res <span style="color: #666666">=</span> i;
+  printf(<span style="color: #BA2121">&quot;%d</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,res);
+}
+
+<span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(){
+  scanf(<span style="color: #BA2121">&quot;%d%d&quot;</span>,<span style="color: #666666">&amp;</span>n,<span style="color: #666666">&amp;</span>W);
+  <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;</span>n; i<span style="color: #666666">++</span>){
+    scanf(<span style="color: #BA2121">&quot;%d%d&quot;</span>,<span style="color: #666666">&amp;</span>w[i],<span style="color: #666666">&amp;</span>v[i]);
+  }
+  solve();
+  <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+}
+</pre>
+</div>
+<p>この場合の計算量はO(n Σi v[i])となります。このように、問題の条件によって多少の変更を加えることも必要です。</p>
+
+<h3><a id="h3-4-2"></a>世界を救え！</h3>
+
+<h4><a id="h3-4-2-1"></a>グラフについて</h4>
+<p>この章ではグラフの概念を使うので、基本的な用語などを説明しておきたいと思います。</p>
+
+<h5><a id="h3-4-2-1-1"></a>グラフって何？</h5>
+<p>アルゴリズムを考える際には、グラフという考え方が非常に便利です。ここで言うグラフは、頂点(node)と辺(edge)からなるもののことです。頂点は対象を、辺は頂点同士の関係を表します。頂点の集合がV、辺の集合がEであるグラフをG=(V,E）と表し、2点u,vを結ぶ辺をe=(u,v)と表します。また、わかりやすくするために頂点の個数を|V|、辺の個数を|E|と表現します。</p>
+
+<h5><a id="h3-4-2-1-2"></a>有向グラフと無向グラフ</h5>
+<p>グラフには有向グラフと無向グラフの２種類があります。e=(u,v)が存在する時、u→vとv→uどちらの方向にも移動できるものを無向グラフ、u→vの方向のみにしか移動できないものを有向グラフといいます。簡単にいえば、有向グラフは一方通行で、両方の向きに進めるのが無向グラフです。</p>
+
+<h5><a id="h3-4-2-1-3"></a>歩道、路、閉路</h5>
+<p>隣接している頂点同士を辿った道筋を歩道(walk)といいます。そのうち、始点と終点が異なり、通る辺が重複しないものを路(path)といい、始点と終点が同じで、通る辺が重複しないものを閉路(cycle)といいます。</p>
+<div id="cycle" class="image">
+<img src="images/taizo0122/cycle.png" alt="閉路のグラフ" />
+<p class="caption">
+図3.2: 閉路のグラフ
+</p>
+</div>
+
+<h4><a id="h3-4-2-2"></a>グラフの表現</h4>
+<div id="expression" class="image">
+<img src="images/taizo0122/expression.png" alt="行列、リスト" />
+<p class="caption">
+図3.3: 行列、リスト
+</p>
+</div>
+<div id="adjacency-matrix" class="image">
+<img src="images/taizo0122/adjacency-matrix.png" alt="行列" />
+<p class="caption">
+図3.4: 行列
+</p>
+</div>
+<div id="adjacency-list" class="image">
+<img src="images/taizo0122/adjacency-list.png" alt="リスト" />
+<p class="caption">
+図3.5: リスト
+</p>
+</div>
+
+<h5><a id="h3-4-2-2-1"></a>隣接行列</h5>
+<p>|V|*|V|の二次元配列でグラフを表したものを隣接行列といいます。graph[i][j]には、e=(i,j)の有無、e=(i,j)のコストなどを入れておきます。<span class="equation">O(1)</span>で辺の有無を判定できるなどの利点はありますが、常に<span class="equation">O(|V|^2)</span>のメモリを消費し、無駄な部分も多くなってしまいます。</p>
+
+<h5><a id="h3-4-2-2-2"></a>隣接リスト</h5>
+<p>頂点ごとに、隣接する頂点を(C++の場合は)vectorなどで管理したものを隣接リストといいます。こちらの場合なら、メモリはO(|V|+|E|)しか消費されません。</p>
+
+<h4><a id="h3-4-2-3"></a>決戦</h4>
+<p>どうやら、遠くの町に大魔王が現れたようです。名高い冒険者であるキョウ=ギ君は召集を受けました。急ぐキョウ=ギ君は、遠くの町までの最短距離を求めます。</p>
+<p>まず、町同士の関係を先ほど説明したグラフに置き換えてみると、頂点が町、辺が町同士をつなぐ道を表すことになります。問題の都合上、道が通っていない町同士を移動することはできないとします。（伝説の冒険者なら空くらい飛べるだろという突っ込みはご法度）始点であるキョウ=ギくんの住む町はs番とします。キョウ=ギくんの住む町sから他の町iへの最短距離をd[i]とすると、</p>
+<p>d[i]=min{d[j]+(jからiへの道の長さ)}(jはiと道でつながれている任意の町)</p>
+<p>が成り立ちます。なので、</p>
+<p>初期値　d[s]=0</p>
+<p>d[i]=INF(十分大きな数)</p>
+<p>として、上の式を適用してdを更新していきます。このアルゴリズムをベルマンフォード(Bellman-Ford)法といいます。</p>
+<div class="emlist-code">
+<pre class="emlist language-c++"><span style="color: #BC7A00">#define INF 12345678910</span>
+<span style="color: #008000; font-weight: bold">const</span> <span style="color: #B00040">int</span> MAX_V <span style="color: #666666">=</span> <span style="color: #666666">100</span>;
+<span style="color: #008000; font-weight: bold">const</span> <span style="color: #B00040">int</span> MAX_E <span style="color: #666666">=</span> <span style="color: #666666">100</span>;
+
+<span style="color: #008000; font-weight: bold">struct</span> road{<span style="color: #B00040">int</span> from, to, cost;};<span style="color: #408080; font-style: italic">//from:出発する町　to:到着する町　cost:道の長さ</span>
+road es[MAX_E];<span style="color: #408080; font-style: italic">// 道</span>
+<span style="color: #B00040">int</span> d[MAX_V];<span style="color: #408080; font-style: italic">//i町への最短距離</span>
+<span style="color: #B00040">int</span> V,E,s;<span style="color: #408080; font-style: italic">//V:頂点の数　E:道の数　s:最初の町</span>
+
+<span style="color: #B00040">void</span> <span style="color: #0000FF">BellmanFord</span>(<span style="color: #B00040">int</span> s){
+  fill(d,d<span style="color: #666666">+</span>V,INF);
+  d[s]<span style="color: #666666">=0</span>;
+  <span style="color: #008000; font-weight: bold">while</span>(<span style="color: #008000">true</span>){
+    <span style="color: #B00040">bool</span> update <span style="color: #666666">=</span> <span style="color: #008000">false</span>;<span style="color: #408080; font-style: italic">// 最短距離の変更があったか</span>
+    <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;</span>E; i<span style="color: #666666">++</span>){
+      road e <span style="color: #666666">=</span> es[i];
+      <span style="color: #008000; font-weight: bold">if</span>(d[e.from]<span style="color: #666666">!=</span>INF <span style="color: #666666">&amp;&amp;</span> d[e.to]<span style="color: #666666">&gt;</span>d[e.from]<span style="color: #666666">+</span>e.cost){
+        <span style="color: #408080; font-style: italic">// これまでに判明しているよりもさらに短いものがある場合更新</span>
+        d[e.to]<span style="color: #666666">=</span>d[e.from]<span style="color: #666666">+</span>e.cost;
+        update <span style="color: #666666">=</span> <span style="color: #008000">true</span>;
+      }<span style="color: #008000; font-weight: bold">else</span> <span style="color: #008000; font-weight: bold">if</span>(d[e.to]<span style="color: #666666">!=</span>INF <span style="color: #666666">&amp;&amp;</span> d[e.from]<span style="color: #666666">&gt;</span>d[e.to]<span style="color: #666666">+</span>e.cost){
+        <span style="color: #408080; font-style: italic">// 反対方向をチェックする部分なので、有向グラフならこのelse if部分は必要ない</span>
+        d[e.from]<span style="color: #666666">=</span>d[e.to]<span style="color: #666666">+</span>e.cost;
+        update <span style="color: #666666">=</span> <span style="color: #008000">true</span>;
+      }
+    }
+    <span style="color: #008000; font-weight: bold">if</span>(<span style="color: #666666">!</span>update) <span style="color: #008000; font-weight: bold">break</span>;
+  }
+}
+
+<span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(){
+  scanf(<span style="color: #BA2121">&quot;%d%d%d&quot;</span>,<span style="color: #666666">&amp;</span>V,<span style="color: #666666">&amp;</span>E,<span style="color: #666666">&amp;</span>s);
+  <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;</span>E; i<span style="color: #666666">++</span>){
+    scanf(<span style="color: #BA2121">&quot;%d%d%d&quot;</span>,<span style="color: #666666">&amp;</span>es[i].from,<span style="color: #666666">&amp;</span>es[i].to,<span style="color: #666666">&amp;</span>es[i].cost);
+  }
+
+  BellmanFord(s);
+
+  <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;</span>V; i<span style="color: #666666">++</span>){
+    <span style="color: #008000; font-weight: bold">if</span>(d[i]<span style="color: #666666">==</span>INF) printf(<span style="color: #BA2121">&quot;INF</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);
+    <span style="color: #008000; font-weight: bold">else</span> printf(<span style="color: #BA2121">&quot;%d</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,d[i]);
+  }
+
+  <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+}
+</pre>
+</div>
+<p>このアルゴリズムでは、たかだか(<span class="equation">V-1</span>)個の辺しか通らず、while(true)のループは(<span class="equation">|V|-1</span>)回しか実行されません。while(true)ループの中でE回の繰り返しを行うfor文が実行されるため、計算量は<span class="equation">O(|V||E|)</span>となります。ただし、負の閉路が存在する場合は、このアルゴリズムは成り立ちません（|V|回目のループが起こったかを確認することで負の閉路の検出を行うことができます）。</p>
+<p>天才頭脳のキョウ=ギ君は他の求め方も思いついてしまいました。上と同様に<code class="inline-code tt">d[s]=0,d[i]=INF</code>とします。そして、</p>
+<p>1.まだ使われていない頂点の中で<code class="inline-code tt">d[i]</code>が最小の頂点を探す2.その頂点に隣接する頂点をd[i]=min{d[j]+(jからiへの道の長さ)}で更新し、ここで使った頂点を以後使わないようにする</p>
+<p>を繰り返します。このアルゴリズムをダイクストラ(Dijkstra)法といいます。ただし、このアルゴリズムは負の辺がない場合のみ使えます。初期状態では、始点のみ最短距離が確定しています。まだ使われていない頂点のうち<code class="inline-code tt">d[i]</code>が最小の頂点は、負の辺がないという条件から<code class="inline-code tt">d[i]</code>がより小さくなることがないので、最短距離が確定しています。</p>
+<div class="emlist-code">
+<pre class="emlist language-c++"><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;cstdio&gt;</span><span style="color: #BC7A00"></span>
+<span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;algorithm&gt;</span><span style="color: #BC7A00"></span>
+
+<span style="color: #008000; font-weight: bold">using</span> <span style="color: #008000; font-weight: bold">namespace</span> std;
+
+<span style="color: #BC7A00">#define INF 12345678910</span>
+<span style="color: #008000; font-weight: bold">const</span> <span style="color: #B00040">int</span> MAX_V<span style="color: #666666">=100</span>;
+
+<span style="color: #B00040">int</span> cost[MAX_V][MAX_V];<span style="color: #408080; font-style: italic">//cost[u][v]はu-v間の距離</span>
+<span style="color: #B00040">int</span> d[MAX_V];
+<span style="color: #B00040">bool</span> used[MAX_V];<span style="color: #408080; font-style: italic">//使われたかどうか</span>
+<span style="color: #B00040">int</span> V,E,s;
+
+<span style="color: #B00040">void</span> <span style="color: #0000FF">dijkstra</span>(<span style="color: #B00040">int</span> s){
+  fill(d,d<span style="color: #666666">+</span>V,INF);
+  fill(used,used<span style="color: #666666">+</span>V,<span style="color: #008000">false</span>);
+  d[s]<span style="color: #666666">=0</span>;
+
+  <span style="color: #008000; font-weight: bold">while</span>(<span style="color: #008000">true</span>){
+    <span style="color: #B00040">int</span> shortest<span style="color: #666666">=-1</span>; <span style="color: #408080; font-style: italic">//shortestは次に使う頂点の番号</span>
+    <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> u<span style="color: #666666">=0</span>; u<span style="color: #666666">&lt;</span>V; u<span style="color: #666666">++</span>){ <span style="color: #408080; font-style: italic">// 次に使う頂点を探す</span>
+      <span style="color: #008000; font-weight: bold">if</span>(<span style="color: #666666">!</span>used[u] <span style="color: #666666">&amp;&amp;</span> (shortest<span style="color: #666666">==-1</span> <span style="color: #666666">||</span> d[u]<span style="color: #666666">&lt;</span>d[shortest])) shortest<span style="color: #666666">=</span>u;
+    }
+    <span style="color: #008000; font-weight: bold">if</span>(shortest<span style="color: #666666">==-1</span>) <span style="color: #008000; font-weight: bold">break</span>;
+    used[shortest]<span style="color: #666666">=</span><span style="color: #008000">true</span>;
+
+    <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> u<span style="color: #666666">=0</span>; u<span style="color: #666666">&lt;</span>V; u<span style="color: #666666">++</span>){ <span style="color: #408080; font-style: italic">// 最短経路の更新</span>
+      d[u]<span style="color: #666666">=</span>min(d[u],d[shortest]<span style="color: #666666">+</span>cost[shortest][u]);
+    }
+  }
+}
+
+<span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(){
+  <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;</span>MAX_V; i<span style="color: #666666">++</span>){
+    <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> j<span style="color: #666666">=0</span>; j<span style="color: #666666">&lt;</span>MAX_V; j<span style="color: #666666">++</span>){
+      cost[i][j]<span style="color: #666666">=</span>INF;
+    }
+  }
+  scanf(<span style="color: #BA2121">&quot;%d%d%d&quot;</span>,<span style="color: #666666">&amp;</span>V,<span style="color: #666666">&amp;</span>E,<span style="color: #666666">&amp;</span>s);
+  <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;</span>E; i<span style="color: #666666">++</span>){
+    <span style="color: #B00040">int</span> u,v;
+    scanf(<span style="color: #BA2121">&quot;%d%d&quot;</span>,<span style="color: #666666">&amp;</span>u,<span style="color: #666666">&amp;</span>v);
+    scanf(<span style="color: #BA2121">&quot;%d&quot;</span>,<span style="color: #666666">&amp;</span>cost[u][v]);
+    cost[v][u]<span style="color: #666666">=</span>cost[u][v]; <span style="color: #408080; font-style: italic">// 反対方向をチェックする部分なので、有向グラフならこの部分は必要ない</span>
+  }
+
+  dijkstra(s);
+
+  <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;</span>V;i<span style="color: #666666">++</span>){
+    <span style="color: #008000; font-weight: bold">if</span>(d[i]<span style="color: #666666">==</span>INF)printf(<span style="color: #BA2121">&quot;INF</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);
+    <span style="color: #008000; font-weight: bold">else</span> printf(<span style="color: #BA2121">&quot;%d</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,d[i]);
+  }
+  <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+}
+</pre>
+</div>
+<p>隣接行列を用いたこのダイクストラ法の計算量は、最短経路の更新に(<span class="equation">|V|</span>)回、次に使う頂点を探すのに(<span class="equation">|V|</span>)回、合わせて<span class="equation">O(|V|^2)</span>となります。ここで、優先度付きキューを使って次に使う頂点を(<span class="equation">log|V|</span>)回で探せば、全体の計算量は<span class="equation">O(|E|log|V|)</span>となります。</p>
+<div class="emlist-code">
+<pre class="emlist language-c++"><span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;cstdio&gt;</span><span style="color: #BC7A00"></span>
+<span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;vector&gt;</span><span style="color: #BC7A00"></span>
+<span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;algorithm&gt;</span><span style="color: #BC7A00"></span>
+<span style="color: #BC7A00">#include</span> <span style="color: #408080; font-style: italic">&lt;queue&gt;</span><span style="color: #BC7A00"></span>
+
+<span style="color: #008000; font-weight: bold">using</span> <span style="color: #008000; font-weight: bold">namespace</span> std;
+
+<span style="color: #BC7A00">#define INF 12345678910</span>
+<span style="color: #008000; font-weight: bold">const</span> <span style="color: #B00040">int</span> MAX_V<span style="color: #666666">=100</span>;
+
+<span style="color: #008000; font-weight: bold">struct</span> edge{<span style="color: #B00040">int</span> to, cost;};
+<span style="color: #008000; font-weight: bold">typedef</span> pair<span style="color: #666666">&lt;</span><span style="color: #B00040">int</span>,<span style="color: #B00040">int</span><span style="color: #666666">&gt;</span> P;<span style="color: #408080; font-style: italic">//first:最短距離　second:頂点の番号</span>
+vector<span style="color: #666666">&lt;</span>edge<span style="color: #666666">&gt;</span> G[MAX_V];
+<span style="color: #B00040">long</span> <span style="color: #B00040">long</span> <span style="color: #B00040">int</span> d[MAX_V];
+<span style="color: #B00040">int</span> V,E,s;
+
+<span style="color: #B00040">void</span> <span style="color: #0000FF">dijkstra</span>(<span style="color: #B00040">int</span> s){
+  priority_queue<span style="color: #666666">&lt;</span>P,vector<span style="color: #666666">&lt;</span>P<span style="color: #666666">&gt;</span>,greater<span style="color: #666666">&lt;</span>P<span style="color: #666666">&gt;</span> <span style="color: #666666">&gt;</span> que;
+  fill(d,d<span style="color: #666666">+</span>V,INF);
+  d[s]<span style="color: #666666">=0</span>;
+  que.push(P(<span style="color: #666666">0</span>,s));
+
+  <span style="color: #008000; font-weight: bold">while</span>(<span style="color: #666666">!</span>que.empty()){
+    P p <span style="color: #666666">=</span> que.top();
+    que.pop();
+    <span style="color: #B00040">int</span> v <span style="color: #666666">=</span> p.second;
+    <span style="color: #008000; font-weight: bold">if</span>(d[v]<span style="color: #666666">&lt;</span> p.first) <span style="color: #008000; font-weight: bold">continue</span>;
+    <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;</span>G[v].size(); i<span style="color: #666666">++</span>){
+      edge e <span style="color: #666666">=</span> G[v][i];
+      <span style="color: #008000; font-weight: bold">if</span>(d[e.to]<span style="color: #666666">&gt;</span>d[v]<span style="color: #666666">+</span>e.cost){
+        d[e.to]<span style="color: #666666">=</span>d[v]<span style="color: #666666">+</span>e.cost;
+        que.push(P(d[e.to],e.to));
+      }
+    }
+  }
+}
+
+<span style="color: #B00040">int</span> <span style="color: #0000FF">main</span>(){
+  scanf(<span style="color: #BA2121">&quot;%d%d%d&quot;</span>,<span style="color: #666666">&amp;</span>V,<span style="color: #666666">&amp;</span>E,<span style="color: #666666">&amp;</span>s);
+  <span style="color: #008000; font-weight: bold">for</span> (<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;</span>E; i<span style="color: #666666">++</span>) {
+    <span style="color: #B00040">int</span> from, to, cost;
+    scanf(<span style="color: #BA2121">&quot;%d&quot;</span>, <span style="color: #666666">&amp;</span>from);
+    scanf(<span style="color: #BA2121">&quot;%d&quot;</span>, <span style="color: #666666">&amp;</span>to);
+    scanf(<span style="color: #BA2121">&quot;%d&quot;</span>, <span style="color: #666666">&amp;</span>cost);
+    edge e;
+    e.to <span style="color: #666666">=</span> to;
+    e.cost <span style="color: #666666">=</span> cost;
+    G[from].push_back(e);
+  }
+
+  dijkstra(s);
+
+  <span style="color: #008000; font-weight: bold">for</span>(<span style="color: #B00040">int</span> i<span style="color: #666666">=0</span>; i<span style="color: #666666">&lt;</span>V;i<span style="color: #666666">++</span>){
+    <span style="color: #008000; font-weight: bold">if</span>(d[i]<span style="color: #666666">==</span>INF)printf(<span style="color: #BA2121">&quot;INF</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>);
+    <span style="color: #008000; font-weight: bold">else</span> printf(<span style="color: #BA2121">&quot;%lld</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BA2121">&quot;</span>,d[i]);
+  }
+  <span style="color: #008000; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+}
+</pre>
+</div>
+<p>この方法なら、ベルマンフォード法の<span class="equation">O(|V||E|)</span>よりも高速に計算することが出来ます。ただし、負の辺が含まれる場合は使えないことには注意が必要です。また、この問題も1章と同じように、問題の条件や入力によってプログラムの速さは異なってきます。</p>
+
+<h3><a id="h3-4-3"></a>そして伝説へ・・・</h3>
+<p>かくして、大魔王の討伐に成功したキョウ=ギ君はその功績を讃えられ、世界を救った英雄として永遠に語り継がれることとなりました。めでたしめでたし。</p>
+
+<h2><a id="h3-5"></a><span class="secno">3.5　</span>あとがき</h2>
+<p>最後までこの記事を読んでいただきありがとうございました。そしてお疲れ様でした。がんばってオリジナリティを出そうとしたら、文才がなくて余計にわかりにくくなった気がします。悲しい。厨二病感もプンプンしますね。競技プログラミングには、ここで紹介した以外にも様々なアルゴリズムや考え方がありますので、興味を持った方はぜひ調べてみてください。それでは、またお会いしましょう～</p>
+
+<h2><a id="h3-6"></a><span class="secno">3.6　</span>参考文献</h2>
+<p>秋葉拓哉、 岩田陽一、 北川宜稔(2010)プログラミングコンテストチャレンジブック [第2版]　マイナビ</p>
+      </div>
+      <nav class="book-navi book-prev">
+                <a href="physics.html">
+          <div class="book-cursor"><span class="cursor-prev">◀ 「競技プログラミング入門」 by 井上誠大 (73)</span></div>
+        </a>
+              </nav>
+      <nav class="book-navi book-next">
+                <a href="2lu3.html">
+          <div class="book-cursor"><span class="cursor-next">▶ 「ダイクストラ法とアテナの本」 by 2lu3 (73)</span></div>
+        </a>
+              </nav>
+    </div>
+  </div>
+  <footer>
+      </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+  <script>
+      (function() {
+          if (!window.katex) { return; }
+          var equations = [].slice.call(document.querySelectorAll(".equation"));
+          for (var i = 0; i < equations.length; i++) {
+              katex.render(equations[i].textContent, equations[i]);
+          }
+      }) ();
+  </script>
+</body>
+</html>

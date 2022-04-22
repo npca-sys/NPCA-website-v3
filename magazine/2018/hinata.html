@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="簡単!VR3(00)分クッキング" href="harady.html"><link rel="prev" title="写真のデータを読み込もう" href="2lu3.html">  <meta name="generator" content="Re:VIEW" />
+  <title>すばやい文字列の探しかた | NPCA部誌2018</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.js" integrity="sha384-jmxIlussZWB7qCuB+PgKG1uLjjxbVVIayPJwi6cG6Zb4YKq0JIw+OMnkkEC7kYCq" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2018</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">部長挨拶</a></li>
+<li><a href="object_1037.html">1 ARKit</a></li>
+<li><a href="2lu3.html">2 写真のデータを読み込もう</a></li>
+<li><a href="hinata.html">3 すばやい文字列の探しかた</a></li>
+<li><a href="harady.html">4 簡単!VR3(00)分クッキング</a></li>
+<li><a href="taizo0122.html">5 ぱそこんであそぼ</a></li>
+<li><a href="takepan.html">6 マインクラフトのサーバー管理を楽で便利なものにしてみる話</a></li>
+<li><a href="kota1024.html">7 簡単blenderモデリング</a></li>
+<li><a href="niimi.html">8 深層学習の基礎のキソ</a></li>
+<li><a href="physics0523.html">9 JOI参戦記</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h3"></a><span class="secno">第3章　</span>すばやい文字列の探しかた</h1>
+<p><p style="text-align:right">72回生 Hinata</p></p>
+
+<h2><a id="h3-1"></a><span class="secno">3.1　</span>はじめに</h2>
+<p>皆さんこんにちは。72回生のHinataです。ちょっと前まで中学生だったのに、いつのまにか高校2年生になってしまいました。入学してから4年が経ちますが、自分が成長している気が全くせず厳しい気持ちでいます。今年はJOI(情報オリンピック)も落ちてしまいましたし。</p>
+<p>さて、今回のタイトルは「すばやい文字列の探しかた」です。どっかで聞いたことあるようなタイトルですね。あまり上手なパロディではないですが、そこはご容赦ください。ちなみに冴えカノは見たことも読んだこともありません。読みたいとは思ってるんですけどお金がないんですよ。ラノベに限らず読みたい本が多すぎてつらいので、通りすがりの石油王がいらっしゃいましたら寄付をお願いします。</p>
+<p>Webサイトを見ているとき、あるいはテキストエディタで文章(あるいはコード)を書いているとき、ブラウザやテキストエディタの検索機能を使えば、長い文章やサイトでも一瞬で探し当ててくれます。では、この処理はどうやって実現されているのでしょうか。大多数の人は詳しく知らないでしょう。私もつい最近まで知りませんでした。</p>
+<p>そこで、この記事では、文章から文字列(文字の列、すなわち単語や文章など)を高速に検索するアルゴリズムをいくつか紹介・実装してみます。使う言語はRubyです。</p>
+
+<h2><a id="h3-2"></a><span class="secno">3.2　</span>約束</h2>
+<p>この記事において、文字列Sの長さは<span class="equation">|S|</span>と表記します。</p>
+<p>また、文字列Sの部分列のうち、i文字目から|S|文字目までを取り出した文字列を接尾辞と呼ぶことにします。例えば&quot;ABCDEF&quot;の接尾辞には&quot;CDEF&quot;や&quot;BCDEF&quot;などがあります。反対に、1文字目からi文字目までを取り出した文字列を接頭辞と呼ぶことにします。例えば&quot;ABCDEF&quot;の接頭辞には&quot;ABC&quot;や&quot;ABCDE&quot;などがあります。</p>
+
+<h2><a id="h3-3"></a><span class="secno">3.3　</span>とりあえず力技で</h2>
+<p>文字列を検索するアルゴリズムのうち、もっとも単純なのが総当たり(ブルートフォース)です。</p>
+<p>長い文字列Sと検索したい文字列Wがあるとします。SとWを1文字ずつずらして比較し、全て同じであれば成功です。途中で異なる文字があった場合は、Sの開始位置を1つずらして同じことをします。</p>
+<p>一回の比較に<span class="equation">O(|W|)</span>かかり、その処理を<span class="equation">|S|</span>回繰り返すため、全体の計算量は<span class="equation">O(|S||W|)</span>です。</p>
+<p>実際に、Sに含まれるWの開始位置を配列で返す関数を実装してみます。</p>
+<div id="bf" class="caption-code">
+<p class="caption">リスト3.1: ブルートフォース</p>
+<pre class="list language-ruby highlight"><span class="k">def</span> <span class="nf">brute_force</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+  <span class="n">match_index</span> <span class="o">=</span> <span class="p">[]</span>
+
+  <span class="mi">0</span><span class="p">.</span><span class="nf">upto</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="nf">size</span> <span class="o">-</span> <span class="n">w</span><span class="p">.</span><span class="nf">size</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+    <span class="n">match</span> <span class="o">=</span> <span class="kp">true</span>
+    <span class="mi">0</span><span class="p">.</span><span class="nf">upto</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="nf">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">j</span><span class="o">|</span>
+      <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="n">w</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="kp">false</span>
+        <span class="k">break</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="n">match_index</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">if</span> <span class="n">match</span>
+  <span class="k">end</span>
+
+  <span class="n">match_index</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+<h2><a id="h3-4"></a><span class="secno">3.4　</span>KMP法</h2>
+<p>総当たりは無駄が多いです。</p>
+<p>例えば、Sが&quot;BABABABABDC&quot;でWが&quot;ABABD&quot;の場合を考えます。</p>
+<div id="bf" class="image">
+<img src="images/hinata/bf.svg" alt="ブルートフォース" class="width-100per" />
+<p class="caption">
+図3.1: ブルートフォース
+</p>
+</div>
+<p>後戻りしてすでに探索した部分から比較を始めている部分がありますね。この比較をどうにか省いて高速化できないでしょうか。</p>
+<p>ここで、1から<span class="equation">|W|</span>までの全てのiに対して、「i文字目で終わり、Wの接頭辞のひとつと一致するWの部分文字列のうち、最長のもの」を考えます。ただし、文字列そのものは含みません。</p>
+<p>例えば、iが4だとします。3文字目から始まり4文字目で終わる部分文字列&quot;AB&quot;は先頭の2文字&quot;AB&quot;と同じですね。今回はこれ以外に条件を満たす文字列がないため、最長のものは&quot;AB&quot;となります。</p>
+<p>全てのiについて最長の文字列の長さを計算すると、次のようになります。</p>
+<div id="kmptable" class="table">
+<p class="caption">表3.1: 「ずらし表」</p>
+<table>
+<tr><th>i</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+<tr><td>文字列長</td><td>0</td><td>0</td><td>1</td><td>2</td><td>0</td></tr>
+</table>
+</div>
+<p>では、実際に探索するとどうなるか考えてみましょう。ずらし表においてiに対応する文字列長をt[i]と定義します。</p>
+<p>例えば、&quot;ABAB&quot;まで一致して&quot;D&quot;が一致しなかった場合を考えます。t[4]は2ですが、これは&quot;ABAB&quot;の最後2文字が先頭2文字と等しいということなので、次の比較は途中で終わり2回先の比較でようやく&quot;AB&quot;と一致するわけです。</p>
+<div id="kmp" class="image">
+<img src="images/hinata/kmp.svg" alt="KMP法" class="width-100per" />
+<p class="caption">
+図3.2: KMP法
+</p>
+</div>
+<p>灰色の部分は実際には実行されませんが、分かりやすさのために書いています。</p>
+<p>実際のコードはこうなります。</p>
+<div id="kmp_search" class="caption-code">
+<p class="caption">リスト3.2: KMP法(検索部)</p>
+<pre class="list language-ruby highlight"><span class="k">def</span> <span class="nf">kmp</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+  <span class="n">match_index</span> <span class="o">=</span> <span class="p">[]</span>
+
+  <span class="c1"># 「ずらし表」を作成する</span>
+  <span class="n">t</span> <span class="o">=</span> <span class="n">create_table</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+  <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># Sの比較開始位置</span>
+  <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># Wの比較位置</span>
+
+  <span class="k">while</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">s</span><span class="p">.</span><span class="nf">size</span>
+    <span class="k">if</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">w</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+      <span class="c1"># 一致した場合</span>
+      <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+
+      <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="n">w</span><span class="p">.</span><span class="nf">size</span>
+        <span class="c1"># 検索成功</span>
+        <span class="n">match_index</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="c1"># i = i + j - t[j - 1]</span>
+        <span class="c1"># j = t[j - 1]</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+      <span class="k">end</span>
+    <span class="k">elsif</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span>
+      <span class="c1"># 1文字目で比較失敗</span>
+      <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">else</span>
+      <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="n">match_index</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+<h2><a id="h3-5"></a><span class="secno">3.5　</span>接尾辞配列</h2>
+<p>文字列Sの接尾辞を全て列挙することを考えます。開始位置iが0から<span class="equation">|S|-1</span>まで動き、1つのiに対して接尾辞1つが対応するので、Sの接尾辞は<span class="equation">|S|</span>種類存在します。</p>
+<p>さて、<span class="equation">|S|</span>種類の接尾辞を辞書順に並べた配列があったとします。これが接尾辞配列です。例えば、Sが&quot;abracadabra&quot;の場合は次のようになります。</p>
+<div id="suffixarrayexample" class="table">
+<p class="caption">表3.2: 接尾辞配列</p>
+<table>
+<tr><th>開始位置</th><th>接尾辞</th></tr>
+<tr><td>11</td><td>a</td></tr>
+<tr><td>8</td><td>abra</td></tr>
+<tr><td>1</td><td>abracadabra</td></tr>
+<tr><td>4</td><td>acadabra</td></tr>
+<tr><td>6</td><td>adabra</td></tr>
+<tr><td>9</td><td>bra</td></tr>
+<tr><td>2</td><td>bracadabra</td></tr>
+<tr><td>5</td><td>cadabra</td></tr>
+<tr><td>7</td><td>dabra</td></tr>
+<tr><td>10</td><td>ra</td></tr>
+<tr><td>3</td><td>racadabra</td></tr>
+</table>
+</div>
+<p>&quot;bra&quot;が出現する位置を全て探すということは、つまり&quot;bra&quot;から始まる接尾辞を探索することです。配列はソートされているので、二分探索を利用することで効率的に探すことができます。この場合、&quot;bra&quot;が出てくるのは2文字目と9文字目からです。</p>
+<p>素朴な実装は次のようになります。</p>
+<div id="sa-naive" class="caption-code">
+<p class="caption">リスト3.3: キャプション</p>
+<pre class="list language-ruby highlight"><span class="k">class</span> <span class="nc">SuffixArray</span>
+  <span class="nb">attr_reader</span> <span class="ss">:sa</span>
+
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+    <span class="vi">@str</span> <span class="o">=</span> <span class="n">str</span>
+    <span class="vi">@sa</span> <span class="o">=</span> <span class="no">Array</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="nf">size</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="p">}</span>
+    <span class="vi">@sa</span><span class="p">.</span><span class="nf">sort!</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">|</span> <span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="o">..-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=&gt;</span> <span class="n">str</span><span class="p">[</span><span class="n">j</span><span class="o">..-</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="nb">p</span> <span class="no">SuffixArray</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"abracadabra"</span><span class="p">).</span><span class="nf">sa</span> <span class="c1"># [10, 7, 0, 3, 5, 8, 1, 4, 6, 9, 2]</span>
+</pre>
+</div>
+<p>初めに[0,1,2,3,......]という配列を生成して、それをソートしています。</p>
+<p>さて、このコードの計算量はどうなっているでしょうか。ソートの計算量自体は<span class="equation">O(|S| log |S|)</span>ですが、1回の比較は<span class="equation">O(|S|)</span>なので、接尾辞配列を構築する処理の計算量は<span class="equation">O(|S|^2 log |S|)</span>となります。これは、さすがに使い物になりません。実際、16.75万文字の文章でこのコードを実行したところ、私のパソコンでは5.3秒かかりました。多少高速化はできますが、計算量が大きすぎて焼け石に水です。</p>
+<p>しかし、実際にはSA-IS法という高速な構築法があり、<span class="equation">O(|S|)</span>で計算することができます。しかし、筆者のアルゴリズムを理解し実装する能力はとても低く、実装することも理解することもできませんでした。</p>
+
+<h3><a id="h3-5-1"></a>Multi-key quicksort</h3>
+<p>というわけで、今回はMulti-key quicksortというアルゴリズムを実装してみます。これは文字列の比較に特化したクイックソートです。なぜこのアルゴリズムかというと、私は比較的再帰アルゴリズムが得意だからです。あと9時間で文化祭始まっちゃうのに、苦手な実装をしている余裕はないんですよ。(ヤバイ)</p>
+<p>&quot;abracadabra&quot;の接尾辞は以下です。</p>
+<div class="emlist-code">
+<pre class="emlist highlight">abracadabra
+bracadabra
+racadabra
+acadabra
+cadabra
+adabra
+dabra
+abra
+bra
+ra
+a
+</pre>
+</div>
+<p>ランダムに基準の文字列(今回はadabra)を取ります。そして、1文字目がaより前か、同じか、後ろかで分別します。</p>
+<div class="emlist-code">
+<pre class="emlist highlight">-----------
+abracadabra
+acadabra
+adabra
+abra
+a
+-----------
+bracadabra
+racadabra
+cadabra
+dabra
+bra
+ra
+</pre>
+</div>
+<p>それぞれの区域をソートすれば、全体としてもソートできたことになりますね。</p>
+<p>まず、aから始まる文字列をソートします。この場合、2文字目で比較します。abracadabraを選択すると</p>
+<div class="emlist-code">
+<pre class="emlist highlight">[a]
+-----------
+[a]bracadabra
+[a]bra
+-----------
+[a]cadabra
+[a]dabra
+</pre>
+</div>
+<p>この後も再帰的にソートしていきます。</p>
+<p>さて、初めの文字がaよりも後ろだった文字列のソートはどうなるでしょうか。まだ1文字目は揃っていないので、もう一度1文字目で分別することになります。基準にbracadabraを選択すると</p>
+<div class="emlist-code">
+<pre class="emlist highlight">-----------
+bracadabra
+bra
+-----------
+racadabra
+cadabra
+dabra
+ra
+</pre>
+</div>
+<p>これも、それぞれの区域をソートすることで全体をソートできます。</p>
+<p>文字列の比較は当然<span class="equation">O(1)</span>なので、全体の計算量は<span class="equation">O(|S| log |S|)</span>です。多分。</p>
+<p>コード書いた方が分かりやすいと思うので、サンプルコードを載せます。なお、このコードは速度を考慮していないため、さっきの力技ソートより遅いです。</p>
+<div id="multikey_qsort" class="caption-code">
+<p class="caption">リスト3.4: キャプション</p>
+<pre class="list language-ruby highlight"><span class="k">class</span> <span class="nc">String</span>
+  <span class="k">def</span> <span class="nf">at_banpei</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">self</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="nf">nil?</span>
+      <span class="s2">"</span><span class="se">\0</span><span class="s2">"</span>
+    <span class="k">else</span>
+      <span class="nb">self</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">SuffixArray</span>
+  <span class="nb">attr_reader</span> <span class="ss">:sa</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+    <span class="vi">@str</span> <span class="o">=</span> <span class="n">str</span>
+    <span class="vi">@sa</span> <span class="o">=</span> <span class="no">Array</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="nf">size</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span> <span class="n">i</span> <span class="p">}</span>
+    <span class="vi">@sa</span> <span class="o">=</span> <span class="n">qsort_sa</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="vi">@sa</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="c1"># nは何文字目を比較するか</span>
+  <span class="k">def</span> <span class="nf">qsort_sa</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">array</span><span class="p">.</span><span class="nf">size</span> <span class="o">==</span> <span class="mi">0</span>
+      <span class="k">return</span> <span class="n">array</span>
+    <span class="k">end</span>
+    <span class="k">if</span> <span class="n">array</span><span class="p">.</span><span class="nf">size</span> <span class="o">==</span> <span class="mi">1</span>
+      <span class="k">return</span> <span class="n">array</span>
+    <span class="k">end</span>
+
+    <span class="n">pivot</span> <span class="o">=</span> <span class="n">array</span><span class="p">.</span><span class="nf">sample</span>
+    <span class="n">before</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># 辞書順が前</span>
+    <span class="n">same</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># n文字目が同じ</span>
+    <span class="n">after</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># 辞書順が後ろ</span>
+
+    <span class="n">array</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">index</span><span class="o">|</span>
+      <span class="k">if</span> <span class="vi">@str</span><span class="p">.</span><span class="nf">at_banpei</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">index</span><span class="p">)</span> <span class="o">&lt;</span> <span class="vi">@str</span><span class="p">.</span><span class="nf">at_banpei</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">pivot</span><span class="p">)</span>
+        <span class="n">before</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+      <span class="k">elsif</span> <span class="vi">@str</span><span class="p">.</span><span class="nf">at_banpei</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">index</span><span class="p">)</span> <span class="o">==</span> <span class="vi">@str</span><span class="p">.</span><span class="nf">at_banpei</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">pivot</span><span class="p">)</span>
+        <span class="n">same</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+      <span class="k">else</span>
+        <span class="n">after</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="n">qsort_sa</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">before</span><span class="p">).</span><span class="nf">concat</span><span class="p">(</span><span class="n">qsort_sa</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">same</span><span class="p">),</span> <span class="n">qsort_sa</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">after</span><span class="p">))</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="nb">p</span> <span class="no">SuffixArray</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"abracadabra"</span><span class="p">).</span><span class="nf">sa</span>
+</pre>
+</div>
+<p>結局、「ある文字列を基準に3つに分類して、1つ目と3つ目はもう一度ソートし、2つ目は比較する文字の位置を1つ進めてソートする」という処理を再帰的にやっているだけです。</p>
+
+<h2><a id="h3-6"></a><span class="secno">3.6　</span>おわりに</h2>
+<p>時間が足りず大変雑な記事になってしまいました。編集者として部誌の校正とか記事の整形とかLaTeXとの格闘とかもしないといけなかったし、ウェブサイトの管理者として文化祭ページを更新しないといけなかったし、仕方ないですね。はい。</p>
+<p>文字列のアルゴリズムは大変奥が深いです。この記事を読んで、ちょっとでも楽しいと思っていただけたら、ぜひ自分で学んでみてください。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="2lu3.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ 写真のデータを読み込もう</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="harady.html">
+            <div class="book-cursor"><span class="cursor-next">▶ 簡単!VR3(00)分クッキング</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+  <script type="text/javascript" id="MathJax-script" async="true" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="QRコードを読む" href="watcol.html"><link rel="prev" title="暗号と数学" href="Chito.html">  <meta name="generator" content="Re:VIEW" />
+  <title>CTF超入門 | 灘校パソコン研究部部誌2021</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>灘校パソコン研究部部誌2021</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="Sugsugar.html">第1章　フィボナッチ数と行列</a></li>
+<li><a href="Chito.html">第2章　暗号と数学</a></li>
+<li><a href="sashiming.html">第3章　CTF超入門</a></li>
+<li><a href="watcol.html">第4章　QRコードを読む</a></li>
+<li><a href="maguro.html">第5章　Rolling Hashのおはなし</a></li>
+<li><a href="hinata.html">第6章　プログラミングを始める</a></li>
+<li><a href="UltimateBlacktea.html">第7章　HDDで演奏する</a></li>
+<li><a href="PCT.html">第8章　競プロの数学問の基礎！</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h3"></a><span class="secno">第3章　</span>CTF超入門</h1>
+<p><p style="text-align:right">75回生 sashiming</p></p>
+
+<h2><a id="h3-1"></a><span class="secno">3.1　</span>はじめに</h2>
+<p>sashimingです。気づけば高2で、老いを感じている次第です。</p>
+<p>普段は競技プログラミング(略称:競プロ)をたしなんでいるのですが、最近はモチベが上がらなくなってきたので、「CTF」という競技を始めてみました。CTFは競プロよりも敷居が高いので、はじめに何をするべきか分からない人が多いと思います。そこで、この記事ではCTFを最低限楽しむための基礎知識を書いていこうと思います。</p>
+
+<h2><a id="h3-2"></a><span class="secno">3.2　</span>注意</h2>
+<p>この部誌では、OSにWindows10を用いています。他のOSを使用しているかたは、適宜読み替えるなどしてください。</p>
+
+<h2><a id="h3-3"></a><span class="secno">3.3　</span>What&#39;s CTF</h2>
+<p>CTFは``Capture the Flag&#39;&#39;の略で、サイバーセキュリティなどに関する技術や知識を活用して情報を抜き取る競技です。ハッカーのようなことをすると言っても差し支えはないでしょう。</p>
+<p>CTFには主に2つの形式があります。</p>
+<ul>
+<li><b>クイズ形式(Jeopardy style)</b><a id="fnb-jeopardy" href="sashiming.html#fn-jeopardy" class="noteref" epub:type="noteref">*1</a>：独立した問題がたくさん与えられるので、与えられたプログラム・Webサイト・暗号・画像などから``flag&#39;&#39;と呼ばれる文字列を探す</li>
+<li><b>攻防戦形式(Attack/Defense style)</b>：各チームにサーバが与えられ、他のチームのサーバを攻撃してflagを奪取しながら自分のチームのサーバを防衛する</li>
+</ul>
+<p>基本的に、オンラインで開かれるCTFコンテストはクイズ形式です。この記事では、クイズ形式のコンテストで出される問題について書きます。</p>
+<div class="footnote" epub:type="footnote" id="fn-jeopardy"><p class="footnote">[*1] 「Jeopardy!」というアメリカのテレビ番組が由来です</p></div>
+<p>クイズ形式で出される問題にはいくつかジャンルがあります。</p>
+<ul>
+<li><b>Reversing</b>：与えられたバイナリを解析してflagを探す</li>
+<li><b>Pwn</b>：与えられたプログラムの脆弱性を突いてflagを奪う</li>
+<li><b>Web</b>：webサイトの脆弱性を突いてflagを奪う</li>
+<li><b>Crypto</b>：暗号を解いてflagを見つける</li>
+<li><b>Forensics/Steganography</b>：ディスクイメージや画像・音声などを解析してflagを探す</li>
+<li><b>Misc</b>：その他・雑学</li>
+</ul>
+
+<h2><a id="h3-4"></a><span class="secno">3.4　</span>例題</h2>
+<p>ここで、簡単な問題を紹介します。ジャンルはCryptoです。</p>
+<p></p>
+<p>わけがわからない文字列ですが、勘の良いかたは何となく見当がつくかもしれません。</p>
+<p>答えを言ってしまうと、これは<b>シーザー暗号</b>と呼ばれる、最も有名かつ古典的な暗号です。仕組みはごく単純で、それぞれのアルファベットを3文字ぶん後にずらしているだけです。例えば、<code class="tt">a</code>は<code class="tt">d</code>に、<code class="tt">e</code>は<code class="tt">h</code>に、<code class="tt">y</code>は<code class="tt">b</code>に変換されます。</p>
+<p>平文(もとの文)を3文字ぶん後にずらして暗号化しているので、復号するには逆に暗号文を3文字ぶん前にずらすだけで良いです。先ほどの暗号文を復号すると、次のようになります。</p>
+<p></p>
+<p>ちゃんと意味のわかる文字列になりましたね！</p>
+
+<h2><a id="h3-5"></a><span class="secno">3.5　</span>CTFの学習方法</h2>
+<p>CTFのコンテストが開かれるWebサイトは、コンテスト終了後閉鎖されてしまうものが多いですが、中には常に問題が公開されている「常設CTF」があります。</p>
+<p>以下に入門レベルのかたでも取り組みやすい常設CTFを紹介しておきます。</p>
+<ul>
+<li>CpawCTF (<a href="https://ctf.cpaw.site/" class="link">https://ctf.cpaw.site/</a>)<ul>
+<li>CpawCTF2 (<a href="https://ctf2.cpaw.site/" class="link">https://ctf2.cpaw.site/</a>)</li>
+</ul>
+</li>
+<li>picoCTF (<a href="https://picoctf.org/" class="link">https://picoctf.org/</a>)</li>
+</ul>
+<p>常設CTFはたくさんネット上に転がっているので(Pwn系は特に多いです)、他にも見てみたい人はネットで調べてみると良いでしょう。</p>
+<p>問題を解いていく中で、戦略に行き詰まることが必ずあるはずです。そんなときは迷わず解説を見ましょう。名が知られているコンテストでは、公式に解説がなくてもたいてい有志のかたが解法をブログなどに公開してくれています。この解説のことを<b>Writeup</b>といいます。Writeupを読むことで他の人がどのように解いたのか参考にできるので、自力で解けた問題でもWriteupを見てみるのも良いでしょう。</p>
+<p>それでは、次の章から本編です。初心者がとっつきにくいPwnを除いたCrypto・Reversing・Web・Forensicsについて、例題を見ていきましょう。</p>
+
+<h2><a id="h3-6"></a><span class="secno">3.6　</span>Crypto編</h2>
+<p>Cryptoの問題では与えられた暗号を解いてflagを取得するのですが、この類の問題はセキュリティというよりは、数学や謎解きの性格が強いです。</p>
+<p>早速ですが、例題を見てみましょう。</p>
+<div class="column">
+
+<h3><a id="column-1"></a>picoCTF 2021 - Mod 26</h3>
+<p>Cryptography can be easy, do you know what ROT13 is?</p>
+<p><code class="inline-code tt">cvpbPGS{arkg_gvzr_V&#39;yy_gel_2_ebhaqf_bs_ebg13_GYpXOHqX}</code></p>
+</div>
+<p>問題文に「ROT13を知っていますか？僕は知っています」的なことが書いてあるので、適当にROT13でググってみましょう。CTFではググる技術も問われます。</p>
+<p>ROT13は非常に有名な暗号(?)で、平文の各アルファベットを後ろに13文字ぶん後ろにずらす、というものです。先ほど紹介したシーザー暗号のずらす個数を変えただけですね。</p>
+<p>検索するとROT13を復号してくれるサイトが無限に出てくるので、適当なサイトで復号してみましょう。次の文字列になるはずです。</p>
+<p><code class="inline-code tt">picoCTF{next_time_I&#39;ll_try_2_rounds_of_rot13_TLcKBUdK}</code></p>
+<p>次の問題は、RSA暗号という有名な暗号を用いた問題です。RSA暗号についてはChito君が記事を書いてくれているようなので、彼に丸投げすることにします。興味のあるかたはご覧ください。</p>
+<div class="column">
+
+<h3><a id="column-2"></a>picoCTF 2021 - Mini RSA</h3>
+<p>What happens if you have a small exponent? There is a twist though, we padded the plaintext so that (M ** e) is just barely larger than N. Let&#39;s decrypt this:<a href="https://mercury.picoctf.net/static/2d884b04dbb44896dda1276774b09216/ciphertext" class="link">ciphertext</a></p>
+</div>
+<p>RSA暗号の体裁をとっていても、その値が脆弱では意味がありません。今回の場合、<span class="equation">\( e=3 \)</span>と小さいので、3乗根をとれば平文が手に入ってしまいます。この攻撃をLow Public-Exponent Attackといったりします。</p>
+<div class="emlistnum-code">
+<table class="highlight rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="nn">gmpy2</span>
+<span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s">'N: '</span><span class="p">))</span>
+<span class="n">e</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s">'e: '</span><span class="p">))</span>
+<span class="n">c</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s">'c: '</span><span class="p">))</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">exact</span> <span class="o">=</span> <span class="n">gmpy2</span><span class="p">.</span><span class="n">iroot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">exact</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+        <span class="k">break</span>
+    <span class="n">c</span> <span class="o">+=</span> <span class="n">N</span>
+</pre></td></tr></tbody></table>
+</div>
+<p><span class="equation">\( c \)</span>の3乗根が整数でとれるまで、<span class="equation">\( c \)</span>に<span class="equation">\( N \)</span>を足し続けています。RSA暗号の定義から<span class="equation">\( c = m^{e} \bmod N \)</span>なので、この3乗根が平文となります。これをバイト列と解釈して文字列に変換すると、</p>
+<p><code class="inline-code tt">picoCTF{e_sh0u1d_b3_lArg3r_a166c1e3}</code></p>
+<p>が手に入ります(運営側によって<code class="inline-code tt">lArg3r</code>の後の文字列はちょくちょく変更されます)。</p>
+<p>他にも、Nが等しくeが異なる2つの公開鍵(e, N)が与えられれば、Common Modulus Attackで平文を入手することもできます。</p>
+
+<h2><a id="h3-7"></a><span class="secno">3.7　</span>Forensics編</h2>
+<p>Forensicsでは、与えられたファイル(画像、ディスクイメージ、etc.)に隠されたflagを見つけます。結構楽しいです。</p>
+<p>簡単めな問題を見てみましょう。</p>
+<div class="column">
+
+<h3><a id="column-3"></a>picoCTF 2019 - extensions</h3>
+<p>This is a really weird text file <a href="https://jupiter.challenges.picoctf.org/static/e7e5d188621ee705ceeb0452525412ef/flag.txt" class="link">TXT</a>? Can you find the flag?</p>
+</div>
+<p>CTFでは問題名がヒントになっていることが多々あります。今回はextensions、つまり拡張子なので、拡張子をいじる問題だと推測できます。</p>
+<p>では、このファイルの正しい形式は何でしょうか。実はそれが分かるコマンドがあります。</p>
+<p>Linuxには<code class="inline-code tt">file</code>コマンドがあり、それを使うとファイル形式が表示されます。Windows10では、WSL(Windows Subsystem for Linux)を使えばWindows上でLinuxを使うことができます。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="gp">$</span><span class="w"> </span>file ./flag.txt
+<span class="go">flag.txt: PNG image data, 1697 x 608, 8-bit/color RGB, non-interlaced
+</span>
+</pre>
+</div>
+<p>これでファイルがpng形式だと分かりました。あとは拡張子を.pngに変更すると...</p>
+<div id="extensions" class="image">
+<img src="images/sashiming/extensions.png" alt="答え" />
+<p class="caption">
+図3.1: 答え
+</p>
+</div>
+<p>この問題で使った<code class="inline-code tt">file</code>コマンドと、ファイル中の表示可能な文字列を出力する<code class="inline-code tt">strings</code>コマンドはForensicsでは非常によく使われます。初手はこのコマンドを使うとよいでしょう。</p>
+
+<h2><a id="h3-8"></a><span class="secno">3.8　</span>Reversing編</h2>
+<p>Reversingでは基本的にアセンブリを読む作業が必要です。知識、経験、エスパーなどを駆使してプログラムの挙動をつかまないといけません。結構根性が要ります。</p>
+<p>アセンブリの読み方は「アセンブリ 入門」などと調べると結構な数がヒットするので、それを参考にするとよいでしょう(部誌で書くには締切が近すぎます)。ReversingやPwnは高度な知識が必要なので、後回しにしておくとよいのかもしれません。</p>
+<p>それでは参考がてらに、アセンブリを使った問題をひとつ。</p>
+<div class="column">
+
+<h3><a id="column-4"></a>picoCTF 2019 - asm1</h3>
+<p>What does asm1(0x6fa) return? Submit the flag as a hexadecimal value (starting with &#39;0x&#39;). NOTE: Your submission for this question will NOT be in the normal flag format.</p>
+<div class="emlist-code">
+<pre class="emlist language-asm highlight">asm1:
+    <+0>:   push   ebp
+    <+1>:   mov    ebp,esp
+    <+3>:   cmp    DWORD PTR [ebp+0x8],0x3a2
+    <+10>:  jg     0x512 <asm1+37>
+    <+12>:  cmp    DWORD PTR [ebp+0x8],0x358
+    <+19>:  jne    0x50a <asm1+29>
+    <+21>:  mov    eax,DWORD PTR [ebp+0x8]
+    <+24>:  add    eax,0x12
+    <+27>:  jmp    0x529 <asm1+60>
+    <+29>:  mov    eax,DWORD PTR [ebp+0x8]
+    <+32>:  sub    eax,0x12
+    <+35>:  jmp    0x529 <asm1+60>
+    <+37>:  cmp    DWORD PTR [ebp+0x8],0x6fa
+    <+44>:  jne    0x523 <asm1+54>
+    <+46>:  mov    eax,DWORD PTR [ebp+0x8]
+    <+49>:  sub    eax,0x12
+    <+52>:  jmp    0x529 <asm1+60>
+    <+54>:  mov    eax,DWORD PTR [ebp+0x8]
+    <+57>:  add    eax,0x12
+    <+60>:  pop    ebp
+    <+61>:  ret
+</pre>
+</div>
+</div>
+<p>この関数では、アドレス<code class="inline-code tt">[ebp+0x8]</code>に引数が入っています。この引数を<code class="inline-code tt">cmp</code>命令で比較し、その直後の<code class="inline-code tt">jg</code>や<code class="inline-code tt">jne</code>命令で比較結果によって次に実行する命令にジャンプします。</p>
+<p>行<code class="inline-code tt">&lt;+0&gt;</code>・<code class="inline-code tt">&lt;+1&gt;</code>はおまじないのようなものと思ってください。</p>
+<p><code class="inline-code tt">&lt;+3&gt;</code>で<code class="inline-code tt">0x6fa</code>と<code class="inline-code tt">0x3a2</code>を比較します。<code class="inline-code tt">0x6fa</code>のほうが大きいので(<code class="inline-code tt">jg</code>)、<code class="inline-code tt">&lt;+37&gt;</code>にジャンプします。</p>
+<p>次に、<code class="inline-code tt">&lt;+37&gt;</code>で<code class="inline-code tt">0x6fa</code>と<code class="inline-code tt">0x6fa</code>を比較します。値が等しいので、ジャンプはせずそのまま次の行に移ります。</p>
+<p><code class="inline-code tt">&lt;+46&gt;</code>で<code class="inline-code tt">eax</code>レジスタに値<code class="inline-code tt">0x6fa</code>を入れています。その次の行<code class="inline-code tt">&lt;+49&gt;</code>で<code class="inline-code tt">eax</code>レジスタの値を<code class="inline-code tt">0x12</code>だけ引いています。つまりこの演算の後、<code class="inline-code tt">eax</code>レジスタの値は<code class="inline-code tt">0x6e8</code>になっています。</p>
+<p>最後に、<code class="inline-code tt">&lt;+52&gt;</code>の処理で行<code class="inline-code tt">&lt;+60&gt;</code>にジャンプし、処理終了です。</p>
+<p>関数の返り値は<code class="inline-code tt">eax</code>レジスタに入れることになっているので、答えは<code class="inline-code tt">0x6e8</code>です。</p>
+
+<h2><a id="h3-9"></a><span class="secno">3.9　</span>Web編</h2>
+<p>プログラムを解読したり脆弱性を突いたりするReversingやPwnとは違い、Webでは文字通りWebページの脆弱性を突きます。このジャンルもPwn同様、難しい部類に入ります。</p>
+<p>今回は割合に簡単な問題を紹介します。</p>
+<div class="column">
+
+<h3><a id="column-5"></a>picoCTF 2019 - where are the robots</h3>
+<p>Can you find the robots? <a href="https://jupiter.challenges.picoctf.org/problem/36474/" class="link">https://jupiter.challenges.picoctf.org/problem/36474/</a> or <a href="http://jupiter.challenges.picoctf.org:36474" class="link">http://jupiter.challenges.picoctf.org:36474</a></p>
+</div>
+<p>Webサーバを構築したことのあるかたは、問題文を読んでやるべきことが分かるかと思います。</p>
+<p>robots.txtは、知られたくない情報を検索エンジンによって収集されないように、クローラー(Web上の画像や文書を取得しデータベース化するプログラム)を制御するためのファイルです。このファイルはサイトのトップディレクトリに置かれています。</p>
+<p>なので、URL欄の末尾に<code class="inline-code tt">robots.txt</code>を追加すると...</p>
+<div id="robots" class="image">
+<img src="images/sashiming/robots.png" alt="robots.txt" />
+<p class="caption">
+図3.2: robots.txt
+</p>
+</div>
+<p>このようにrobots.txtの中身が表示されてしまいます。そして、あからさまにhtmlファイルのリンクが書いてあるので、アクセスするとflagが手に入ります。</p>
+<p>Web系の問題は学習難度が高く、なかなかとっつきにくいジャンルとなっています。</p>
+
+<h2><a id="h3-10"></a><span class="secno">3.10　</span>おわりに</h2>
+<p>今回はCTFの入門的問題ではどのようなものが出題されるか書きました。この記事がCTFを始める人に少しでも役に立てば嬉しいです。</p>
+<p>それではよいCTFライフを。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="Chito.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ 暗号と数学</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="watcol.html">
+            <div class="book-cursor"><span class="cursor-next">▶ QRコードを読む</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

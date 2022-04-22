@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="マインクラフトのサーバー管理を楽で便利なものにしてみる話" href="takepan.html"><link rel="prev" title="簡単!VR3(00)分クッキング" href="harady.html">  <meta name="generator" content="Re:VIEW" />
+  <title>ぱそこんであそぼ | NPCA部誌2018</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.js" integrity="sha384-jmxIlussZWB7qCuB+PgKG1uLjjxbVVIayPJwi6cG6Zb4YKq0JIw+OMnkkEC7kYCq" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2018</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">部長挨拶</a></li>
+<li><a href="object_1037.html">1 ARKit</a></li>
+<li><a href="2lu3.html">2 写真のデータを読み込もう</a></li>
+<li><a href="hinata.html">3 すばやい文字列の探しかた</a></li>
+<li><a href="harady.html">4 簡単!VR3(00)分クッキング</a></li>
+<li><a href="taizo0122.html">5 ぱそこんであそぼ</a></li>
+<li><a href="takepan.html">6 マインクラフトのサーバー管理を楽で便利なものにしてみる話</a></li>
+<li><a href="kota1024.html">7 簡単blenderモデリング</a></li>
+<li><a href="niimi.html">8 深層学習の基礎のキソ</a></li>
+<li><a href="physics0523.html">9 JOI参戦記</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h5"></a><span class="secno">第5章　</span>ぱそこんであそぼ</h1>
+<p><p style="text-align:right">72回生 湯浅太蔵</p></p>
+
+<h2><a id="h5-1"></a><span class="secno">5.1　</span>自己紹介などなど</h2>
+<p>おはようございますこんにちはこんばんは。72回生の湯浅太蔵と申します。本編にお越しいただいてありがとうございます。いつのまにか高校二年生になってしまいとてもつらいのですが、残り1.5年(?)の青春(?)を謳歌したいと思っております。</p>
+<p>当たり前ですが高校生活を送ることができる時間は限られています。なので、日々の煩わしい作業を目の前の優秀なパソコンくんに任せてしまおうと考えました。というわけで、<b class="kw">作業の自動化</b><!-- IDX:作業の自動化 -->をテーマに部誌を進めていきます。</p>
+<p>この記事では、<b class="kw">Python</b><!-- IDX:Python -->というプログラミング言語を使用します。特徴としては、</p>
+<ul>
+<li>必要に応じて<b class="kw">モジュール</b><!-- IDX:モジュール -->というものを利用できる</li>
+<li>インデント(行頭の空白)自体に意味が持たせられていて、ソースコードが読みやすい(逆に言えば、インデントを間違えると実行できない)</li>
+</ul>
+<p>等が挙げられます。</p>
+<p>ちなみに、Pythonという名前の由来は、イギリスのコメディグループであるモンティ・パイソンらしいです。</p>
+<div class="column">
+
+<h3><a id="column-1"></a>モジュール・パッケージ</h3>
+<p>Pythonにおいてモジュールとは、他のファイルから読み込んでその機能を使うことができるファイルのことです。モジュールを作っておけば、同じプログラムを何度も書く手間が省けます。</p>
+<p>また、パッケージは、様々なモジュールがひとまとめになったものです。</p>
+<p>モジュールを読み込むには、ファイルの先頭に import モジュール名 と記述します。</p>
+</div>
+
+<h2><a id="h5-2"></a><span class="secno">5.2　</span>環境構築</h2>
+<p>本題に入る前に、まずパソコンでPythonを実行できる環境を作りましょう。</p>
+<p>Pythonのホームページからインストールしてもよいのですが、様々なライブラリやツールが付属している<b class="kw">Anaconda</b><!-- IDX:Anaconda -->をインストールするほうが便利です。</p>
+<p><a href="https://www.anaconda.com/download/" class="link">https://www.anaconda.com/download/</a></p>
+<p>ホームページからAnacondaをインストールしましょう。2ではなく3の方をインストールします。(Python2系はしばらくするとサポートが打ち切られてしまうため)</p>
+<p>特に理由がなければ、そのままの設定でインストールしましょう。</p>
+<p>macOSやLinux,Windows Subsystem for Linuxを利用している方は、コマンドを使ってインストールするほうが簡単です。</p>
+
+<h3><a id="h5-2-1"></a>Linux</h3>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">sudo apt-get install python3 python3-pip
+</span>
+</pre>
+</div>
+<p>pipはPython用のパッケージ管理システムです。</p>
+
+<h3><a id="h5-2-2"></a>macOS</h3>
+<p><b class="kw">Homebrew</b><!-- IDX:Homebrew -->というmacOS用のパッケージマネージャからインストールします。</p>
+
+<h4><a id="h5-2-2-1"></a>Homebrewのインストール</h4>
+<div class="cmd-code">
+<pre class="cmd"><span class="gp">/usr/bin/ruby -e "$</span><span class="o">(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/master/install<span class="o">)</span><span class="s2">"
+</span>
+</pre>
+</div>
+
+<h4><a id="h5-2-2-2"></a>Pythonのインストール</h4>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">brew install python3
+</span>
+</pre>
+</div>
+
+<h2><a id="h5-3"></a><span class="secno">5.3　</span>Pythonのプログラムを実行する</h2>
+<p>Pythonをのプログラムを実行するには、インタラクティブシェルを利用する方法と、ファイルを実行する方法があります。</p>
+
+<h3><a id="h5-3-1"></a>インタラクティブシェル</h3>
+<p>コマンドラインに Python3 または Python と入力すると、インタラクティブシェル(対話型シェル)が立ち上がります。</p>
+<p>インタラクティブシェルには、以下のように、直接プログラムを打ち込むことが出来ます。</p>
+<div id="interactive" class="image">
+<img src="images/taizo0122/interactive.png" alt="" />
+</div>
+
+<h3><a id="h5-3-2"></a>ファイルを実行</h3>
+<p>インタラクティブシェルは簡単なプログラムを実行するのには向いていますが、複雑なプログラムを処理するにはファイルごと実行する必要があります。</p>
+<p>python(または python3) ファイル名 と入力すれば、ファイルを実行できます。</p>
+<div class="emlist-code">
+<p class="caption">Helloworld.py</p>
+<pre class="emlist language-python highlight"><span class="k">print</span><span class="p">(</span><span class="s">'Hello,world!'</span><span class="p">)</span>
+</pre>
+</div>
+<div class="cmd-code">
+<pre class="cmd"><span class="gp">C:\Users\taizo&gt;</span>python Helloworld.py
+<span class="go">Hello,world!
+</span>
+</pre>
+</div>
+
+<h2><a id="h5-4"></a><span class="secno">5.4　</span>プログラムからパソコンにアクセス</h2>
+<p><code class="inline-code tt">os</code>というモジュールを使えば、Pythonのプログラムからパソコンの状態を見ることができます。</p>
+<p>簡単な例として、指定したディレクトリの中から、指定した拡張子のファイルを表示するプログラムを作ってみます。</p>
+<div class="emlistnum-code">
+<p class="caption">FindFile.py</p>
+<table class="highlight rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></td><td class="rouge-code"><pre><span class="c">#! python3</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">folder</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">extension</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="c">#folder以下の拡張子がextensionのファイルを探す</span>
+<span class="k">for</span> <span class="n">foldername</span><span class="p">,</span> <span class="n">subfolders</span><span class="p">,</span> <span class="n">filenames</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">extension</span><span class="p">):</span><span class="c">#ファイル名を小文字に変換→ファイル名の末尾がextensionであるファイルを表示</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">foldername</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span><span class="c">#見つけたファイルの絶対パスを表示</span>
+</pre></td></tr></tbody></table>
+</div>
+<ul>
+<li>最初の2行</li>
+</ul>
+<p>最初の行はマジックコメントと呼ばれ、実行するPythonのバージョンと、プログラムの文字エンコーディングを示しています。</p>
+<ul>
+<li><code class="inline-code tt">sys</code></li>
+</ul>
+<p><code class="inline-code tt">sys</code>モジュールをimportすると、プログラムに引数を渡すことができるようになります。引数は<code class="inline-code tt">sys.argv</code>に格納されます。たとえば、</p>
+<div class="emlistnum-code">
+<p class="caption">argv.py</p>
+<table class="highlight rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></td></tr></tbody></table>
+</div>
+<p>これはすべての引数を表示するプログラムですが、これを実行すると、</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="gp">C:\Users\taizo&gt;</span>python argv.py a b c
+<span class="go">argv.py
+a
+b
+c
+</span>
+</pre>
+</div>
+<p>となります。<code class="inline-code tt">sys.argv</code>配列の一つ目にはファイル名が入ることになっています。</p>
+<ul>
+<li><code class="inline-code tt">os.walk</code></li>
+</ul>
+<p>指定したフォルダの中を渡り歩いてくれる関数です。for文で呼び出すと、繰り返しごとに、</p>
+<ul>
+<li>現在のフォルダ名を表す文字列</li>
+<li>現在のフォルダの中にあるフォルダ名を表す文字列のリスト</li>
+<li>現在のフォルダの中にあるファイル名を表す文字列のリスト</li>
+</ul>
+<p>の3つの値を返します。</p>
+<ul>
+<li><code class="inline-code tt">os.path.join</code></li>
+</ul>
+<p>パスの区切り文字はOSによって異なりますが、この関数にフォルダ名とファイル名を渡すと、適切な区切り文字でパスを作ってくれます。</p>
+<p>12~13行目では、<code class="inline-code tt">os.walk</code>関数によって見つけたファイルのうち、末尾が<code class="inline-code tt">extension</code>(つまり拡張子がextension)のファイルが有れば、その絶対パスを表示する、ということをしています。<code class="inline-code tt">lower</code>関数は文字列を全て小文字にするものですが、拡張子が大文字の可能性も考慮して使っています。</p>
+<p>Cドライブからjpg画像を探すときは以下のようにします。</p>
+<div class="cmd-code">
+<pre class="cmd"><span class="go">python (FindFile.pyの絶対パス) C:// jpg
+</span>
+</pre>
+</div>
+<div class="column">
+
+<h3><a id="column-2"></a>絶対パスと相対パス</h3>
+<p>今、C:\Usersを見ているします。C:\Users直下にnpca.pngというファイルがあるとすると、相対パスは<em>npca.png</em>、絶対パスは<em>c:\Users\npca.png</em>となります。このように、今見ているファイルからの相対的な位置を示すのが相対パス、今どこを見ているかに関係なくファイルの位置を示すのが絶対パスです。</p>
+</div>
+
+<h2><a id="h5-5"></a><span class="secno">5.5　</span>Webから情報を取得する</h2>
+<p>今、Web上には情報が溢れています。その大量の情報の中から、自分に必要なものだけを集めるという作業は、様々なことに活用できます。</p>
+
+<h3><a id="h5-5-1"></a>クローリング&amp;スクレイピング</h3>
+<p>先に用語の解説をしておきます。</p>
+<dl>
+<dt>クローリング</dt>
+<dd>Web上の情報を集めることを<b class="kw">クローリング(Crawling)</b><!-- IDX:クローリング(Crawling) -->といいます。クローリングを行うプログラムはクローラーと呼ばれます。</dd>
+<dt>スクレイピング</dt>
+<dd>クローリングして集めてきた情報から必要なものを抜き出していく作業を<b class="kw">スクレイピング(Scraping)</b><!-- IDX:スクレイピング(Scraping) -->といいます。</dd>
+</dl>
+<p>クローラーは、Googleの検索エンジンなど、私達の身近なところで用いられています。自分好みのクローラーを作れば、役に立つこと間違いなしです。</p>
+<p>ここでは、朝天気予報を見るのが億劫なので、<a href="https://tenki.jp" class="link">https://tenki.jp</a>という天気予報のサイトで日中の降水確率を取得し、特定の割合より高ければメールでお知らせする、というツールを作ってみます。</p>
+<p>目覚まし時計としてスマホを使っていれば朝必ずスマホを確認するので、天気予報のメールを送信して、スマホの通知でそれを確認することにします。</p>
+<div class="emlistnum-code">
+<p class="caption">天気予報メール</p>
+<table class="highlight rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre></td><td class="rouge-code"><pre><span class="c">#! python3</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">bs4</span>
+<span class="kn">import</span> <span class="nn">smtplib</span>
+<span class="kn">from</span> <span class="nn">email.mime.text</span> <span class="kn">import</span> <span class="n">MIMEText</span>
+<span class="kn">from</span> <span class="nn">email.header</span> <span class="kn">import</span> <span class="n">Header</span>
+
+<span class="n">percent</span> <span class="o">=</span> <span class="mi">70</span> <span class="c"># 降水確率がpercentより高ければ雨の通知</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'https://tenki.jp/forecast/6/31/6310/28100/'</span><span class="p">)</span> <span class="c"># 変数urlに指定したURLをダウンロード</span>
+<span class="n">parse</span> <span class="o">=</span> <span class="n">bs4</span><span class="o">.</span><span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">url</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s">"lxml"</span><span class="p">)</span> <span class="c"># 変数parseにurlを解析して入れる lxmlはHTMLのパーサー</span>
+<span class="n">probability</span> <span class="o">=</span> <span class="n">parse</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s">'.rain-probability'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">probability</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s">'td'</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">percent</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">(</span><span class="n">probability</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s">'td'</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">percent</span><span class="p">:</span>
+    <span class="n">letter</span> <span class="o">=</span> <span class="s">'今日は雨です'</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">letter</span> <span class="o">=</span> <span class="s">'今日は傘は要りません'</span>
+
+<span class="n">charset</span> <span class="o">=</span> <span class="s">'iso-2022-jp'</span>
+<span class="n">message</span> <span class="o">=</span> <span class="n">MIMEText</span><span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="s">'plain'</span><span class="p">,</span> <span class="n">charset</span><span class="p">)</span>
+<span class="n">message</span><span class="p">[</span><span class="s">'Subject'</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="s">'セルフ天気予報'</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">charset</span><span class="p">),</span> <span class="n">charset</span><span class="p">)</span>
+<span class="n">smtp_obj</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="s">'smtp.gmail.com'</span><span class="p">,</span> <span class="mi">587</span><span class="p">)</span>
+<span class="n">smtp_obj</span><span class="o">.</span><span class="n">ehlo</span><span class="p">()</span>
+<span class="n">smtp_obj</span><span class="o">.</span><span class="n">starttls</span><span class="p">()</span>
+<span class="n">smtp_obj</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="s">'FROM'</span><span class="p">,</span> <span class="s">'PASSWORD'</span><span class="p">)</span>
+<span class="n">smtp_obj</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="s">'FROM'</span><span class="p">,</span> <span class="s">'TO'</span><span class="p">,</span> <span class="n">message</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+<span class="n">smtp_obj</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></td></tr></tbody></table>
+</div>
+<p>12~15行目でHTMLの解析、20~28行目でメールの送信をしています。</p>
+<ul>
+<li><code class="inline-code tt">requests</code>モジュール</li>
+</ul>
+<p>webからファイルをダウンロードするためのモジュールです。</p>
+<ul>
+<li><ul>
+<li><code class="inline-code tt">requests.get</code></li>
+</ul>
+</li>
+</ul>
+<p>指定したURLをダウンロードする関数です。</p>
+<ul>
+<li><code class="inline-code tt">bs4</code>モジュール</li>
+</ul>
+<p><code class="inline-code tt">bs4</code>の正式名称はBeautifulSoup4です。BeautifulSoup4はHTMLを解析するためのモジュールです。</p>
+<ul>
+<li><ul>
+<li><code class="inline-code tt">bs4.BeautifulSoup</code></li>
+</ul>
+</li>
+</ul>
+<p>指定したHTMLを解析(パース)します。lxmlはHTMLのパーサーのひとつです(pip install lxml する必要があります)。</p>
+<ul>
+<li><code class="inline-code tt">smtplibモジュール</code></li>
+</ul>
+<p>メールを送信するのに必要なモジュールです。SMTP(Simple Mail Transfer Protocol)は、メールを送信するためのプロトコルです。</p>
+<ul>
+<li><ul>
+<li><code class="inline-code tt">smtplib.SMTP</code></li>
+</ul>
+</li>
+</ul>
+<p>メールサーバーに接続するための関数です。smptサーバー名とポート番号を指定する必要がありますが、ここでは、Gmailのsmtpサーバーと、コマンドを暗号化するための規格TLSを使う587番を指定しています。</p>
+<ul>
+<li><ul>
+<li><code class="inline-code tt">smtplib.ehlo</code>、<code class="inline-code tt">smtp_obj.starttls</code>、<code class="inline-code tt">smtp_obj.quit</code></li>
+</ul>
+</li>
+</ul>
+<p>サーバーとの接続を確立する関数、TLS通信を利用するための関数、サーバーから切断するための関数です。</p>
+<ul>
+<li><ul>
+<li><code class="inline-code tt">smtp_obj.login</code></li>
+</ul>
+</li>
+</ul>
+<p>メールを送信する際の、メールアドレスとパスワードを指定します。このとき、Googleで、アプリケーション固有のパスワードを設定する必要があるかもしれません。<a href="https://support.google.com/accounts/answer/185833" class="link">https://support.google.com/accounts/answer/185833</a>から詳しい説明を見ることが出来ます。</p>
+<ul>
+<li><ul>
+<li><code class="inline-code tt">smtp_obj.sendmail</code></li>
+</ul>
+</li>
+</ul>
+<p>FROMに送信側のメールアドレス、TOに受信側のメールアドレスを指定します。最後にメッセージを入力します。</p>
+<ul>
+<li><code class="inline-code tt">MIMEText</code>、<code class="inline-code tt">Header</code>、<code class="inline-code tt">as_string</code></li>
+</ul>
+<p>日本語のメールを送るために必要な関数です。本文には<code class="inline-code tt">MIMEText</code>関数、ヘッダーには<code class="inline-code tt">Header</code>関数を利用します。</p>
+<p>12~15行目のHTMLの解析について説明します。</p>
+<p>tenki.jpは以下のような構成になっていますが、取得したいのは丸で囲んだ部分です。</p>
+<div id="tenkijp" class="image">
+<img src="images/taizo0122/tenkijp.png" alt="tenki.jpの神戸市のページ" class="width-070per" />
+<p class="caption">
+図: tenki.jpの神戸市のページ
+</p>
+</div>
+<p>ページのソースを見ると(このメニューは右クリックやCtrl+Uで開けます)、取得したい部分はrain-probabilityというクラス名を持っていることがわかるので、<code class="inline-code tt">select</code>関数で指定します(.〇〇とすると、「クラス名が〇〇」と指定することになります)。</p>
+<div id="tenkijpsource" class="image">
+<img src="images/taizo0122/tenkijpsource.png" alt="tenki.jpのソース" class="width-070per" />
+<p class="caption">
+図: tenki.jpのソース
+</p>
+</div>
+<p>rain-probabilityは2つありますが、取得したいのは当日の予報なので1つめを指定して、更にその中の4つのtd要素のうち通学時間に関係のある2つめと3つめを指定します。またまたさらに、td要素は数値と'%'という文字を要素に持っているので、そのうちの数値を指定します。</p>
+<p>こうして取得した2つの数値(6~12時の降水確率と12~18時の降水確率)が変数<code class="inline-code tt">percent</code>の値より大きいか小さいかによってメールの本文を変えています。</p>
+<p>あとは、このプログラムを朝7時くらいに自動で実行するようにしておけば、セルフ天気予報の完成です。</p>
+<p>Windowsにはタスクスケジューラがあるので、それを使います。</p>
+<p>.pyファイルは直接実行するだけではうまく動きません。なので、「.pyファイルを実行する」というバッチファイルを作る必要があります。以下のようにします。</p>
+<div class="emlist-code">
+<pre class="emlist highlight">@(python.exeの絶対パス) (プログラムの絶対パス) %*
+</pre>
+</div>
+<p>このバッチファイルを自動実行するようにすればOKです。</p>
+
+<h3><a id="h5-5-2"></a>API</h3>
+<p>API(Application Programming Interface)とは、ソフトウェアコンポーネントが互いにやりとりするのに使用するインタフェースの仕様である。(Wikipediaより)</p>
+<p>難しいですね。簡単に言えば、ソフトウェアの機能の一部を公開して、他のソフトウェアから利用できるようにしたものです。</p>
+<p>APIを公開しているサービスはいろいろありますが、ここではTwitterとYouTubeを扱います。</p>
+
+<h4><a id="h5-5-2-1"></a>Twitter API</h4>
+<p>Twitterについて今更説明する必要はないかもしれませんが、TwitterはSNSの一種です。APIを利用すれば、タイムラインや特定のアカウントのツイートなどを取得することが出来ます。</p>
+<p>公式のリファレンスは以下のURLです。</p>
+<p><a href="https://developer.twitter.com/" class="link">https://developer.twitter.com/</a></p>
+
+<h5><a id="h5-5-2-1-1"></a>Twitter APIの認証</h5>
+<p>Twitter APIは、利用する前に認証を受ける必要があります。</p>
+<p>Twitterの認証情報を取得するためには、最初にアプリケーションを登録する必要があります。アプリケーションの管理画面(<a href="https://apps.twitter.com/" class="link">https://apps.twitter.com/</a>)ログインし、「Create New App」ボタンをクリックするとアプリケーションの作成画面が表示されます。データ収集が目的の場合は「Callback URL」に入力する必要はありません。</p>
+<p>アプリケーション作成後「Keys and Access Tokens」タブでキーを確認できます。「Create my access token」でアクセストークンを生成しておきます。</p>
+
+<h5><a id="h5-5-2-1-2"></a>画像を集める</h5>
+<p>どんなツールがあれば便利かと考えてみた結果、ツイートに含まれる画像だけをダウンロードするものを作ることにしました。</p>
+<p>好きな俳優やアイドルやイラストレーターが居るとして、その可愛い写真やかっこいい写真が一瞬で手に入ればとっても楽ですよね。ということで、特定のアカウントのうち、画像ツイートを検出して、その画像をダウンロードする、というツールを作ることにします。</p>
+<div class="emlistnum-code">
+<table class="highlight rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+</pre></td><td class="rouge-code"><pre><span class="c">#!python3</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">requests_oauthlib</span> <span class="kn">import</span> <span class="n">OAuth1Session</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">shelve</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="nb">file</span> <span class="o">=</span> <span class="n">shelve</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="s">'lasttweet'</span><span class="p">)</span>
+<span class="n">lasttweet</span> <span class="o">=</span> <span class="nb">file</span><span class="p">[</span><span class="s">'lasttweet'</span><span class="p">]</span> <span class="c"># 最後にチェックした日付</span>
+
+<span class="n">CONSUMER_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'KEY'</span><span class="p">]</span>
+<span class="n">CONSUMER_SECRET</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'SECRET'</span><span class="p">]</span>
+<span class="n">ACCESS_TOKEN</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'ACCESS_TOKEN'</span><span class="p">]</span>
+<span class="n">ACCESS_TOKEN_SECRET</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'ACCESS_TOKEN_SECRET'</span><span class="p">]</span>
+
+<span class="n">twitter</span> <span class="o">=</span> <span class="n">OAuth1Session</span><span class="p">(</span><span class="n">CONSUMER_KEY</span><span class="p">,</span>
+                        <span class="n">client_secret</span><span class="o">=</span><span class="n">CONSUMER_SECRET</span><span class="p">,</span>
+                        <span class="n">resource_owner_key</span><span class="o">=</span><span class="n">ACCESS_TOKEN</span><span class="p">,</span>
+                        <span class="n">resource_owner_secret</span><span class="o">=</span><span class="n">ACCESS_TOKEN_SECRET</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">twitter</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name=@@@@@&amp;since_id='</span> <span class="o">+</span> <span class="n">lasttweet</span> <span class="o">+</span> <span class="s">'&amp;count=300&amp;exclude_replies=true&amp;include_rts=false'</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">tweet</span><span class="p">[</span><span class="s">'extended_entities'</span><span class="p">][</span><span class="s">'media'</span><span class="p">]:</span>
+        <span class="n">image_url</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><span class="s">'media_url'</span><span class="p">]</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span>
+        <span class="n">image</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="n">image_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">'画像を保存したいフォルダの絶対パス'</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">image_url</span><span class="p">)),</span> <span class="s">'wb'</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">image</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="mi">100000</span><span class="p">):</span>
+            <span class="n">image_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+        <span class="n">image_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+<span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></td></tr></tbody></table>
+</div>
+<p>Twitterの認証を得た後、22行目で特定のユーザーのツイートを取得し、24~37行目で、ツイートの中から画像を探してダウンロードしています。</p>
+<ul>
+<li><code class="inline-code tt">from requests_oauthlib import OAuth1Session</code></li>
+</ul>
+<p>Twitter APIではOAuth認証を用いています。このモジュールはOAuth認証を確認するのに必要なものです。</p>
+<ul>
+<li><code class="inline-code tt">shelve</code></li>
+</ul>
+<p><code class="inline-code tt">shelve</code>モジュールはプログラム内の変数の値をバイナリ形式で保存しておくためのものです。<code class="inline-code tt">shelve</code>は、Pythonの辞書型のように扱うことが出来ます。このプログラムではチェックした最後のツイートのIDを'lasttweet'というキーに保存しています。</p>
+<p><code class="inline-code tt">open</code>でファイルを開き、<code class="inline-code tt">close</code>でファイルを閉じます。</p>
+<p>このプログラムを実行する前に、'lasttweet'の値を設定しておく必要があります。</p>
+<div class="emlist-code">
+<pre class="emlist language-python highlight"><span class="kn">import</span> <span class="nn">shelve</span>
+
+<span class="nb">file</span> <span class="o">=</span> <span class="n">shelve</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="s">'lasttweet'</span><span class="p">)</span>
+<span class="nb">file</span><span class="p">[</span><span class="s">'lasttweet'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'〇〇'</span>
+<span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre>
+</div>
+<p>このようなプログラムで値を設定できます。</p>
+<ul>
+<li>認証キー</li>
+</ul>
+<p>Twitterのアプリケーション画面で確認したキーを入力するのですが、プログラムに直接書くと、ネット上にアップしてしまう可能性などが有り危険です。環境変数に登録しておき、<code class="inline-code tt">os.environ</code>で参照するようにすると安全です。</p>
+<ul>
+<li>22行目</li>
+</ul>
+<p>22行目では、条件に合致するツイートをjson形式で入手しています。</p>
+<div id="id_user__timeline_E3_81_AE_E5_B1_9E_E6_80_A7" class="table">
+<p class="caption">表5.1:  </p>
+<table>
+<tr><th>名前</th><th>機能</th></tr>
+<tr><td><code class="inline-code tt">screen_name</code></td><td>ツイートを取得したいユーザー名(@以下の文字列)を指定する</td></tr>
+<tr><td><code class="inline-code tt">since_id</code></td><td>指定したIDより未来のツイートを取得する</td></tr>
+<tr><td><code class="inline-code tt">count</code></td><td>指定した数のツイートを取得する</td></tr>
+<tr><td><code class="inline-code tt">exclude_replies</code></td><td>trueを指定すると、リプライを除外する</td></tr>
+<tr><td><code class="inline-code tt">include_rts</code></td><td>falseを指定すると、リツイートを除外する</td></tr>
+</table>
+</div>
+<ul>
+<li>24~37行目</li>
+</ul>
+<p>ここでは、画像つきツイートを検出し、さらに画像を抜き出して保存するという作業をしています。try~except文は、try以下のプログラムが実行できる場合は実行し、出来ない場合はexcept以下のプログラムを実行するという構文なので、ツイートに画像が含まれていればtry以下が実行されます。</p>
+<p>取得したツイートは、json形式で以下の画像のようになっています。</p>
+<div id="tweetjson" class="image">
+<img src="images/taizo0122/tweetjson.png" alt="" class="width-070per" />
+</div>
+<p>これを見ると、ツイートに含まれる画像のURLは<code class="inline-code tt">extended_entities</code>の中の、<code class="inline-code tt">media</code>の中の、<code class="inline-code tt">media_url</code>というところにあることがわかります。</p>
+<p>29~34行目で画像を保存しています。</p>
+<p><code class="inline-code tt">raise_for_status</code>としておくと、エラーが起こった場合にプログラムを終了させられます。</p>
+<p>31=33行目では、画像ファイルを作成し、バイナリ書き込み形式で開き、100000バイトごとに書き込むという作業をしています。</p>
+<p>書き込みが終了したらファイルを閉じ、その後、5秒間の待ち時間を設けています。これは、連続でダウンロードするとサーバーに負荷がかかるためです。</p>
+<p>ということで、シナモンのアカウントで実際に実行してみます。</p>
+<div id="sinamon" class="image">
+<img src="images/taizo0122/sinamon.png" alt="" class="width-070per" />
+</div>
+<p>かわいい(小並感)。</p>
+
+<h4><a id="h5-5-2-2"></a>YouTube API</h4>
+<p>YouTubeも説明する必要はないと思いますが、Googleが作った動画サイトです。APIを使えば、ユーザーのアップロードした動画や、登録チャンネルの情報などを取得出来ます。</p>
+<p>公式のリファレンスは以下のURLです。</p>
+<p><a href="https://developers.google.com/youtube/v3/?hl=ja/" class="link">https://developers.google.com/youtube/v3/?hl=ja/</a></p>
+
+<h5><a id="h5-5-2-2-1"></a>YouTube APIの認証</h5>
+<p>YouTubeAPIも、利用する前に認証を受ける必要があります。</p>
+<p>Google API Console(<a href="https://console.developers.google.com" class="link">https://console.developers.google.com</a>)にログインし、新規プロジェクトを作成します。その後、「APIとサービスの有効化」から「YouTube Data API v3」を有効にします。さらに、「認証情報」からAPIキーを作成すれば、準備は完了です。</p>
+
+<h5><a id="h5-5-2-2-2"></a>登録チャンネルの未視聴の動画を開く</h5>
+<p>僕はYouTubeでは、特定のジャンルの動画を見るというよりも、登録チャンネルの動画の方をよく見るのですが、自分の登録チャンネルのページへ行っていちいち動画を開くのが面倒なので、ブラウザで一気に開いてくれるツールを作ることにします。</p>
+<p>なお、事前に<a href="https://www.youtube.com/account_privacy" class="link">https://www.youtube.com/account_privacy</a>から登録チャンネルを公開するようにしておかないと、登録チャンネルの情報にアクセスできない可能性があります。</p>
+<div class="emlistnum-code">
+<table class="highlight rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+</pre></td><td class="rouge-code"><pre><span class="kn">from</span> <span class="nn">apiclient.discovery</span> <span class="kn">import</span> <span class="n">build</span>
+<span class="kn">import</span> <span class="nn">webbrowser</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">shelve</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="nb">file</span> <span class="o">=</span> <span class="n">shelve</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="s">'begintime'</span><span class="p">)</span>
+<span class="n">begindate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">file</span><span class="p">[</span><span class="s">'year'</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">file</span><span class="p">[</span><span class="s">'month'</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">file</span><span class="p">[</span><span class="s">'day'</span><span class="p">]),</span> <span class="n">nt</span><span class="p">(</span><span class="nb">file</span><span class="p">[</span><span class="s">'hour'</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">file</span><span class="p">[</span><span class="s">'minute'</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="nb">file</span><span class="p">[</span><span class="s">'second'</span><span class="p">]))</span>
+<span class="n">nowdate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+<span class="n">youtube</span> <span class="o">=</span> <span class="n">build</span><span class="p">(</span><span class="s">'youtube'</span><span class="p">,</span><span class="s">'v3'</span><span class="p">,</span><span class="n">developerKey</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'GOOGLE_KEY'</span><span class="p">])</span>
+<span class="n">search</span> <span class="o">=</span> <span class="n">youtube</span><span class="o">.</span><span class="n">subscriptions</span><span class="p">()</span><span class="o">.</span><span class="nb">list</span><span class="p">(</span><span class="n">part</span><span class="o">=</span><span class="s">'snippet'</span><span class="p">,</span> <span class="n">channelId</span><span class="o">=</span><span class="s">'ID'</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">getchannel</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s">'items'</span><span class="p">]:</span>
+        <span class="n">getmovie</span><span class="p">(</span><span class="n">channel</span><span class="p">[</span><span class="s">'snippet'</span><span class="p">][</span><span class="s">'resourceId'</span><span class="p">][</span><span class="s">'channelId'</span><span class="p">])</span>
+    <span class="k">if</span><span class="p">(</span><span class="s">'nextPageToken'</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="n">nextpage</span> <span class="o">=</span> <span class="n">youtube</span><span class="o">.</span><span class="n">subscriptions</span><span class="p">()</span><span class="o">.</span><span class="nb">list</span><span class="p">(</span><span class="n">part</span><span class="o">=</span><span class="s">'snippet'</span><span class="p">,</span> <span class="n">channelId</span><span class="o">=</span><span class="s">'ID'</span><span class="p">,</span> <span class="n">pageToken</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s">'nextPageToken'</span><span class="p">])</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+        <span class="n">channelname</span><span class="p">(</span><span class="n">nextpage</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">getmovie</span><span class="p">(</span><span class="n">info</span><span class="p">):</span>
+    <span class="n">channel</span> <span class="o">=</span> <span class="n">youtube</span><span class="o">.</span><span class="n">channels</span><span class="p">()</span><span class="o">.</span><span class="nb">list</span><span class="p">(</span><span class="n">part</span><span class="o">=</span><span class="s">'contentDetails'</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">info</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+    <span class="n">uploads</span> <span class="o">=</span> <span class="n">youtube</span><span class="o">.</span><span class="n">playlistItems</span><span class="p">()</span><span class="o">.</span><span class="nb">list</span><span class="p">(</span><span class="n">part</span><span class="o">=</span><span class="s">'snippet'</span><span class="p">,</span> <span class="n">playlistId</span><span class="o">=</span><span class="n">channel</span><span class="p">[</span><span class="s">'items'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">'contentDetails'</span><span class="p">][</span><span class="s">'relatedPlaylists'</span><span class="p">][</span><span class="s">'uploads'</span><span class="p">],</span> <span class="n">maxResults</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">movie</span> <span class="ow">in</span> <span class="n">uploads</span><span class="p">[</span><span class="s">'items'</span><span class="p">]:</span>
+        <span class="n">moviedate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">movie</span><span class="p">[</span><span class="s">'snippet'</span><span class="p">][</span><span class="s">'publishedAt'</span><span class="p">],</span> <span class="s">'</span><span class="si">%</span><span class="s">Y-</span><span class="si">%</span><span class="s">m-</span><span class="si">%</span><span class="s">dT</span><span class="si">%</span><span class="s">H:</span><span class="si">%</span><span class="s">M:</span><span class="si">%</span><span class="s">S.000Z'</span><span class="p">)</span>
+        <span class="n">moviedate</span> <span class="o">+=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">moviedate</span> <span class="o">&gt;</span> <span class="n">begindate</span><span class="p">:</span>
+            <span class="n">webbrowser</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="s">'https://www.youtube.com/watch?v='</span> <span class="o">+</span> <span class="n">movie</span><span class="p">[</span><span class="s">'snippet'</span><span class="p">][</span><span class="s">'resourceId'</span><span class="p">][</span><span class="s">'videoId'</span><span class="p">])</span>
+
+<span class="n">getchannel</span><span class="p">(</span><span class="n">search</span><span class="p">)</span>
+
+<span class="nb">file</span><span class="p">[</span><span class="s">'year'</span><span class="p">]</span> <span class="o">=</span> <span class="n">nowdate</span><span class="o">.</span><span class="n">year</span>
+<span class="nb">file</span><span class="p">[</span><span class="s">'month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">nowdate</span><span class="o">.</span><span class="n">month</span>
+<span class="nb">file</span><span class="p">[</span><span class="s">'day'</span><span class="p">]</span> <span class="o">=</span> <span class="n">nowdate</span><span class="o">.</span><span class="n">day</span>
+<span class="nb">file</span><span class="p">[</span><span class="s">'hour'</span><span class="p">]</span> <span class="o">=</span> <span class="n">nowdate</span><span class="o">.</span><span class="n">hour</span>
+<span class="nb">file</span><span class="p">[</span><span class="s">'minute'</span><span class="p">]</span> <span class="o">=</span> <span class="n">nowdate</span><span class="o">.</span><span class="n">minute</span>
+<span class="nb">file</span><span class="p">[</span><span class="s">'second'</span><span class="p">]</span> <span class="o">=</span> <span class="n">nowdate</span><span class="o">.</span><span class="n">second</span>
+
+<span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></td></tr></tbody></table>
+</div>
+<p>初めに自分のアカウントの登録チャンネルの情報を取得しています。次に、各登録チャンネルからアップロード動画の再生リストを取得し、その中の動画で、チェックしていないものをブラウザで開いています。</p>
+<ul>
+<li><code class="inline-code tt">from apiclient.discovery import build</code></li>
+</ul>
+<p>Pythonには、Google API Client for Pythonという、Google APIで共通して使えるモジュールがあります。事前に<code class="inline-code tt">pip install google-api-python-client</code>しておく必要があります。</p>
+<ul>
+<li><code class="inline-code tt">webbrowserモジュール</code></li>
+</ul>
+<p>URLをブラウザで開くのに使います。</p>
+<ul>
+<li><code class="inline-code tt">datetimeモジュール</code></li>
+</ul>
+<p>日付の計算などに使います。<code class="inline-code tt">datetime</code>モジュールには、<code class="inline-code tt">datetime</code>という独自のデータ型があり、<code class="inline-code tt">year</code>、<code class="inline-code tt">month</code>、<code class="inline-code tt">day</code>、<code class="inline-code tt">hour</code>、<code class="inline-code tt">minute</code>、<code class="inline-code tt">second</code>、<code class="inline-code tt">microsecond</code>という属性を持ちます。shelveを用いて、最後にチェックした日時を保存しています。shelveを使うので、先程と同じように最初に値を設定しておく必要があります。</p>
+<ul>
+<li>YouTube APIの仕様</li>
+</ul>
+<p>最初にYouTubeのAPIクライアントを組み立てる必要があります。10行目の<code class="inline-code tt">build</code>関数でそれを行っていて、第一引数にAPI名、第二引数にバージョン名、第三引数に先程取得したAPIキーを入力します。</p>
+<p>登録チャンネルの情報を取得するには、<code class="inline-code tt">subscriptions().list</code>リソースにアクセスします。partには取得する情報の形式を、<code class="inline-code tt">channelId</code>には自分のチャンネルのIDを入力します。(YouTubeのチャンネルのURLは https://www.youtube.com/channel/〇〇 となっていますが、IDはchannel以下の〇〇部分のことを指します。)</p>
+<p>そして、<code class="inline-code tt">execute()</code>を実行することで、json型のデータが取得できます。</p>
+<p><code class="inline-code tt">getchannel</code>関数では、先程取得したデータから、登録しているチャンネルのURLを抽出しています。<code class="inline-code tt">subscriptions().list</code>で取得したデータには、items要素の中に、1ページに5個ずつチャンネルに関する情報が載っています。6個以上のチャンネルを取得した場合、<code class="inline-code tt">nextPageToken</code>の値を<code class="inline-code tt">subscriptions().list</code>の<code class="inline-code tt">pageToken</code>属性で指定することで、2ページ目以降にもアクセスできます。引数として、登録しているチャンネルのIDを<code class="inline-code tt">getmovie</code>関数に渡しています。</p>
+<p><code class="inline-code tt">getmovie</code>関数では、動画の日付を取得し、チェックしていない新しい動画があればその動画を開いています。</p>
+<p><code class="inline-code tt">channels.list()</code>リソースにアクセスすることで、特定のチャンネルの情報を取得できます。<code class="inline-code tt">part</code>には取得する情報の形式を、<code class="inline-code tt">id</code>にはチャンネルのIDを入力します。</p>
+<p>各チャンネルの情報は以下のようになっていて、<code class="inline-code tt">items</code>の中の、<code class="inline-code tt">contentDetails</code>の中の、<code class="inline-code tt">relatedPlaylists</code>の中の、<code class="inline-code tt">uploads</code>にアップロード動画の再生リストのIDがあります。</p>
+<div id="youtubechannel" class="image">
+<img src="images/taizo0122/youtubechannel.png" alt="" class="width-070per" />
+</div>
+<p><code class="inline-code tt">playlistItems().list</code>リソースにアクセスすることで、プレイリストに関する情報を取得できます。<code class="inline-code tt">part</code>には取得する情報の形式を、<code class="inline-code tt">playlistId</code>にはプレイリストのIDを、<code class="inline-code tt">maxResults</code>には1ページに表示する情報の最大数を入力します。</p>
+<p>各動画の情報は以下のようになっていて、<code class="inline-code tt">items</code>の中の、<code class="inline-code tt">snippet</code>の中の、<code class="inline-code tt">publishedAt</code>に動画がアップロードされた日時があります。</p>
+<div id="youtubemovie" class="image">
+<img src="images/taizo0122/youtubemovie.png" alt="" class="width-070per" />
+</div>
+<p>ただし、その日時は(<em>2018-04-28T10:51:56.000Z</em>)このような形式で記述されていて、直接<code class="inline-code tt">datetime</code>型として使うことは出来ません。なので、<code class="inline-code tt">datetime</code>モジュールに付属している<code class="inline-code tt">strptime</code>関数を用いて<code class="inline-code tt">datetime</code>型に変換しています。</p>
+<p>さらに、ここで取得できる日時は協定世界時で、日本時間より9時間遅いので、9時間足して上げる必要があります。</p>
+<p>そして、最後にチェックした日時と動画がアップロードされた日時を比較して、動画がアップロードされた日時のほうが後であれば動画を開いています。</p>
+<p>最後に、shelveのデータを更新して、ファイルを閉じて終了です。</p>
+<p>それでは恒例(?)の、お披露目タイムといきましょう!</p>
+<div id="youtubeapi" class="image">
+<img src="images/taizo0122/youtubeapi.png" alt=" " class="width-080per" />
+<p class="caption">
+図:  
+</p>
+</div>
+<p>最新の動画がたくさん開いていますね。成功です！(登録チャンネルが若干バレたけど別にいいや)</p>
+
+<h2><a id="h5-6"></a><span class="secno">5.6　</span>さいごに</h2>
+<p>気づいたらほとんどWeb関連の話になってしまいました。すみません。</p>
+<p>もちろん、ここで全ての機能が紹介できるわけではないので、本文中のリファレンスなどを参照して、自分好みに改造してみてください。</p>
+<p>ちょっとしたプログラムを組めば、面倒な作業がすぐに終わるということがわかっていただけたと思います。</p>
+<p>プログラミングはすごいサービスを開発したり、壮大なゲームを作ったりするためのものだというイメージもありますが、このような身近なことにも活用できるということがわかってもらえれば嬉しいです。</p>
+<p>この記事が少しでも皆様の役に立てば幸いです。</p>
+
+<h2><a id="h5-7"></a><span class="secno">5.7　</span>参考文献</h2>
+<p>Al Sweigart 著、相川愛三 訳(2017)「退屈なことはPythonにやらせよう――ノンプログラマーにもできる自動化処理プログラミング」オライリー・ジャパン</p>
+<p>加藤耕太 著(2016)「Pythonクローリング＆スクレイピング―データ収集・解析のための実践開発ガイド―」技術評論社</p>
+<p>Twitter API 公式リファレンス <a href="https://developer.twitter.com/" class="link">https://developer.twitter.com/</a></p>
+<p>YouTube API 公式リファレンス <a href="https://developers.google.com/youtube/v3/?hl=ja/" class="link">https://developers.google.com/youtube/v3/?hl=ja/</a></p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="harady.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ 簡単!VR3(00)分クッキング</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="takepan.html">
+            <div class="book-cursor"><span class="cursor-next">▶ マインクラフトのサーバー管理を楽で便利なものにしてみる話</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

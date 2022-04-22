@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="Windowsのショートカットキーについて" href="kuro.html"><link rel="prev" title="Atomで快適なプログラミング環境を構築してみる" href="motty.html">  <meta name="generator" content="Re:VIEW" />
+  <title>iPhoneを使ってお手軽VR | NPCA部誌2019</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2019</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">前書き</a></li>
+<li><a href="object_1037.html">1 JINS MEMEで美少女になる話</a></li>
+<li><a href="sashiming.html">2 Google Apps ScriptでTwitter botを作ってみる</a></li>
+<li><a href="sarugami.html">3 Blenderで簡単モデリング！</a></li>
+<li><a href="ficorajo.html">4 C#でファイルを暗号化する</a></li>
+<li><a href="Hiro.html">5 UnityのAIを使って…</a></li>
+<li><a href="motty.html">6 Atomで快適なプログラミング環境を構築してみる</a></li>
+<li><a href="takepan.html">7 iPhoneを使ってお手軽VR</a></li>
+<li><a href="kuro.html">8 Windowsのショートカットキーについて</a></li>
+<li><a href="kusafukakota.html">9 Gmailの活用術</a></li>
+<li><a href="2lu3.html">10 未踏ジュニアとLifeWatcher</a></li>
+<li><a href="harady.html">11 グラフのおはなし</a></li>
+<li><a href="cobalt.html">12 C#の布教</a></li>
+<li><a href="RLtdExp.html">13 プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</a></li>
+<li><a href="mafusuke.html">14 Pythonの高速化について</a></li>
+<li><a href="neko.html">15 Siv3Dでゲームを作る</a></li>
+<li><a href="uraoz.html">16 明日(半年後)から始めるVRChat</a></li>
+<li><a href="hinata.html">17 NPCAの部誌執筆を支える技術</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h7"></a><span class="secno">第7章　</span>iPhoneを使ってお手軽VR</h1>
+<p><p style="text-align:right">74回生 takepan</p></p>
+
+<h2><a id="h7-1"></a><span class="secno">7.1　</span>自己紹介</h2>
+<p>初めまして。74回のtakepanです。もう高1ですね。時が経つのは早い...。</p>
+<p>MacBookを買ったので、iPhoneで動くアプリが作れるようになりました。今回の部誌では、家の隅っこで眠っていたELECOMのゴーグルを使ってVRのアプリを作ります。</p>
+<div id="goggle" class="image">
+<img src="images/takepan/goggle.png" alt="ELECOM製のゴーグル。駿河屋で1000円ほどで購入したもの。自分のiPhoneが装着可能なら別になんでもいい。" />
+<p class="caption">
+図7.1: ELECOM製のゴーグル。駿河屋で1000円ほどで購入したもの。自分のiPhoneが装着可能なら別になんでもいい。
+</p>
+</div>
+
+<h2><a id="h7-2"></a><span class="secno">7.2　</span>VRは何処へ消えたのか？</h2>
+<p>ちょっとしたお話です。iPhoneでVRをする、という本題が気になる人はこの節を飛ばしてもらって構いません。</p>
+<p>VR元年と呼ばれた2016年から3年が経ちました。皆さんも前ほど「VR」と言う単語を聞かなくなったのではないでしょうか。</p>
+<p>「ハイプ・サイクル」という言葉をご存知でしょうか？Wikipediaの説明を引用すると、</p>
+<blockquote><p>ハイプ・サイクル（英語: hype cycle、ハイプ曲線）は、特定の技術の成熟度、採用度、社会への適用度を示す図である。ガートナー社がこの用語を造り出した。(Wikipedia「ハイプ・サイクル」からの引用)</p></blockquote>
+<p>ということです。</p>
+<div id="Gartner_Hype_Cycle" class="image">
+<img src="images/takepan/Gartner_Hype_Cycle.png" alt="ハイプ・サイクル" />
+<p class="caption">
+図7.2: ハイプ・サイクル
+</p>
+</div>
+<div id="Hype-Cycle-for-Emerging-Tech-2018" class="image">
+<img src="images/takepan/Hype-Cycle-for-Emerging-Tech-2018.png" alt="2018年でのハイプ・サイクル。VRは無くなっている。" />
+<p class="caption">
+図7.3: 2018年でのハイプ・サイクル。VRは無くなっている。
+</p>
+</div>
+<p>新しい技術は、必ず一度世間から過剰な期待を受ける時期があります。現在では深層学習などが該当します。そして、その技術はその期待に完全に応えることができずに、失速していきます。この現象の動きをグラフで表したのが、ハイプ・サイクルと呼ばれるものなのです。</p>
+<p>2018年度のグラフからVRは消えています。これは、その技術が「Plateau of Productivity」、つまりは「安定期」に入ったことを意味します。(安定期にある技術で有名なものは生体認証技術などがあります。)</p>
+<p>つまり、これからVRは「新しい技術」ではなく「既存の技術」となっていくのです。それは、これからVRの需要が増えていくことを意味します。</p>
+<p>VRは完全に消えたわけではないのです。</p>
+
+<h2><a id="h7-3"></a><span class="secno">7.3　</span>やってみよう</h2>
+<p>退屈なお話はここまでです。早速作っていきましょう。</p>
+<p>今回の開発ではGVR-Unity-SDK(Google Virtual Reality SDK for Unity)を使います。</p>
+
+<h3><a id="h7-3-1"></a>開発に必要なもの</h3>
+<p>物理的に必要になるのはiPhoneとMacを繋ぐコードです。Type-CとType-Aの変換ケーブルがあれば十分でしょう。</p>
+<p>あとは必要なアプリケーションのインストールです。</p>
+<p>iPhoneアプリケーションのビルドにはXcodeが必要です。App StoreでXcodeを検索してインストールしましょう。</p>
+<p>あとはUnityが必要です。これも公式サイトからdmgファイルをダウンロードしてインストールしましょう。<b>インストール中にiOS Build Supportにチェックを入れるのを忘れないようにしましょう</b>(1敗)</p>
+<p>最後にGVR-Unity-SDKをダウンロードします。<a href="https://github.com/googlevr/gvr-unity-sdk/releases" class="link">ここ</a>のサイトから<code class="inline-code tt">GoogleVRForUnity_&lt;数字の羅列&gt;.unitypackage</code>というファイルをクリックしてダウンロードします。執筆時の最新バージョンは<code class="inline-code tt">GoogleVRForUnity_1.200.0.unitypackage</code>です。</p>
+
+<h3><a id="h7-3-2"></a>作ってみる</h3>
+<p>まずは3DoFの実装です。</p>
+
+<h4><a id="h7-3-2-1"></a>プロジェクトを作る</h4>
+<p>ダウンロードしたUnityを起動して、新しいプロジェクトを作成します。ここでは<code class="inline-code tt">iPhoneVR</code>とします。</p>
+<p>ロードが終わったらSDKを読み込みます。Assets&gt;Import Package&gt;Custom Packageを選択して先ほどダウンロードした<code class="inline-code tt">GoogleVRForUnity_&lt;数字の羅列&gt;.unitypackage</code>をインポートします。</p>
+<p>出てきたウィンドウでImportを押します。</p>
+<div id="ImportPackage" class="image">
+<img src="images/takepan/ImportPackage.png" alt="チェックボックスには触らずに右下のImportを押す" class="width-040per" />
+<p class="caption">
+図7.4: チェックボックスには触らずに右下のImportを押す
+</p>
+</div>
+
+<h4><a id="h7-3-2-2"></a>ビルド設定</h4>
+<p>次にビルドの設定をします。File&gt;Build Settingsを選択します。出てきたウィンドウでiOSを選択して、Switch Platformをクリックします。</p>
+<div id="SwitchBuild" class="image">
+<img src="images/takepan/SwitchBuild.png" alt="iOSにビルド設定を変える。iOSの横にUnityのロゴマークが出てきたらOK" class="width-080per" />
+<p class="caption">
+図7.5: iOSにビルド設定を変える。iOSの横にUnityのロゴマークが出てきたらOK
+</p>
+</div>
+<p>終わったら、Player Settingsをクリックして、Resolution and Presentation&gt;Allowed Orientations...のリストからPortraitとPortrait Upside Downのチェックを外します。</p>
+<div id="CheckBox" class="image">
+<img src="images/takepan/CheckBox.png" alt="この2箇所のチェックを外す。これが残っていると画面が回転して快適にプレイできない。" class="width-050per" />
+<p class="caption">
+図7.6: この2箇所のチェックを外す。これが残っていると画面が回転して快適にプレイできない。
+</p>
+</div>
+<p>次に、Other Settings&gt;ConfigurationからTarget DeviceをiPhone Onlyにします。この後でARKit 2.0を使用するのでTarget Minimum iOS Versionを12.0に変更します。</p>
+<div id="iosversion" class="image">
+<img src="images/takepan/iosversion.png" alt="Target DeviceとiOSの設定。下の方にあるので注意が必要。" class="width-080per" />
+<p class="caption">
+図7.7: Target DeviceとiOSの設定。下の方にあるので注意が必要。
+</p>
+</div>
+<p>その後、Bundle Identifierを設定します。独自ドメインを持っている人はそれでいいのですが、持っていない人は<a href="http://www.java-conf.gr.jp/wg_bof/package/about.html" class="link">このサイト</a>を使うことで証明ができます。ex:<code class="inline-code tt">jp.gr.java-conf.example</code></p>
+<div id="asI" class="image">
+<img src="images/takepan/asI.png" alt="Bundle Identifierの設定。僕ならこうなる。" />
+<p class="caption">
+図7.8: Bundle Identifierの設定。僕ならこうなる。
+</p>
+</div>
+<p>最後にXR Settingsを選択して、Virtual Reality Supportedにチェックを入れます。Virtual Reality SDKsの下の+をクリックしてCardboardを選択します。</p>
+<div id="HowLast" class="image">
+<img src="images/takepan/HowLast.png" alt="こうなれば大丈夫。チェックボックスは黒丸で" />
+<p class="caption">
+図7.9: こうなれば大丈夫。チェックボックスは黒丸で
+</p>
+</div>
+<p>次にカメラの設定をします。</p>
+<p>HierarchyからCreate Emptyして、作成したGameObjectの名前をViewに変更します。Inspectorで座標を<code class="inline-code tt">X=0,Y=1.5,Z=0</code>ぐらいに変更しましょう。Yを高くすると怖くなります。この座標がカメラの位置になります。</p>
+<p>設定ができたら、ViewにMain Cameraをドラッグドロップして親子関係を作ります。Main Cameraの座標は<code class="inline-code tt">X=0,Y=0,Z=0</code>に変更しましょう。</p>
+<p>次に、VRの設定をします。GoogleVR&gt;Prefabsにある<code class="inline-code tt">GvrEditorEmulator</code>をViewにドラッグドロップします。<code class="inline-code tt">GvrEditorEmulator</code>の座標は<code class="inline-code tt">X=0,Y=0,Z=0</code>に変更しましょう。</p>
+<div id="ViewChild" class="image">
+<img src="images/takepan/ViewChild.png" alt="ViewとGvrEditorEmulatorとMain Cameraの関係は最終的にこうなります。" />
+<p class="caption">
+図7.10: ViewとGvrEditorEmulatorとMain Cameraの関係は最終的にこうなります。
+</p>
+</div>
+<p>これだけでVRアプリになりましたが、ただカメラが動くだけだと味気ないので、床とブロックぐらいは追加しても大丈夫です。カメラに重ならないようにだけ注意してください。</p>
+<div id="AddSome" class="image">
+<img src="images/takepan/AddSome.png" alt="ちょっと追加した" />
+<p class="caption">
+図7.11: ちょっと追加した
+</p>
+</div>
+
+<h4><a id="h7-3-2-3"></a>ビルド</h4>
+<p>これで完成です。あとはビルドするだけで動く...はずです。</p>
+<p>MacにiPhoneを接続しましょう。File&gt;Build and Runを選択します。Save asのフォームにはiPhoneVRと入力します。Saveをクリックして、少しすると（間違っていなければ）ビルドが終わってXcodeが起動します。</p>
+<div id="saveas" class="image">
+<img src="images/takepan/saveas.png" alt="" />
+<p class="caption">
+図7.12: 
+</p>
+</div>
+<p>Xcodeが起動したら左上のUnity-iPhoneを選択してSigningの中のAutomatically Manage Signinにチェックを入れます。フォームが出てくると思うのでEnable Automaticをクリックしましょう。そうするとTeamというドロップダウンリストが出てくるので、Add an Accountをクリックして画面の指示に従って進めましょう。怪しいソフトではないのでAppleID&amp;Passを入力しても大丈夫です。</p>
+<div id="signing" class="image">
+<img src="images/takepan/signing.png" alt="" />
+<p class="caption">
+図7.13: 
+</p>
+</div>
+<p>できたら、左上の三角のボタンを押しましょう。ビルドが始まります。無限に警告が出てきますが全部華麗にスルーしましょう。エラーが出たらどこかでミスしてる可能性が高いです。</p>
+<p>時間がかかるのでコーヒーでも入れてきましょう。アクセス許可を求めるポップアップが出てきたらパスワードを入れて常に許可を押しましょう。</p>
+<p>終わりましたか？終わったらiPhoneにアプリが転送されているはずです。実行してみましょう。実行には許可が云々って言われたらiPhoneの設定&gt;一般&gt;デバイス管理で、自分のアカウントのアプリケーションに許可を与えましょう。これで実行できるようになります。</p>
+<div id="worked" class="image">
+<img src="images/takepan/worked.jpg" alt="動いたー。" />
+<p class="caption">
+図7.14: 動いたー。
+</p>
+</div>
+<p>これで、端末を傾けるとそれに合わせてカメラも動くことがわかります。ただ、自分が動いてもカメラ視点は動きません。面白くないので、6DoF化しましょう。</p>
+
+<h2><a id="h7-4"></a><span class="secno">7.4　</span>6DoF化する</h2>
+<p>いよいよお待ちかねの6DoF化です。</p>
+<div class="column">
+
+<h3><a id="column-1"></a>6DoFって何だ?</h3>
+<p>サンプルの方で取り上げた話題なので、コラム扱いにしておきます。サンプルを読んだ方は読み飛ばしてもらって構いません。</p>
+<p>6DoFが何かを一言で言ってしまうのであれば、VRをするときの画面のカメラワークの方式、ということになります。。</p>
+<p>6DoFの説明をする前に、3DoFと呼ばれるiPhoneのほとんどのVRアプリが使っている方式を説明しましょう。DoFとはDegree of Freedom、つまり自由度のことです。接頭辞としてついている3は、3つの方向、つまり傾きのトラッキングを意味します。</p>
+<div id="id_3DoF" class="image">
+<img src="images/takepan/3DoF.png" alt="3DoFのイメージ図 いらすとやには本当に何でもある" class="width-030per" />
+<p class="caption">
+図7.15: 3DoFのイメージ図 いらすとやには本当に何でもある
+</p>
+</div>
+<p>これに対して6DoFの6は6つの方向、つまり傾きと現在位置のトラッキングを意味します。</p>
+<div id="id_6DoF" class="image">
+<img src="images/takepan/6DoF.png" alt="6DoFのイメージ図" class="width-030per" />
+<p class="caption">
+図7.16: 6DoFのイメージ図
+</p>
+</div>
+<p>通常で6DoFのトラッキングを行うには専用の機材が必要になってきます。数万円するトラッキング用のセンサー(Oculus Rift、HTC VIVE等)を買ったり、高価なパソコンを用意したりする必要があります。なので、スマホ単体でVRをするとどうしても6DoFをするのは困難になってきます。</p>
+<div id="MVRHTC1001" class="image">
+<img src="images/takepan/MVRHTC1001.jpg" alt="HTC VIVE。ほしい。誰か買って。" class="width-060per" />
+<p class="caption">
+図7.17: HTC VIVE。ほしい。誰か買って。
+</p>
+</div>
+<p>では、方法がないのか、というとそうではありません。iOS 11から追加された<b>ARKit</b>を使って、自分の位置を取得して、それを仮想空間に反映させれば良いのです。今回は、iOS 12から実装されたARKit 2.0を使って、iPhoneで6DoFに対応したVRアプリを作っていきたいと思います。</p>
+</div>
+
+<h3><a id="h7-4-1"></a>ARKit 2.0のダウンロード&amp;読み込み&amp;設定</h3>
+<p>ダウンロードした<code class="inline-code tt">Unity-Technologies-unity-arkit-plugin-…</code>を解凍して、Assets内にあるUnityARKitPluginのフォルダをAssetsにドラッグドロップしてインポートします。時間がかかります。気長に待ちましょう。</p>
+<p>インポートが終わったらUnityARKitPlugin&gt;Resouces&gt;UnityARKitPlugin&gt;ARKitSettingを選択して、InspectorのApp Requires AR Kitのチェックボックスをオンにしましょう。</p>
+<div id="ARKitSetting" class="image">
+<img src="images/takepan/ARKitSetting.png" alt="チェックボックスをオンにする" />
+<p class="caption">
+図7.18: チェックボックスをオンにする
+</p>
+</div>
+
+<h3><a id="h7-4-2"></a>カメラの設定</h3>
+<p>カメラとカメラの親オブジェクトの間に6DoFという名前でEmptyを作ってください。</p>
+<div id="Relation" class="image">
+<img src="images/takepan/Relation.png" alt="関係はこうなる" />
+<p class="caption">
+図7.19: 関係はこうなる
+</p>
+</div>
+<p>操作のためのスクリプトを作ります。6DoFのInspectorからAdd Component&gt;New Scriptで作れます。ここでは名前をSixDofCtrlとします。</p>
+
+<h4><a id="h7-4-2-1"></a>スクリプト</h4>
+<div id="id_6dofctrl" class="caption-code">
+<p class="caption">リスト7.1: 6dofctrl.cs</p>
+<pre class="list language-csharp highlight"><span class="k">using</span> <span class="nn">System.Collections</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine.XR.iOS</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">SixDofCtrl</span> <span class="p">:</span> <span class="n">MonoBehaviour</span>
+<span class="p">{</span>
+
+    <span class="k">private</span> <span class="n">UnityARSessionNativeInterface</span> <span class="n">m_session</span><span class="p">;</span>
+
+    <span class="k">void</span> <span class="nf">Start</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">m_session</span> <span class="p">=</span> <span class="n">UnityARSessionNativeInterface</span><span class="p">.</span><span class="nf">GetARSessionNativeInterface</span><span class="p">();</span>
+
+        <span class="n">Application</span><span class="p">.</span><span class="n">targetFrameRate</span> <span class="p">=</span> <span class="m">60</span><span class="p">;</span>
+        <span class="n">ARKitWorldTrackingSessionConfiguration</span> <span class="n">config</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ARKitWorldTrackingSessionConfiguration</span><span class="p">();</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">config</span><span class="p">.</span><span class="n">IsSupported</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">m_session</span><span class="p">.</span><span class="nf">RunWithConfig</span><span class="p">(</span><span class="n">config</span><span class="p">);</span>
+            <span class="n">UnityARSessionNativeInterface</span><span class="p">.</span><span class="n">ARFrameUpdatedEvent</span> <span class="p">+=</span> <span class="n">FirstFrameUpdate</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">void</span> <span class="nf">FirstFrameUpdate</span><span class="p">(</span><span class="n">UnityARCamera</span> <span class="n">cam</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">UnityARSessionNativeInterface</span><span class="p">.</span><span class="n">ARFrameUpdatedEvent</span> <span class="p">-=</span> <span class="n">FirstFrameUpdate</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">void</span> <span class="nf">Update</span><span class="p">(){</span>
+        <span class="n">Matrix4x4</span> <span class="n">matrix</span> <span class="p">=</span> <span class="n">m_session</span><span class="p">.</span><span class="nf">GetCameraPose</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">localPosition</span> <span class="p">=</span> <span class="n">UnityARMatrixOps</span><span class="p">.</span><span class="nf">GetPosition</span><span class="p">(</span><span class="n">matrix</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>見ればわかると思うので解説は割愛します。</p>
+
+<h3><a id="h7-4-3"></a>実行</h3>
+<p>これで完成です。実行すると、6DoFのVRが体験できます。</p>
+<div id="id_6dof_worked" class="image">
+<img src="images/takepan/6dof_worked.jpg" alt="やったー" />
+<p class="caption">
+図7.20: やったー
+</p>
+</div>
+<div id="a" class="image">
+<img src="images/takepan/a.jpg" alt="調子にのると埋まります" />
+<p class="caption">
+図7.21: 調子にのると埋まります
+</p>
+</div>
+
+<h2><a id="h7-5"></a><span class="secno">7.5　</span>おわりに</h2>
+<p>最後まで読んでいただきありがとうございます。やっと書き上げました。締め切り直前です。</p>
+<p>これを使えば3Dモデルの展覧会ができます。<del>Unityちゃんのスカートの中も見れます。やったね。</del></p>
+<p>これを機に、VR開発に興味を持っていただけたら幸いです。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="motty.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ Atomで快適なプログラミング環境を構築してみる</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="kuro.html">
+            <div class="book-cursor"><span class="cursor-next">▶ Windowsのショートカットキーについて</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

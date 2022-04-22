@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="Atomで快適なプログラミング環境を構築してみる" href="motty.html"><link rel="prev" title="C#でファイルを暗号化する" href="ficorajo.html">  <meta name="generator" content="Re:VIEW" />
+  <title>UnityのAIを使って… | NPCA部誌2019</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2019</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">前書き</a></li>
+<li><a href="object_1037.html">1 JINS MEMEで美少女になる話</a></li>
+<li><a href="sashiming.html">2 Google Apps ScriptでTwitter botを作ってみる</a></li>
+<li><a href="sarugami.html">3 Blenderで簡単モデリング！</a></li>
+<li><a href="ficorajo.html">4 C#でファイルを暗号化する</a></li>
+<li><a href="Hiro.html">5 UnityのAIを使って…</a></li>
+<li><a href="motty.html">6 Atomで快適なプログラミング環境を構築してみる</a></li>
+<li><a href="takepan.html">7 iPhoneを使ってお手軽VR</a></li>
+<li><a href="kuro.html">8 Windowsのショートカットキーについて</a></li>
+<li><a href="kusafukakota.html">9 Gmailの活用術</a></li>
+<li><a href="2lu3.html">10 未踏ジュニアとLifeWatcher</a></li>
+<li><a href="harady.html">11 グラフのおはなし</a></li>
+<li><a href="cobalt.html">12 C#の布教</a></li>
+<li><a href="RLtdExp.html">13 プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</a></li>
+<li><a href="mafusuke.html">14 Pythonの高速化について</a></li>
+<li><a href="neko.html">15 Siv3Dでゲームを作る</a></li>
+<li><a href="uraoz.html">16 明日(半年後)から始めるVRChat</a></li>
+<li><a href="hinata.html">17 NPCAの部誌執筆を支える技術</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h5"></a><span class="secno">第5章　</span>UnityのAIを使って…</h1>
+<p><p style="text-align:right">76回生 星川大瑛</p></p>
+
+<h2><a id="h5-1"></a><span class="secno">5.1　</span>Unityとは</h2>
+<p>Unityとはゲーム作るためのものです。</p>
+<p>Unityを使うことで非常に簡単にゲームが作れます。</p>
+<p>実は…<b>あの世界中で大流行した「ポケモンGO」もUnityで作られています!!</b></p>
+<p>とにかくUnityのいいところは</p>
+<ol>
+<li>無料で使える</li>
+<li>様々の機能が元からついている</li>
+<li>とにかく簡単</li>
+<li>Mac/Windows/iOS/Androidなど色々なものアプリケーションを作れる</li>
+<li>Mac/Windowsのどちらででも作れる</li>
+</ol>
+<p>などなど…</p>
+
+<h2><a id="h5-2"></a><span class="secno">5.2　</span>Unityを使おう</h2>
+<p>ではUnityで作れるゲームの例を紹介します。</p>
+<p>AIを使って敵が自動でプレイヤーを追いかける仕組みを作っていきます。AIなんて難しいと思うかもしれませんが、UnityのNavigationという機能を使うと簡単に経路の探索ができます！！</p>
+<p>この機能を使うことでPlayerが通れるところを設定できます。</p>
+<p>これでヤッター‼︎完成！ではありません。もちろん、プログラミングしないといけません。</p>
+<p>AIのプログラミングなんか初心者にできる訳が無い!と思うかもしれません。でも、大丈夫です。たったこれだけで動きます。</p>
+<div id="hoge.cs" class="caption-code">
+<p class="caption">リスト5.1: hoge</p>
+<pre class="list language-csharp highlight"><span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections</span><span class="p">;</span>
+
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine.AI</span><span class="p">;</span> <span class="c1">//ココ重要!!</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">PlayerScript</span> <span class="p">:</span> <span class="n">MonoBehaviour</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="n">Transform</span> <span class="n">target</span><span class="p">;</span>
+    <span class="n">NavMeshAgent</span> <span class="n">agent</span><span class="p">;</span>
+
+    <span class="k">void</span> <span class="nf">Start</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="n">agent</span> <span class="p">=</span> <span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">NavMeshAgent</span><span class="p">&gt;();</span>
+    <span class="p">}</span>
+
+    <span class="k">void</span> <span class="nf">Update</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="n">agent</span><span class="p">.</span><span class="nf">SetDestination</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">position</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+
+<h2><a id="h5-3"></a><span class="secno">5.3　</span>プログラムの説明</h2>
+<div id="hoge2.cs" class="code">
+<p class="caption">リスト5.2: hoge</p>
+<table class="highlight rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="rouge-code"><pre><span class="k">using</span> <span class="nn">UnityEngine</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">System.Collections</span><span class="p">;</span>
+
+<span class="k">using</span> <span class="nn">System.Collections.Generic</span><span class="p">;</span>
+<span class="k">using</span> <span class="nn">UnityEngine.AI</span><span class="p">;</span> <span class="c1">//ココ重要!!</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">PlayerScript</span> <span class="p">:</span> <span class="n">MonoBehaviour</span> <span class="p">{</span>
+    <span class="k">public</span> <span class="n">Transform</span> <span class="n">target</span><span class="p">;</span>
+    <span class="n">NavMeshAgent</span> <span class="n">agent</span><span class="p">;</span>
+
+    <span class="k">void</span> <span class="nf">Start</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="n">agent</span> <span class="p">=</span> <span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">NavMeshAgent</span><span class="p">&gt;();</span>
+    <span class="p">}</span>
+
+    <span class="k">void</span> <span class="nf">Update</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="n">agent</span><span class="p">.</span><span class="nf">SetDestination</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">position</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table>
+</div>
+<p>初めはこの状態です。</p>
+<p>まず、４行目(<code class="inline-code tt">using UnityEngine;</code>の下)の<code class="inline-code tt">using UnityEngine.AI;</code>ですが、これは、UnityでAI(経路探索)を使うためのシステムを呼ぶようなものです。</p>
+<p>次に、7,8行目の<code class="inline-code tt">public Transform target;</code>と<code class="inline-code tt">NavMeshAgent agent;</code>ですが、これらは、「変数宣言」といい、Unityでは、<code class="inline-code tt">public (変数の型名) (変数名);</code>で変数宣言をします。</p>
+<p><code class="inline-code tt">public Transform target</code>はTransform型のtargetという名前の変数を宣言したということです。(※Transform型の変数は、オブジェクトの位置、回転、スケールを扱う変数です。)</p>
+<p>また、初めの「public」は書かなくてもいいこともありますが、書いておく方が無難です。</p>
+<p>NavMeshAgentはUnityで経路探索をするために必要なもので、<code class="inline-code tt">NavMeshAgent agent;</code>はNavMeshAgent型のagentという名前の変数を用意するということです。</p>
+<p>その次の11行目の<code class="inline-code tt">agent = GetComponent&lt;NavMeshAgent&gt;();</code>は、手順２で作った「agent」という変数にObjectにつけた「NavMesh」というComponentを代入しています。これによって、ScriptからComponentを操作できるようになります。</p>
+
+<h2><a id="h5-4"></a><span class="secno">5.4　</span>ComponentとGameobjectに様々な機能をつけるもの</h2>
+<p>例えば</p>
+<dl>
+<dt>Material</dt>
+<dd>色をつける</dd>
+<dt>Collider</dt>
+<dd>衝突判定のための一番外のセンサー（みたいなもの）</dd>
+<dt>Rigidbody</dt>
+<dd>物理的な運動をするようにする</dd>
+</dl>
+<p>最後に、15行目の<code class="inline-code tt">agent.SetDestination(target.position);</code>は、NavMeshAgentの機能を使ってtargetの座標(position)まで移動するということです。</p>
+
+<h2><a id="h5-5"></a><span class="secno">5.5　</span>あとがき</h2>
+<p>このように、Unityを使うとAIによる自動経路探索も簡単にできます。</p>
+<p>とにかく、Unityは使って、調べて、しながらたくさん作っていくことで徐々に慣れていきます。またnavigationの詳しい仕組みは<a href="https://docs.unity3d.com/ja/current/Manual/nav-InnerWorkings.html" class="link">こちらのURL</a>をご覧ください。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="ficorajo.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ C#でファイルを暗号化する</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="motty.html">
+            <div class="book-cursor"><span class="cursor-next">▶ Atomで快適なプログラミング環境を構築してみる</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

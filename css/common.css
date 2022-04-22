@@ -1,0 +1,322 @@
+@charset "utf-8";
+
+.homeli{
+	margin-left: 20px;
+}
+
+div.activity_list{
+	margin-left: 20px;
+}
+
+body{
+	animation: fadeIn 0.5s ease-in;
+	-webkit-animation: fadeIn 0.5s ease-in;
+	font-size: medium;
+	font-size: 90%;
+	font-family: "Lucida Grande", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "ＭＳ Ｐゴジック", "MS PGothic", sans-serif;
+	overflow: scroll;
+}
+
+div#main{
+	margin: 0 auto;
+}
+
+
+header{
+	display: block;
+	width: 100%;
+}
+
+header>h2{
+	background: url('../img/top/logo.png') no-repeat;
+	display: block;
+	text-indent: -9999px;
+}
+
+header>ul{
+	display: block;
+}
+
+header>ul>li{
+	list-style: none;
+}
+
+nav{
+
+}
+
+nav>ul#site_nav{
+	display: block;
+}
+
+nav>h1{
+	display: none;
+}
+
+nav>ul#site_nav>li{
+	background-repeat: no-repeat;
+	display: block;
+	overflow: hidden;
+}
+
+nav>ul#site_nav>li:hover{
+}
+nav>ul#site_nav>li.now{
+}
+
+nav>ul#site_nav>li>a{
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+nav>ul#site_nav>li#toppage{
+}
+
+nav>ul#site_nav>li#whats_npca{
+}
+
+nav>ul#site_nav>li#activity{
+}
+
+nav>ul#site_nav>li#works{
+}
+
+nav>ul#site_nav>li#blog{
+}
+
+nav>ul#page_nav{
+	color: blue;
+}
+
+nav>h2{
+}
+
+/*コンテンツ部*/
+div#content_center{
+}
+
+div#content_center>*:not(h2, h1, .more, .magazine, tbody *){
+	margin-left: 20px;
+}
+
+div#content_center>ul:not(#whats_npca_ul, tbody *){
+	padding-left: 20px;
+}
+
+/*h1タグ*/
+.h1image{
+	border-left: 1px solid blue;
+	border-bottom: 1px solid blue;
+}
+
+/*h2タグ*/
+div#content_center h2{
+	border-bottom: 1px #333 dotted;
+	display: block;
+	font-weight: 700;
+	clear: both;
+}
+
+ul.activity>li{
+	list-style-position: inside;
+}
+
+ul.activity>li>span{
+	float: right;
+}
+table.activity{
+	border-width:0;
+}
+table.activity td:first-child{
+	display:list-item;
+}
+table.activity td{
+}
+
+ul#whats_npca_ul{
+	padding-left: 40px;
+}
+
+/*続きを見るボタン*/
+p.more{
+	display: block;
+	float: right;
+}
+
+p.more>a{
+	display: block;
+}
+
+/*部誌紹介*/
+div.magazine{
+	display: block;
+}
+
+div.magazine>h3,div.magazine>h4{
+}
+
+						/*文化祭ページ*/
+div.magazine>h3.magtitle, div.fes h3{
+	clear: both;
+	display: block;
+	font-weight: 600;
+}
+
+div.magazine>img{
+	display: block;
+}
+
+div.magazine>ul{
+	list-style-position: inside;
+}
+
+.magtitle>span{
+}
+
+p.download{
+	border: 1px solid rgba(0, 0, 0, .1);
+	background: #55acee;
+	border-radius: 0.2em;
+	font-size: 1em;
+}
+p.download>a.dl-txt{
+	color: #FFF;
+	display: block;
+	font-size: 1.6em;
+	text-decoration: none;
+}
+
+/*プログラム紹介*/
+.program_etc h1{
+}
+.program_etc a.all_download{
+	font-size: 1.5em;
+	font-weight: bold;
+}
+.program_etc table{
+}
+.program_etc td{
+	vertical-align: top;
+}
+.program_etc td>p{
+	text-align: center;
+}
+.program_etc td>p.discribe{
+	font-size: 90%;
+}
+.program_etc td>a>img{
+	border: 1px solid black;
+}
+
+ol{
+	list-style-position: inside;
+	padding-left: 1.0em;
+	text-indent: -1.0em;
+}
+
+/*プログラム紹介以外で使っているかもしれない*/
+
+section{
+	overflow: hidden;
+	border: 2px dotted black;
+	margin-bottom: 40px;
+}
+
+section h1{
+	padding: 10px;
+}
+
+/*連絡先ページ*/
+
+p.size{
+	font-weight: bold;
+	margin-top: 1em;
+}
+
+a.banner{
+}
+
+a.banner>img{
+}
+
+pre.xhtml{
+	border: 1px solid #999;
+	overflow: auto;
+	white-space: pre;
+	width: 100%;
+}
+
+div.timetable>table{
+	width: 100%;
+	border-collapse: collapse;
+	background: none repeat scroll 0px 0px #d7e8fa;
+}
+div.timetable>table>tbody>tr{
+	border: 2px solid rgb(102,153,255);
+}
+div.timetable>table>tbody>tr.show_now{
+	background-color: rgb(255, 255, 255);
+	font-weight: bold;
+}
+div.timetable>table>tbody>tr.show_now .tt_status{
+	color: red;
+}
+div.timetable>table>tbody>tr.show_end{
+	background-color: rgb(204,204,204);
+	color: rgb(153,153,153);
+}
+
+div.timetable>table>tbody>tr>td:first-child{
+	width: 30%;
+}
+div.timetable>table>tbody>tr>td{
+	text-align:center;
+}
+div.fes img.fes{
+	float			:left;
+	width			:150px;
+	height			:100px;
+	margin-bottom	:30px;
+}
+
+div.fes2{
+	margin			:-150px 0 0 200px;
+	width			:500px;
+}
+
+div.fes2 p{
+	float			:left;
+	text-indent: 0em;
+	width:350px;
+}
+
+div.fes>p{
+	float: left;
+	margin			:-130px 0 0 200px;
+	width			:500px;
+	text-indent: 0em;
+}
+
+div.fes2 a.fes{
+	display			:block;
+	float			:right;
+	font-size		:smaller;
+}
+
+div.fes2 a.fes2{
+	display			:block;
+	float			:right;
+}
+
+/*faild.php*/
+p#other-list{
+	margin-top: 1em;
+}
+p#other-list>ul{
+	list-style: inside none;
+	margin-left: 1em;
+}
+ul#other-menu{
+	list-style: outside none;
+}

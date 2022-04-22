@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="C#の布教" href="cobalt.html"><link rel="prev" title="未踏ジュニアとLifeWatcher" href="2lu3.html">  <meta name="generator" content="Re:VIEW" />
+  <title>グラフのおはなし | NPCA部誌2019</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.css" integrity="sha384-dbVIfZGuN1Yq7/1Ocstc1lUEm+AT+/rCkibIcC/OmWo5f0EA48Vf8CytHzGrSwbQ" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.1/dist/katex.min.js" integrity="sha384-2BKqo+exmr9su6dir+qCw08N2ZKRucY4PrGQPPWU1A7FtlCGjmEGFqXCv5nyM5Ij" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2019</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">前書き</a></li>
+<li><a href="object_1037.html">1 JINS MEMEで美少女になる話</a></li>
+<li><a href="sashiming.html">2 Google Apps ScriptでTwitter botを作ってみる</a></li>
+<li><a href="sarugami.html">3 Blenderで簡単モデリング！</a></li>
+<li><a href="ficorajo.html">4 C#でファイルを暗号化する</a></li>
+<li><a href="Hiro.html">5 UnityのAIを使って…</a></li>
+<li><a href="motty.html">6 Atomで快適なプログラミング環境を構築してみる</a></li>
+<li><a href="takepan.html">7 iPhoneを使ってお手軽VR</a></li>
+<li><a href="kuro.html">8 Windowsのショートカットキーについて</a></li>
+<li><a href="kusafukakota.html">9 Gmailの活用術</a></li>
+<li><a href="2lu3.html">10 未踏ジュニアとLifeWatcher</a></li>
+<li><a href="harady.html">11 グラフのおはなし</a></li>
+<li><a href="cobalt.html">12 C#の布教</a></li>
+<li><a href="RLtdExp.html">13 プログラマー歴実質1年の僕がWindowsとC++でプログラミングをしたかった話</a></li>
+<li><a href="mafusuke.html">14 Pythonの高速化について</a></li>
+<li><a href="neko.html">15 Siv3Dでゲームを作る</a></li>
+<li><a href="uraoz.html">16 明日(半年後)から始めるVRChat</a></li>
+<li><a href="hinata.html">17 NPCAの部誌執筆を支える技術</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h11"></a><span class="secno">第11章　</span>グラフのおはなし</h1>
+<p><p style="text-align:right">74回生 harady</p></p>
+<p>こんにちは。74回生のharadyです。気づいたら高校生になってました。この前中学入学したんですが...。最近のマイブームは競技プログラミングです(通称競プロ)。競プロがどういうものかご存じで無い方は去年の物理好きさんの部誌を参考にしてください。今回は競プロにおけるグラフの問題について基礎的なことをまとめようと思います。自分自身も学習中なので、間違いは大目に見てください。</p>
+
+<h2><a id="h11-1"></a><span class="secno">11.1　</span>グラフの嬉しさ</h2>
+<p>現実世界の様々な事柄は、グラフを使って表現できることがあります。カーナビなどがいい例で、色々な場所とそれらを繋ぐ道路という構図はまさにグラフです。色々な場所をグラフに対応付けることで、ある地点からある地点への最短距離をグラフの最短経路問題に落とし込むことができます。</p>
+<p>このようにグラフは様々な事象を表現するのに都合がよいので、グラフに関して多くのアルゴリズムやデータ構造が考案されています。</p>
+
+<h2><a id="h11-2"></a><span class="secno">11.2　</span>形式</h2>
+<p>今回の部誌では、競プロのグラフ問題で出てくる用語とデータ構造、アルゴリズムをC++による実装付きで書いていこうと思います。なおサンプルプログラムは全て動作を確認したわけでは無いので、自分で実装する時はGoogleなどで検索したり蟻本を読んだりする方が良いと思います。</p>
+
+<h2><a id="h11-3"></a><span class="secno">11.3　</span>用語集</h2>
+
+<h3><a id="h11-3-1"></a>計算量</h3>
+<p>プログラムの計算回数がある変数nに対してどれくらいの割合で変化するか、という数です。例えば<code class="inline-code tt">for (int i = 0;i &lt; n;i++) for (int j = 0;j &lt; n;j++) {hoge();}</code>のようなコードの計算量は<span class="equation">n^2</span>に比例します。この場合計算量はO(<span class="equation">n^2</span>)と書きます。OはランダウのO記法です。一般的に、競技プログラミングにおいては計算回数が<span class="equation">10^8</span>を超えたあたりから制限時間に間に合うかが怪しくなり、<span class="equation">10^9</span>あたりからはお祈り次第になることが多いです。実行時間超過はTLE(Time Limit Exceeded)と呼ばれます。</p>
+
+<h3><a id="h11-3-2"></a>蟻本</h3>
+<p>プログラミングコンテストチャレンジブックという本のことです。競技プログラミングで頻出の様々な話題を詳しく取り上げた、競プロerの聖書です。困ったらこの本を見ることで大体解決します。</p>
+
+<h3><a id="h11-3-3"></a>グラフ(graph)</h3>
+<p>グラフと言っても、一般的に想像される棒グラフや折れ線グラフとは違います。グラフ理論におけるグラフは、頂点(node)と辺(edge)から構成されます。下の図のように、頂点と頂点の間を辺で結んだものがグラフです。</p>
+<div id="graph" class="image">
+<img src="images/harady/graph.png" alt="グラフ(graph)" />
+<p class="caption">
+図: グラフ(graph)
+</p>
+</div>
+
+<h3><a id="h11-3-4"></a>重み(cost)</h3>
+<p>各辺について、その辺に付随する属性として重みを考えることがあります。これはカーナビで言うところの道路の長さにあたります。辺に重みがついたグラフのことを重み付きグラフ(weighted graph)といいます。</p>
+
+<h3><a id="h11-3-5"></a>多重辺(multiple edges)</h3>
+<p>重複する複数の辺のことです。</p>
+
+<h3><a id="h11-3-6"></a>ループ辺(loop)</h3>
+<p>ある頂点から出て同じ頂点に接続する辺のことです。</p>
+
+<h3><a id="h11-3-7"></a>単純グラフ(simple graph)</h3>
+<p>多重辺とループ辺を持たないグラフです。</p>
+
+<h3><a id="h11-3-8"></a>有向グラフ(directed graph)</h3>
+<p>辺に向きがあるグラフです。対立概念に無向グラフ(undirected graph)があります。競プロでは無向グラフを、任意の辺が結ぶ2頂点の間に互いに逆向きの辺を2本張った有向グラフと捉えることがあります。</p>
+
+<h3><a id="h11-3-9"></a>閉路(cycle)</h3>
+<p>ある頂点から辺を辿ったときに、元の頂点に戻ってくるような道のりのことです。</p>
+
+<h3><a id="h11-3-10"></a>連結グラフ(connected graph)</h3>
+<p>任意の2頂点間がいくつかの辺を通じて繋がっているグラフです。対立概念に非連結グラフ(disconnected graph)があります。ある頂点と別の頂点が繋がっていないグラフです。</p>
+
+<h3><a id="h11-3-11"></a>木(tree)</h3>
+<p>閉路が無い連結グラフです。どの2頂点間にも辺が1本のみ存在します。木の一番上の頂点は根(root)です。各頂点は子となる頂点を持ちます。子を持たない頂点(末端の頂点)のことを葉(leaf)と呼びます。</p>
+
+<h3><a id="h11-3-12"></a>森(forest)</h3>
+<p>閉路が無いグラフです。連結であるとは限りません。木は明らかに森です。</p>
+
+<h3><a id="h11-3-13"></a>二部グラフ(bipartite graph)</h3>
+<p>隣接する頂点を塗り分けていったとき、2色で塗り分けることができるグラフです。</p>
+
+<h2><a id="h11-4"></a><span class="secno">11.4　</span>データ構造</h2>
+<p>データ構造とは、データの集まりを一定のルールに従って格納する為の形式のことです。</p>
+
+<h3><a id="h11-4-1"></a>Union-Find木</h3>
+<p>よく考えたらUnion-Findをグラフ理論として紹介するのは謎なのですが、書いてしまったものを消すのも勿体無いので載せます...。</p>
+<p>Union-Find木はグループ分けを管理するデータ構造です。競プロ以外の場ではdisjoint setと呼ばれることがあります。Union-Findではすべてのグループを木で管理します。</p>
+
+<h4><a id="h11-4-1-1"></a>初期化</h4>
+<p>まずはn個の要素に対してn個の頂点を用意します。初めは辺がありません。</p>
+
+<h4><a id="h11-4-1-2"></a>unite</h4>
+<p>ある2頂点を併合するときは、それぞれが含まれる木の片方の根からもう片方の根に辺を張ればよいです。</p>
+<p>適当に繋げまくると木が偏り、探索に時間がかかる場合があります。そこで工夫をします。木の根にその木の深さをもたせておいて、併合する際には深さが浅い方から深い方へ繋ぐ、というのがよくあるやり方なのですが、木の深さよりその木に含まれる頂点の数のほうが必要とされる場面が多いので、今回はそちらで実装します。計算量は変わらないようです(理解していない)。</p>
+
+<h4><a id="h11-4-1-3"></a>find</h4>
+<p>親を遡りながら根を探します。遡る途中で辿った頂点を根に繋ぎ直すことで高速化を図ります。uniteとfindの工夫をどっちもすることで計算量がO(α(n))になります。これはアッカーマン関数A(n,n)の逆関数です。アッカーマン関数は一瞬で膨大な数に膨れ上がることが知られており、これの逆関数なのでほぼO(1)と言って差し支えありません。</p>
+
+<h4><a id="h11-4-1-4"></a>same</h4>
+<p>ある2頂点が同じグループに含まれる場合、その2頂点は必ず同一の木に含まれているので、2頂点の含まれる木の根が等しいかを判定すればよいです。</p>
+
+<h4><a id="h11-4-1-5"></a>実装</h4>
+<div class="source-code">
+<p class="caption">UnionFind.cpp</p>
+<pre class="source"><span class="k">class</span> <span class="nc">UnionFind</span> <span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+        <span class="c1">//parには親ノードの番号を格納する。その集合の根にあたるノードにはその集合の要素数*(-1)が入る(こうすることでpar[i]が負であるならばそのノードが根であることがわかる)</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span> <span class="kt">long</span><span class="o">&gt;</span> <span class="n">par</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+        <span class="c1">//初期化するときは全てのノードが要素数1の集合であるとする</span>
+        <span class="n">UnionFind</span><span class="p">(</span><span class="kt">int</span> <span class="n">N</span><span class="p">)</span> <span class="p">{</span> <span class="n">par</span> <span class="o">=</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">long</span> <span class="kt">long</span><span class="o">&gt;</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="o">-</span><span class="mi">1LL</span><span class="p">);</span> <span class="p">}</span>
+        <span class="kt">int</span> <span class="n">find</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span>
+        <span class="kt">long</span> <span class="kt">long</span> <span class="n">size</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">);</span>
+        <span class="kt">void</span> <span class="n">unite</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">);</span>
+        <span class="kt">bool</span> <span class="n">same</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="c1">//x番目のノードが属する集合の根を探す</span>
+<span class="kt">int</span> <span class="n">UnionFind</span><span class="o">::</span><span class="n">find</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//もしpar[x]が負ならx番目のノードは根なのでxを返す</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">par</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+
+        <span class="c1">//そうでないならx番目のノードの親についても同じことをしながらpar[x]を更新していく</span>
+        <span class="k">else</span> <span class="k">return</span> <span class="n">par</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">par</span><span class="p">[</span><span class="n">x</span><span class="p">]);</span>
+<span class="p">}</span>
+
+<span class="kt">long</span> <span class="kt">long</span> <span class="n">UnionFind</span><span class="o">::</span><span class="n">size</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">par</span><span class="p">[</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">)];</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">UnionFind</span><span class="o">::</span><span class="n">unite</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//既に同じ集合に属しているならば繋げない</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">same</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">))</span> <span class="k">return</span><span class="p">;</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+
+        <span class="c1">//大きい方に小さい方をくっ付ける</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="n">swap</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+        <span class="n">par</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">+=</span> <span class="n">par</span><span class="p">[</span><span class="n">y</span><span class="p">];</span>
+        <span class="n">par</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="n">UnionFind</span><span class="o">::</span><span class="n">same</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>classで実装しています。<code class="inline-code tt">UnionFind uf;uf = UnionFind(N)</code>というように使います。割とトリッキーな実装だと思います。</p>
+
+<h5><a id="h11-4-1-5-1"></a>find</h5>
+<p>findはx番目のノードが属する集合の根を探す関数です。自分の親の親の...が集合の根であるかを調べつつ、根が見つかったら探索中に通った全てのノードの親に根を設定します(つまり直接根に繋ぎます)。</p>
+<div id="unionfind_find" class="image">
+<img src="images/harady/unionfind_find.png" alt="直接根につなぎ直す" />
+<p class="caption">
+図: 直接根につなぎ直す
+</p>
+</div>
+
+<h5><a id="h11-4-1-5-2"></a>size</h5>
+<p>sizeはx番目のノードが属する集合の要素数を返す関数です。x番目のノードが属する集合の根のparの値に-1を掛けたものが要素数です。</p>
+
+<h5><a id="h11-4-1-5-3"></a>unite</h5>
+<p>uniteはx番目のノードが属する集合とy番目のノードが属する集合を併合する関数です。x番目のノードの属する集合とy番目の集合の属する集合の要素数を比較して、要素数の多い方の根に要素数の少ない方の根を繋ぎます。</p>
+
+<h5><a id="h11-4-1-5-4"></a>same</h5>
+<p>sameはx番目のノードとy番目のノードが同じ集合に属しているかを調べる関数です。x番目のノードの属する集合の親とy番目のノードの属する集合の親が等しければtrueを返し、異なればfalseを返します。</p>
+
+<h4><a id="h11-4-1-6"></a>例題</h4>
+
+<h5><a id="h11-4-1-6-1"></a>問題</h5>
+<p><a href="https://atcoder.jp/contests/abc120/tasks/abc120_d" class="link">https://atcoder.jp/contests/abc120/tasks/abc120_d</a></p>
+
+<h5><a id="h11-4-1-6-2"></a>実装例</h5>
+<p><a href="https://atcoder.jp/contests/abc120/submissions/5119798" class="link">https://atcoder.jp/contests/abc120/submissions/5119798</a></p>
+
+<h3><a id="h11-4-2"></a>最小全域木(Minimum Spanning Tree)</h3>
+<p>最小全域木は、重みつきグラフの全ての頂点を結ぶ辺の集合の中で最も重みの総和が小さいものです。例えば、いくつかの都市の間に道を作って、最も短い距離の道で全ての都市を互いに行き来できるようにした時、それは最小全域木です。</p>
+<p>最小全域木の求め方にはKruskal法とPrim法という有名なアルゴリズムがあります。ここではKruskal法の実装を行います。</p>
+
+<h4><a id="h11-4-2-1"></a>概要</h4>
+<p>まずは全ての辺を重みで昇順にソートして、先頭から順にその辺を最小全域木に使うかを考えます。「A地点とB地点を繋ぐ辺について、既にAとBが連結であるならばその辺は使わず、連結でないならばその辺を使いAとBを連結にする」という判断を全ての辺に対して行うと最小全域木が出来上がります。「AとBが連結であるか」はUnion-Find木を使うことで判断できます。</p>
+<div id="mst" class="image">
+<img src="images/harady/mst.png" alt="Kruskal法" />
+<p class="caption">
+図: Kruskal法
+</p>
+</div>
+
+<h4><a id="h11-4-2-2"></a>実装(Kruskal法)</h4>
+<div class="source-code">
+<p class="caption">Kruskal.cpp</p>
+<pre class="source"><span class="c1">//(重み,(始点,終点))</span>
+<span class="k">typedef</span> <span class="n">pair</span><span class="o">&lt;</span><span class="kt">long</span> <span class="kt">long</span><span class="p">,</span> <span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">edge</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">Kruskal</span> <span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+        <span class="n">UnionFind</span> <span class="o">*</span><span class="n">uf</span><span class="p">;</span>
+        <span class="c1">//辺の集合</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">edge</span><span class="o">&gt;</span> <span class="n">e</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+        <span class="c1">//mstに最小全域木を構成する辺をぶちこむ</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">edge</span><span class="o">&gt;</span> <span class="n">mst</span><span class="p">;</span>
+        <span class="n">Kruskal</span><span class="p">(</span><span class="kt">int</span> <span class="n">N</span><span class="p">)</span> <span class="p">{</span> <span class="n">uf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UnionFind</span><span class="p">(</span><span class="n">N</span><span class="p">);</span> <span class="p">}</span>
+        <span class="kt">void</span> <span class="n">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">z</span><span class="p">);</span>
+        <span class="kt">void</span> <span class="n">run</span><span class="p">();</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="n">Kruskal</span><span class="o">::</span><span class="n">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">z</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">e</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span> <span class="n">z</span><span class="p">,{</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">}</span> <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Kruskal</span><span class="o">::</span><span class="n">run</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">sort</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">e</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="n">x</span> <span class="o">:</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">//もし既に連結なら</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">uf</span><span class="o">-&gt;</span><span class="n">same</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">second</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">x</span><span class="p">.</span><span class="n">second</span><span class="p">.</span><span class="n">second</span><span class="p">))</span> <span class="p">{</span>
+                        <span class="c1">//スルーして</span>
+                        <span class="k">continue</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="c1">//そうでないなら</span>
+                <span class="k">else</span> <span class="p">{</span>
+                        <span class="c1">//最小全域木にこの辺を追加して</span>
+                        <span class="n">mst</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+                        <span class="c1">//2地点をくっつける</span>
+                        <span class="n">uf</span><span class="o">-&gt;</span><span class="n">unite</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">second</span><span class="p">.</span><span class="n">first</span><span class="p">,</span> <span class="n">x</span><span class="p">.</span><span class="n">second</span><span class="p">.</span><span class="n">second</span><span class="p">);</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>edgeは辺の重み、始点、終点を表します。</p>
+
+<h5><a id="h11-4-2-2-1"></a>run</h5>
+<p>関数名は適当です。実行するとmstに最小全域木が格納されます。まず全ての辺を重みでソートして、上記の処理を行います。</p>
+<div class="tip">
+<p>ちなみに<code class="inline-code tt">for (auto x : e)</code>はrange-based for文です。xにeの各要素が<strong>値渡し</strong>されます。xの中身を変更したければ<code class="inline-code tt">auto &amp;x</code>で参照渡しに出来ます。絶対に中身を変更したくない安全志向の人は<code class="inline-code tt">const auto &amp;x</code>とでもしたらいいと思います。</p>
+</div>
+<p>内部のUnion-Find木をポインタで保持しているので、メンバ関数へのアクセスはアロー演算子で行います。</p>
+
+<h4><a id="h11-4-2-3"></a>Prim法</h4>
+<p>Prim法は、だんだん最小全域木を広げていくようなアルゴリズムです。初めに1つ適当な頂点を選び要素数1の集合とします。次に、その頂点からたどり着ける頂点の中で最も小さい重みで到達できる頂点を選んで集合に加え、行き先候補に新たに選んだ頂点から到達可能な頂点を加えます。これを繰り返して全ての頂点が集合に格納された時、その集合は最小全域木です。優先度付きキュー(priority queue)を使うことで全ての辺を重みが小さい順に保持することが可能です。</p>
+
+<h4><a id="h11-4-2-4"></a>例題</h4>
+
+<h5><a id="h11-4-2-4-1"></a>問題</h5>
+<p><a href="https://atcoder.jp/contests/arc076/tasks/arc076_b" class="link">https://atcoder.jp/contests/arc076/tasks/arc076_b</a></p>
+
+<h5><a id="h11-4-2-4-2"></a>実装例</h5>
+<p><a href="https://atcoder.jp/contests/arc076/submissions/5175749" class="link">https://atcoder.jp/contests/arc076/submissions/5175749</a></p>
+<div class="tip">
+<p class="caption">オーバーフローに親を殺された貴方へ</p>
+<p>競プロをやっているとしばしば起きる悲劇がオーバーフローです。例えば<code class="inline-code tt">int ans = 1'000'000'000'000'000;</code>と書くとオーバーフローが発生します。AtCoderのコードテストで実行してみたところ<code class="inline-code tt">ans = -1530494976</code>と表示されました。この悲劇を回避するための一般的なテクニックとして<code class="inline-code tt">#define int long long</code>というものがあります。コードの頭にこれを書いておくことで、コード内のintという文字列が全てlong long(intより大きい値を持てる)に変換され、悲劇を回避することが出来ます。但しmain関数がlong longで宣言されているとコンパイラに怒られるので、<code class="inline-code tt">signed main()</code>と書けばよいです。</p>
+</div>
+
+<h2><a id="h11-5"></a><span class="secno">11.5　</span>アルゴリズム集</h2>
+<p>今更ながらデータ構造とアルゴリズムを分けたのは間違いだった気がしていますが、気にせず書いていきます。</p>
+
+<h3><a id="h11-5-1"></a>最短経路問題</h3>
+<p>やはりグラフと言えば一番有名なのは最短経路問題でしょう。ここでは3個の超有名アルゴリズムの解説をします。</p>
+
+<h4><a id="h11-5-1-1"></a>Dijkstra法</h4>
+<p>読みは「ダイクストラ」です。「ディジェクストラ」ではありません。Dijkstra法はある点から他の全ての点への最短経路を求める大変高速なアルゴリズムです。priority_queueを採用した場合計算量はO(<span class="equation">(E+V) log V</span>)です(Eは辺の数,Vは頂点の数)。グラフに重みが負な辺がない場合にこのアルゴリズムを適用することができます。</p>
+
+<h4><a id="h11-5-1-2"></a>概要</h4>
+<p>到達可能な頂点と、その頂点へたどり着く為のコストの集合をQとします。はじめはQに出発点と出発時のコストを格納します。まず、出発点と繋がる頂点とその頂点にたどり着く為のコスト(つまり始点のコスト + (始点 -&gt; その頂点)のコスト)をすべてQに格納します。Qの中でもっとも少ないコストでたどり着ける頂点を選び、その頂点のコストを確定します。次に選んだ頂点に繋がる頂点とその頂点にたどり着く為のコストをQに格納します。</p>
+<p>これを繰り返しQが空集合になった時、全ての頂点への最短距離が求まっています。</p>
+
+<h5><a id="h11-5-1-2-1"></a>参考</h5>
+<p><a href="https://gph.is/1sbWdjV" class="link">https://gph.is/1sbWdjV</a></p>
+
+<h4><a id="h11-5-1-3"></a>実装</h4>
+<p>綺麗な実装がしたいのですが、全然綺麗になりません...。</p>
+<div class="source-code">
+<p class="caption">Dijkstra.cpp</p>
+<pre class="source"><span class="cp">#define INF 1e9+7
+</span>
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+        <span class="c1">//私は誰ですか?</span>
+        <span class="kt">int</span> <span class="n">I</span><span class="p">;</span>
+        <span class="c1">//どこからきたか。経路復元用</span>
+        <span class="kt">int</span> <span class="n">from</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">cost</span><span class="p">;</span>
+        <span class="c1">//行き先,重み</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">to</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">_node</span><span class="p">;</span>
+
+<span class="kt">bool</span> <span class="k">operator</span> <span class="o">&gt;</span> <span class="p">(</span><span class="k">const</span> <span class="n">_node</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span><span class="k">const</span> <span class="n">_node</span><span class="o">&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">cost</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">.</span><span class="n">cost</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">Dijkstra</span> <span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+        <span class="n">priority_queue</span><span class="o">&lt;</span><span class="n">_node</span><span class="p">,</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">_node</span><span class="o">&gt;</span><span class="p">,</span><span class="n">greater</span><span class="o">&lt;</span><span class="n">_node</span><span class="o">&gt;&gt;</span> <span class="n">pque</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">_node</span><span class="o">&gt;</span> <span class="n">node</span><span class="p">;</span>
+
+        <span class="c1">//要素数nで初期化</span>
+        <span class="n">Dijkstra</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">_node</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">node</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">I</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+                        <span class="n">node</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">from</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+                        <span class="c1">//はじめはcost無限大に設定</span>
+                        <span class="n">node</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">cost</span> <span class="o">=</span> <span class="n">INF</span><span class="p">;</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">//辺を追加</span>
+        <span class="kt">void</span> <span class="n">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">start</span><span class="p">,</span><span class="kt">int</span> <span class="n">end</span><span class="p">,</span><span class="kt">int</span> <span class="n">cost</span><span class="p">);</span>
+
+        <span class="c1">//実行。firstCostは開始時のコスト</span>
+        <span class="kt">void</span> <span class="n">dijkstra</span><span class="p">(</span><span class="kt">int</span> <span class="n">s</span><span class="p">,</span><span class="kt">int</span> <span class="n">firstCost</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="n">Dijkstra</span><span class="o">::</span><span class="n">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">start</span><span class="p">,</span><span class="kt">int</span> <span class="n">end</span><span class="p">,</span><span class="kt">int</span> <span class="n">cost</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">node</span><span class="p">[</span><span class="n">start</span><span class="p">].</span><span class="n">to</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="n">end</span><span class="p">,</span><span class="n">cost</span><span class="p">});</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Dijkstra</span><span class="o">::</span><span class="n">dijkstra</span><span class="p">(</span><span class="kt">int</span> <span class="n">s</span><span class="p">,</span><span class="kt">int</span> <span class="n">firstCost</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//スタート地点のコストを設定</span>
+        <span class="n">node</span><span class="p">[</span><span class="n">s</span><span class="p">].</span><span class="n">cost</span> <span class="o">=</span> <span class="n">firstCost</span><span class="p">;</span>
+
+        <span class="c1">//開始地点から到達可能な頂点をpriority_queueに入れる</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">node</span><span class="p">[</span><span class="n">s</span><span class="p">].</span><span class="n">to</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">node</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="n">s</span><span class="p">].</span><span class="n">to</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">].</span><span class="n">cost</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="n">s</span><span class="p">].</span><span class="n">to</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">second</span> <span class="o">+</span> <span class="n">node</span><span class="p">[</span><span class="n">s</span><span class="p">].</span><span class="n">cost</span><span class="p">;</span>
+                <span class="n">node</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="n">s</span><span class="p">].</span><span class="n">to</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">].</span><span class="n">from</span> <span class="o">=</span> <span class="n">s</span><span class="p">;</span>
+                <span class="n">pque</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="n">s</span><span class="p">].</span><span class="n">to</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">]);</span>
+        <span class="p">}</span>
+
+        <span class="c1">//prioriry_queueが空だったら探索終了</span>
+        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">pque</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+                <span class="c1">//更新候補</span>
+                <span class="n">_node</span> <span class="n">next</span> <span class="o">=</span> <span class="n">pque</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+                <span class="n">pque</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+
+                <span class="c1">//既にもっと小さいコストが確定しているならばスキップ</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">next</span><span class="p">.</span><span class="n">cost</span> <span class="o">&gt;</span> <span class="n">node</span><span class="p">[</span><span class="n">next</span><span class="p">.</span><span class="n">I</span><span class="p">].</span><span class="n">cost</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+
+                <span class="c1">//更新を確定し、新たに行けるようになった頂点の更新候補をpriority_queueに入れる</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">next</span><span class="p">.</span><span class="n">to</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">next</span><span class="p">.</span><span class="n">to</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">].</span><span class="n">cost</span> <span class="o">&gt;</span> <span class="n">next</span><span class="p">.</span><span class="n">cost</span> <span class="o">+</span> <span class="n">next</span><span class="p">.</span><span class="n">to</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">second</span><span class="p">)</span> <span class="p">{</span>
+                                <span class="n">node</span><span class="p">[</span><span class="n">next</span><span class="p">.</span><span class="n">to</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">].</span><span class="n">cost</span> <span class="o">=</span> <span class="n">next</span><span class="p">.</span><span class="n">cost</span> <span class="o">+</span> <span class="n">next</span><span class="p">.</span><span class="n">to</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">second</span><span class="p">;</span>
+                                <span class="n">node</span><span class="p">[</span><span class="n">next</span><span class="p">.</span><span class="n">to</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">].</span><span class="n">from</span> <span class="o">=</span> <span class="n">next</span><span class="p">.</span><span class="n">I</span><span class="p">;</span>
+                                <span class="n">pque</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="n">next</span><span class="p">.</span><span class="n">to</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">first</span><span class="p">]);</span>
+                        <span class="p">}</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>コメントを見たらわかると思います。「その時点で最もコストの小さい更新候補」はpriority_queueを使えばよいです。</p>
+
+<h4><a id="h11-5-1-4"></a>Bellman-Ford法</h4>
+<p>Bellman-Ford法も用途はDijkstra法と変わりませんが、こちらはコストが負の辺があっても正しく動作しますし、コストの総和が負な閉路があった場合も検出可能です。また実装がシンプルです。探索の計算量はO(<span class="equation">EV</span>)です(Eは辺の本数,Vは頂点数)。</p>
+
+<h4><a id="h11-5-1-5"></a>概要</h4>
+<p>初めに全ての頂点のコストをINFにし、スタート地点のコストをセットします。</p>
+<p>次に全ての辺についてその辺を使うことで到達先のコストを減らせるかどうかを試します。これをn回繰り返すと、全ての(負閉路の一部でない)頂点の最小コストが求まります。n回目に更新がある場合、そのグラフにはコストの総和が負になる閉路(負閉路)が存在します。</p>
+
+<h4><a id="h11-5-1-6"></a>実装</h4>
+<div class="source-code">
+<p class="caption">Bellman-Ford.cpp</p>
+<pre class="source"><span class="cp">#define INF 1e9+7;
+</span>
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">from</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">to</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">cost</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">Edge</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">BellemanFord</span> <span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">Edge</span><span class="o">&gt;</span> <span class="n">edge</span><span class="p">;</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">dist</span><span class="p">;</span>
+
+    <span class="n">BellemanFord</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//初めは全ての頂点のコストがINFであるとする</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">INF</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">from</span><span class="p">,</span><span class="kt">int</span> <span class="n">to</span><span class="p">,</span><span class="kt">int</span> <span class="n">cost</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">edge</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="n">from</span><span class="p">,</span><span class="n">to</span><span class="p">,</span><span class="n">cost</span><span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">bellemanford</span><span class="p">(</span><span class="kt">int</span> <span class="n">s</span><span class="p">,</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span><span class="kt">int</span> <span class="n">firstCost</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">dist</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">firstCost</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">j</span> <span class="o">&lt;</span> <span class="n">edge</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">//もしその辺を使ってコストを減らせるなら</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">dist</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">from</span><span class="p">]</span> <span class="o">+</span> <span class="n">edge</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">cost</span> <span class="o">&lt;</span> <span class="n">dist</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">to</span><span class="p">])</span> <span class="p">{</span>
+                        <span class="c1">//コストを更新</span>
+                    <span class="n">dist</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">to</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[</span><span class="n">edge</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">from</span><span class="p">]</span> <span class="o">+</span> <span class="n">edge</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">cost</span><span class="p">;</span>
+                    <span class="c1">//もしn回目にも更新があったら負閉路が存在</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="c1">//もしreturnしていなければ負閉路は存在しない</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</pre>
+</div>
+<p>実装が単純なので、実行時間が気にならないのであればDijkstra法よりこちらのほうが手軽かもしれません。</p>
+
+<h4><a id="h11-5-1-7"></a>Warshall–Floyd法</h4>
+<p>これは脳死実装です。Warshall-Floyd法を使うことで全ての2頂点間の最短距離が求まります。計算量はO(<span class="equation">V^3</span>)です。頂点が500個以上あるとTLEするかもしれません。</p>
+
+<h4><a id="h11-5-1-8"></a>概要</h4>
+<p>2頂点(i,j)間の最短経路は、iからある頂点kへの最短経路とkからjへの最短経路を繋げたものだと考えることが出来ます(iとk、kとjが同じでも構わない)。よって、全てのi,j,kの組み合わせを調べれば任意の2頂点間の最短経路が求まります。i,j,kがそれぞれ頂点数だけ候補があるので、計算量はO(<span class="equation">V^3</span>)です。</p>
+
+<h4><a id="h11-5-1-9"></a>実装</h4>
+<div class="source-code">
+<p class="caption">Warshall_Floyd.cpp</p>
+<pre class="source"><span class="cp">#define INF 1e9+7
+</span>
+<span class="k">class</span> <span class="nc">Warshall_Floyd</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span> <span class="n">d</span><span class="p">;</span>
+
+        <span class="kt">void</span> <span class="nf">Warshall_Floyd</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">//ある頂点からある頂点はn^2通りある。初期化時はコスト無限大として良い</span>
+                <span class="n">d</span> <span class="o">=</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">INF</span><span class="p">));</span>
+        <span class="p">}</span>
+
+        <span class="kt">void</span> <span class="nf">add</span><span class="p">(</span><span class="kt">int</span> <span class="n">s</span><span class="p">,</span><span class="kt">int</span> <span class="n">e</span><span class="p">,</span><span class="kt">int</span> <span class="n">cost</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">s</span><span class="p">][</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="n">cost</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="kt">bool</span> <span class="nf">warshall_floyd</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">k</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span><span class="n">k</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                                        <span class="c1">//k経由でi-&gt;j</span>
+                                        <span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">],</span><span class="n">d</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">]);</span>
+                                <span class="p">}</span>
+                        <span class="p">}</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>これも実装はシンプルです。ちなみに、最近i,j,kの添字の順番を間違えても3回計算を繰り返せば正しい答えが出るという話が話題になりました。この記事に解説があります</p>
+<p><a href="https://qiita.com/tmaehara/items/f56be31bbb7a468a04ed" class="link">https://qiita.com/tmaehara/items/f56be31bbb7a468a04ed</a></p>
+
+<h3><a id="h11-5-2"></a>最大流問題</h3>
+<p>実は最大流問題は自分も使ったことがないので蟻本を写経しつつ解説します...。</p>
+<p>最大流問題とは、各辺について通過できるコストの上限が決まっているような場面で頂点sから頂点tに最大でどれだけのコストを流せるか、ということを考える問題です。と言ってもこれだけではわかりにくいので例題を載せて解説します。</p>
+
+<h4><a id="h11-5-2-1"></a>問題</h4>
+<p>ネットワーク上の2台のコンピュータs,tがあり、sからtにデータを送りたいとします。このネットワークには全部でN台のコンピュータがあり、いくつかのコンピュータの間は一方向性の通信ケーブルで接続されていて、それぞれ1秒間に通信できる最大のデータ量が決まっています。他のコンピュータが通信を行っていない時、sからtへ1秒間で最大どれだけのデータを送信することができるでしょうか。</p>
+<div id="Flow_sample" class="image">
+<img src="images/harady/Flow_sample.png" alt="" />
+</div>
+
+<h4><a id="h11-5-2-2"></a>解き方</h4>
+<p>各辺の最大流量をc(e)、実際の流量をf(e)とします。まず、次のような単純な貪欲法を考えてみます。</p>
+<ol>
+<li>f(e)&lt;c(e)であるcのみを用いたsからtへのパスを見つける</li>
+<li>そのようなパスが存在しなければ終了。パスが存在したら、そのパスに沿って目一杯流して1に戻る</li>
+</ol>
+<p>この貪欲を行うと次のようになります。</p>
+<div id="Flow_1" class="image">
+<img src="images/harady/Flow_1.png" alt="フロー...?" />
+<p class="caption">
+図: フロー...?
+</p>
+</div>
+<p>上に書いた貪欲に従って(s-1-2-t)に5,(s-1-3-t)に5で合計10流してみました。これで最大でしょうか...?実は最大ではありません。もっといい流し方があります。下に実例を挙げます。</p>
+<div id="Flow_2" class="image">
+<img src="images/harady/Flow_2.png" alt="フロー" />
+<p class="caption">
+図: フロー
+</p>
+</div>
+<p>これで流量が11になり、最大です。この結果を得るためには先程の貪欲法に少し改良を加える必要があります。</p>
+<ol>
+<li>f(e)&lt;c(e)であるeと、f(e)&gt;0であるeの逆辺rev(e)のみを用いたsからtへのパスを見つける</li>
+<li>そのようなパスが存在しなければ終了。パスが存在したら、そのパスに沿って目一杯流して1に戻る(逆辺は逆向きに流すのでf(e)が減る)</li>
+</ol>
+<p>この貪欲法で最大流量を求めることが出来ます。ここでは厳密な証明はしませんが、最小カットという概念を持ち出すことで証明できます。この方法はFord-Fulkerson法と呼ばれています。計算量は最大流をFとしてO(<span class="equation">FE</span>)です。こう書くと計算量は多そうですが、実際には深さ優先探索を行う回数がFになることはまず無いためもっと少ない時間で計算ができます。</p>
+
+<h4><a id="h11-5-2-3"></a>実装</h4>
+<p>蟻本の実装を写経します...。今回はc(e)を変化させることで流量を反映させます。</p>
+<div class="source-code">
+<p class="caption">Ford_Fulkerson.cpp</p>
+<pre class="source"><span class="k">struct</span> <span class="n">edge</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">to</span><span class="p">,</span><span class="n">cap</span><span class="p">,</span><span class="n">rev</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">//MAX_Vは頂点数</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">edge</span><span class="o">&gt;</span> <span class="n">G</span><span class="p">(</span><span class="n">MAX_V</span><span class="p">);</span>
+<span class="kt">bool</span> <span class="n">used</span><span class="p">[</span><span class="n">MAX_V</span><span class="p">];</span><span class="c1">//使用済みフラグ</span>
+
+<span class="kt">void</span> <span class="nf">add_edge</span><span class="p">(</span><span class="kt">int</span> <span class="n">from</span><span class="p">,</span> <span class="kt">int</span> <span class="n">to</span><span class="p">,</span> <span class="kt">int</span> <span class="n">cap</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//こう書くことでeの逆辺がG[e.to][e.rev]になる</span>
+        <span class="n">G</span><span class="p">[</span><span class="n">from</span><span class="p">].</span><span class="n">push_back</span><span class="p">({</span><span class="n">to</span><span class="p">,</span> <span class="n">cap</span><span class="p">,</span> <span class="n">G</span><span class="p">[</span><span class="n">to</span><span class="p">].</span><span class="n">size</span><span class="p">()});</span>
+        <span class="n">G</span><span class="p">[</span><span class="n">to</span><span class="p">].</span><span class="n">push_back</span><span class="p">({</span><span class="n">from</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">G</span><span class="p">[</span><span class="n">from</span><span class="p">].</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">});</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">dfs</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">,</span> <span class="kt">int</span> <span class="n">t</span><span class="p">,</span> <span class="kt">int</span> <span class="n">f</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="n">t</span><span class="p">)</span> <span class="k">return</span> <span class="n">f</span><span class="p">;</span>
+        <span class="n">used</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">G</span><span class="p">[</span><span class="n">v</span><span class="p">].</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">//次に考える辺</span>
+                <span class="n">edge</span> <span class="o">&amp;</span><span class="n">e</span> <span class="o">=</span> <span class="n">G</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">i</span><span class="p">];</span>
+
+                <span class="c1">//使用済みでないかつキャパがある</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">used</span><span class="p">[</span><span class="n">e</span><span class="p">.</span><span class="n">to</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">e</span><span class="p">.</span><span class="n">cap</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="kt">int</span> <span class="n">d</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">to</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">min</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">cap</span><span class="p">));</span>
+                        <span class="c1">//もし流せるなら</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">d</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                                <span class="c1">//流して</span>
+                                <span class="n">e</span><span class="p">.</span><span class="n">cap</span> <span class="o">-=</span> <span class="n">d</span><span class="p">;</span>
+                                <span class="c1">//逆辺の許容量が増える</span>
+                                <span class="n">G</span><span class="p">[</span><span class="n">e</span><span class="p">.</span><span class="n">to</span><span class="p">][</span><span class="n">e</span><span class="p">.</span><span class="n">rev</span><span class="p">].</span><span class="n">cap</span> <span class="o">+=</span> <span class="n">d</span><span class="p">;</span>
+                                <span class="k">return</span> <span class="n">d</span><span class="p">;</span>
+                        <span class="p">}</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">max_flow</span><span class="p">(</span><span class="kt">int</span> <span class="n">s</span><span class="p">,</span> <span class="kt">int</span> <span class="n">t</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">flow</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
+                <span class="c1">//使用済みフラグの初期化</span>
+                <span class="n">memset</span><span class="p">(</span><span class="n">used</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">used</span><span class="p">));</span>
+
+                <span class="c1">//どれだけ流せるか</span>
+                <span class="kt">int</span> <span class="n">f</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">INF</span><span class="p">);</span>
+
+                <span class="c1">//流せなくなったらその時点での流量の和を返す</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">f</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="n">flow</span><span class="p">;</span>
+
+                <span class="c1">//各回で流せた量をflowに足す</span>
+                <span class="n">flow</span> <span class="o">+=</span> <span class="n">f</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+<p>フローにはまだまだ色々なテクニックや話題があるのですが、この記事では取り上げません。マッチング、最小費流問題などがあります。</p>
+
+<h2><a id="h11-6"></a><span class="secno">11.6　</span>他の話題</h2>
+<p>問題をうまく変形してノードを2色に塗り分けて考える問題や、木の上でDP(動的計画法)を行う問題などがありますが、ここでは解説しません。</p>
+
+<h2><a id="h11-7"></a><span class="secno">11.7　</span>まとめ</h2>
+<p>そろそろ文化祭前日ということで締切が近づいてきたので執筆を切り上げます。今回取り上げた内容は極めて入門的な内容ですので、競プロを始めてすぐの人の勉強になるかもしれませんし、ならないかもしれません。この記事を読んで競技プログラミングを始めたいと思った方は是非AtCoderやCodeforcesなどに登録してみて下さい。毎週のように刺激的で楽しい問題が出題されます。あと、蟻本を買うといいと思います。この本は本当に詳しくわかりやすく色々な事柄がまとめられています。</p>
+<p>これからも精進を続けていこうと思います。皆さんは僕みたいに計画性の無い生活を送らないように、しようね！</p>
+<p>拙い文章にお付き合いいただきありがとうございました。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="2lu3.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ 未踏ジュニアとLifeWatcher</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="cobalt.html">
+            <div class="book-cursor"><span class="cursor-next">▶ C#の布教</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>

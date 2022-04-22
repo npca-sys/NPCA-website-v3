@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4970457-1"></script>
+  <script>
+    if (document.domain === 'www.npca.jp') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-4970457-1');
+    }
+  </script>
+
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+<link rel="next" title="JOI参戦記" href="physics0523.html"><link rel="prev" title="簡単blenderモデリング" href="kota1024.html">  <meta name="generator" content="Re:VIEW" />
+  <title>深層学習の基礎のキソ | NPCA部誌2018</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" integrity="sha384-TEMocfGvRuD1rIAacqrknm5BQZ7W7uWitoih+jMNFXQIbNl16bO8OZmylH/Vi/Ei" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.js" integrity="sha384-jmxIlussZWB7qCuB+PgKG1uLjjxbVVIayPJwi6cG6Zb4YKq0JIw+OMnkkEC7kYCq" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="book">
+    <nav class="side-content">
+      <h1>NPCA部誌2018</h1>
+      <ul class="book-toc">
+<li><a href="index.html">TOP</a></li>
+<li><a href="predef.html">部長挨拶</a></li>
+<li><a href="object_1037.html">1 ARKit</a></li>
+<li><a href="2lu3.html">2 写真のデータを読み込もう</a></li>
+<li><a href="hinata.html">3 すばやい文字列の探しかた</a></li>
+<li><a href="harady.html">4 簡単!VR3(00)分クッキング</a></li>
+<li><a href="taizo0122.html">5 ぱそこんであそぼ</a></li>
+<li><a href="takepan.html">6 マインクラフトのサーバー管理を楽で便利なものにしてみる話</a></li>
+<li><a href="kota1024.html">7 簡単blenderモデリング</a></li>
+<li><a href="niimi.html">8 深層学習の基礎のキソ</a></li>
+<li><a href="physics0523.html">9 JOI参戦記</a></li>
+<li><a href="postdef.html">編集後記</a></li>
+</ul>
+      <p class="review-signature">powered by <a href="http://reviewml.org/">Re:VIEW</a></p>
+    </nav>
+    <div class="book-body">
+      <header>
+      </header>
+      <div class="book-page">
+        <h1><a id="h8"></a><span class="secno">第8章　</span>深層学習の基礎のキソ</h1>
+<p><p style="text-align:right">72回生 吉岡拓真</p></p>
+<p>直近の20年で最も大きなブレイクスルーと言っても過言ではないのが深層学習です。(クローズエンドな環境では)最強な深層学習。本記事ではその技術の基礎であるニューラルネットワークについて述べていきます。</p>
+
+<h2><a id="h8-1"></a><span class="secno">8.1　</span>単層・多層パーセプトロン</h2>
+<p>本節ではパーセプトロンというアルゴリズムについて説明します。かなり古いアルゴリズムですが、ニューラルネットワークへの導入として解説書などではよく用いられます。</p>
+
+<h3><a id="h8-1-1"></a>パーセプトロンとは</h3>
+<p>本記事では2入力のパーセプトロンについて扱います。2入力のパーセプトロンは2つの入力を受け取り、1つの信号を出力する関数のことです。その出力は0か1のどちらかで、<strong>重み</strong>という値を入力に掛け合わせることでその入力の重要度を操作するのに使い、その掛け合わせた値の和<span class="equation">w_1 x_1 + w_2 x_2</span>(ここでは<span class="equation">w_1, w_2</span>というのが重み)に対して<strong>バイアス</strong>(<span class="equation">b</span>)という値を加えたものに応じて0か1かを出力します。図示すると以下のようになります。</p>
+<div id="perceptron1" class="image">
+<img src="images/niimi/perceptron1.png" alt="" class="width-050per" />
+<p class="caption">
+図8.1: 
+</p>
+</div>
+<p>この図の「丸いもの」を<strong>ユニット</strong>もしくは<strong>ニューロン</strong>と呼びます。ここで、<span class="equation">y</span>は真ん中のユニットが出力する値で、以下のように定義します。</p>
+<div class="equation">
+<pre>  y = \begin{cases}
+    1 &amp; (w_1 x_1 + w_2 x_2 + b &gt; 0) \\
+    0 &amp; (w_1 x_1 + w_2 x_2 + b \leq 0)
+  \end{cases}
+</pre>
+</div>
+<p>重みの値が大きければ大きいほど、その重みが掛けられる入力の値は出力に影響をより与える、すなわち「重要度が高い」入力となります。</p>
+
+<h3><a id="h8-1-2"></a>論理回路</h3>
+<p>2入力のパーセプトロンを用いて論理回路を実装していきます。使用言語はpythonです。</p>
+
+<h4><a id="h8-1-2-1"></a>ANDゲート</h4>
+<p>ANDゲートは下の表のように、2つの値両方が1の時のみ1を出力するような回路です。また、下の表のような入力信号と出力信号の対応表を真理値表と呼びます。</p>
+<div id="andtable" class="table">
+<p class="caption">表8.1: ANDゲートの真理値表</p>
+<table>
+<tr><th><span class="equation">x_1</span></th><th><span class="equation">x_2</span></th><th><span class="equation">y</span></th></tr>
+<tr><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>1</td></tr>
+</table>
+</div>
+<p>これをパーセプトロンで実装します。<span class="equation">w_1 = 0.5, \, w_2 = 0.5, \, b = -0.7</span>というように重みとバイアスの値を決めるとその出力は上の真理値表を満たします。実際に計算してみてください。pythonでの実装は次のようになります。</p>
+<div id="AND" class="caption-code">
+<p class="caption">リスト8.1: AND.py</p>
+<pre class="list language-python highlight"><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+
+<span class="k">def</span> <span class="nf">AND</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">):</span>
+    <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.7</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">x2</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">AND</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+</pre>
+</div>
+
+<h4><a id="h8-1-2-2"></a>NAND, ORゲート</h4>
+<p>ANDゲートと同様にNANDゲートとORゲートを実装します。それぞれの真理値表は以下の通りです。</p>
+<div id="nandtable" class="table">
+<p class="caption">表8.2: NANDゲートの真理値表</p>
+<table>
+<tr><th><span class="equation">x_1</span></th><th><span class="equation">x_2</span></th><th><span class="equation">y</span></th></tr>
+<tr><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>0</td></tr>
+</table>
+</div>
+<div id="ortable" class="table">
+<p class="caption">表8.3: ORゲートの真理値表</p>
+<table>
+<tr><th><span class="equation">x_1</span></th><th><span class="equation">x_2</span></th><th><span class="equation">y</span></th></tr>
+<tr><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>1</td></tr>
+</table>
+</div>
+<p>ちなみに「NAND」は「Not AND」を意味しているので出力される値はANDゲートと真逆です。この2つの論理回路もパーセプトロンで表現することができます。NANDゲートは<span class="equation">w_1 = -0.5, \, w_2 = -0.5, \, b = 0.7</span>というように、ORゲートは<span class="equation">w_1 = 0.5, \, w_2 = 0.5, \, b = -0.2</span>というように重みとバイアスの値を決めるとうまくいきます。実装は先ほどのANDゲートとさして変わらないので省略します。</p>
+
+<h4><a id="h8-1-2-3"></a>XORゲート</h4>
+<p>XORゲートの真理値表は以下の通りです。</p>
+<div id="xortable" class="table">
+<p class="caption">表8.4: XORゲートの真理値表</p>
+<table>
+<tr><th><span class="equation">x_1</span></th><th><span class="equation">x_2</span></th><th><span class="equation">y</span></th></tr>
+<tr><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>0</td></tr>
+</table>
+</div>
+<p>しかしながら、これは今までのようにはいきません。重みやバイアスの値を上手に調整して実装しようとしてもこれは不可能です。「線形分離不可能」と言って、2次元平面の2点を直線で分離できないことを指す言葉なんですが、単層のパーセプトロンでは解決できない問題なんです。単層のパーセプトロンでは解決できないので、多層にして解決します。多層にすることで、単層では解決できなかった問題が解決できるようになる様子を見ていきましょう。</p>
+<p>XORゲートは今までのAND・NAND・ORゲートを下の図のように組み合わせることで実装することができます。</p>
+<div id="perceptron2" class="image">
+<img src="images/niimi/perceptron2.png" alt="" class="width-050per" />
+<p class="caption">
+図8.2: 
+</p>
+</div>
+<p>これを真理値表で表すと下の表のようになります。</p>
+<div id="xortable2" class="table">
+<p class="caption">表8.5: XORゲートの真理値表</p>
+<table>
+<tr><th><span class="equation">x_1</span></th><th><span class="equation">x_2</span></th><th><span class="equation">t_1</span></th><th><span class="equation">t_2</span></th><th><span class="equation">y</span></th></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+</table>
+</div>
+<p>AND・NAND・ORゲートを介することでXORゲートを作成することができます。pythonでの実装は以下の通り。</p>
+<div id="XOR" class="caption-code">
+<p class="caption">リスト8.2: XOR.py</p>
+<pre class="list language-python highlight"><span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+
+<span class="k">def</span> <span class="nf">AND</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">):</span>
+    <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.7</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">x2</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">NAND</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">):</span>
+    <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.7</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">x2</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">OR</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">):</span>
+    <span class="n">w1</span><span class="p">,</span> <span class="n">w2</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">w1</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="n">x2</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">XOR</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">):</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">NAND</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">OR</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">AND</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">t2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">XOR</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+</pre>
+</div>
+<p>XORゲートを通して、多層にすることの「良さ」を述べてきました。パーセプトロンは深層学習の本当に基礎なのでしっかり押さえておきましょう。</p>
+
+<h4><a id="h8-1-2-4"></a>余談</h4>
+<p>ぶっちゃけXORゲートは3行で実装できます。</p>
+<div id="id__XOR" class="caption-code">
+<p class="caption">リスト8.3: _XOR.py</p>
+<pre class="list language-python highlight">  <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">input</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()))</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="ow">or</span> <span class="n">m</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span><span class="p">(</span><span class="n">n</span> <span class="ow">and</span> <span class="n">m</span><span class="p">):</span> <span class="k">print</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre>
+</div>
+
+<h2><a id="h8-2"></a><span class="secno">8.2　</span>順伝播型ネットワーク</h2>
+<p>本節では順伝播型ネットワークについて解説します。順伝播型ネットワークは層状に並べられたユニットが、隣り合った層のユニットと結合し1方向に情報を伝播させていくネットワークで、ニューラルネットワークの中でもっとも基本的なものです。</p>
+<div id="network" class="image">
+<img src="images/niimi/network.png" alt="" class="width-060per" />
+<p class="caption">
+図8.3: 
+</p>
+</div>
+<p>上の図において、一番左の層を<strong>入力層</strong>、真ん中の層を<strong>中間層</strong>、右の層を<strong>出力層</strong>と呼びます。</p>
+
+<h3><a id="h8-2-1"></a>ユニットの構造</h3>
+<p>ネットワークを構成するユニットは複数の入力を受け取り1つの値を出力します。次の図のように<span class="equation">x_1 ~ x_4</span>までの4つの入力がある場合、ユニットが受け取る総入力<span class="equation">u</span>は</p>
+<div class="equation">
+<pre>  u = w_1 x_1 + w_2 x_2 + w_3 x_3 + w_4 x_4 + b
+</pre>
+</div>
+<p>となります。図ではバイアスを省略しています。ユニットの出力<span class="equation">z</span>は<strong>活性化関数</strong>と呼ばれる関数<span class="equation">f</span>の<span class="equation">u</span>に対する出力となります。</p>
+<div class="equation">
+<pre>  z = f(u)
+</pre>
+</div>
+<div id="network1" class="image">
+<img src="images/niimi/network1.png" alt="" class="width-060per" />
+<p class="caption">
+図8.4: 
+</p>
+</div>
+<p>順伝播型ネットワークはこのユニットを並べた層同士が次の図のように結合し情報を受け渡していきます。</p>
+<div id="network2" class="image">
+<img src="images/niimi/network2.png" alt="" class="width-060per" />
+<p class="caption">
+図8.5: 
+</p>
+</div>
+<p>一層目のユニット数を<span class="equation">I</span>、二層目(<span class="equation">z_j</span>を出力している層)のユニット数を<span class="equation">J</span>とすると、各ユニットの入力と出力を一般化すると以下のようになります。<span class="equation">(i = 1,\, 2,\, \ldots \, I ,\,\, j = 1,\, 2,\, \ldots \, J)</span></p>
+<div class="equation">
+<pre>\begin{aligned}
+  u_j &amp;= \sum_{i}^I w_{ji} x_i + b_j \\
+  z_j &amp;= f(u_j)
+\end{aligned}
+</pre>
+</div>
+<p>ここでは<span class="equation">i</span>番目のユニットと<span class="equation">j</span>番目のユニットの間の結合における重みを<span class="equation">w_{ji}</span>としています。これを行列で表すと以下の通りです。</p>
+<div class="equation">
+<pre>\begin{aligned}
+  \mathbf{u} &amp;= \mathbf{W} \mathbf{x} + \mathbf{b} \\
+  \mathbf{z} &amp;= \mathbf{f}(\mathbf{u})
+\end{aligned}
+</pre>
+</div>
+<p>ただし、各行列・ベクトルを次のように定義しています。</p>
+<div class="equation">
+<pre>\begin{aligned}
+  &amp; \mathbf{u} = \left(
+    \begin{array}{c}
+      u_1 \\
+      u_2 \\
+      \vdots \\
+      u_J
+    \end{array}
+  \right)
+  ,\,
+  \mathbf{W} = \left(
+    \begin{array}{cccc}
+      w_{11} &amp; w_{12} &amp; \ldots &amp; w_{1I} \\
+      w_{21} &amp; w_{22} &amp; \ldots &amp; w_{2I} \\
+      \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+      w_{J1} &amp; w_{J2} &amp; \ldots &amp; w_{JI}
+    \end{array}
+  \right)
+  ,\,
+  \mathbf{x} = \left(
+    \begin{array}{c}
+      x_1 \\
+      x_2 \\
+      \vdots \\
+      x_I
+    \end{array}
+  \right)
+  ,\, \\ &amp;
+  \mathbf{b} = \left(
+    \begin{array}{c}
+      b_1 \\
+      b_2 \\
+      \vdots \\
+      b_J
+    \end{array}
+  \right)
+  ,\,
+  \mathbf{z} = \left(
+    \begin{array}{c}
+      z_1 \\
+      z_2 \\
+      \vdots \\
+      z_J
+    \end{array}
+  \right)
+  ,\,
+  \mathbf{f}(\mathbf{u}) = \left(
+    \begin{array}{c}
+      f(u_1) \\
+      f(u_2) \\
+      \vdots \\
+      f(u_J)
+    \end{array}
+  \right)
+\end{aligned}
+</pre>
+</div>
+
+<h3><a id="h8-2-2"></a>活性化関数の種類</h3>
+<p>先ほど登場した活性化関数の中で代表的なものとその実装を紹介します。</p>
+
+<h4><a id="h8-2-2-1"></a>Sigmoid関数</h4>
+<p>Logistic関数とも呼ばれます。定義は次の通り。</p>
+<div class="equation">
+<pre>  f(x) = \frac{1}{1 + \mathrm{e}^{-x}}
+</pre>
+</div>
+<p>この関数は入力の絶対値が大きな値であると出力は一定の値に近づき、この関数の値域は<span class="equation">(0, 1)</span>です。また全ての実数<span class="equation">x</span>で微分可能であることが特徴です。pythonで実装すると次のようになります。</p>
+<div id="Sigmoid" class="caption-code">
+<p class="caption">リスト8.4: Sigmoid.py</p>
+<pre class="list language-python highlight">  <span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+      <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+</pre>
+</div>
+<p>入出力は省略しました。これを実行すると、例えば、入力<span class="equation">1</span>に対しては<span class="equation">0.7310585786300049</span>を出力し、入力<span class="equation">5</span>に対しては<span class="equation">0.9933071490757153</span>を出力します。</p>
+
+<h4><a id="h8-2-2-2"></a>双曲線正接関数</h4>
+<div class="equation">
+<pre>  f(x) = \tanh (x)
+</pre>
+</div>
+<p>で定義される関数です。双曲線関数の様々な性質にはここでは触れませんが、この関数は値域が<span class="equation">(-1, 1)</span>でシグモイド関数と似た性質を持っています。numpyの関数に存在しているので実装は省略します。</p>
+
+<h4><a id="h8-2-2-3"></a>ReLU関数(正規化線形関数)</h4>
+<div class="equation">
+<pre>  f(x) = \max (x, 0)
+</pre>
+</div>
+<p>で定義される関数で、非常に単純なのでpythonでの実装は省略します。この関数はその単純さゆえに計算量が非常に少なく、また学習がとても早く進むため、とてもよく使われる活性化関数です。</p>
+
+<h4><a id="h8-2-2-4"></a>恒等関数</h4>
+<div class="equation">
+<pre>  f(x) = x
+</pre>
+</div>
+<p>で定義される関数。ここで紹介する活性化関数の中で唯一の線形関数です。出力層で使われることがあります。</p>
+
+<h4><a id="h8-2-2-5"></a>Softmax関数</h4>
+<p>Softmax関数も出力層で使われます。出力層のユニット数を<span class="equation">K</span>とし、出力層のうち<span class="equation">k</span>番目のユニットの出力を</p>
+<div class="equation">
+<pre>  z_k = \frac{\exp(u_k)}{\sum_{j}^{K} \exp(u_j)}
+</pre>
+</div>
+<p>とします。この関数をSoftmax関数と呼び、<span class="equation">\sum_{k}^{K} z_k = 1</span>が成り立つという特徴があります。そのため、手書き文字の認識などの多クラス分類によく使用されます。出力される値の和が常に1なら、出力をデータが各クラスに分類される確率として捉えることができるからです。例えば<span class="equation">z_k = 0.53</span>なら<span class="equation">k</span>番目のクラスに分類される確率が53%であると解釈できるということです。</p>
+
+<h4><a id="h8-2-2-6"></a>Softmax関数の実装</h4>
+<p>Softmax関数を愚直に実装すると次のようになります。</p>
+<div id="id__Softmax" class="caption-code">
+<p class="caption">リスト8.5: _Softmax.py</p>
+<pre class="list language-python highlight">  <span class="k">def</span> <span class="nf">_Softmax</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+      <span class="n">exp_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+      <span class="n">sum_exp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">exp_x</span><span class="p">)</span>
+      <span class="n">y</span> <span class="o">=</span> <span class="n">exp_x</span> <span class="o">/</span> <span class="n">sum_exp</span>
+      <span class="k">return</span> <span class="n">y</span>
+</pre>
+</div>
+<p>しかしこれでは簡単にオーバーフローを起こしてしまうので全く使えません。そこで次の式を参考にこのコードを改善します。</p>
+<div class="equation">
+<pre>  z_k = \frac{\exp(u_k)}{\sum_{j}^{K} \exp(u_j)} = \frac{C \exp(u_k)}{C \sum_{j}^{K} \exp(u_j)}
+      = \frac{\exp(u_k + \log C)}{\sum_{j}^{K} \exp(u_j + \log C)}
+      \frac{\exp(u_k + C')}{\sum_{j}^{K} \exp(u_j + C')}
+</pre>
+</div>
+<p>この式において<span class="equation">C</span>は任意の定数で、<span class="equation">\log C</span>を<span class="equation">C'</span>と置き換えています。<span class="equation">C'</span>の値をうまく取ってやることでオーバーフローを防ぐことができます。具体的には、<span class="equation">u_j(j = 1,\, 2,\, \ldots \, K)</span>の最大値を<span class="equation">C'</span>に代入するとうまくいきます。それを踏まえてSoftmax関数の実装すると次のようになります。</p>
+<div id="Softmax" class="caption-code">
+<p class="caption">リスト8.6: Softmax.py</p>
+<pre class="list language-python highlight">  <span class="k">def</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">exp_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span>
+    <span class="n">sum_exp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">exp_a</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">exp_a</span> <span class="o">/</span> <span class="n">sum_exp</span>
+    <span class="k">return</span> <span class="n">y</span>
+</pre>
+</div>
+
+<h4><a id="h8-2-2-7"></a>線形関数と非線形関数</h4>
+<p>線形関数というのは<span class="equation">f(x) = a x\,</span>(<span class="equation">a</span>は定数)のように出力が入力の定数倍になるような関数のことで、活性化関数では線形関数を使用することに意味はありません。なぜなら複数の層に渡り活性化関数を通した変換を行なっても、例えば3層の場合では、<span class="equation">f(f(f(x))) = a \times a \times a \times x</span>となりますが、この計算は<span class="equation">a^3 = b</span>とした時、<span class="equation">h(x) = b x</span>という計算を行うことと等しいからです。</p>
+
+<h2><a id="h8-3"></a><span class="secno">8.3　</span>勾配法</h2>
+
+<h3><a id="h8-3-1"></a>誤差関数</h3>
+<p>損失関数とも呼ばれる関数で、現在のネットワークが教師データに対してどれだけ適合していないかという指標で、ネットワークの性能の「悪さ」を表します。</p>
+
+<h4><a id="h8-3-1-1"></a>2乗誤差</h4>
+<p>ネットワークの出力を<span class="equation">y_k</span>、教師データを<span class="equation">t_k</span>とすると、2乗誤差は以下のように計算されます。</p>
+<div class="equation">
+<pre>  E = \frac{1}{2} \sum_k (y_k - t_k)^2
+</pre>
+</div>
+<p>この<span class="equation">\frac{1}{2}</span>は微分した時に次数と打ち消しあわせるためにあります。実装は以下の通り。</p>
+<div id="mean_squared" class="caption-code">
+<p class="caption">リスト8.7: mean_squared.py</p>
+<pre class="list language-python highlight">  <span class="k">def</span> <span class="nf">mean_squared</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span> <span class="p">)</span>
+</pre>
+</div>
+
+<h4><a id="h8-3-1-2"></a>交差エントロピー</h4>
+<p>先程と同様に、ネットワークの出力を<span class="equation">y_k</span>、教師データを<span class="equation">t_k</span>とします。</p>
+<div class="equation">
+<pre>  E = - \sum_k t_k \log y_k
+</pre>
+</div>
+<p>ただし、ここでの<span class="equation">t_k</span>は正解ラベルを持つインデックスのみ1でその他が0であるとします(これをone-hot表現と呼びます)</p>
+<p>愚直に誤差を計算すると数値の積になる誤差を和の形で表すために対数を取っています。また、出力と教師データの差異が大きいほどこの値<span class="equation">E</span>は大きくなります。つまり、ネットワークの目標は<span class="equation">E</span>をできるだけ小さい値になるようにすることです。この状況は先ほどの式の左辺にマイナスが付いていることによって生み出されています。実装は以下の通り。</p>
+<div id="cross_entropy" class="caption-code">
+<p class="caption">リスト8.8: cross_entropy.py</p>
+<pre class="list language-python highlight">  <span class="k">def</span> <span class="nf">cross_entropy</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span> <span class="n">t</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mf">1e-7</span><span class="p">)</span> <span class="p">)</span>
+</pre>
+</div>
+<p>実装において、np.logを計算する際に微小な値を加えることで、np.log(0)という計算が発生することを防いでいます。np.log(0)は負の無限大を表す-infを出力してしまうのでこの処理が必要となります。</p>
+
+<h3><a id="h8-3-2"></a>バッチ学習</h3>
+<p>ここからは学習の方法をいくつか紹介します。学習の目的は誤差関数<span class="equation">E(\mathbf{w})</span>(全ての層の間の重みとバイアスの全てを成分にもつベクトルを<span class="equation">\mathbf{w}</span>と定義します)の値を小さくするような重みを求めることです。一般的に、誤差関数は凸関数ではないので誤差関数が最小値をとる解を求めることは不可能です。ですが、誤差関数の局所的な最小解を求めることはできます。最小値を与える重みでなくとも、十分に小さい値を与えるならば問題を解決する分には事足りるということです。</p>
+<p>何らかの初期値をスタートとして、重み<strong>w</strong>を繰り返し更新することでそのような解を求めることができます。ここで<strong>勾配</strong>を利用します。勾配とは以下のようなベクトルです。</p>
+<div class="equation">
+<pre>  \nabla E = \frac{\partial E(\mathbf{w})}{\partial \mathbf{w} } = \left(
+    \begin{array}{c}
+      \displaystyle \frac{\partial E(\mathbf{w})}{\partial w_1 } \\ \\
+      \displaystyle \frac{\partial E(\mathbf{w})}{\partial w_2 } \\ \\
+      \vdots \\ \\
+      \displaystyle \frac{\partial E(\mathbf{w})}{\partial w_m }
+    \end{array}
+  \right)
+</pre>
+</div>
+<p>ここで、<span class="equation">\mathbf{w}</span>の要素数を<span class="equation">m</span>としました。この勾配を利用して重みを更新していきます。更新する前の重みを<span class="equation">\mathbf{w}</span>、更新した後の重みを<span class="equation">\mathbf{w'}</span>とすると</p>
+<div class="equation">
+<pre>  \mathbf{w} \gets \mathbf{w} - \eta \nabla E
+</pre>
+</div>
+<p>というように重みを更新します。<span class="equation">\eta</span>は重みの更新する量を決める値で<strong>学習係数</strong>と呼ばれます。この際、訓練データの数を<span class="equation">N</span>とした時、最小化しようとしている誤差関数は全ての訓練データ<span class="equation">n = 1, \, 2, \, \ldots \, N</span>に対して計算される誤差関数の和、すなわち、各データ1つに対して計算される誤差<span class="equation">E_n(\mathbf{w})</span>の和で</p>
+<div class="equation">
+<pre>  E(\mathbf{w}) = \sum_n^N E_n(\mathbf{w})
+</pre>
+</div>
+<p>として与えられます。バッチ学習は全てのデータについて毎回誤差関数を求めて足し合わせているため、計算コストが非常に高く、また最小化しようとする誤差関数常に<span class="equation">E(\mathbf{w})</span>であるので、望まない局所解、つまり誤差関数の値がそれほど小さいわけではない局所解にトラップしてしまった時に抜け出せないという欠点を抱えています。</p>
+
+<h3><a id="h8-3-3"></a>確率的勾配降下法</h3>
+<p>確率的勾配降下法は先ほどのバッチ学習の欠点を解消したものです。バッチ学習が訓練データ1つ1つの誤差関数(<span class="equation">E_n(\mathbf{w})</span>)の和<span class="equation">E(\mathbf{w})</span>の勾配<span class="equation">\nabla E</span>で重みを更新するのに対して、確率的勾配降下法は訓練データから1つのデータを取り出し、そのデータの誤差関数(<span class="equation">E_n(\mathbf{w})</span>)の勾配<span class="equation">\nabla E_n</span>によって以下のように重みを更新します。</p>
+<div class="equation">
+<pre>  \mathbf{w} \gets \mathbf{w} - \eta \nabla E_n
+</pre>
+</div>
+<p>確率的勾配降下法はバッチ学習の欠点を解消したものではありますが欠点はあります。まず、ランダムにデータを取り出しているため最短で最適解にたどり着くわけではありません。ただ、1回あたりの計算量が少ないので結果的に早い場合もあります。次に、データを1つずつ利用しているので、異常なデータ(いわゆる外れ値)に引きずられやすいです。さらに学習係数の設定に失敗すると劇的に悪化する場合があります。</p>
+
+<h3><a id="h8-3-4"></a>ミニバッチ学習</h3>
+<p>ミニバッチ学習はバッチ学習と確率的勾配降下法の「良いとこどり」をしたような学習アルゴリズムです。確率的勾配降下法ではデータ1つずつ重みを更新していましたが、ここではいくつかのデータの集合(これをミニバッチと呼ぶ)の単位で重みを更新していきます。具体的には以下のように重みを更新していきます。</p>
+<div class="equation">
+<pre>  \mathbf{w} \gets \mathbf{w} - \eta \frac{1}{N} \sum_n^{N} \nabla E_n
+</pre>
+</div>
+<p>ここで、<span class="equation">N</span>はミニバッチとして取り出したデータの数を表しています。ミニバッチのサイズは<span class="equation">10</span>~<span class="equation">100</span>あたりにするのが一般的です。</p>
+
+<h2><a id="h8-4"></a><span class="secno">8.4　</span>誤差逆伝播法</h2>
+<p>前節で誤差関数とそれを最小化する手法を紹介しました。その更新式をそのまま実装しても当然求めたい重みは求まりますが、何度も何度も誤差関数を微分して重みを更新するという計算を繰り返すのは計算コストがかかります。そこで誤差逆伝播法の出番です。愚直に微分していては重みの成分1つごとに微分する必要があります。それに対して、誤差逆伝播法では出力層に近い層から順に重みの微分を求めて行くのですが、その際に前回の計算結果を利用するので計算コストがあまりかからないというわけです。抽象的な話になってしまいましたので、具体的な説明をします。ここからは数式ばかり登場します。</p>
+
+<h3><a id="h8-4-1"></a>連鎖律</h3>
+<p>微分の連鎖律について記述します。まず、1変数関数<span class="equation">f,\, g</span>について、以下が成立します。</p>
+<div class="equation">
+<pre>  \frac{df}{dx} = \frac{df}{dg} \frac{dg}{dx}
+</pre>
+</div>
+<p>次に多変数関数<span class="equation">f</span>と1変数関数<span class="equation">g</span>について、以下が成立します。</p>
+<div class="equation">
+<pre>  \frac{\partial f}{\partial x} = \sum_k \frac{\partial f}{\partial g} \frac{\partial g}{\partial x}
+</pre>
+</div>
+<p>証明は省きます(筆者は連鎖律の証明を理解していません。精進不足で申し訳ありません)</p>
+
+<h3><a id="h8-4-2"></a>成分ごとの計算</h3>
+<p>最終的には行列で計算を行いますが、説明の準備として成分ごとの計算について記述します。</p>
+<p>まず、誤差関数を<span class="equation">E</span>とした時、<span class="equation">\displaystyle \frac{\partial E}{\partial w_{ji}^{(l)}}</span>について考えます。記号の右肩についている<span class="equation">(l)</span>は第<span class="equation">l</span>層の重みであることを表します。<span class="equation">u_j^{(l)}</span>を<span class="equation">w_{ji}^{(l)}</span>についての式と考えて、先ほどの連鎖律から</p>
+<div class="equation">
+<pre>  \frac{\partial E}{\partial w_{ji}^{(l)}} = \frac{\partial E}{\partial u_{j}^{(l)}} \frac{\partial u_{j}^{(l)}}{\partial w_{ji}^{(l)}}
+</pre>
+</div>
+<p>が成り立ちます。次にこの式の右辺の左側部分から考えていきます。</p>
+<div id="bp1" class="image">
+<img src="images/niimi/bp1.png" alt="" class="width-060per" />
+<p class="caption">
+図8.6: 
+</p>
+</div>
+<p>上の図のように、<span class="equation">u_j^{(l)}</span>は<span class="equation">z_j^{(l)}</span>を通して<span class="equation">u_k^{(l+1)}</span>に影響を与えます。したがって、</p>
+<div class="equation">
+<pre>  \frac{\partial E}{\partial u_{j}^{(l)}} = \sum_k \frac{\partial E}{\partial u_{k}^{(l+1)}} \frac{\partial u_{k}^{(l+1)}}{\partial u_{j}^{(l)}}
+</pre>
+</div>
+<p>が成り立ちます。ここで、右辺にも<span class="equation">\displaystyle \frac{\partial E}{\partial u_{k}^{(\cdot)}}</span>と同じ形が現れていることに着目して、</p>
+<div class="equation">
+<pre>  \delta _j^{(l)} = \frac{\partial E}{\partial u_j^{(l)}}
+</pre>
+</div>
+<p>と定義します。すると先ほどの式は</p>
+<div class="equation">
+<pre>  \delta _j^{(l)} = \sum_k \delta _k^{(l+1)} \frac{\partial u_{k}^{(l+1)}}{\partial u_{j}^{(l)}}
+</pre>
+</div>
+<p>と書き直すことができます。さらに、<span class="equation">u_{k}^{(l+1)} = \sum_m w_{km}^{(l+1)} z_m^{(l)} = \sum_m w_{km}^{(l+1)} f(u_m^{(l)})</span>なので<span class="equation">\displaystyle \frac{\partial u_{k}^{(l+1)}}{\partial u_{j}^{(l)}} = w_{kj}^{(l+1)} f'(u_j^{(l)})</span>であるから、さらに</p>
+<div class="equation">
+<pre>  \delta _j^{(l)} = \sum_k \delta _k^{(l+1)} w_{kj}^{(l+1)} f'(u_j^{(l)})
+</pre>
+</div>
+<p>と書き直せます。次に<span class="equation">\displaystyle \frac{\partial u_j^{(l)}}{\partial w_{ji}^{(l)}}</span>について考えます。</p>
+<div id="bp2" class="image">
+<img src="images/niimi/bp2.png" alt="" class="width-060per" />
+<p class="caption">
+図8.7: 
+</p>
+</div>
+<p>上の図のように、<span class="equation">u_j^{(l)}</span>は<span class="equation">z_i^{(l-1)} w_{ji}^{(l)}\,\,(i = 1,\,2\,\ldots)</span>の和として表せます。すなわち</p>
+<div class="equation">
+<pre>  u_j^{(l)} = \sum_i z_i^{(l-1)} w_{ji}^{(l)}
+</pre>
+</div>
+<p>であるので、容易に</p>
+<div class="equation">
+<pre>  \frac{\partial u_j^{(l)}}{\partial w_{ji}^{(l)}} = z_i^{(l-1)}
+</pre>
+</div>
+<p>と求まります。ここで初めの式に戻ると</p>
+<div class="equation">
+<pre>  \frac{\partial E}{\partial w_{ji}^{(l)}} = \delta _j^{(l)} z_i^{(l-1)}
+</pre>
+</div>
+<p>これが求める微分です。この式を見ると、微分がただの積で表せています。さらに、<span class="equation">\delta</span>は先ほどの式のように、繰り返し計算することができるので計算量コストを抑えることができます。</p>
+<p>また、<span class="equation">\delta</span>を求める際、最後の出力層(これを第<span class="equation">L</span>層とします)における<span class="equation">\delta _k^{(L)}</span>が必要になります。ですがこれは</p>
+<div class="equation">
+<pre>  \delta _k^{(L)} = \frac{\partial E}{\partial u_k^{(L)}}
+</pre>
+</div>
+<p>と容易に計算することができます。交差エントロピーを誤差関数とし、出力層の活性化関数をSoftmax関数にした場合、出力層における<span class="equation">\delta</span>は</p>
+<div class="equation">
+<pre>  \delta _k^{(L)} = - \frac{\partial \sum_m t_m \log y_m}{\partial u_k^{(L)}}
+    = - \frac{\partial \sum_m t_m \frac{\exp{u_m^{(L)}}}{\sum_i \exp{u_i^{(L)}}}}{\partial u_k^{(L)}}
+    = \ldots = y_k - t_k
+</pre>
+</div>
+<p>途中計算は省略しました。やるだけなので頑張ってください。</p>
+
+<h3><a id="h8-4-3"></a>行列による計算</h3>
+<p>先ほどの成分計算を行列に計算に当てはめます。重み<span class="equation">w_{ji}</span>(ただしここではバイアスを含めない)<span class="equation">(j,i)</span>要素にもつ行列を<span class="equation">\mathbf{W}</span>、ユニット<span class="equation">j</span>のバイアスを<span class="equation">j</span>番目の要素にもつベクトルを<span class="equation">\mathbf{b}</span>と表します。</p>
+<p>入力されたデータを<span class="equation">\mathbf{X}</span>、この入力における第<span class="equation">l</span>層のユニットに対する総入力を<span class="equation">\mathbf{U}^{(l)}</span>、この総入力を活性化関数に通した出力を並べたベクトルを<span class="equation">\mathbf{Z}^{(l)}</span>とします。このとき、<span class="equation">\mathbf{Z}^{(1)} = \mathbf{X}</span>として、順伝播計算は以下のようになります。</p>
+<div class="equation">
+<pre>\begin{aligned}
+  &amp; \mathbf{U}^{(l)} = \mathbf{W}^{(l)} \mathbf{Z}^{(l-1)} + \mathbf{b}^{(l)} \\
+  &amp; \mathbf{Z}^{(l)} = f^{(l)}(\mathbf{U}^{(l)})
+\end{aligned}
+</pre>
+</div>
+<p><span class="equation">f^{(l)}(\cdot)</span>は行列の各成分に活性化関数を適応して、元の行列と同じ形の行列を出力するものとします。これらは2節で登場した式を行列で表したという理解で良いです。</p>
+<p>さて、次に逆伝播の計算について考えます。前節の<span class="equation">\delta _j^{(l)}</span>を要素にもつ行列を<span class="equation">\Delta ^{(l)}</span>とします。<span class="equation">\Delta ^{(l)}</span>の各列は各ミニバッチに対応しています。逆伝播の計算は以下のようになります。</p>
+<div class="equation">
+<pre>  \Delta ^{(l)} = f^{(l)\prime}(\mathbf{U}^{(l)}) \odot (\mathbf{W}^{(l+1) \mathrm{T}} \Delta ^{(l+1)})
+</pre>
+</div>
+<p>ここで、<span class="equation">\odot</span>という記号は行列の成分ごとの積を意味します。例を挙げると、<span class="equation">A = {a_{ij}},\,B = {b_{ij}}</span>について、<span class="equation">A \odot B</span>の<span class="equation">(i, j)</span>成分は<span class="equation">a_{ij} b_{ij}</span>となります。出力層を第<span class="equation">L</span>層とすると、</p>
+<div class="equation">
+<pre>  \Delta ^{(L)} = \mathbf{Y} - \mathbf{T}
+</pre>
+</div>
+<p>ただし、<span class="equation">\mathbf{Y}</span>は<span class="equation">\mathbf{X}</span>に対する出力<span class="equation">\mathbf{Y}</span>で、<span class="equation">\mathbf{T}</span>は目標となる出力です。</p>
+<p>最後に<span class="equation">\Delta ^{(l)}</span>を用いた重みの更新式で勾配を計算します。重み<span class="equation">w_{ji}^{(l)}</span>についての誤差関数<span class="equation">\sum_k^{N} E_n{\mathbf{W}}</span>の微分を第<span class="equation">(j, i)</span>成分に持つ行列を<span class="equation">\mathbf{W}^{(l)\prime}</span>、バイアス<span class="equation">b_j^{(l)}</span>についての微分を第<span class="equation">j</span>成分に持つベクトルを<span class="equation">\mathbf{b}^{(l)\prime}</span>とします。するとこれらは次のように計算できます。</p>
+<div class="equation">
+<pre>\begin{aligned}
+  &amp; \mathbf{W}^{(l)\prime} = \Delta ^{(l)} \mathbf{Z}^{(l-1)\mathrm{T}} \\
+  &amp; \mathbf{b}^{(l)\prime} = \Delta ^{(l)}
+\end{aligned}
+</pre>
+</div>
+<p>この2つを用いると、重みは以下のように更新できます。</p>
+<div class="equation">
+<pre>\begin{aligned}
+  &amp; \mathbf{W}^{(l)} \gets \mathbf{W}^{(l)} - \eta \mathbf{W}^{(l)\prime} \\
+  &amp; \mathbf{b}^{(l)} \gets \mathbf{b}^{(l)} - \eta \mathbf{W}^{(l)\prime}
+\end{aligned}
+</pre>
+</div>
+
+<h3><a id="h8-4-4"></a>pythonで実装</h3>
+<p>さて、これまでのことを踏まえて実装していきます。今回はMNISTという手書き数字のデータセットを使います。このデータセットの読み込み方はここでは説明しませんが、ベンチマークとしてしばしば使われるものなのでインターネットにたくさん情報があります。MNISTは「手書き数字」なので<span class="equation">0</span>~<span class="equation">9</span>の10クラスの分類になります。この程度の分類問題だと深層にする意味が特にないので3層のパーセプトロンになります(複数層あるし実質深層ですって)(これは罠で本気の深層はもっと深イ)。中間層の活性化関数としてReLU関数を、出力層の活性化関数としてSoftmax関数を採用します。</p>
+<p>誤差逆伝播法の説明では、一気にデルタを求めるという記述をしていましたが、実装では「活性化関数の順伝播・逆伝播計算を行うレイヤー」と「行列(出力と重みの計算)の順伝播・逆伝播計算を行うレイヤー」と役割を分けて考えます。つまり、ある層のデルタを求める時は活性化関数の逆伝播の計算を行ってから行列の逆伝播の計算をするということです。こういうように役割を分けるのには理由があります。活性化関数を変更した時にいちいちコードを書き直すのは手間がかかるので、活性化関数ごとのレイヤーを用意して、変更したい時はレイヤーを変更するだけでよくなるからです。さらに、逆伝播の計算途中の状態を取り出すことも容易にすることが可能になります。ちなみに<strong>計算グラフ</strong>というもので誤差逆伝播法を考えると、このレイヤー分けはとても自然な流れで登場します。計算グラフについての説明は省きますが、今までのような数式だらけではないので分かりやすいと思います。</p>
+<p>いよいよコードです。僕が1から作ったコードを載せることができれば良いのですが、「ゼロから作るDeep Learning」という本のコードがあまりに素晴らしすぎて超えることなどできないので、そのコードの実装する上で必要な部分だけ載せます。計算グラフについてはこの本によくまとめられています。レイヤー分けもこの本に書いてあるので読んでみてください。</p>
+<p>まずは各関数です。ReLU関数に関しては処理が簡単なので、わざわざ関数としては実装していません。</p>
+<div id="functions" class="caption-code">
+<p class="caption">リスト8.9: functions.py</p>
+<pre class="list language-python highlight">  <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+  <span class="k">def</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+  <span class="k">def</span> <span class="nf">cross_entropy</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">y</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+          <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+          <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+      <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+          <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+      <span class="n">batch_size</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+      <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">batch_size</span><span class="p">),</span> <span class="n">t</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e-7</span><span class="p">))</span> <span class="o">/</span> <span class="n">batch_size</span>
+</pre>
+</div>
+<div class="column">
+
+<h4><a id="column-1"></a>Softmax関数のミニバッチ対応版</h4>
+<p>Softmax関数に少し追加している部分がありますね。これはミニバッチ学習に対応させたからです。ミニバッチを用いた場合、データはミニバッチのデータ数が行数、1つのデータが列ベクトルであるような行列です。変更を加える前のものは1つのデータに対する計算しかできません。変更後は複数のデータに対して同時に計算する機能が追加されているのでミニバッチ学習用の関数となっています。</p>
+</div>
+<p>次にレイヤーです。Affineというレイヤーが行列の演算を行います。ReluLayer、SoftmaxLossLayerはそれぞれ活性化関数の順伝播・逆伝播計算を行います。</p>
+<div id="all_Layers" class="caption-code">
+<p class="caption">リスト8.10: all_Layers.py</p>
+<pre class="list language-python highlight">  <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+  <span class="kn">from</span> <span class="nn">functions</span> <span class="kn">import</span> <span class="o">*</span>
+
+  <span class="k">class</span> <span class="nc">ReluLayer</span><span class="p">:</span>
+      <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="bp">None</span>
+
+      <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+          <span class="n">out</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+          <span class="n">out</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+          <span class="k">return</span> <span class="n">out</span>
+
+      <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dout</span><span class="p">):</span>
+          <span class="n">dout</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+          <span class="n">dx</span> <span class="o">=</span> <span class="n">dout</span>
+
+          <span class="k">return</span> <span class="n">dx</span>
+
+  <span class="k">class</span> <span class="nc">AffineLayer</span><span class="p">:</span>
+      <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">W</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">None</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">dW</span> <span class="o">=</span> <span class="bp">None</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="bp">None</span>
+
+      <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+          <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+
+          <span class="k">return</span> <span class="n">out</span>
+
+      <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dout</span><span class="p">):</span>
+          <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dout</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">W</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">dW</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">dout</span><span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">dout</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+          <span class="k">return</span> <span class="n">dx</span>
+
+  <span class="k">class</span> <span class="nc">SoftmaxLossLayer</span><span class="p">:</span>
+      <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="bp">None</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">None</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="bp">None</span>
+
+      <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">t</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">softmax</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">loss</span> <span class="o">=</span> <span class="n">cross_entropy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+
+          <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span>
+
+      <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dout</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
+          <span class="n">batch_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+          <span class="n">dx</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="n">batch_size</span>
+
+          <span class="k">return</span> <span class="n">dx</span>
+</pre>
+</div>
+<p>そして逆伝播・順伝播を制御するコードです。順伝播計算を行った後、逆伝播を行い、重みを更新する量を求めます。地味ですが、OrderedDictが逆伝播するときに役立っています。</p>
+<div id="network" class="caption-code">
+<p class="caption">リスト8.11: network.py</p>
+<pre class="list language-python highlight">  <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+  <span class="kn">from</span> <span class="nn">functions</span> <span class="kn">import</span> <span class="o">*</span>
+  <span class="kn">from</span> <span class="nn">all_layers</span> <span class="kn">import</span> <span class="o">*</span>
+  <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+
+  <span class="k">class</span> <span class="nc">TwoLayerNet</span><span class="p">:</span>
+      <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">,</span> <span class="n">weight_init_std</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">):</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s">"W1"</span><span class="p">]</span> <span class="o">=</span> <span class="n">weight_init_std</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">hidden_size</span><span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s">"b1"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s">"W2"</span><span class="p">]</span> <span class="o">=</span> <span class="n">weight_init_std</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">output_size</span><span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s">"b2"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">output_size</span><span class="p">)</span>
+
+          <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s">"Affine1"</span><span class="p">]</span> <span class="o">=</span> <span class="n">AffineLayer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s">"W1"</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s">"b1"</span><span class="p">])</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s">"Relu1"</span><span class="p">]</span> <span class="o">=</span> <span class="n">ReluLayer</span><span class="p">()</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s">"Affine2"</span><span class="p">]</span> <span class="o">=</span> <span class="n">AffineLayer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s">"W2"</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s">"b2"</span><span class="p">])</span>
+
+          <span class="bp">self</span><span class="o">.</span><span class="n">lastlayer</span> <span class="o">=</span> <span class="n">SoftmaxLossLayer</span><span class="p">()</span>
+
+      <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+          <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+              <span class="n">x</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+          <span class="k">return</span> <span class="n">x</span>
+
+      <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+          <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+          <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastlayer</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+      <span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+
+          <span class="n">dout</span> <span class="o">=</span> <span class="mi">1</span>
+          <span class="n">dout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastlayer</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">dout</span><span class="p">)</span>
+
+          <span class="n">layers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+          <span class="n">layers</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+          <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">:</span>
+               <span class="n">dout</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">dout</span><span class="p">)</span>
+
+          <span class="n">grads</span> <span class="o">=</span> <span class="p">{}</span>
+          <span class="n">grads</span><span class="p">[</span><span class="s">"W1"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s">"Affine1"</span><span class="p">]</span><span class="o">.</span><span class="n">dW</span>
+          <span class="n">grads</span><span class="p">[</span><span class="s">"b1"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s">"Affine1"</span><span class="p">]</span><span class="o">.</span><span class="n">db</span>
+          <span class="n">grads</span><span class="p">[</span><span class="s">"W2"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s">"Affine2"</span><span class="p">]</span><span class="o">.</span><span class="n">dW</span>
+          <span class="n">grads</span><span class="p">[</span><span class="s">"b2"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s">"Affine2"</span><span class="p">]</span><span class="o">.</span><span class="n">db</span>
+
+          <span class="k">return</span> <span class="n">grads</span>
+</pre>
+</div>
+<p>最後にこれらを利用してニューラルネットに学習させます。ここではミニバッチ学習を行っています。バッチサイズは100です。</p>
+<div id="train" class="caption-code">
+<p class="caption">リスト8.12: train.py</p>
+<pre class="list language-python highlight">  <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+  <span class="kn">from</span> <span class="nn">mn.mnist</span> <span class="kn">import</span> <span class="n">load_mnist</span>
+  <span class="kn">from</span> <span class="nn">networks</span> <span class="kn">import</span> <span class="n">TwoLayerNet</span>
+
+  <span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">t_train</span><span class="p">),</span> <span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">t_test</span><span class="p">)</span> <span class="o">=</span> <span class="n">load_mnist</span><span class="p">(</span><span class="n">normalize</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">one_hot_label</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+
+  <span class="n">network</span> <span class="o">=</span> <span class="n">TwoLayerNet</span><span class="p">(</span><span class="n">input_size</span> <span class="o">=</span> <span class="mi">784</span><span class="p">,</span> <span class="n">hidden_size</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">output_size</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+
+  <span class="n">iters_num</span> <span class="o">=</span> <span class="mi">10000</span>
+  <span class="n">train_size</span> <span class="o">=</span> <span class="n">x_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100</span>
+  <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iters_num</span><span class="p">):</span>
+      <span class="n">batch_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">train_size</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+      <span class="n">x_batch</span> <span class="o">=</span> <span class="n">x_train</span><span class="p">[</span><span class="n">batch_mask</span><span class="p">]</span>
+      <span class="n">t_batch</span> <span class="o">=</span> <span class="n">t_train</span><span class="p">[</span><span class="n">batch_mask</span><span class="p">]</span>
+
+      <span class="n">grad</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">x_batch</span><span class="p">,</span> <span class="n">t_batch</span><span class="p">)</span>
+
+      <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s">"W1"</span><span class="p">,</span> <span class="s">"b1"</span><span class="p">,</span> <span class="s">"W2"</span><span class="p">,</span> <span class="s">"b2"</span><span class="p">):</span>
+          <span class="n">network</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">grad</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+</pre>
+</div>
+<p>本当に学習できているのか確かめるために誤差関数の推移をグラフにしてみました。縦軸に誤差関数の値、横軸にミニバッチを利用して勾配を更新した回数を表示しています。</p>
+<div id="error_graph" class="image">
+<img src="images/niimi/error_graph.png" alt="" class="width-080per" />
+<p class="caption">
+図8.8: 
+</p>
+</div>
+<p>誤差関数が0に近づいて行っている様子が見て取れます。ここで、どれだけこのネットワークの精度が高いか調べてみましょう。network.pyにaccuracyという関数を追加します。これはどれだけ認識の精度が高いかを調べる関数です。</p>
+<div id="accuracy" class="caption-code">
+<p class="caption">リスト8.13: </p>
+<pre class="list language-python highlight">  <span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+      <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+      <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+      <span class="n">accuracy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+      <span class="k">return</span> <span class="n">accuracy</span>
+</pre>
+</div>
+<p>これを利用して認識精度を計測します。ここで<strong>エポック</strong>という単位を導入します。1エポックとは学習において、訓練データを全て使い切った(とみなせる)時の回数に対応する数です。例えば、10000件のデータでミニバッチのデータ数が100ならば、<span class="equation">10000 \div 100 = 100</span>なので、100回が1エポックとなります。1エポック終えるごとに精度を調べることにします。train.pyの一部分を以下のように書き換えます。</p>
+<div id="train_2" class="caption-code">
+<p class="caption">リスト8.14: </p>
+<pre class="list language-python highlight">  <span class="c">#~省略~</span>
+  <span class="n">train_acc_list</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">test_acc_list</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">iter_per_epoch</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">train_size</span> <span class="o">/</span> <span class="n">batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iters_num</span><span class="p">):</span>
+      <span class="n">batch_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">train_size</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">)</span>
+      <span class="n">x_batch</span> <span class="o">=</span> <span class="n">x_train</span><span class="p">[</span><span class="n">batch_mask</span><span class="p">]</span>
+      <span class="n">t_batch</span> <span class="o">=</span> <span class="n">t_train</span><span class="p">[</span><span class="n">batch_mask</span><span class="p">]</span>
+
+      <span class="n">grad</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">x_batch</span><span class="p">,</span> <span class="n">t_batch</span><span class="p">)</span>
+
+      <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s">"W1"</span><span class="p">,</span> <span class="s">"b1"</span><span class="p">,</span> <span class="s">"W2"</span><span class="p">,</span> <span class="s">"b2"</span><span class="p">):</span>
+          <span class="n">network</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">grad</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+      <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">iter_per_epoch</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+          <span class="n">train_acc</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">t_train</span><span class="p">)</span>
+          <span class="n">test_acc</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">t_test</span><span class="p">)</span>
+          <span class="n">train_acc_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_acc</span><span class="p">)</span>
+          <span class="n">test_acc_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">test_acc</span><span class="p">)</span>
+
+  <span class="c">#~省略~</span>
+</pre>
+</div>
+<p>これをグラフに表すと以下のようになります。</p>
+<div id="accuracy" class="image">
+<img src="images/niimi/accuracy.png" alt="" class="width-080per" />
+<p class="caption">
+図8.9: 
+</p>
+</div>
+<p>青色のグラフが訓練データにおける精度、オレンジ色がテストデータにおける精度となります。訓練データによって訓練されたネットワークがきちんと高い精度を出せていることがわかります。</p>
+
+<h2><a id="h8-5"></a><span class="secno">8.5　</span>あとがき</h2>
+<p>この記事に書いたことは深層学習というより、深層学習の元となっている技術の話です。3層のパーセプトロンや誤差逆伝播法は深層学習でなくとも使えるものですし、3層パーセプトロンは結構強力なものなので深層にするまでも無い場合もあります。また、数式で説明をしてきましたが、イメージが掴めないという方は「ゼロから作るDeep Learning」という本を読んでいただければなと思います。例えば誤差逆伝播法では、先ほど述べたとおり、計算グラフというもので解説されています。非常に分かりやすい考え方なので実装への導入も自然にできます。</p>
+<p>後半はかなり飛ばして行きました。ソースコードに関しましては、ここまで読んでいただいた方には本当に申し訳ないと思います。自分なりのコードを書く段階で、「ゼロから作るDeep Learning」に掲載されていたコードがいかに洗練されているのかを痛感し、このような結果になりました。これは偏に僕の実力不足のせいです。申し訳ないと思うとともに、精進を誓う次第です。</p>
+<p>最後になりましたが、ここまで読んでくださり本当にありがとうございます。本記事、ひいてはこの部誌を読み、我々NPCAや様々な技術に興味を持っていただければ幸いです。</p>
+      </div>
+      <div class="navs">
+        <nav class="book-navi book-prev">
+                    <a href="kota1024.html">
+            <div class="book-cursor"><span class="cursor-prev">◀ 簡単blenderモデリング</span></div>
+          </a>
+                  </nav>
+        <nav class="book-navi book-next">
+                    <a href="physics0523.html">
+            <div class="book-cursor"><span class="cursor-next">▶ JOI参戦記</span></div>
+          </a>
+                  </nav>
+      </div>
+    </div>
+  </div>
+  <footer>
+      </footer>
+  <script>
+    (function() {
+      if (!window.katex) { return; }
+      var equations = [].slice.call(document.querySelectorAll(".equation"));
+      for (var i = 0; i < equations.length; i++) {
+        katex.render(equations[i].textContent, equations[i]);
+      }
+    }) ();
+  </script>
+</body>
+</html>
